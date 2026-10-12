@@ -6,7 +6,7 @@
 - 数据库名称：`bluewms20`。
 - 界面语言：简体中文，管理员时区：Asia/Shanghai。
 - PostgreSQL：`localhost:5436`，业务账号 `odoo`。
-- 凭据：`/Users/jianglang/.config/bluewms20/access.md`，未放入 Git。
+- 维护者本机凭据：`~/.config/bluewms20/access.md`，未放入 Git；新部署自行设置数据库管理密码和登录信息。
 
 ## 目录与持久化
 
@@ -21,7 +21,7 @@
 
 原文件保持原样。运行副本调整了数据库连接、模块路径、独立库名、演示数据和 Odoo 20 参数；不挂载旧 19 的 OLS／rent 模块。
 
-管理主密码沿用原值，运行副本采用哈希保存。Odoo 登录密码为独立生成的密码，见上述私有凭据文件。
+维护者验证环境的管理主密码沿用原值，运行副本采用哈希保存。新部署按仓库首页准备自己的私有配置并创建登录账号；维护者本机的密码文件不随 Git 分发。
 
 `deployment-lock.json` 记录安装时的镜像标识、架构、目录和已完成验证。初始化环境已建立。2026-10-12 首批 7 个 MuK Web 模块及 3 个必要依赖已安装到开发库；同日 `muk_ai`、`muk_ai_skills`、`muk_mcp` 也已安装，309 项后端／HTTP 测试及前端资源编译通过；真实模型配置与浏览器交互待验证。WMS 与客户模块仍在后续阶段安装。AI 安装详情见 [安装记录](../docs/third-party/muk-ai-install-2026-10-12.md)。来源、版本锁、实际验证和限制见 [首批迁移记录](../docs/third-party/muk-web-migration-2026-10-12.md)。
 
@@ -37,7 +37,7 @@ docker compose -f docker/compose.yaml restart odoo
 docker compose -f docker/compose.yaml stop
 ```
 
-新模块放入项目根目录，例如 `blue_stock/__manifest__.py`。Python 修改后重启 Odoo，模块结构或数据变化时还需执行对应模块升级。
+新模块放入项目根目录，例如 `blue_stock_example/__manifest__.py`。Python 修改后重启 Odoo，模块结构或数据变化时还需执行对应模块升级。
 
 `blue_dev_environment` 是无业务逻辑的开发标识模块。Odoo 20 要求 addons 目录至少含一个有效模块，否则会忽略空目录；正式模块增加后可以按需移除此标识模块。
 
@@ -59,7 +59,7 @@ docker compose -f docker/compose.yaml start odoo
 
 ## 2026-10-12 库存规则
 
-`blue_stock_rules` 已安装，默认非负库存保护及库位冻结／禁止入库生效。43 项最终联合测试及规则模块卸载／重装通过。来源、例外、精度和边界见 [库存规则交付](../docs/migrations/stock-rules-20.md)。同批次／同单上架尚未执行。
+`blue_stock_rules` 已安装，默认非负库存保护及库位冻结／禁止入库生效。43 项最终联合测试及规则模块卸载／重装通过。来源、例外、精度和边界见 [库存规则交付](../docs/migrations/stock-rules-20.md)。上架增强随后由独立的 `blue_stock_putaway` 实现，当前原生规则绑定方式见 [上架增强使用说明](../docs/migrations/putaway-rule-binding-20.md)。
 
 ## 2026-10-12 项目目录迁移
 
