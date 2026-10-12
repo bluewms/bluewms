@@ -1,0 +1,93 @@
+{
+  "source_commit": "7d77ae713b81ddef4de856361ac14ea99fedf967",
+  "migrated_on": "2026-10-12",
+  "approved_items": [
+    1,
+    2
+  ],
+  "deferred_items": [
+    3,
+    4
+  ],
+  "source_files_sha256": {
+    "stock_no_negative": {
+      "__init__.py": "da3b9f23817f3945ff6b3d78eac5a6b03a306ff0f0ab4a8e60adf6f10a30f8eb",
+      "__manifest__.py": "cf47160fb26c2bc8c64aec28e087a77d73bac3290a07c75cdaa8df3323525150",
+      "i18n/ar.po": "de64bb47cb841f2ff8f9cbf99a7a33dd4eb63868c0b52e37de7f791e0ec03d55",
+      "i18n/de.po": "f039b31633ce505223d8abff0f1cf173f453ef9295a22b5836517204cfd4f663",
+      "i18n/es.po": "83095a54111586e0ab38e666d5a496f0d9d6dc53024ad3c982c95e4c79f1710c",
+      "i18n/fr.po": "c3d6599b7b0e95e22aa325408e2786aa60a53a625c6d177f028b508c2cc3fbd9",
+      "i18n/hr.po": "d37c992a94ed5ba0332ab1ad2232f9a26254338781a7f48b943ca306302c3111",
+      "i18n/it.po": "15014feb9f415297e9cd1ee1cd61e5ba7d9fc2c52be26acdaa9e493bdfff1201",
+      "i18n/pt.po": "7c52f381a816e593cc231fafe4e15b80974ac3c3518b66f8369707ac2ae352a3",
+      "i18n/stock_no_negative.pot": "ed7e53fd893a466e61427e96e34f7c676d1a78f5b05a140daa29a0904c910c84",
+      "i18n/zh_CN.po": "f115d350af5bb26dc4c0ab5d3794ded70223b43f5106953ee89c38b5c537bc5b",
+      "models/__init__.py": "f4962629c38f99d0c91a9435e45ec6b4c1e39aafb2b98f75077f095bd71ed3a0",
+      "models/product.py": "46120964a382bc5177d3628882249234bd75be415e0904f7a084d509b8b67394",
+      "models/stock_location.py": "62970fe82f6eb57af3f5f01fad3bbef6fc82048db84f994b3b241f94f89851e6",
+      "models/stock_quant.py": "fda0d3437252fa12512443559e819ddfabba99b151010f33b1c68dafc564c59a",
+      "readme/CONFIGURE.rst": "e32fa5102c24b0069455e21a52a290a3364d95369d25b44d4983857b8ae236fe",
+      "readme/CONTRIBUTORS.rst": "94749f706cddb73266b98dab924b3a7c2383b44a72290208912c9ba714812861",
+      "readme/DESCRIPTION.rst": "39d55f5fe4e02a1f5419599dbdf2d3e872eb6a59b4fe855d65e7a6644c02cc83",
+      "readme/HISTORY.rst": "afb92f6d4c792d7636b22044c78124c6048248213bb4aa7d0bc6adc006914384",
+      "readme/USAGE.rst": "13b1cec690a436d7e5b34e2becf53fa319e440341527061db25b88612bbed611",
+      "static/description/icon.png": "3c73e47353837ae819c15092faaecbfabb1f14e852d8f8bb59efb9265b55cfc2",
+      "static/description/index.html": "720be3cf70687c80f4d10b16f99c619e71ce8054ee21b8ae0385731492d344b5",
+      "tests/__init__.py": "1e4cad0e162d7ca8a2c2ce58c9622364070b8640e81d10d70bf36855ac5060d2",
+      "tests/test_stock_no_negative.py": "e17ddbc25ef5513a3507cb00bc39a61e194e79904afe8a3d3ef81f580943db0a",
+      "views/product_product_views.xml": "5fea81ae364acd8539b259e9970733fdf86b07d5f92d114ea5fdc1e66ed9ddc2",
+      "views/stock_location_views.xml": "bbc68618c7030a380469de24adee4f7e3e622af56f40cda5db7212a6ab8c53bf"
+    },
+    "stock_location_lockdown": {
+      "__init__.py": "ad335f8646467cc19539ce4e862d5e084f32ef28829ba9f9b5522651f88be95e",
+      "__manifest__.py": "af2dca654a9b6d4add9bd64852919ef6276dd8c3c70db7491fd60020bd0ca2a2",
+      "i18n/es.po": "bff1124407486d578e0b72d0d62c84176512ccb48431417c40a4a55a4f72dd64",
+      "i18n/fr.po": "d20c7afcab6bb3ee5ec064b047fe9d430511e40bbce227037ba8dc8904fdb512",
+      "i18n/it.po": "ac3fedf5fda43aa7ae95be563a89b5e4e25f0efb5024ba214a9085d99d1939c2",
+      "i18n/pt.po": "64e90129e698dee8055d1d981842847881c8c584febf59b5bb4b0648f3897004",
+      "i18n/stock_location_lockdown.pot": "bfe08f82896d659d22096866da17db2a9bb6aa8de9a62986eeecea7985422733",
+      "i18n/zh_CN.po": "2835c787f1b73fa0fd417266be8ad12fe85dd1ebc04208c8d4fdce1a5e85565c",
+      "models/__init__.py": "d614c6b83ce579c6c7d4fcd25db1299f68a107085859dba76f5453b0929f450b",
+      "models/stock_location.py": "d46ee913c3cf8f33617029c11322c27525a2acca7963c7a9892803a0347b7c56",
+      "models/stock_quant.py": "85b875fb5e36a00aff3e11d636b70f52b7b97ed7b1e50993c0ab1a6a6bb68d9e",
+      "readme/CONTRIBUTORS.rst": "3fe21a3707f5d1d77a2cc407bb9778003c721912777d2b1a561b051437fb55cb",
+      "readme/DESCRIPTION.rst": "1065e548bcfff304597ff8f57947af60682cf1af3a63e2db55c80bf1a4f2ac48",
+      "readme/USAGE.rst": "69a7c10c3330b2c2f67c489528db66542113b8642c6f0444623597a3594c24bf",
+      "static/description/icon.png": "3c73e47353837ae819c15092faaecbfabb1f14e852d8f8bb59efb9265b55cfc2",
+      "static/description/index.html": "a78b058b6597aca34aa3117e603f3d1ac8e779291f9ff3dc7123d7a05881ffc5",
+      "tests/__init__.py": "ef089012ac55d9da0666e83f6415d791a848e9206dd263fd5ab057b2f49dce71",
+      "tests/test_block_stock_location_entrance.py": "6fb0c094d5ea1aef91ff107cd02817ed86f327c0bc8b976e3ccb918789048c9f",
+      "views/stock_location.xml": "7378c9c905be926aa75dcf2d3714dcf7e2914284b8f6a575894d17bd60feb4df"
+    }
+  },
+  "module": {
+    "name": "blue_stock_rules",
+    "version": "20.0.1.0.0",
+    "license": "AGPL-3",
+    "depends": [
+      "blue_stock_base"
+    ],
+    "files_sha256": {
+      "LICENSE": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee",
+      "NOTICE.md": "6000a15f4c18a5202abff57cbd9136fd5cb57af9d4acf89bba6272e10c37bb8c",
+      "README.md": "040f87236341d5711c56897ee064bd15f01362043a47403b8296f5d21d233f69",
+      "__init__.py": "5fd10918e1361ad65b4b41bcd8fb525e659267f47c8c4334ae52530e58908e9e",
+      "__manifest__.py": "a75411785c13257a11d7977504f51275f05fbafaa3bedc534730315463a31eeb",
+      "models/__init__.py": "82ea940eddc0afde32d48ddcda1b49d6136847367048b3b5869edb00b47a5d54",
+      "models/product.py": "98b6dd71313c35a76d1d272ed38069f1b99a6711b2a5adac4f0eb19142fac7c4",
+      "models/stock_location.py": "f7c3a6366d05cac8fdc1fd5cf5cc841777ac83948d0a696d37db4025c6b35a15",
+      "models/stock_move_line.py": "ae87f9c8329424db9e968c07f43cd55c6c9385d8c2f635ee457005863408ee63",
+      "models/stock_quant.py": "4b1acaeca9aafb922d1e3c2fd03d287d05063fb26aba7e8f1e9bf3fcb7973b14",
+      "tests/__init__.py": "62c4adf9ac60b6b6fe3b0267f3227d16e75a7b88dd39e4074d50537d944eee4e",
+      "tests/test_stock_rules.py": "014dd5a86d5dd688a29b8444aa6fa367d1dc480768c9151123111a3a0a3692c5",
+      "views/product.xml": "884d496967d2ca8741af9208b5b1997afa287024d5ce9db263826bb7113ca208",
+      "views/stock_location.xml": "8f44b136d1f67e98e92c795e59c0dbcfeea51ec4a5276272023feced0ba03774"
+    }
+  },
+  "final_validation": {
+    "tests": 43,
+    "failed": 0,
+    "errors": 0,
+    "optional_uninstall_reinstall_verified": true
+  }
+}

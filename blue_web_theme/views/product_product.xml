@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="blue_zx_product_template_search_form_view_stock" model="ir.ui.view">
+        <field name="name">blue.zx.product.template.search.stock.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <searchpanel>
+                    <field name="categ_id" icon="fa-filter" string="类别" enable_counters="1"/>
+                </searchpanel>
+            </filter>
+        </field>
+    </record>
+
+    <record id="stock.product_template_action_product" model="ir.actions.act_window">
+        <field name="view_mode">list,kanban,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,10 @@
+<odoo>
+    <record id="stock_location_rules" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit.blue_stock_rules</field><field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml"><field name="usage" position="after">
+            <field name="blue_policy_blocked" readonly="1"/><field name="block_stock_entrance" groups="stock.group_stock_manager"/>
+            <field name="allow_negative_stock" invisible="usage not in ('internal', 'transit')" groups="stock.group_stock_manager"/>
+        </field></field>
+    </record>
+</odoo>

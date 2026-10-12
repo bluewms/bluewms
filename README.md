@@ -1,5 +1,7 @@
 # BlueWMS — 专为自动化仓储而生的WMS仓储管理系统
 
+Odoo 20 开发模块位于本仓库各模块目录。开发规划、部署配置和同步说明见 [开发文档](docs/README.md)。
+
 > **品牌名称**：BlueWMS | **官网**：[www.bluewms.com](https://www.bluewms.com) | **域名**：bluewms.com
 >
 > **核心产品**：WMS仓储管理系统 — 特别适用于AGV、四向车等自动化系统中的仓储管理

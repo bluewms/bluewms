@@ -1,0 +1,13 @@
+<odoo>
+    <record id="stock_putaway_list" model="ir.ui.view">
+        <field name="name">stock.putaway.rule.list.inherit.blue.enhancement</field>
+        <field name="model">stock.putaway.rule</field>
+        <field name="inherit_id" ref="stock.stock_putaway_list"/>
+        <field name="arch" type="xml">
+            <field name="location_out_id" position="after">
+                <field name="blue_profile_id" optional="show" context="{'default_company_id': company_id}"/>
+                <field name="blue_active_release_id" optional="hide" readonly="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.blue.putaway</field><field name="model">stock.picking</field><field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside"><button name="action_blue_apply_putaway" string="重新分配上架" type="object" groups="stock.group_stock_user" invisible="state in ['done', 'cancel'] or picking_type_code == 'outgoing'"/></xpath>
+            <xpath expr="//notebook" position="inside"><page name="blue_putaway_audit" string="上架策略"><field name="blue_putaway_binding_ids" readonly="1"><list create="0" delete="0"><field name="rule_id"/><field name="profile_id"/><field name="release_id"/></list></field><field name="blue_putaway_application_ids" readonly="1"><list create="0" delete="0"><field name="create_date"/><field name="move_line_id"/><field name="release_id"/><field name="location_id"/><field name="package_id"/><field name="quantity"/><field name="unit"/><field name="reason"/></list></field></page></xpath>
+        </field>
+    </record>
+    <record id="view_move_line_form" model="ir.ui.view">
+        <field name="name">stock.move.line.form.inherit.blue.putaway</field><field name="model">stock.move.line</field><field name="inherit_id" ref="stock.view_move_line_form"/>
+        <field name="arch" type="xml"><field name="product_id" position="after"><field name="blue_putaway_release_id"/><field name="blue_putaway_reason"/></field></field>
+    </record>
+</odoo>

@@ -1,0 +1,11 @@
+id,name,model_id,group_id/id,operation,domain
+access_blue_profile_user,blue profile user,blue.config.profile,stock.group_stock_user,r,
+access_blue_profile_manager,blue profile manager,blue.config.profile,stock.group_stock_manager,crud,
+access_blue_template_user,blue template user,blue.scene.template,stock.group_stock_user,r,
+access_blue_version_user,blue version user,blue.customization.version,stock.group_stock_user,cr,
+access_blue_release_user,blue release user,blue.config.release,stock.group_stock_user,cr,
+access_blue_event_user,blue event user,blue.config.event,stock.group_stock_user,cr,
+blue_config_event_company,blue.config.event company restriction,blue.config.event,,crud,"[('company_id', 'in', company_ids)]"
+blue_config_profile_company,blue.config.profile company restriction,blue.config.profile,,crud,"[('company_id', 'in', company_ids)]"
+blue_config_release_company,blue.config.release company restriction,blue.config.release,,crud,"[('company_id', 'in', company_ids)]"
+blue_customization_version_company,blue.customization.version company restriction,blue.customization.version,,crud,"[('company_id', 'in', company_ids)]"

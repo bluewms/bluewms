@@ -1,0 +1,73 @@
+name: bluewms20
+
+services:
+  db:
+    image: postgres:16.0
+    pull_policy: never
+    container_name: bluewms20-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    ports:
+      - "127.0.0.1:5436:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    shm_size: 128mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  odoo:
+    image: odoo:20
+    pull_policy: never
+    container_name: bluewms20-odoo
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST: db
+      PORT: "5432"
+      USER: odoo
+      PASSWORD_FILE: /run/secrets/db_password
+      ODOO_RC: /etc/odoo/odoo.conf
+    secrets:
+      - db_password
+    ports:
+      - "127.0.0.1:8070:8069"
+    volumes:
+      - type: bind
+        source: ../
+        target: /mnt/extra-addons
+      - type: bind
+        source: ${BLUEWMS_RUNTIME_DIR:-/Users/jianglang/.config/bluewms20}/odoo.conf
+        target: /etc/odoo/odoo.conf
+        read_only: true
+      - odoo_data:/var/lib/odoo
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8069/web/login', timeout=5)"
+      interval: 15s
+      timeout: 8s
+      retries: 8
+      start_period: 45s
+
+secrets:
+  db_password:
+    file: ${BLUEWMS_RUNTIME_DIR:-/Users/jianglang/.config/bluewms20}/db-password
+
+volumes:
+  postgres_data:
+    name: bluewms20-postgres-data
+  odoo_data:
+    name: bluewms20-odoo-data

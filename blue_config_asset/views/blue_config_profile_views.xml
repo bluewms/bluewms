@@ -1,0 +1,33 @@
+<odoo>
+    <record id="blue_config_profile_view_list" model="ir.ui.view">
+        <field name="name">blue.config.profile.list</field><field name="model">blue.config.profile</field>
+        <field name="arch" type="xml"><list><field name="name"/><field name="template_id"/><field name="company_id" groups="base.group_multi_company"/><field name="active_release_id"/><field name="state" widget="badge"/></list></field>
+    </record>
+    <record id="blue_config_profile_view_form" model="ir.ui.view">
+        <field name="name">blue.config.profile.form</field><field name="model">blue.config.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_load_example" string="载入标准示例" type="object" groups="stock.group_stock_manager" confirm="将覆盖当前草稿，正式版本保持不变。"/>
+                    <button name="action_new_draft" string="从正式版本新建草稿" type="object" groups="stock.group_stock_manager"/>
+                    <button name="action_validate" string="试算与验证" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
+                    <button name="action_publish" string="发布生效" type="object" groups="stock.group_stock_manager" invisible="state != 'validated'" confirm="发布后，新作业将使用此版本。已分配作业保留原版本。"/>
+                    <button name="action_rollback" string="回滚上一版" type="object" groups="stock.group_stock_manager" invisible="not active_release_id" confirm="恢复上一正式版本，已有作业保持原版本。"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <group name="scene_scope"><field name="name"/><field name="company_id" groups="base.group_multi_company"/><field name="template_id"/><field name="contract"/><field name="active_release_id"/><field name="draft_base_release_id"/><field name="validated_version_id" invisible="1"/></group>
+                    <notebook>
+                        <page name="requirements" string="需求"><field name="requirements" placeholder="描述优先顺序、允许拆分和无可用位置时的处理方式"/><group><field name="draft_source"/><field name="conversation_ref"/></group></page>
+                        <page name="code" string="可编辑代码"><p>输入为 request 与 candidates；输出 result，每项包含 location_id、score、reason。分数越小越优先。代码可由人工或后续AI修改，保存草稿不会自动生效。</p><field name="draft_code" widget="ace" options="{'mode': 'python'}"/></page>
+                        <page name="trials" string="试算"><field name="draft_tests" widget="ace" options="{'mode': 'json'}"/><field name="simulation_result"/></page>
+                        <page name="versions" string="代码版本"><field name="version_ids" readonly="1"><list create="0" delete="0"><field name="name"/><field name="create_date"/><field name="create_uid"/><field name="source"/><field name="content_hash"/></list><form edit="0" create="0"><sheet><group><field name="name"/><field name="contract"/><field name="content_hash"/></group><field name="code_text" widget="ace" options="{'mode': 'python'}"/><field name="test_result"/></sheet></form></field></page>
+                        <page name="releases" string="发布历史"><field name="release_ids" readonly="1"><list create="0" delete="0"><field name="name"/><field name="id"/><field name="version_id"/><field name="create_date"/><field name="create_uid"/><field name="previous_release_id"/></list><form edit="0" create="0"><sheet><group><field name="name"/><field name="content_hash"/></group><field name="snapshot"/></sheet></form></field></page>
+                        <page name="events" string="审计记录"><field name="event_ids" readonly="1"><list create="0" delete="0"><field name="create_date"/><field name="create_uid"/><field name="event_type"/><field name="release_id"/><field name="details"/></list></field></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

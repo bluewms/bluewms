@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <menuitem name="产品" id="menu_product_root" sequence="150"
+        groups="stock.group_stock_manager,stock.group_stock_user"
+        web_icon="blue_web_theme,static/description/product_icon.png"/>
+
+        <menuitem
+            action="stock.product_template_action_product"
+            id="stock.menu_product_variant_config_stock"
+            parent="menu_product_root" sequence="1"
+            name="产品"/>
+
+        <menuitem
+            action="product.product_variant_action"
+            id="menu_product_variants"
+            parent="menu_product_root" sequence="2"
+            groups="stock.group_stock_manager"
+            name="产品变体"/>
+
+        <menuitem
+            action="stock.action_production_lot_form"
+            id="stock.menu_action_production_lot_form"
+            parent="menu_product_root" sequence="3"
+            name="批次/序列号码"/>
+
+    <menuitem name="包裹" id="menu_package_root" sequence="160"
+        groups="stock.group_stock_manager,stock.group_stock_user"
+        web_icon="blue_web_theme,static/description/package_icon.png"/>
+
+        <menuitem
+            action="stock.action_package_view"
+            id="stock.menu_package"
+            parent="menu_package_root" sequence="1"
+            name="包裹"/>
+
+    <menuitem name="位置" id="menu_location_root" sequence="170"
+        groups="stock.group_stock_manager,stock.group_stock_user"
+        web_icon="blue_web_theme,static/description/location_icon.png"/>
+
+        <menuitem
+            action="stock.action_location_form"
+            id="stock.menu_action_location_form"
+            parent="menu_location_root" sequence="1"
+            name="位置"/>
+
+        <menuitem
+            action="blue_stock_base.stock_location_coordinate_action"
+            id="stock_location_coordinate_menu"
+            parent="menu_location_root" sequence="2"
+            name="库位容量"/>
+    
+    <record id="stock.menu_stock_inventory_control" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

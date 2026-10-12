@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_stock_quant_package_form_inherit2" model="ir.ui.view">
+        <field name="name">stock.quant.package.form.inherit2</field>
+        <field name="model">stock.package</field>
+        <field name="inherit_id" ref="stock.stock_package_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='unpack']" position="after">
+                <button name="action_batch_copy" string="批量复制" type="object"/>
+            </xpath>
+            <xpath expr="//field[@name='pack_date']" position="after">
+                <field name="package_use"/>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="package_removal_priority"/>
+            </xpath>
+            <xpath expr="//form/sheet" position="after">
+                <chatter/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_package_view_list_inherit" model="ir.ui.view">
+        <field name="name">stock.package.list.inherit</field>
+        <field name="model">stock.package</field>
+        <field name="inherit_id" ref="stock.stock_package_view_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="package_removal_priority"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="blue_view_stock_quant_tree_editable_inherit" model="ir.ui.view">
+        <field name="name">blue.stock.quant.list.editable.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree_editable"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="package_removal_priority"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

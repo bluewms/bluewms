@@ -1,0 +1,5 @@
+# Use only for one-off tests; avoid health probes during registry shutdown.
+services:
+  odoo:
+    healthcheck:
+      disable: true

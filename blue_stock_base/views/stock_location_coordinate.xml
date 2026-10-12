@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="stock_location_coordinate_view_tree" model="ir.ui.view">
+        <field name="name">stock.location.coordinate.tree</field>
+        <field name="model">stock.location.coordinate</field>
+        <field name="arch" type="xml">
+            <list string="库位容量">
+                <field name="name"/>
+                <field name="location_name"/>
+                <field name="location_code"/>
+                <field name="location_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="stock_location_coordinate_view_form" model="ir.ui.view">
+        <field name="name">stock.location.coordinate.form</field>
+        <field name="model">stock.location.coordinate</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="location_id"/>
+                    </group>
+                    <group>
+                        <field name="location_name"/>
+                        <field name="location_code"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_location_coordinate_action" model="ir.actions.act_window">
+        <field name="name">库位容量</field>
+        <field name="res_model">stock.location.coordinate</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

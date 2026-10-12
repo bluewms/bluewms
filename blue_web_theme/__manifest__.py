@@ -1,0 +1,15 @@
+{
+    'name': 'BlueWMS 产品界面',
+    'summary': '产品、包裹、位置主菜单及库存界面布局',
+    'version': '20.0.1.0.0',
+    'category': 'BlueWMS/Web',
+    'author': '宁波宝蓝物流科技有限公司',
+    'website': 'https://www.bluewms.com',
+    'license': 'LGPL-3',
+    'depends': ['blue_stock_base'],
+    'data': ['views/blue_stock_picking.xml', 'views/product_product.xml', 'views/menu.xml'],
+    'pre_init_hook': '_pre_init_menu_snapshot',
+    'uninstall_hook': '_uninstall_restore_menus',
+    'installable': True,
+    'application': False,
+}

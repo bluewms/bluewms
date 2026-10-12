@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="blue_product_uom_tree_view_inherit" model="ir.ui.view">
+        <field name="name">uom.uom.list.inherit</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.uom_uom_view_list"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="barcode"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

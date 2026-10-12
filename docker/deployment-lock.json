@@ -1,0 +1,41 @@
+{
+  "verified_at": "2026-10-11T23:22:42.803078+08:00",
+  "url": "http://localhost:8070",
+  "database": "bluewms20",
+  "images": {
+    "odoo:20": {
+      "id": "sha256:cdd83e8359b3e8c357895d476396c05021fed9975bf420f353bab25fcaed1533",
+      "architecture": "arm64",
+      "repo_digests": [
+        "odoo@sha256:cdd83e8359b3e8c357895d476396c05021fed9975bf420f353bab25fcaed1533"
+      ]
+    },
+    "postgres:16.0": {
+      "id": "sha256:a80d0c1b119cf3d6bab27f72782f16e47ab8534ced937fa813ec2ab26e1fd81e",
+      "architecture": "arm64",
+      "repo_digests": [
+        "postgres@sha256:a80d0c1b119cf3d6bab27f72782f16e47ab8534ced937fa813ec2ab26e1fd81e"
+      ]
+    }
+  },
+  "containers": [
+    "bluewms20-db",
+    "bluewms20-odoo"
+  ],
+  "host_addons": "/Users/jianglang/odoo/bluewms",
+  "container_addons": "/mnt/extra-addons",
+  "runtime_config": "/Users/jianglang/.config/bluewms20/odoo.conf",
+  "container_config": "/etc/odoo/odoo.conf",
+  "checks": [
+    "container_health",
+    "database_version",
+    "admin_authentication",
+    "backend_page",
+    "frontend_assets",
+    "addons_bind",
+    "config_checksum",
+    "source_config_preserved",
+    "master_password_preserved_and_verified"
+  ],
+  "relocated_at": "2026-10-12T22:46:14.509034+08:00"
+}

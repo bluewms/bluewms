@@ -1,0 +1,6 @@
+<odoo>
+    <record id="blue_putaway_preview_view_form" model="ir.ui.view">
+        <field name="name">blue.putaway.preview.form</field><field name="model">blue.putaway.preview</field>
+        <field name="arch" type="xml"><form><group><field name="company_id" invisible="1"/><field name="profile_id"/><field name="rule_id"/><field name="move_line_id"/><field name="use_draft"/></group><notebook><page name="result" string="试算结果"><field name="result"/></page><page name="detail" string="技术数据"><field name="detail"/></page></notebook><footer><button name="action_preview" string="试算" type="object" class="oe_highlight"/><button string="关闭" special="cancel"/></footer></form></field>
+    </record>
+</odoo>

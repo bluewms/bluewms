@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+coordinate_user,Capacity position reader,stock.location.coordinate,stock.group_stock_user,r,
+coordinate_manager,Capacity position manager,stock.location.coordinate,stock.group_stock_manager,crud,
+coordinate_company,Capacity position company restriction,stock.location.coordinate,,crud,"[('company_id', 'in', company_ids + [False])]"
+copy_package_user,Package copy user,copy.package.wizard,stock.group_stock_user,crud,

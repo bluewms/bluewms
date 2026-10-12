@@ -1,0 +1,23 @@
+{
+    'name': 'BlueWMS 库存基础',
+    'summary': '库位、容量位置、包裹和库存基础扩展',
+    'version': '20.0.1.0.0',
+    'category': 'BlueWMS/Stock',
+    'author': '宁波宝蓝物流科技有限公司',
+    'website': 'https://www.bluewms.com',
+    'license': 'LGPL-3',
+    'depends': ['stock', 'mail'],
+    'data': [
+        'security/ir.access.csv',
+        'views/stock_location.xml',
+        'views/stock_location_coordinate.xml',
+        'views/stock_storage_category.xml',
+        'views/stock_quant.xml',
+        'views/stock_lot.xml',
+        'views/stock_picking_type.xml',
+        'views/uom_uom.xml',
+        'wizard/copy_package.xml',
+    ],
+    'installable': True,
+    'application': False,
+}

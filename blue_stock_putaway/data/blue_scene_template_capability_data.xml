@@ -1,0 +1,6 @@
+<odoo>
+    <function model="blue.scene.template" name="write">
+        <value eval="[ref('blue_stock_putaway.blue_scene_template_same_batch_name')]"/>
+        <value eval="{'requires_batch_names': True, 'contract': 'putaway_policy/2'}"/>
+    </function>
+</odoo>

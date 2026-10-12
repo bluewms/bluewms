@@ -1,0 +1,7 @@
+id,name,model_id,group_id/id,operation,domain
+access_blue_putaway_application_user,blue putaway audit user,blue.putaway.application,stock.group_stock_user,cr,
+access_blue_putaway_preview_manager,blue putaway trial manager,blue.putaway.preview,stock.group_stock_manager,crud,
+blue_putaway_application_company,blue.putaway.application company restriction,blue.putaway.application,,crud,"[('company_id', 'in', company_ids)]"
+blue_putaway_preview_company,blue.putaway.preview company restriction,blue.putaway.preview,,crud,"[('company_id', 'in', company_ids)]"
+access_blue_putaway_binding_user,blue putaway rule selection,blue.putaway.binding,stock.group_stock_user,cr,
+blue_putaway_binding_company,blue rule selection company restriction,blue.putaway.binding,,crud,"[('company_id', 'in', company_ids)]"
