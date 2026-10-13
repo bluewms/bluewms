@@ -1,5 +1,7 @@
 # BlueWMS
 
+[简体中文](README.md) | [English](README.en.md)
+
 基于 **Odoo 20 社区版**的模块化仓储扩展项目，面向库存作业、可编辑上架策略，以及后续自动化仓储设备对接。
 
 本仓库包含 BlueWMS 自研／迁移模块、保留原始归属的第三方模块、Docker 开发配置和开发文档。欢迎通过 Issue 讨论需求、报告问题，通过 Pull Request 贡献改进。
