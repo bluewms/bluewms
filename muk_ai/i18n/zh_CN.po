@@ -1,0 +1,5937 @@
+# Translation of Odoo Server.
+# Chinese translation for muk_ai.
+# Reuses BlueWMS19 translations and completes the installed Odoo 20 catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 00:00+0800\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.10.3\n"
+
+#. module: muk_ai
+#: model:ir.module.module,description:base.module_muk_ai
+msgid ""
+"\n"
+"A complete agentic AI assistant inside Odoo. Ships a native OWL\n"
+"chat client (with floating window and systray), a session-based\n"
+"agent runtime, and three first-class LLM providers (OpenAI\n"
+"Responses, Anthropic Messages, Google Gemini) with live token\n"
+"and reasoning streaming. Talks to your data through the same\n"
+"muk_mcp tool registry your external AI clients use - one source\n"
+"of truth, one permission model, one audit trail.\n"
+msgstr ""
+"\n"
+"Odoo 内置的完整 AI 助手。提供原生 OWL 聊天界面（含悬浮窗口和顶部入口）、基于会话的智能体运行机制，以及 OpenAI Responses、Anthropic Messages、Google Gemini 三类模型服务，支持实时输出和推理流。通过外部 AI 客户端也使用的 muk_mcp 工具目录访问数据，共用数据来源、权限体系和审计记录。\n"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_read_only_suggestion_overdue
+msgid ""
+"\n"
+"List all overdue open customer invoices.\n"
+"\n"
+"Scope: `account.move`, type `out_invoice`, state `posted`, `payment_state` not `paid`, `invoice_date_due` in the past.\n"
+"\n"
+"Table columns:\n"
+"- Customer as `[Display Name](res.partner,id)`\n"
+"- Invoice number\n"
+"- Due date (ISO)\n"
+"- Amount due (residual)\n"
+"- Days past due\n"
+"\n"
+"Sort by days past due, most overdue first. After the table:\n"
+"- Aging buckets (count and sum of amount due): `<30`, `30-60`, `60-90`, `90+` days.\n"
+"- Grand total amount due across all overdue invoices.\n"
+"        "
+msgstr ""
+"\n"
+"列出所有已逾期且尚未结清的客户发票。\n"
+"\n"
+"范围：`account.move`，类型 `out_invoice`，状态 `posted`，`payment_state` 不为 `paid`，`invoice_date_due` 早于今天。\n"
+"\n"
+"表格列：\n"
+"- 客户，链接格式 `[Display Name](res.partner,id)`\n"
+"- 发票号码\n"
+"- 到期日期（ISO）\n"
+"- 未付金额（余额）\n"
+"- 逾期天数\n"
+"\n"
+"按逾期天数降序排列。表格后列出：\n"
+"- 按账龄分组的发票数量及未付金额合计：少于 30 天、30–60 天、60–90 天、90 天以上。\n"
+"- 所有逾期发票的未付金额总计。\n"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_general_suggestion_summarize
+msgid ""
+"\n"
+"My morning sales briefing - what's my pipeline status and who should I call today?\n"
+"\n"
+"Scope: open opportunities I own (`crm.lead` where I am the salesperson, not won/lost). Reference each opportunity as `[Customer Name](crm.lead,id)` so I can click through.\n"
+"\n"
+"1. **Status line** - one sentence with: total open opportunities, total expected revenue (sum), weighted pipeline (sum of `expected_revenue * probability / 100`), and how that compares to last month.\n"
+"\n"
+"2. **Call list today** - the top 5 deals to contact first, ranked. For each: customer, amount, stage, and **why now** in one sentence. Priority order:\n"
+"   - **Closing this week** - expected close in the next 7 days, still open.\n"
+"   - **Customer waiting** - the last message on the opp (`mail.message` on `crm.lead`, ignore auto/system) is from the customer, not from me.\n"
+"   - **Slipping** - expected close date already past, still open.\n"
+"   - **Hot but quiet** - amount in the top 20% of my pipeline, no activity in 7+ days.\n"
+"\n"
+"3. **Risk watch** - opportunities where the close date is in the past AND there has been no activity in 14+ days: customer, amount, days slipped, last activity type. These are at high risk of being lost.\n"
+"\n"
+"4. **Pipeline by stage** - compact 1-line-per-stage table: stage name, count, sum of expected revenue.\n"
+"\n"
+"Keep each section tight. If a section is empty, say so in a single line and move on.\n"
+"        "
+msgstr ""
+"\n"
+"生成我的销售晨报：商机进展如何，今天应优先联系谁？\n"
+"\n"
+"范围：由我负责的未结商机（`crm.lead` 中销售员为我，尚未赢单或丢单）。每条商机使用 `[Customer Name](crm.lead,id)` 链接，便于打开。\n"
+"\n"
+"1. **概况**：一句话给出未结商机总数、预计收入合计、加权商机金额（`expected_revenue * probability / 100` 的合计），并与上月比较。\n"
+"2. **今日联系名单**：按优先级列出前 5 条商机。每条包含客户、金额、阶段，并用一句话说明为什么现在联系。排序：\n"
+"   - **本周成交**：预计在未来 7 天成交、仍未结。\n"
+"   - **客户等待回复**：商机上最近一条消息（`crm.lead` 的 `mail.message`，忽略自动和系统消息）来自客户，而非我。\n"
+"   - **成交延迟**：预计成交日期已过、仍未结。\n"
+"   - **高额但无动静**：金额位于我的商机前 20%，且超过 7 天没有活动。\n"
+"3. **风险关注**：预计成交日期已过，且超过 14 天没有活动的商机。列出客户、金额、延迟天数、最近活动类型。这些商机丢单风险较高。\n"
+"4. **按阶段汇总**：每个阶段一行，显示阶段名称、商机数量、预计收入合计。\n"
+"\n"
+"内容简洁。某部分没有结果时，用一句话说明后继续。\n"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_general_suggestion_draft
+msgid ""
+"\n"
+"My project task triage - what's overdue, what's due this week, what's blocked.\n"
+"\n"
+"Scope: `project.task` assigned to me (`user_ids` contains the current user), excluding closed stages (`stage_id.fold = False` where available, else skip stages named Done / Cancelled / similar).\n"
+"\n"
+"1. **Overdue** - `date_deadline` in the past.\n"
+"   - Read all matching tasks. If there are more than 5, show only the first 5 in the table but still analyze the full list to pick the most urgent.\n"
+"   - Table columns: task as `[Task Name](project.task,id)`, project, deadline (ISO), days overdue, stage, priority.\n"
+"   - Sort by days overdue descending, then priority.\n"
+"   - If truncated, add `(+N more)` below the table.\n"
+"   - After the table, pick **the single most urgent** from the full list and explain in one sentence why.\n"
+"\n"
+"2. **Due this week** - `date_deadline` in the next 7 days, excluding overdue. Same columns, sort by deadline ascending.\n"
+"\n"
+"3. **No deadline set** - my open tasks with no `date_deadline`. Top 10 by priority then most recently updated. These need scheduling.\n"
+"\n"
+"4. **Waiting or blocked** - tasks where either:\n"
+"   - the last message (`mail.message`) on the task is from someone else asking for input, or\n"
+"   - the task has unfinished dependencies (`depend_on_ids` not all in a closed stage).\n"
+"   For each: task, who's waiting or what's blocking, days waiting.\n"
+"\n"
+"End with a footer line: `X open · Y overdue · Z due this week · W unscheduled`.\n"
+"        "
+msgstr ""
+"\n"
+"梳理我的项目任务：哪些逾期、本周到期或受阻。\n"
+"\n"
+"范围：分配给我的 `project.task`（`user_ids` 包含当前用户），排除已关闭阶段；如有 `stage_id.fold` 则要求为 `False`，否则排除 Done / Cancelled 等已完成或取消阶段。\n"
+"\n"
+"1. **逾期**：`date_deadline` 早于今天。\n"
+"   - 读取所有匹配任务。超过 5 条时，表格只展示前 5 条，但仍分析完整列表以找出最紧急任务。\n"
+"   - 表格列：任务链接 `[Task Name](project.task,id)`、项目、截止日期（ISO）、逾期天数、阶段、优先级。\n"
+"   - 先按逾期天数降序，再按优先级排序。\n"
+"   - 截断时在表格下标注 `(+N more)`。\n"
+"   - 表格后从完整列表选出**最紧急的一项**，用一句话说明原因。\n"
+"2. **本周到期**：`date_deadline` 在未来 7 天内，排除已逾期任务。使用相同列，按截止日期升序。\n"
+"3. **未设截止日期**：我的未结任务中没有 `date_deadline` 的项目。按优先级、最近更新时间取前 10 条，需要安排日期。\n"
+"4. **等待或受阻**：最近一条 `mail.message` 是他人请求我提供信息，或存在未完成依赖（`depend_on_ids` 尚未全部进入已关闭阶段）。列出任务、等待者或阻碍原因、等待天数。\n"
+"\n"
+"最后一行汇总：`X 未结 · Y 逾期 · Z 本周到期 · W 未安排`。\n"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_general_suggestion_sales
+msgid ""
+"\n"
+"Sales figures report - snapshot across the key periods.\n"
+"\n"
+"Scope: posted customer invoices (`account.move`, type `out_invoice`, state `posted`); subtract matching credit notes (`out_refund`). Use the company default currency; do not convert.\n"
+"\n"
+"1. **Headline** (tax-excluded totals). For each period show: total invoiced, number of invoices, average invoice value.\n"
+"   - Today\n"
+"   - Week-to-date (Monday → today)\n"
+"   - Month-to-date\n"
+"   - Quarter-to-date\n"
+"   - Year-to-date\n"
+"\n"
+"2. **Month-over-month** - current MTD vs the same day-of-month last month (e.g. if today is the 12th, compare against the 1st-12th of last month). Show % change on revenue.\n"
+"\n"
+"3. **Top 5 customers this month** - customer as `[Display Name](res.partner,id)`, total invoiced, invoice count. Sort by invoiced descending.\n"
+"\n"
+"4. **Top 5 products this month** - invoice lines grouped by product: product, quantity sold, revenue. Sort by revenue descending.\n"
+"\n"
+"5. **By salesperson this month** - salesperson, invoice count, revenue. Sort by revenue descending.\n"
+"\n"
+"End with a one-line observation if something looks off (e.g. \"MTD is trending ~X% below last month's pace at this point\" or \"no invoices posted yet this week\").\n"
+"        "
+msgstr ""
+"\n"
+"生成关键期间的销售收入报表。\n"
+"\n"
+"范围：已过账客户发票（`account.move`，类型 `out_invoice`，状态 `posted`），减去对应贷项通知单（`out_refund`）。使用公司默认币种，不换算。\n"
+"\n"
+"1. **概览**（不含税金额）：每个期间列出开票总额、发票数量、平均发票金额。\n"
+"   - 今天\n"
+"   - 本周截至今天（周一 → 今天）\n"
+"   - 本月截至今天\n"
+"   - 本季度截至今天\n"
+"   - 本年截至今天\n"
+"2. **环比**：本月截至今天与上月相同日数比较，例如今天为 12 日，则比较两个月的 1–12 日。显示收入变化百分比。\n"
+"3. **本月前 5 名客户**：客户链接 `[Display Name](res.partner,id)`、开票总额、发票数量，按金额降序。\n"
+"4. **本月前 5 名产品**：按产品汇总发票行，列出产品、销售数量、收入，按收入降序。\n"
+"5. **本月按销售员汇总**：销售员、发票数量、收入，按收入降序。\n"
+"\n"
+"发现异常时，最后用一句话指出，例如“本月截至今天的收入进度比上月同期低约 X%”或“本周尚未过账发票”。\n"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_read_only_suggestion_pipeline
+msgid ""
+"\n"
+"Summarize the open CRM pipeline (all owners, not won/lost).\n"
+"\n"
+"For each stage in pipeline order:\n"
+"- Stage name, opportunity count, sum of expected revenue.\n"
+"- Top 3 by expected revenue: customer, amount, salesperson, expected close date.\n"
+"\n"
+"Then:\n"
+"- **Slipping**: open opps whose expected close date is already in the past - customer, amount, salesperson, days slipped.\n"
+"- **Stale**: open opps with no activity in the last 14 days - customer, amount, salesperson, days since last activity.\n"
+"\n"
+"End with two totals on one line: total open opportunities and total expected revenue.\n"
+"    "
+msgstr ""
+"\n"
+"汇总所有负责人的未结 CRM 商机（尚未赢单或丢单）。\n"
+"\n"
+"按商机阶段顺序逐阶段列出：\n"
+"- 阶段名称、商机数量、预计收入合计。\n"
+"- 预计收入最高的 3 条商机：客户、金额、销售员、预计成交日期。\n"
+"\n"
+"随后列出：\n"
+"- **延迟**：预计成交日期已过的未结商机，显示客户、金额、销售员、延迟天数。\n"
+"- **长期无活动**：过去 14 天没有活动的未结商机，显示客户、金额、销售员、距上次活动的天数。\n"
+"\n"
+"最后一行给出未结商机总数和预计收入总额。\n"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_general_suggestion_explore
+msgid ""
+"\n"
+"Today's overview - focused triage for right now.\n"
+"\n"
+"1. **Activities overdue or due today** (assigned to me)\n"
+"   - Read **all** matching activities. If there are more than 5, show only the first 5 in the table but still analyze the full list to pick the most urgent.\n"
+"   - Table columns: activity type, deadline (ISO), record as `[Display Name](model,id)`, days overdue (0 = today). Sort by days overdue descending.\n"
+"   - If truncated, add `(+N more)` below the table.\n"
+"   - After the table, pick **the single most urgent** from the full list and explain in one sentence why, with the record reference.\n"
+"\n"
+"2. **Inbox highlights** - summarize my unread Discuss messages. **Do not mark anything as read** (no calls to `set_message_done`, `channel_fetched`, or similar).\n"
+"   - Surface up to 5 of the most relevant: @mentions of me first, then DMs with a clear question or decision request, then channel threads that look unresolved.\n"
+"   - Per item: sender, one-line gist, and a reference to the record the message is on as `[Display Name](model,id)` so I can jump to it.\n"
+"   - End with a one-liner: total unread across mentions, DMs, and channels.\n"
+"\n"
+"3. **Calendar today** - short list of today's events I attend: time range, title, attendees count.\n"
+"\n"
+"Keep it compact: small Markdown tables, no filler. Skip any section with zero results in a single line.\n"
+"        "
+msgstr ""
+"\n"
+"生成今天的概览，优先呈现当前需要处理的事项。\n"
+"\n"
+"1. **分配给我的逾期或今日到期活动**\n"
+"   - 读取所有匹配活动。超过 5 条时，表格只展示前 5 条，但仍分析完整列表以找出最紧急活动。\n"
+"   - 表格列：活动类型、截止日期（ISO）、记录链接 `[Display Name](model,id)`、逾期天数（0 表示今天到期）。按逾期天数降序。\n"
+"   - 截断时在表格下标注 `(+N more)`。\n"
+"   - 表格后从完整列表选出**最紧急的一项**，用一句话说明原因并附记录链接。\n"
+"2. **收件箱重点**：汇总我的未读讨论消息。**不要将任何内容标记为已读**，不得调用 `set_message_done`、`channel_fetched` 等方法。\n"
+"   - 最多列出 5 条最相关的消息：优先 @提及我，其次是有明确问题或决策请求的私信，再次是看起来尚未解决的频道讨论。\n"
+"   - 每项包含发送者、简短摘要、消息所属记录链接 `[Display Name](model,id)`。\n"
+"   - 最后一句汇总提及、私信、频道消息的未读总数。\n"
+"3. **今日日程**：简要列出我参加的活动，包含时间范围、标题、参加人数。\n"
+"\n"
+"使用简洁的小型 Markdown 表格，不加空话。没有结果的部分用一句话说明后跳过。\n"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/revision_mixin.py:0
+msgid "%(field)s restored from revision %(index)d."
+msgstr "%(field)s 已从修订版本 %(index)d 恢复。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"%(label)s %(model)s is archived, so this agent falls back to the default "
+"model. Pick an active model here, or restore %(model)s."
+msgstr "%(label)s %(model)s 已归档，因此此智能体使用默认模型。请选择可用模型，或恢复 %(model)s。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"%(label)s %(model)s runs on %(provider)s, which has no API key configured. A"
+" model picked here is never served by another vendor instead: set the key on"
+" %(provider)s, or pick a model from a configured provider."
+msgstr ""
+"%(label)s %(model)s 使用 %(provider)s，但该服务尚未配置 API 密钥。此处指定的模型不会改由其他厂商提供；请为 "
+"%(provider)s 设置密钥，或选择已配置服务的模型。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "%(name)s handed you the chat \"%(chat)s\"."
+msgstr "%(name)s 将聊天“%(chat)s”移交给了你。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_notify.py:0
+msgid "%(name)s shared the chat \"%(chat)s\" with you."
+msgstr "%(name)s 将聊天“%(chat)s”分享给了你。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/image.py:0
+msgid ""
+"%(option)s \"%(value)s\" is not supported and was ignored. Supported values "
+"are: %(allowed)s."
+msgstr "不支持 %(option)s 的值“%(value)s”，已忽略。支持的值：%(allowed)s。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/base.py:0
+msgid "%(provider)s API key is not configured."
+msgstr "尚未配置 %(provider)s 的 API 密钥。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.js:0
+msgid "%(tokens)s / %(window)s tokens"
+msgstr "%(tokens)s / %(window)s 词元"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "%s (fork)"
+msgstr "%s（分支）"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "%s found"
+msgstr "找到 %s 项"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "%s new"
+msgstr "%s 条新内容"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.js:0
+msgid "%s people can read this chat"
+msgstr "%s 人可以阅读此聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "%s records"
+msgstr "%s记录"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.js:0
+msgid "%s sources"
+msgstr "%s 个来源"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/turns.js:0
+msgid "%s → %s"
+msgstr "%s → %s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "%s: %s"
+msgstr "%s：%s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/components/prompt_history_dialog/prompt_history_dialog.js:0
+msgid "%s: History"
+msgstr "%s：历史记录"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+msgid "%sd %sh"
+msgstr "%s 天 %s 小时"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+msgid "%sh %sm"
+msgstr "%s 小时 %s 分钟"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+msgid "%sm %ss"
+msgstr "%s 分钟 %s 秒"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+msgid "%ss"
+msgstr "%s 秒"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/approval.py:0
+msgid "(%(count)s record(s), no access)"
+msgstr "（%(count)s 条记录，无访问权限）"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/approval.py:0
+msgid "(no access)"
+msgstr "（无访问权限）"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.js:0
+msgid "1 person can read this chat"
+msgstr "1 人可以阅读此聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.js:0
+msgid "1 source"
+msgstr "1 个来源"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"<code>company</code> - the current <code>res.company</code> record. Common: "
+"<code>{{ company.name }}</code>."
+msgstr ""
+"<code>company</code>：当前 <code>res.company</code> 记录。常用：<code>{{ company.name"
+" }}</code>。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"<code>env</code> / <code>ctx</code> - advanced: the current environment and "
+"context for custom expressions."
+msgstr "<code>env</code> / <code>ctx</code>：高级用法，提供当前环境和上下文，用于自定义表达式。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"<code>odoo_version</code> / <code>odoo_series</code> - the Odoo release, "
+"e.g. <code>20.0+e</code> / <code>20.0</code>."
+msgstr ""
+"<code>odoo_version</code> / <code>odoo_series</code>：Odoo 版本，例如 "
+"<code>20.0+e</code> / <code>20.0</code>。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"<code>user</code> - the current <code>res.users</code> record. Common: "
+"<code>{{ user.name }}</code>, <code>{{ user.email }}</code>."
+msgstr ""
+"<code>user</code>：当前 <code>res.users</code> 记录。常用：<code>{{ user.name "
+"}}</code>、<code>{{ user.email }}</code>。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+msgid "<i class=\"oi me-1\" data-icon=\"code\" title=\"Code Interpreter\" role=\"img\"/>Code"
+msgstr "<i class=\"oi me-1\" data-icon=\"code\" title=\"代码执行\" role=\"img\"/>代码"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+msgid ""
+"<i class=\"oi me-1\" data-icon=\"image\" title=\"Image Generation\" "
+"role=\"img\"/>Image"
+msgstr "<i class=\"oi me-1\" data-icon=\"image\" title=\"图片生成\" role=\"img\"/>图片"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+msgid "<i class=\"oi me-1\" data-icon=\"public\" title=\"Web Search\" role=\"img\"/>Web"
+msgstr "<i class=\"oi me-1\" data-icon=\"public\" title=\"联网搜索\" role=\"img\"/>联网"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">Days</span>"
+msgstr "<span class=\"col-auto ms-2\">天</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">Seconds</span>"
+msgstr "<span class=\"col-auto ms-2\">秒</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">in Days</span>"
+msgstr "<span class=\"col-auto ms-2\">天</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">in Seconds</span>"
+msgstr "<span class=\"col-auto ms-2\">秒</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">per Minute</span>"
+msgstr "<span class=\"col-auto ms-2\">每分钟</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">per Slice</span>"
+msgstr "<span class=\"col-auto ms-2\">每次后台执行</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">per Turn</span>"
+msgstr "<span class=\"col-auto ms-2\">每轮请求</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_form
+msgid "<span class=\"ms-2\">Days</span>"
+msgstr "<span class=\"ms-2\">天</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+msgid "<span class=\"text-nowrap\">/ Minute</span>"
+msgstr "<span class=\"text-nowrap\">/ 分钟</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+msgid "<span>Seconds</span>"
+msgstr "<span>秒</span>"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"<strong>Save</strong> this page and come back here to set up the feature."
+msgstr "<strong>保存</strong> 此页面并返回此处以设置该功能。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: %s took longer than allowed."
+msgstr "@url：获取 %s 超过允许时间。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: DNS lookup failed for %s: %s"
+msgstr "@url：%s 的 DNS 查询失败：%s"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: DNS lookup returned no addresses for %s."
+msgstr "@url：%s 的 DNS 查询未返回地址。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: HTTP %(status)s for %(url)s."
+msgstr "@url：%(url)s 返回 HTTP %(status)s。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: missing hostname."
+msgstr "@url：缺少主机名。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: only accepts https:// URLs."
+msgstr "@url：仅接受 https:// 地址。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: redirect from %s had no Location."
+msgstr "@url：%s 的重定向缺少 Location。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: refusing to fetch %s - %s is not publicly routable."
+msgstr "@url：拒绝获取 %s，%s 不是可公开路由的地址。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: response from %(url)s exceeds the %(cap)s byte cap."
+msgstr "@url：%(url)s 的响应超过 %(cap)s 字节上限。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/url_fetch.py:0
+msgid "@url: too many redirects for %s."
+msgstr "@url：%s 的重定向次数过多。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/provider.py:0
+msgid "A custom URL is required when the region is set to Custom URL."
+msgstr "区域设为自定义地址时，必须填写自定义地址。"
+
+#. module: muk_ai
+#: model:ir.model.constraint,message:muk_ai.constraint_muk_ai_model_unique_provider_model
+msgid "A model with this provider, name and modality already exists."
+msgstr "该服务下已存在名称和模态相同的模型。"
+
+#. module: muk_ai
+#: model:ir.model.constraint,message:muk_ai.constraint_muk_ai_provider_unique_name
+msgid "A provider with this name and code already exists."
+msgstr "已存在名称和代码相同的服务。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "A user turn exceeding this across all slices stops with an error."
+msgstr "同一轮用户请求跨所有执行片段超过此限制时，将报错停止。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"A worker slice exceeding this is checkpointed and resumed by a fresh worker."
+msgstr "执行片段超过此限制时，保存进度并由新的后台进程继续。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/commands/commands.js:0
+msgid "AI"
+msgstr "AI"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_agent
+msgid "AI Agent"
+msgstr "AI 智能体"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_agent_suggestion
+msgid "AI Agent Suggestion"
+msgstr "AI 智能体建议"
+
+#. module: muk_ai
+#: model:ir.actions.act_window,name:muk_ai.action_ai_agent
+msgid "AI Agents"
+msgstr "AI 智能体"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_approval
+msgid "AI Approval Audit"
+msgstr "AI 审批审计"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "AI Chat"
+msgstr "AI 聊天"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_model
+msgid "AI Model"
+msgstr "AI 模型"
+
+#. module: muk_ai
+#: model:ir.actions.act_window,name:muk_ai.action_muk_ai_model
+msgid "AI Models"
+msgstr "AI 模型"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_prompt_mixin
+msgid "AI Prompt Renderer"
+msgstr "AI 提示词渲染器"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_prompt_variables
+msgid "AI Prompt Variables"
+msgstr "AI 提示词变量"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/provider.py:0
+#: model:ir.model,name:muk_ai.model_muk_ai_provider
+msgid "AI Provider"
+msgstr "AI 模型服务"
+
+#. module: muk_ai
+#: model:ir.actions.act_window,name:muk_ai.action_muk_ai_provider
+msgid "AI Providers"
+msgstr "AI 模型服务"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_revision_mixin
+msgid "AI Revision Mixin"
+msgstr "AI 版本功能"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_compact
+msgid "AI Session Compaction"
+msgstr "AI 会话压缩"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_event
+msgid "AI Session Event"
+msgstr "AI 会话事件"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/session_events/session_events.js:0
+msgid "AI Session Events"
+msgstr "AI 会话事件"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_notify
+msgid "AI Session Notifications"
+msgstr "AI 会话通知"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_pending
+msgid "AI Session Pending Message"
+msgstr "AI 会话待处理消息"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_prompt
+msgid "AI Session Prompt"
+msgstr "AI 会话提示词"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_tool
+msgid "AI Session Tools"
+msgstr "AI 会话工具"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_loop
+msgid "AI Session Turn Engine"
+msgstr "AI 会话轮次引擎"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session_worker
+#: model:ir.model.fields.selection,name:muk_ai.selection__ir_actions_server__state__ai_session
+msgid "AI Session Worker"
+msgstr "AI 会话工作器"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_space
+msgid "AI Space"
+msgstr "AI 空间"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/provider.py:0
+msgid ""
+"AI provider %(provider)s is not supported. Install an addon that registers "
+"it."
+msgstr "不支持 AI 服务 %(provider)s，请安装提供该服务的扩展模块。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/base.py:0
+msgid "AI provider %(provider)s request failed: %(error)s"
+msgstr "AI 服务 %(provider)s 请求失败：%(error)s"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/base.py:0
+msgid "AI provider returned an empty response during the connection test."
+msgstr "连接测试中 AI 服务返回了空响应。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_loop.py:0
+msgid "AI returned no output."
+msgstr "AI 未返回内容。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__api_key
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "API Key"
+msgstr "API 密钥"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Abilities"
+msgstr "能力"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/context_chip/context_chip.js:0
+msgid "Action"
+msgstr "动作"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_needaction
+msgid "Action Needed"
+msgstr "需要操作"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__active
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__active
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__active
+msgid "Active"
+msgstr "活跃"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_ids
+msgid "Activities"
+msgstr "活动"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "活动异常装饰"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_plans_ids
+msgid "Activity Plans"
+msgstr "活动计划"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_state
+msgid "Activity State"
+msgstr "活动状态"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "活动类型图标"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.js:0
+msgid "Add a colleague..."
+msgstr "添加同事…"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Add a tool to load it upfront"
+msgstr "添加工具以提前加载"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Adjust the view"
+msgstr "调整视图"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__agent_id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__agent_id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__agent_id
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_search
+msgid "Agent"
+msgstr "智能体"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Agent default"
+msgstr "智能体默认值"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Agent default: %s"
+msgstr "智能体默认值：%s"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__agent_id
+msgid "Agent preselected for chats started inside this space."
+msgstr "在此空间中新建聊天时默认选择的智能体。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Agent used for new chat sessions when none is specified."
+msgstr "新建聊天会话时，未指定智能体则使用此智能体。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_company__default_ai_agent_id
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_agent_id
+msgid ""
+"Agent used for new chat sessions when the user has not picked one. Falls "
+"back to the first active agent if unset."
+msgstr "用户未选择时用于新聊天会话的智能体。如果未设置，则回退到第一个活动智能体。"
+
+#. module: muk_ai
+#: model:ir.ui.menu,name:muk_ai.menu_ai_agent
+msgid "Agents"
+msgstr "智能体"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__allow_handoff
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Allow Handoff"
+msgstr "允许智能体交接"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_approval__decision__approved_session
+msgid "Allow for Session"
+msgstr "允许会话"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Allow for session"
+msgstr "本会话内允许"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"Answer for a browser that never carried out an action a chat asked for, so "
+"the turn is not left waiting for good."
+msgstr "当浏览器一直未执行聊天请求的操作时，代为返回结果，避免本轮永久等待。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Answers immediately, barely thinks"
+msgstr "立即回答，几乎不推理"
+
+#. module: muk_ai
+#: model:ir.actions.act_window,name:muk_ai.action_ai_approval
+#: model:ir.ui.menu,name:muk_ai.menu_ai_approval
+msgid "Approval Logs"
+msgstr "审批日志"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__approval_mode
+msgid "Approval Mode"
+msgstr "审批模式"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__override_approval_mode
+msgid "Approval Mode Override"
+msgstr "审批模式覆盖"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Approvals"
+msgstr "审批"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Approvals of a shared chat cannot be changed"
+msgstr "无法修改共享聊天的审批设置"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Approve"
+msgstr "批准"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Approve or reject to continue..."
+msgstr "批准或拒绝后继续…"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_approval__decision__approved
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_search
+msgid "Approved"
+msgstr "已批准"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__approved_signatures
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_tool__approved_signatures
+msgid "Approved Signatures"
+msgstr "已批准签名"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_approval__decision__auto_approved
+msgid "Approved by Rule"
+msgstr "通过规则批准"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Approved for this session."
+msgstr "已批准本会话内执行。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Approved once."
+msgstr "已批准执行一次。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+msgid "Archive"
+msgstr "归档"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_search
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_form
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_search
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_search
+msgid "Archived"
+msgstr "已归档"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_card.xml:0
+msgid "Arguments"
+msgstr "参数"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/artifacts/artifacts.xml:0
+msgid "Artifacts"
+msgstr "产物"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Ask"
+msgstr "先询问"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Ask before risky writes"
+msgstr "危险写入前询问"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Ask before risky writes (%s)"
+msgstr "危险写入前询问（%s）"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Ask first"
+msgstr "先询问"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__approval_mode__ask
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_approval_mode__ask
+msgid "Ask on writes"
+msgstr "写入时询问"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid "Ask the user a question."
+msgstr "向用户提问。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__at
+msgid "At"
+msgstr "于"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.js:0
+msgid "At %s%% the conversation is compacted automatically"
+msgstr "上下文达到 %s%% 时自动压缩会话"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.xml:0
+msgid "Attach file"
+msgstr "添加附件"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_ir_attachment
+msgid "Attachment"
+msgstr "附件"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_attachment_count
+msgid "Attachment Count"
+msgstr "附件数量"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__attachment_ids
+msgid "Attachment IDs"
+msgstr "附件 ID"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/ir_attachment.py:0
+msgid "Attachment data is not valid base64: %s"
+msgstr "附件数据不是有效的 base64：%s"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/ir_attachment.py:0
+msgid "Attachment exceeds the %(limit)s MiB size limit."
+msgstr "附件超过 %(limit)s MiB 大小限制。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/ir_attachment.py:0
+msgid "Attachment type %(mime)s is not supported. Allowed: %(allowed)s."
+msgstr "不支持附件类型 %(mime)s。允许的类型：%(allowed)s。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Attachment upload failed"
+msgstr "附件上传失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/artifacts/artifacts.js:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__attachment_ids
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Attachments"
+msgstr "附件"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Audit logs older than this period are automatically deleted."
+msgstr "超过此期限的审计日志将自动删除。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__api_key
+msgid "Authentication token for this provider."
+msgstr "此提供程序的身份验证令牌。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Auto-approve matching calls for the rest of this conversation"
+msgstr "此聊天余下时间自动批准匹配的调用"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Auto-compacted: context window was %s%% full."
+msgstr "已自动压缩：上下文窗口占用达到 %s%%。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Auto-compacting"
+msgstr "正在自动压缩"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__web_search__auto
+msgid "Automatic"
+msgstr "自动"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Automation"
+msgstr "自动化"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__reasoning_effort_options
+msgid "Available Effort Options"
+msgstr "可用推理强度选项"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__essential_tool_options
+msgid "Available Essential Options"
+msgstr "可用基础选项"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__tool_filter_options
+msgid "Available Tool Options"
+msgstr "可用工具选项"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Available variables"
+msgstr "可用变量"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__awaiting_user
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_notify__awaiting_user
+msgid "Awaiting User"
+msgstr "等待用户"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_search_needs_key
+msgid "Backend Needs a Key"
+msgstr "搜索服务需要密钥"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_search_needs_url
+msgid "Backend Needs a URL"
+msgstr "搜索服务需要地址"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Balanced"
+msgstr "已平衡"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_search_url
+msgid ""
+"Base URL of the self-hosted instance, e.g. http://searxng:8080. Only a self-"
+"hosted backend is queried here; the vendor APIs answer at their own endpoint"
+" and ignore this value."
+msgstr "自建实例的基础地址，例如 http://searxng:8080。此处只用于自建搜索服务；厂商 API 使用各自的接口地址，忽略此值。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Behavior"
+msgstr "行为"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Branch: open a new session with the history up to this message"
+msgstr "创建分支：基于此消息之前的历史打开新会话"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Bypass"
+msgstr "直接执行"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Bypass (%s)"
+msgstr "直接执行（%s）"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__cache_read_rate
+msgid "Cache Read Rate"
+msgstr "缓存读取单价"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__cache_write_rate
+msgid "Cache Write Rate"
+msgstr "缓存写入单价"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__can_edit_domain
+msgid "Can Edit Domain"
+msgstr "可编辑筛选条件"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__can_write
+msgid "Can Steer"
+msgstr "允许过程中追加指令"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Cancel"
+msgstr "取消"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Cancel queued message"
+msgstr "取消排队消息"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Cannot clear the conversation while the session is running."
+msgstr "会话运行中，无法清空聊天。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Cannot compact while the session is running. Stop first."
+msgstr "会话运行中，无法压缩；请先停止。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Cannot compact while the session is waiting for user input."
+msgstr "会话等待用户输入时，无法压缩。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Cannot fork while the session is running."
+msgstr "会话运行中，无法创建分支。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid ""
+"Cannot regenerate while the session is running, compacting, or waiting."
+msgstr "会话运行、压缩或等待中，无法重新生成。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Cannot rewind while the session is running."
+msgstr "会话运行中，无法回退。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Cannot rewind while the session is waiting for input."
+msgstr "会话等待输入时，无法回退。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__capability_warning
+msgid "Capability Warning"
+msgstr "能力提示"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__modality__chat
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_mcp_log__source__chat
+#: model:ir.ui.menu,name:muk_ai.menu_ai_chat
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_mcp_log_search_inherit_muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_search
+msgid "Chat"
+msgstr "聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/chat_plugin/chat_plugin.js:0
+#: code:addons/muk_ai/static/src/core/commands/commands.js:0
+msgid "Chat %s"
+msgstr "聊天 %s"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__model_id
+msgid "Chat Model"
+msgstr "聊天模型"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_session_retention_enabled
+msgid "Chat Retention"
+msgstr "聊天保留策略"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_log__session_id
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_mcp_log_search_inherit_muk_ai
+msgid "Chat Session"
+msgstr "聊天会话"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Chat handed over to you"
+msgstr "聊天已移交给你"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Chat handed over."
+msgstr "聊天已移交。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Chat name"
+msgstr "聊天名称"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_notify.py:0
+msgid "Chat shared with you"
+msgstr "有聊天分享给你"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__session_count
+msgid "Chats"
+msgstr "聊天"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Chats cannot be filed into the system space \"%s\"."
+msgstr "不能将聊天归入系统空间“%s”。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Check the access to %s"
+msgstr "检查 %s 的访问权限"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Check the current user"
+msgstr "检查当前用户"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Clear"
+msgstr "清除"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Clear the view context pinned to this session"
+msgstr "清除此会话固定的页面上下文"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__cleared_at
+msgid "Cleared At"
+msgstr "清除于"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/context_chip/context_chip.js:0
+msgid "Click to open · /unpin to clear"
+msgstr "点击打开 · /unpin 取消固定"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_client_action_timeout
+msgid "Client Action Timeout (s)"
+msgstr "页面操作超时（秒）"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Client action call id does not match a pending action."
+msgstr "页面操作调用 ID 与待处理操作不匹配。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+#: code:addons/muk_ai/static/src/chat/window/window.xml:0
+#: code:addons/muk_ai/static/src/components/prompt_history_dialog/prompt_history_dialog.xml:0
+msgid "Close"
+msgstr "关闭"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/artifacts/artifacts.xml:0
+msgid "Close artifacts panel"
+msgstr "关闭产物面板"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/search/search.xml:0
+msgid "Close search (Esc)"
+msgstr "关闭搜索（Esc）"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__code
+msgid "Code"
+msgstr "代码"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Code Interpreter"
+msgstr "代码执行"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__code_interpreter_performer
+msgid "Code Interpreter Performer"
+msgstr "代码执行服务"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Code interpreter"
+msgstr "代码执行"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Code interpreter is enabled, but the model picked here runs no code-"
+"execution tool. No setting can add one: pick a model that has one."
+msgstr "已启用代码执行，但此处选择的模型不提供代码执行工具。设置无法添加该能力，请选择支持代码执行的模型。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__state__compacting
+msgid "Compacting"
+msgstr "正在压缩"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Compacting in background, the message will queue..."
+msgstr "正在后台压缩，消息将排队等待…"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Compaction cancelled by user."
+msgstr "用户已取消压缩。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Compaction failed"
+msgstr "压缩失败"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_compact.py:0
+msgid ""
+"Compaction failed (%(error)s) - dropped %(dropped)s oldest message(s) "
+"without summary as a fallback."
+msgstr "压缩失败（%(error)s），已通过丢弃最早的 %(dropped)s 条消息进行恢复，未生成摘要。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_compact.py:0
+msgid "Compaction skipped: provider returned no summary."
+msgstr "已跳过压缩：服务未返回摘要。"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_res_company
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_variables__company
+msgid "Company"
+msgstr "公司"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Compatible Providers"
+msgstr "兼容服务"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
+
+#. module: muk_ai
+#: model:ir.ui.menu,name:muk_ai.menu_ai_config
+msgid "Configuration"
+msgstr "配置"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Confirmation required"
+msgstr "需要确认"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Connect AI"
+msgstr "连接 AI"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_mcp
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Connect remote MCP servers whose tools AI agents can call."
+msgstr "连接远程 MCP 服务器，供 AI 智能体调用其工具。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Connection"
+msgstr "连接"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/provider.py:0
+msgid "Connection to %(provider)s succeeded."
+msgstr "已成功连接 %(provider)s。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__content
+msgid "Content"
+msgstr "内容"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.xml:0
+msgid "Context"
+msgstr "上下文"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__context_window
+msgid "Context Window"
+msgstr "上下文窗口"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/model.py:0
+msgid "Context Window must be a positive integer."
+msgstr "上下文窗口必须是正整数。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Context and preferences for every chat in this space..."
+msgstr "此空间内所有聊天共用的背景和偏好…"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Context cleared."
+msgstr "已清除上下文。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Context window at %s%%. Type /compact to free room before continuing."
+msgstr "上下文窗口占用 %s%%。请先使用 /compact 释放空间再继续。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.js:0
+msgid "Context window: %s"
+msgstr "上下文窗口：%s"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__conversation
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Conversation"
+msgstr "对话"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__display_events
+msgid "Conversation Events"
+msgstr "对话事件"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/markdown/markdown.js:0
+msgid "Copied"
+msgstr "已复制"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/chat_plugin/chat_plugin.js:0
+msgid "Copied to clipboard"
+msgstr "已复制到剪贴板"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/markdown/markdown.js:0
+msgid "Copy"
+msgstr "复制"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/chat_plugin/chat_plugin.js:0
+msgid "Copy failed"
+msgstr "复制失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Copy message"
+msgstr "复制消息"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.js:0
+msgid "Cost"
+msgstr "成本"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Cost Limit"
+msgstr "费用上限"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__cache_read_rate
+msgid ""
+"Cost in USD per 1,000,000 cache-read input tokens. Leave at 0 when the "
+"provider does not bill cached tokens separately - the input rate is then "
+"used as the fallback."
+msgstr "每 1,000,000 个缓存读取输入词元的美元费用。服务不单独计费时保留为 0，将采用输入单价。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__cache_write_rate
+msgid ""
+"Cost in USD per 1,000,000 cache-write input tokens. Leave at 0 when the "
+"provider does not bill cache writes separately - the input rate is then used"
+" as the fallback."
+msgstr "每 1,000,000 个缓存写入输入词元的美元费用。服务不单独计费时保留为 0，将采用输入单价。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__input_rate
+msgid "Cost of fresh input, quoted in the rate unit."
+msgstr "新输入的费用，按计价单位报价。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__output_rate
+msgid "Cost of output, quoted in the rate unit."
+msgstr "输出费用，按计价单位报价。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Count %s"
+msgstr "统计 %s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Create %s"
+msgstr "创建 %s"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Create images from a description"
+msgstr "根据描述生成图片"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__create_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__create_uid
+msgid "Created by"
+msgstr "创建者"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__create_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__create_date
+msgid "Created on"
+msgstr "创建于"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_ir_model__ai_sensitive
+msgid ""
+"Creates on this model trigger an approval prompt for AI agents, regardless "
+"of which fields are written."
+msgstr "在此模型上创建会触发 AI 智能体的审批提示，无论写入哪些字段。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"Credentials for the selected backend. Only what that backend actually uses "
+"is asked for."
+msgstr "所选搜索服务的凭据。仅要求该服务实际使用的内容。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_session__total_cost
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_session_loop__total_cost
+msgid "Cumulative USD for this session (input + output)."
+msgstr "此会话的累计 USD（输入 + 输出）。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__currency
+msgid "Currency"
+msgstr "货币"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/revision_mixin.py:0
+msgid "Current"
+msgstr "当前"
+
+#. module: muk_ai
+#: model:ir.ui.menu,name:muk_ai.menu_ai_tools
+msgid "Custom Tools"
+msgstr "自定义工具"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/region.py:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__api_url
+msgid "Custom URL"
+msgstr "自定义地址"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_read_only_suggestion_top_customers
+msgid "Customers"
+msgstr "客户"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__retention_days
+msgid ""
+"Days a finished chat in this space is kept before the scheduled cleanup "
+"deletes it."
+msgstr "此空间内已结束聊天保留的天数，之后由定时清理删除。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_session_retention_days
+msgid "Days a finished chat is kept before the cleanup deletes it."
+msgstr "已结束聊天保留的天数，之后由清理任务删除。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__user_id
+msgid "Decided By"
+msgstr "决定者"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__decision
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_search
+msgid "Decision"
+msgstr "决定"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Decision Models"
+msgstr "决策模型"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Default"
+msgstr "默认"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_company__default_ai_agent_id
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_agent_id
+msgid "Default AI Agent"
+msgstr "默认 AI 智能体"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_company__default_ai_provider_id
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_provider_id
+msgid "Default AI Provider"
+msgstr "默认 AI 模型服务"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__agent_id
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Default Agent"
+msgstr "默认智能体"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__default_chat_model_id
+msgid "Default Chat Model"
+msgstr "默认聊天模型"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__default_image_model_id
+msgid "Default Image Model"
+msgstr "默认图片模型"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Default Provider"
+msgstr "默认模型服务"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__reasoning_effort_default
+msgid "Default Reasoning Effort"
+msgstr "默认推理强度"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.js:0
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Default agent"
+msgstr "默认智能体"
+
+#. module: muk_ai
+#: model:muk_ai.agent,description:muk_ai.agent_general
+msgid "Default agent with full tool access."
+msgstr "具有全部工具访问权限的默认智能体。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Default rate limit for new API keys. Set to 0 to disable."
+msgstr "新 API 密钥的默认速率限制。设置为 0 以禁用。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid "Default: %(model)s"
+msgstr "默认：%(model)s"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Defaults"
+msgstr "默认设置"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__deferred_vision_attachment_ids
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_tool__deferred_vision_attachment_ids
+msgid "Deferred Vision Attachments"
+msgstr "延后处理的视觉附件"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Delete"
+msgstr "删除"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Delete \"%s\"? Its chats are kept and become loose."
+msgstr "删除“%s”？其中的聊天会保留，并移出该空间。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Delete \"%s\"? This cannot be undone."
+msgstr "删除“%s”？此操作无法撤销。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Delete %s"
+msgstr "删除 %s"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Delete Old Chats"
+msgstr "删除旧聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Delete chat"
+msgstr "删除聊天"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"Delete finished chats once they are old enough. A chat that is still running"
+" is never touched."
+msgstr "删除达到保留期限的已结束聊天，不会清理仍在运行的聊天。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Delete space"
+msgstr "删除空间"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__description
+msgid "Description"
+msgstr "描述"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+msgid "Discard"
+msgstr "丢弃"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_ir_actions_server__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_ir_http__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_ir_model__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_ir_websocket__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_mail_message__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_mixin__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_variables__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_revision_mixin__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_compact__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_notify__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_prompt__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_tool__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_worker__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_log__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_mixin__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_tool__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_res_company__display_name
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__domain
+msgid "Domain"
+msgstr "域"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__state__done
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+msgid "Done"
+msgstr "完成"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/attachment/attachment.xml:0
+msgid "Download"
+msgstr "下载"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Edit"
+msgstr "编辑"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Edit space"
+msgstr "编辑空间"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Empty - every tool allowed"
+msgstr "留空表示允许所有工具"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__enable_code_interpreter
+msgid "Enable Code Interpreter"
+msgstr "启用代码解释器"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__enable_image_generation
+msgid "Enable Image Generation"
+msgstr "启用图像生成"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__api_endpoint
+msgid "Endpoint"
+msgstr "接口地址"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__api_url
+msgid "Endpoint base URL used when the region is set to Custom URL."
+msgstr "区域设为自定义地址时使用的接口基础地址。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.xml:0
+msgid "Enter"
+msgstr "回车"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__error_message
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__state__error
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+msgid "Error"
+msgstr "错误"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Error:"
+msgstr "错误："
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__essential_tool_names
+msgid "Essential Tools"
+msgstr "基本工具"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/openai.py:0
+msgid "Europe"
+msgstr "欧洲"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/openai.py:0
+msgid "Europe (mTLS)"
+msgstr "欧洲（mTLS）"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Event not found in this session."
+msgstr "此会话中找不到该事件。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__event_ids
+msgid "Events"
+msgstr "事件"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Everything the model has · slowest"
+msgstr "使用模型的全部推理能力 · 最慢"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__model_id
+msgid ""
+"Exact model this agent talks to, overriding the pinned provider. Leave empty"
+" to use the default chat model of the pinned provider, else of the company "
+"default provider, else of the first provider in the list that has one."
+msgstr ""
+"此智能体使用的具体聊天模型，优先于指定服务。留空时先采用指定服务的默认聊天模型，再采用公司默认服务，最后按服务列表顺序选择首个提供默认聊天模型的服务。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Example"
+msgstr "示例"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__args_executed
+msgid "Executed Arguments"
+msgstr "已执行参数"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/window/window.js:0
+msgid "Expand"
+msgstr "展开"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Export %s"
+msgstr "导出 %s"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__allow_handoff
+msgid ""
+"Expose this agent as a target for the switch_agent / list_agents handoff "
+"tools, so another agent can hand the conversation to it."
+msgstr "允许 switch_agent / list_agents 交接工具选择此智能体，使其他智能体可将会话交给它。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Extensions"
+msgstr "扩展"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__reasoning_effort__xhigh
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__reasoning_effort_default__xhigh
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_reasoning_effort__xhigh
+msgid "Extra High"
+msgstr "极高"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/markdown/markdown.js:0
+msgid "Failed"
+msgstr "不通过"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to approve tool"
+msgstr "批准工具失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to cancel queued message"
+msgstr "取消排队消息失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to change agent"
+msgstr "切换智能体失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tools_menu/tools_menu.js:0
+msgid "Failed to change the tools"
+msgstr "修改工具失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to clear session"
+msgstr "清空会话失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to clear view context"
+msgstr "清除页面上下文失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to compact conversation"
+msgstr "压缩聊天失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/chat_plugin/chat_plugin.js:0
+msgid "Failed to execute UI action: %s"
+msgstr "执行页面操作失败：%s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to fork"
+msgstr "创建分支失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to hand over"
+msgstr "移交聊天失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to queue message"
+msgstr "消息加入队列失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to regenerate"
+msgstr "重新生成失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to reject tool"
+msgstr "拒绝工具失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to rewind"
+msgstr "回退失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to set approval mode"
+msgstr "设置审批模式失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to set reasoning effort"
+msgstr "设置推理强度失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to stop compaction"
+msgstr "停止压缩失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Failed to stop session"
+msgstr "停止会话失败"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Fastest, everyday questions"
+msgstr "速度最快，适合日常问题"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/components/prompt_history_dialog/prompt_history_dialog.js:0
+msgid "Field"
+msgstr "字段"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/filtered_selection/filtered_selection.js:0
+msgid "Filtered Selection"
+msgstr "筛选后的选项"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_notify.py:0
+msgid "Finished"
+msgstr "已完工"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_space__retention_mode__default
+msgid "Follow the Default"
+msgstr "沿用默认设置"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_follower_ids
+msgid "Followers"
+msgstr "关注者"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "关注者（合作伙伴）"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Forked into a new session."
+msgstr "已创建新会话分支。"
+
+#. module: muk_ai
+#: model:muk_ai.agent,name:muk_ai.agent_general
+msgid "General Assistant"
+msgstr "通用助手"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Generate an image"
+msgstr "生成图片"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Give Up on Stale Actions"
+msgstr "结束超时的页面操作"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Give this chat a descriptive name."
+msgstr "为此聊天设置便于识别的名称。"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP 路由"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Hand over"
+msgstr "移交"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Hand over chat to..."
+msgstr "将聊天移交给…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Hand over this chat to another user"
+msgstr "将此聊天移交给另一位用户"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Hard analysis · costs more"
+msgstr "深入分析 · 费用较高"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__has_message
+msgid "Has Message"
+msgstr "有消息"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__reasoning_effort__high
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__reasoning_effort_default__high
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_reasoning_effort__high
+msgid "High"
+msgstr "高"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/revision_mixin.py:0
+msgid "History"
+msgstr "历史"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Housekeeping"
+msgstr "清理维护"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "How can I help you today?"
+msgstr "今天有什么需要我帮忙？"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "How hard the model thinks (from agent)"
+msgstr "模型推理强度（沿用智能体）"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "How hard the model thinks (override)"
+msgstr "模型推理强度（自定义）"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__reasoning_effort
+msgid ""
+"How much the model thinks before answering. Lower tiers respond fastest and "
+"suit quick assistants and voice; higher tiers reason deepest for hard "
+"analytical work. Empty applies the default of the selected model."
+msgstr "回答前的推理强度。较低档响应最快，适合快捷助手和语音；较高档更适合复杂分析。留空采用所选模型的默认设置。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_form
+msgid "How the assistant should work in this space..."
+msgstr "此空间内助手的工作方式…"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__instructions
+msgid ""
+"How the assistant should work in this space: context to keep in mind, "
+"wording to prefer, steps to follow. The text is handed to every chat the "
+"space holds."
+msgstr "此空间内助手的工作方式：需要牢记的背景、表达偏好和处理步骤。空间内所有聊天都会接收这些说明。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__web_search
+msgid ""
+"How this agent searches the web. \"Automatic\" prefers the Web Search "
+"Backend set in the settings and falls back to the built-in search of the "
+"provider. The two explicit routes are never substituted: when the one picked"
+" here cannot serve, the agent searches nothing and the warning above says "
+"why."
+msgstr ""
+"此智能体的联网搜索方式。“自动”优先使用设置中的联网搜索服务，再尝试模型服务内置搜索。明确指定的两种方式不会相互替换；所选方式不可用时不进行搜索，并在上方提示原因。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_ir_actions_server__id
+#: model:ir.model.fields,field_description:muk_ai.field_ir_attachment__id
+#: model:ir.model.fields,field_description:muk_ai.field_ir_http__id
+#: model:ir.model.fields,field_description:muk_ai.field_ir_model__id
+#: model:ir.model.fields,field_description:muk_ai.field_ir_websocket__id
+#: model:ir.model.fields,field_description:muk_ai.field_mail_message__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_mixin__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_variables__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_revision_mixin__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_compact__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_notify__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_prompt__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_tool__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_worker__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_log__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_mixin__id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_tool__id
+#: model:ir.model.fields,field_description:muk_ai.field_res_company__id
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__id
+msgid "ID"
+msgstr "ID"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__currency
+msgid "ISO code of the price currency."
+msgstr "价格货币的 ISO 代码。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_exception_icon
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__icon
+msgid "Icon"
+msgstr "图标"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/icon_selector/icon_selector.js:0
+msgid "Icon Selector"
+msgstr "图标选择器"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "指示异常活动的图标。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_form
+msgid "Identity"
+msgstr "身份"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__idle_timeout
+msgid "Idle Timeout"
+msgstr "空闲超时"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "如果勾选，新消息需要您注意。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__message_has_error
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "如果勾选，某些消息有传递错误。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__image_1920
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__modality__image
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_search
+msgid "Image"
+msgstr "图像"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__image_1024
+msgid "Image 1024"
+msgstr "图像 1024"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__image_128
+msgid "Image 128"
+msgstr "图像 128"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__image_256
+msgid "Image 256"
+msgstr "图像 256"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__image_512
+msgid "Image 512"
+msgstr "图像 512"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__image_model_id
+msgid "Image Model"
+msgstr "图片模型"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__image_model_placeholder
+msgid "Image Model Placeholder"
+msgstr "图片模型提示"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__image_timeout
+msgid "Image Timeout"
+msgstr "图片生成超时"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Image generation is enabled, but no image model resolves. Set a Default "
+"Image Model on a provider, or pick one here."
+msgstr "已启用图片生成，但没有可用的图片模型。请在模型服务中设置默认图片模型，或在此选择。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Image generation is enabled, but the image model it would draw with runs on "
+"%(provider)s, which has no API key configured. Set the key there, or pick a "
+"model from a configured provider."
+msgstr "已启用图片生成，但图片模型使用的 %(provider)s 尚未配置 API 密钥。请为该服务设置密钥，或选择已配置服务的模型。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Image generation is enabled, but the tool filter of this agent does not list"
+" \"generate_image\", so the tool never reaches the model. Add it on the "
+"Tools page, or clear the filter."
+msgstr "已启用图片生成，但智能体的工具筛选中没有 generate_image，模型无法使用该工具。请在工具页添加，或清空筛选。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Images"
+msgstr "图像"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.js:0
+msgid "Input"
+msgstr "进货"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__total_input_cost
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__total_input_cost
+msgid "Input Cost (USD)"
+msgstr "输入成本 (USD)"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__input_rate
+msgid "Input Rate"
+msgstr "输入单价"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__total_input_tokens
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__total_input_tokens
+msgid "Input Tokens"
+msgstr "输入词元数"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Instance URL"
+msgstr "实例地址"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__instructions
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_form
+msgid "Instructions"
+msgstr "说明"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/json_code/json_code.js:0
+msgid "Invalid JSON in %(field)s: %(error)s"
+msgstr "%(field)s 中的 JSON 无效：%(error)s"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/context.py:0
+msgid "Invalid view context payload (kind=%(kind)r)."
+msgstr "页面上下文数据无效（kind=%(kind)r）。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_is_follower
+msgid "Is Follower"
+msgstr "是关注者"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Iteration Limit"
+msgstr "迭代上限"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.js:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__iteration_count
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__iteration_count
+msgid "Iterations"
+msgstr "迭代"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/json_code/json_code.js:0
+msgid "JSON Code Editor"
+msgstr "JSON 代码编辑器"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Keep Chats for"
+msgstr "聊天保留时间"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_form
+msgid "Keep For"
+msgstr "保留时间"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_space__retention_mode__forever
+msgid "Keep Forever"
+msgstr "永久保留"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_space__retention_mode__days
+msgid "Keep for a While"
+msgstr "保留一段时间"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__pinned
+msgid ""
+"Keep this system space in the sidebar while the automatic section is "
+"collapsed. Personal spaces are ordered by hand instead and cannot be pinned."
+msgstr "自动分组折叠时，仍在侧栏保留此系统空间。个人空间由用户手工排序，不能固定。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_session__disabled_tool_sources
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_session_tool__disabled_tool_sources
+msgid "Keys of the tool sources switched off for this chat."
+msgstr "此聊天已关闭的工具来源标识。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__kind
+msgid "Kind"
+msgstr "类型"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__modality
+msgid ""
+"Kind of work the model does. Decides which rates apply and how usage is "
+"billed; the same technical name may be catalogued once per modality when the"
+" provider prices them apart."
+msgstr "模型执行工作的模态，决定适用单价和用量计费方式。服务按模态分别计价时，同一技术模型名可按模态分别登记。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__label
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__name
+msgid "Label"
+msgstr "标签"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__last_text
+msgid "Last AI Message"
+msgstr "最后 AI 消息"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__last_input_tokens
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__last_input_tokens
+msgid "Last Input Tokens"
+msgstr "最近输入词元数"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__write_uid
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__write_uid
+msgid "Last Updated by"
+msgstr "最后更新者"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__write_date
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__write_date
+msgid "Last Updated on"
+msgstr "最后更新于"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.xml:0
+msgid "Last turn"
+msgstr "上一轮"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__enable_image_generation
+msgid "Let the LLM generate images with the resolved image model."
+msgstr "允许模型使用确定的图片模型生成图片。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__enable_code_interpreter
+msgid ""
+"Let the LLM run sandboxed Python via the provider's native code-execution "
+"tool. Useful for analytics over tool results."
+msgstr "让 LLM 通过模型服务的原生代码执行工具运行沙盒化 Python。对工具结果的分析很有用。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_session_retention_enabled
+msgid ""
+"Let the scheduled cleanup delete finished chats once they are old enough. A "
+"chat that is still running is never touched."
+msgstr "允许定时清理删除达到保留期限的已结束聊天，不会清理仍在运行的聊天。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Limits"
+msgstr "限制"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__reasoning_efforts
+msgid ""
+"List of reasoning effort tiers this model accepts, e.g. [\"low\", "
+"\"medium\", \"high\"]. Leave empty when the model has no effort control - "
+"agents then hide the setting entirely."
+msgstr "此模型支持的推理强度列表，例如 [\"low\", \"medium\", \"high\"]。不支持推理强度调节时留空，智能体将隐藏该设置。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__tool_filter
+msgid "List of tool names this agent may call. Empty = all tools allowed."
+msgstr "此智能体可以调用的工具名称列表。空 = 允许所有工具。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "List the agents"
+msgstr "列出智能体"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "List the apps"
+msgstr "列出应用"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "List the languages"
+msgstr "列出语言"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "List the models"
+msgstr "列出模型"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Load more"
+msgstr "装载更多"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Load older messages"
+msgstr "加载更早消息"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Load tools"
+msgstr "加载工具"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__expanded_tool_names
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_prompt__expanded_tool_names
+msgid "Loaded Tools"
+msgstr "已加载工具"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Loading session"
+msgstr "正在加载会话"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Loading..."
+msgstr "正在加载... 稍安勿躁"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Log Retention"
+msgstr "日志保留"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Long chains of reasoning · costs much more"
+msgstr "长链推理 · 费用明显增加"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Look up %s"
+msgstr "查找 %s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__reasoning_effort__low
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__reasoning_effort_default__low
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_reasoning_effort__low
+msgid "Low"
+msgstr "低"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_mcp_log__source__mcp
+#: model:ir.ui.menu,name:muk_ai.menu_ai_mcp
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_mcp_log_search_inherit_muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "MCP"
+msgstr "MCP"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "MCP Server"
+msgstr "MCP 服务器"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_mcp_tool
+msgid "MCP Tool"
+msgstr "MCP 工具"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+msgid "Manage"
+msgstr "管理"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__activity_type_icon
+msgid "Material Symbols icon e.g. checklist"
+msgstr "Material Symbols 图标，例如 checklist"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__icon
+msgid "Material Symbols icon the sidebar draws next to the space name."
+msgstr "侧栏中显示在空间名称旁的 Material Symbols 图标。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_max_iterations
+msgid "Max Iterations"
+msgstr "最大迭代次数"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__max_tokens
+msgid "Max Tokens"
+msgstr "最大词元数"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Max requests"
+msgstr "最大请求数"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Max rounds"
+msgstr "最大模型轮次"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__rate_limit
+msgid "Max sessions a single user may create per minute. 0 = disabled."
+msgstr "单个用户每分钟可以创建的最大会话数。0 = 禁用。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Max spend"
+msgstr "最高费用"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__reasoning_effort__max
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__reasoning_effort_default__max
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_reasoning_effort__max
+msgid "Maximum"
+msgstr "最大"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_turn_cost_limit
+msgid ""
+"Maximum amount a single user turn may spend, in the price currency of the "
+"model. The model is warned at 80% and the turn stops with an error when the "
+"limit is reached. Set 0 to disable."
+msgstr "单轮用户请求可使用的最高费用，采用模型计价币种。达到 80% 时提醒模型，达到上限时本轮报错停止。设为 0 则不限制。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__max_tokens
+msgid "Maximum completion tokens per request."
+msgstr "每个请求的最大完成 tokens。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__context_window
+msgid "Maximum input tokens the provider accepts for this model."
+msgstr "模型服务为此模型接受的最大输入 tokens。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_loop.py:0
+msgid "Maximum iterations reached."
+msgstr "已达到最大迭代次数。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_max_iterations
+msgid ""
+"Maximum number of LLM rounds per worker slice. The model is warned shortly "
+"before the limit so it can wrap up."
+msgstr "每个后台执行片段最多调用模型的轮次。接近上限时提醒模型及时结束。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_slice_wallclock_seconds
+msgid ""
+"Maximum seconds a single worker slice may run before the turn is "
+"checkpointed and resumed by a fresh worker. Capped by the cron time limit."
+msgstr "单个后台执行片段最长运行秒数，超过后保存进度并由新的后台进程继续；受定时任务时间上限约束。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"Maximum spend per user turn in the model's price currency. Set to 0 to "
+"disable."
+msgstr "每轮用户请求的费用上限，采用模型计价币种。设为 0 则不限制。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_turn_wallclock_seconds
+msgid ""
+"Maximum total seconds a single user turn may run across all worker slices "
+"before it stops with an error."
+msgstr "一轮用户请求跨所有后台执行片段的最长总秒数，超过后报错停止。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__reasoning_effort__medium
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__reasoning_effort_default__medium
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_reasoning_effort__medium
+msgid "Medium"
+msgstr "中等"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_mail_message
+msgid "Message"
+msgstr "消息"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_has_error
+msgid "Message Delivery error"
+msgstr "消息传递错误"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.js:0
+msgid "Message the assistant..."
+msgstr "给助手发送消息…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.js:0
+msgid "Message the assistant... (Enter to send, Shift+Enter for newline)"
+msgstr "给助手发送消息…（Enter 发送，Shift+Enter 换行）"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/window/window.js:0
+msgid "Message..."
+msgstr "消息…"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_ids
+msgid "Messages"
+msgstr "消息"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Metadata"
+msgstr "元数据"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__method
+msgid "Method"
+msgstr "方法"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+msgid "Mine"
+msgstr "我的"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__reasoning_effort__minimal
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_model__reasoning_effort_default__minimal
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_reasoning_effort__minimal
+msgid "Minimal"
+msgstr "最低"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/window/window.js:0
+msgid "Minimize"
+msgstr "最小化"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Mistral"
+msgstr "Mistral"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Mistral Large, Medium, Small, Ministral, Codestral and GLM."
+msgstr "Mistral Large、Medium、Small、Ministral、Codestral 和 GLM。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__modality
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_search
+msgid "Modality"
+msgstr "模型模态"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/json_code/json_code.js:0
+msgid "Mode"
+msgstr "模式"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/prompt/prompt.js:0
+#: model:ir.model,name:muk_ai.model_ir_model
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__res_model
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_search
+msgid "Model"
+msgstr "模型"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Model %(model)s runs on %(vendor)s, so it overrides the pinned provider "
+"%(provider)s for chat. Pick a model of %(provider)s, or clear the model to "
+"follow the pin."
+msgstr ""
+"模型 %(model)s 使用 %(vendor)s，因此聊天时会覆盖指定服务 %(provider)s。请选择 %(provider)s "
+"的模型，或清空模型以沿用指定服务。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Model Default"
+msgstr "模型默认值"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__model_modalities
+msgid "Model Modalities"
+msgstr "模型模态"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__model_placeholder
+msgid "Model Placeholder"
+msgstr "模型提示"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/prompt/prompt.js:0
+msgid "Model field"
+msgstr "模型字段"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__default_image_model_id
+msgid ""
+"Model that renders images when an agent leaves its image model empty. The "
+"pinned provider of the agent leads, then its chat provider, then the company"
+" default provider, then the other providers in list order."
+msgstr "智能体未指定图片模型时使用的模型。先采用智能体指定服务，再采用聊天服务、公司默认服务，最后按列表顺序尝试其他服务。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__image_model_id
+msgid ""
+"Model that renders the images of this agent. Leave empty to use the default "
+"image model of the pinned provider, else of the company default provider, "
+"else of the first provider in the list that has one."
+msgstr "此智能体使用的图片模型。留空时先使用指定服务的默认图片模型，再使用公司默认服务，最后按列表顺序采用首个有默认图片模型的服务。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__default_chat_model_id
+msgid "Model used when an agent does not specify one."
+msgstr "当智能体未指定时使用的模型。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__model_ids
+#: model:ir.ui.menu,name:muk_ai.menu_ai_model
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+msgid "Models"
+msgstr "模型"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/window/window.xml:0
+#: code:addons/muk_ai/static/src/core/commands/commands.js:0
+#: code:addons/muk_ai/static/src/webclient/systray/systray.xml:0
+#: model:ir.ui.menu,name:muk_ai.menu_ai_root
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "MuK AI"
+msgstr "AI 助手"
+
+#. module: muk_ai
+#: model:ir.module.module,shortdesc:base.module_muk_ai
+msgid "MuK AI Assistant"
+msgstr "MuK AI 助手"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_automation
+msgid "MuK AI Automation"
+msgstr "MuK AI 自动化"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.js:0
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+#: model:ir.actions.client,name:muk_ai.action_ai_chat
+msgid "MuK AI Chat"
+msgstr "AI 聊天"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_compat
+msgid "MuK AI Compatible Providers"
+msgstr "MuK AI 兼容服务"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_decision
+msgid "MuK AI Decision"
+msgstr "MuK AI 决策"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_mcp
+msgid "MuK AI MCP"
+msgstr "MuK AI MCP 集成"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_mistral
+msgid "MuK AI Mistral"
+msgstr "MuK AI Mistral 服务"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_schedule
+msgid "MuK AI Schedule"
+msgstr "MuK AI 计划"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_mail_mail__muk_ai_session_id
+#: model:ir.model.fields,field_description:muk_ai.field_mail_message__muk_ai_session_id
+msgid "MuK AI Session"
+msgstr "MuK AI 会话"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_skills
+msgid "MuK AI Skills"
+msgstr "MuK AI 技能"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_voice
+msgid "MuK AI Voice"
+msgstr "MuK AI 语音"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__module_muk_ai_workflows
+msgid "MuK AI Workflows"
+msgstr "MuK AI 工作流"
+
+#. module: muk_ai
+#: model:ir.actions.server,name:muk_ai.cron_run_pending_sessions_1_ir_actions_server
+msgid "MuK AI: Session Worker 1"
+msgstr "AI：会话处理进程 1"
+
+#. module: muk_ai
+#: model:ir.actions.server,name:muk_ai.cron_run_pending_sessions_2_ir_actions_server
+msgid "MuK AI: Session Worker 2"
+msgstr "AI：会话处理进程 2"
+
+#. module: muk_ai
+#: model:ir.actions.server,name:muk_ai.cron_run_pending_sessions_3_ir_actions_server
+msgid "MuK AI: Session Worker 3"
+msgstr "AI：会话处理进程 3"
+
+#. module: muk_ai
+#: model:ir.actions.server,name:muk_ai.cron_run_pending_sessions_4_ir_actions_server
+msgid "MuK AI: Session Worker 4"
+msgstr "AI：会话处理进程 4"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_workflows
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Multi-step AI playbooks and stateful business processes."
+msgstr "多步骤 AI 流程和有状态业务处理。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "我的活动截止日期"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__name
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__name
+msgid "Name"
+msgstr "名称"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__user_named
+msgid "Named by User"
+msgstr "用户已命名"
+
+#. module: muk_ai
+#: model:ir.module.module,summary:base.module_muk_ai
+msgid "Native agentic AI (ChatGPT, Claude, Gemini) agent and chat"
+msgstr "原生 AI 智能体与聊天（ChatGPT、Claude、Gemini）"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_notify.py:0
+msgid "Needs your approval before running a tool"
+msgstr "运行工具前需要你的批准"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__approval_mode__off
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__override_approval_mode__off
+msgid "Never ask"
+msgstr "从不询问"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__state__new
+msgid "New"
+msgstr "新建"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+#: code:addons/muk_ai/static/src/core/commands/commands.js:0
+#: code:addons/muk_ai/static/src/webclient/systray/systray.xml:0
+msgid "New Chat"
+msgstr "新建聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "New chat here"
+msgstr "在此新建聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "New space"
+msgstr "新建空间"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "下一活动日历事件"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "下一个活动截止日期"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_summary
+msgid "Next Activity Summary"
+msgstr "下一个活动摘要"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_type_id
+msgid "Next Activity Type"
+msgstr "下一个活动类型"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/search/search.xml:0
+msgid "Next match (Enter)"
+msgstr "下一个匹配（Enter）"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/approval.py:0
+msgid "No"
+msgstr "否"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid "No %(modality)s model available"
+msgstr "没有可用的 %(modality)s 模型"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/window.py:0
+msgid "No action matches %(ref)r."
+msgstr "找不到操作 %(ref)r。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "No agent"
+msgstr "无智能体"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "No agent (defaults)"
+msgstr "无智能体（默认设置）"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "No agent matches \"%s\". Type /agent to pick from the list."
+msgstr "找不到智能体“%s”。输入 /agent 从列表选择。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "No agents available to switch to."
+msgstr "没有可切换的智能体。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/artifacts/artifacts.xml:0
+msgid "No artifacts in this conversation yet."
+msgstr "此聊天尚无产物。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "No chats here yet."
+msgstr "此处尚无聊天。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "No chats match"
+msgstr "没有匹配的聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+#: code:addons/muk_ai/static/src/webclient/systray/systray.xml:0
+msgid "No chats yet."
+msgstr "尚无聊天。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.js:0
+msgid "No default agent"
+msgstr "没有默认智能体"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/components/prompt_history_dialog/prompt_history_dialog.js:0
+msgid "No differences."
+msgstr "没有差异。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/session_events/session_events.xml:0
+msgid "No entries yet."
+msgstr "尚无条目。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/agent.py:0
+msgid ""
+"No handoff-enabled agent matches %(agent)r; call list_agents to see the "
+"available targets."
+msgstr "没有允许交接的智能体匹配 %(agent)r；请调用 list_agents 查看可用目标。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/components/prompt_history_dialog/prompt_history_dialog.xml:0
+msgid "No history yet."
+msgstr "尚无历史记录。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/image.py:0
+msgid ""
+"No image model is available to this session. Set a Default Image Model on a "
+"provider, or pick one on the agent."
+msgstr "此会话没有可用的图片模型。请在模型服务中设置默认图片模型，或为智能体选择图片模型。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/tool_picker/tool_picker.js:0
+msgid "No matching tool"
+msgstr "没有匹配的工具"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid "No provider runs code here"
+msgstr "没有可执行代码的模型服务"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "No records resolved."
+msgstr "未找到记录。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "No space yet. Create a new space."
+msgstr "尚无空间，请新建空间。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "No user turn to regenerate from."
+msgstr "没有可重新生成的用户轮次。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "No view context is pinned."
+msgstr "尚未固定页面上下文。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__notes
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_form
+msgid "Notes"
+msgstr "笔记"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_form
+msgid "Notes about this model - e.g. effective date, source."
+msgstr "此模型的备注，例如生效日期和来源。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_compact.py:0
+msgid "Nothing to compact - conversation too short."
+msgstr "聊天太短，没有可压缩的内容。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Nothing to compact yet - the conversation is empty."
+msgstr "聊天为空，暂无可压缩内容。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Nothing unread here."
+msgstr "此处没有未读内容。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__notification_unread
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_notify__notification_unread
+msgid "Notification Unread"
+msgstr "未读通知"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_needaction_counter
+msgid "Number of Actions"
+msgstr "操作次数"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_has_error_counter
+msgid "Number of errors"
+msgstr "错误次数"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "需要操作的消息数量"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "传递错误的消息数量"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_mcp_tool__registry__odoo
+msgid "Odoo"
+msgstr "Odoo"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_variables__odoo_series
+msgid "Odoo Series"
+msgstr "Odoo 主版本"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_variables__odoo_version
+msgid "Odoo Version"
+msgstr "Odoo版本"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__web_search__off
+msgid "Off"
+msgstr "关闭"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Older"
+msgstr "更早"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_compat
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Ollama, vLLM, OpenRouter and every OpenAI-compatible LLM."
+msgstr "Ollama、vLLM、OpenRouter 及其他兼容 OpenAI 的模型服务。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "One or more attachments could not be found."
+msgstr "找不到一个或多个附件。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Only a handover changes the owner of a chat."
+msgstr "只有移交操作会更改聊天所有者。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Only the session owner can continue this chat."
+msgstr "只有会话所有者可以继续此聊天。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Only the session owner or an administrator can hand over this chat."
+msgstr "只有会话所有者或管理员可以移交此聊天。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Only the session owner or an administrator can stop this session."
+msgstr "只有会话所有者或管理员可以停止此会话。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.js:0
+msgid "Only you can read this chat"
+msgstr "只有你可以阅读此聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/chat_plugin/chat_plugin.js:0
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Open"
+msgstr "打开"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Open %s"
+msgstr "打开 %s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/webclient/systray/systray.xml:0
+msgid "Open Full Chat"
+msgstr "打开完整聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Open a menu"
+msgstr "打开菜单"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/window/window.xml:0
+msgid "Open fullscreen"
+msgstr "全屏打开"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Open the %s view"
+msgstr "打开 %s 视图"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/filtered_selection/filtered_selection.js:0
+#: code:addons/muk_ai/static/src/views/fields/tool_picker/tool_picker.js:0
+msgid "Options field"
+msgstr "选项字段"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.js:0
+msgid "Output"
+msgstr "出货"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__total_output_cost
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__total_output_cost
+msgid "Output Cost (USD)"
+msgstr "输出成本 (USD)"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__output_rate
+msgid "Output Rate"
+msgstr "输出单价"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__total_output_tokens
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__total_output_tokens
+msgid "Output Tokens"
+msgstr "输出词元数"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_read_only_suggestion_overdue
+msgid "Overdue"
+msgstr "逾期"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__user_id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__user_id
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_search
+msgid "Owner"
+msgstr "所有者"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__user_id
+msgid ""
+"Owner of a personal space. Leave empty for a system space, which every user "
+"sees and which collects its chats through its domain."
+msgstr "个人空间的所有者。留空表示系统空间，所有用户可见，并通过筛选条件自动收集聊天。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__payload
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_form
+msgid "Payload"
+msgstr "负载"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__pending_ask
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_tool__pending_ask
+msgid "Pending Ask"
+msgstr "待处理询问"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__pending_ids
+msgid "Pending Messages"
+msgstr "待处理消息"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_search
+msgid "Personal"
+msgstr "个人"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__provider_id
+msgid ""
+"Pin this agent to a vendor without naming an exact model: every modality "
+"then prefers the default of that provider and falls back elsewhere only when"
+" it catalogues no model of that kind. Leave empty to follow the company "
+"default provider, else the first provider in the list."
+msgstr ""
+"将智能体指定到某个厂商，但不指定具体模型：每种模态优先使用该服务的默认模型，仅在该服务没有对应模态模型时尝试其他服务。留空时使用公司默认服务，否则按列表顺序采用首个服务。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__pinned
+msgid "Pinned"
+msgstr "已置顶"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_general_suggestion_summarize
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_read_only_suggestion_pipeline
+msgid "Pipeline"
+msgstr "商机"
+
+#. module: muk_ai
+#: model:ir.ui.menu,name:muk_ai.menu_ai_playground
+msgid "Playground"
+msgstr "测试场"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Pop out chat to a floating window"
+msgstr "在悬浮窗口中打开聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Post a message on a %s"
+msgstr "在 %s 上发布消息"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Pre-built agent skills the user or LLM can switch into."
+msgstr "用户或 LLM 可以切换到的预构建智能体技能。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Previous 30 days"
+msgstr "过去 30 天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Previous 7 days"
+msgstr "过去 7 天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/search/search.xml:0
+msgid "Previous match (Shift+Enter)"
+msgstr "上一个匹配（Shift+Enter）"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_worker.py:0
+msgid "Previous turn timed out after %(idle)s seconds with no activity."
+msgstr "上一轮超过 %(idle)s 秒无活动，已超时。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_form
+msgid "Pricing"
+msgstr "定价"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Print %s"
+msgstr "打印 %s"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__private_user_id
+msgid "Private To"
+msgstr "仅指定用户可见"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/prompt/prompt.js:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__prompt
+msgid "Prompt"
+msgstr "提示"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__prompt_history
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_revision_mixin__prompt_history
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Prompt History"
+msgstr "提示历史"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__prompt_history_metadata
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_revision_mixin__prompt_history_metadata
+msgid "Prompt History Metadata"
+msgstr "提示历史元数据"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__args_proposed
+msgid "Proposed Arguments"
+msgstr "建议的参数"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__provider_id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__provider_id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__name
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_model_search
+msgid "Provider"
+msgstr "模型服务"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__web_search__native
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Provider Built-in"
+msgstr "模型服务内置搜索"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/provider.py:0
+msgid "Provider Default"
+msgstr "模型服务默认值"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__request_timeout
+msgid "Provider request timeout in seconds."
+msgstr "模型服务请求超时（秒）。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"Provider whose default models serve an agent that picks none, before the "
+"other providers in list order."
+msgstr "智能体未选择模型时优先采用其默认模型的服务，然后按列表顺序尝试其他服务。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_company__default_ai_provider_id
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_provider_id
+msgid ""
+"Provider whose default models serve an agent that picks none, before the "
+"other providers in list order. Falls back to the first active provider "
+"serving chat if unset."
+msgstr "智能体未选择模型时优先采用其默认模型的服务，然后按列表顺序尝试其他服务。未设置时，采用首个支持聊天的有效服务。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__technical_name
+msgid "Provider-facing model identifier - e.g. 'gpt-5.6-terra'."
+msgstr "发送给模型服务的模型标识，例如 'gpt-5.6-terra'。"
+
+#. module: muk_ai
+#: model:ir.ui.menu,name:muk_ai.menu_ai_provider
+msgid "Providers"
+msgstr "模型服务"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Question"
+msgstr "疑问"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Queue (sends after current turn)"
+msgstr "排队发送（当前轮次结束后发送）"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__queued_at
+msgid "Queued At"
+msgstr "排队于"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_read_only_suggestion_top_customers
+msgid ""
+"Rank the top 10 customers by total invoiced amount this calendar year.\n"
+"\n"
+"Scope: `account.move` of type `out_invoice`, state `posted`, within the current year. Subtract matching `out_refund` credit notes from the totals.\n"
+"\n"
+"Table columns:\n"
+"- Customer as `[Display Name](res.partner,id)`\n"
+"- Total invoiced (tax-excluded)\n"
+"- Number of invoices\n"
+"- Average invoice amount\n"
+"- Most recent invoice date (ISO)\n"
+"\n"
+"Sort descending by total invoiced. End with a one-line grand total across the top 10 and the share of total company revenue that represents.\n"
+"        "
+msgstr ""
+"按本年累计开票金额列出前 10 名客户。\n"
+"\n"
+"范围：本年度已过账的客户发票（`account.move`，类型 `out_invoice`，状态 `posted`），减去对应贷项通知单（`out_refund`）。\n"
+"\n"
+"表格列：\n"
+"- 客户链接 `[Display Name](res.partner,id)`\n"
+"- 开票总额（不含税）\n"
+"- 发票数量\n"
+"- 平均发票金额\n"
+"- 最近开票日期（ISO）\n"
+"\n"
+"按开票总额降序排列。最后用一行给出前 10 名客户的金额合计及其占公司总收入的比例。\n"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__rate_limit
+msgid "Rate Limit"
+msgstr "速率限制"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Rate Limiting"
+msgstr "速率限制"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__rate_unit
+msgid "Rate Unit"
+msgstr "计价单位"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_worker.py:0
+msgid ""
+"Rate limit reached: the limit for new chats is %(limit)s per minute. You "
+"started %(count)s in the last minute and asked for %(batch)s more. Try again"
+" in a minute."
+msgstr ""
+"新建聊天已达到频率上限：每分钟最多 %(limit)s 个。你在上一分钟已创建 %(count)s 个，并请求再创建 %(batch)s "
+"个。请稍后再试。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Raw"
+msgstr "原始数据"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Read %s"
+msgstr "读取 %s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Read a resource"
+msgstr "读取资源"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Read a web page"
+msgstr "读取网页"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Read only: %s shared this chat with you."
+msgstr "只读：%s 将此聊天分享给了你。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Read only: you cannot write in this chat."
+msgstr "只读：你不能在此聊天中发言。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Read the messages of a %s"
+msgstr "读取 %s 的消息"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Read the system information"
+msgstr "读取系统信息"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_search
+msgid "Read-only"
+msgstr "只读"
+
+#. module: muk_ai
+#: model:muk_ai.agent,name:muk_ai.agent_read_only
+msgid "Read-only Analyst"
+msgstr "只读分析助手"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__read_only
+msgid "Read-only Mode"
+msgstr "只读模式"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.js:0
+msgid "Readers"
+msgstr "可阅读用户"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Reasoning"
+msgstr "推理"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__reasoning_effort
+msgid "Reasoning Effort"
+msgstr "推理强度"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__override_reasoning_effort
+msgid "Reasoning Effort Override"
+msgstr "自定义推理强度"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Reasoning effort"
+msgstr "推理强度"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/webclient/systray/systray.xml:0
+msgid "Recent sessions"
+msgstr "最近会话"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Record"
+msgstr "记录"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__res_ids
+msgid "Record IDs"
+msgstr "记录 ID"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Regenerate"
+msgstr "重新生成"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Regenerate this answer"
+msgstr "重新生成此回答"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__api_region
+msgid "Region"
+msgstr "地区"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/provider.py:0
+msgid "Region %(region)s is not available for provider %(provider)s."
+msgstr "服务 %(provider)s 不支持区域 %(region)s。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__api_region_options
+msgid "Region Options"
+msgstr "可用区域"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Reject"
+msgstr "拒绝"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_approval__decision__rejected
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_search
+msgid "Rejected"
+msgstr "已拒绝"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Rejected."
+msgstr "已拒绝。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__reject_reason
+msgid "Rejection Reason"
+msgstr "拒绝原因"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/attachment/attachment.xml:0
+msgid "Remove"
+msgstr "移除"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid ""
+"Remove this message and the %s event(s) that follow from the conversation? "
+"This cannot be undone."
+msgstr "删除此消息及之后的 %s 个事件？此操作无法撤销。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Rename"
+msgstr "重命名"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Rename chat"
+msgstr "重命名聊天"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,prompt:muk_ai.agent_read_only_suggestion_revenue
+msgid ""
+"Report invoiced revenue for the last 6 full calendar months (exclude the current partial month).\n"
+"\n"
+"Scope: posted customer invoices (`account.move`, type `out_invoice`, state `posted`), minus credit notes (`out_refund`).\n"
+"\n"
+"Per month table:\n"
+"- Month (YYYY-MM)\n"
+"- Total invoiced (untaxed and tax-included)\n"
+"- Number of invoices\n"
+"- Top 3 customers contributing and their share\n"
+"- Month-over-month % change on the tax-excluded total\n"
+"\n"
+"End with:\n"
+"- 6-month total (untaxed and tax-included)\n"
+"- Average monthly revenue\n"
+"- Use the default company currency; do not convert."
+msgstr ""
+"报告最近 6 个完整自然月的开票收入，不含当前尚未结束的月份。\n"
+"\n"
+"范围：已过账客户发票（`account.move`，类型 `out_invoice`，状态 `posted`），减去贷项通知单（`out_refund`）。\n"
+"\n"
+"按月表格：\n"
+"- 月份（YYYY-MM）\n"
+"- 开票总额（不含税和含税）\n"
+"- 发票数量\n"
+"- 收入贡献最高的 3 名客户及各自比例\n"
+"- 不含税金额的环比变化百分比\n"
+"\n"
+"最后列出：\n"
+"- 6 个月合计（不含税和含税）\n"
+"- 月均收入\n"
+"- 使用公司默认币种，不换算。\n"
+
+#. module: muk_ai
+#: model:ir.ui.menu,name:muk_ai.menu_ai_report
+msgid "Reports"
+msgstr "报表"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__request_timeout
+msgid "Request Timeout"
+msgstr "请求超时"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Resolved."
+msgstr "已处理。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/base.py:0
+msgid ""
+"Response truncated: the model reached its maximum output token limit before "
+"finishing."
+msgstr "响应已截断：模型尚未完成就达到最大输出词元限制。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/base.py:0
+msgid ""
+"Response truncated: the output hit the configured Max Tokens limit of "
+"%(limit)s tokens (including any reasoning). Raise the Max Tokens setting on "
+"the %(provider)s provider to allow longer responses."
+msgstr "响应已截断：输出达到配置的 %(limit)s 词元上限（含推理）。如需更长回答，请提高 %(provider)s 服务的最大词元设置。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__activity_user_id
+msgid "Responsible User"
+msgstr "负责人"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/components/prompt_history_dialog/prompt_history_dialog.xml:0
+msgid "Restore This Version"
+msgstr "恢复此版本"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__read_only
+msgid "Restrict tool calls to read-only tools (enforced via MCP scope)."
+msgstr "将工具调用限制为只读工具（通过 MCP 范围强制）。"
+
+#. module: muk_ai
+#: model:muk_ai.agent,description:muk_ai.agent_read_only
+msgid "Restricted to read-only tools."
+msgstr "仅允许使用只读工具。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_card.xml:0
+msgid "Result"
+msgstr "结果"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__retention_mode
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Retention"
+msgstr "保留"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__retention_days
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_session_retention_days
+msgid "Retention Days"
+msgstr "保留天数"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_read_only_suggestion_revenue
+msgid "Revenue"
+msgstr "收入"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/revision_mixin.py:0
+msgid "Revision %d"
+msgstr "版本 %d"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/revision_mixin.py:0
+msgid "Revision not found."
+msgstr "找不到该版本。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__prompt_history_count
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_revision_mixin__prompt_history_count
+msgid "Revisions"
+msgstr "修订版本"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Rewind"
+msgstr "回退"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Rewind conversation"
+msgstr "回退聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Rewind: remove this message and everything after"
+msgstr "回退：删除此消息及之后全部内容"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_form
+msgid "Risk"
+msgstr "风险"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__reason
+msgid "Risk Reason"
+msgstr "风险原因"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_automation
+msgid "Run AI agents from server actions, automation rules and schedules."
+msgstr "通过服务器操作、自动化规则和定时任务运行 AI 智能体。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Run agents from server actions, automation rules and schedules."
+msgstr "通过服务器操作、自动化规则和定时任务运行智能体。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_schedule
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Run agents on a schedule; let them pause and resume."
+msgstr "定时运行智能体，支持暂停和继续。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Run an action on %s"
+msgstr "在 %s 上执行操作"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Run code to calculate and analyse data"
+msgstr "执行代码进行计算和数据分析"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "Run without asking"
+msgstr "不询问直接运行"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__state__running
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+msgid "Running"
+msgstr "运行中"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_card.xml:0
+msgid "Running..."
+msgstr "正在运行…"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid "Runs on %(provider)s"
+msgstr "使用 %(provider)s"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "短信发送错误"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_general_suggestion_sales
+msgid "Sales"
+msgstr "销售"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+msgid "Save"
+msgstr "保存"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/space.py:0
+msgid "Say how many days \"%(name)s\" keeps its chats for."
+msgstr "请指定“%(name)s”的聊天保留天数。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Schedule"
+msgstr "安排"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+msgid "Scheduled"
+msgstr "安排"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Scheduled. Type to wake the agent..."
+msgstr "已安排，发送消息可唤醒智能体…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Scroll to latest"
+msgstr "滚动到最新消息"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Search %s"
+msgstr "搜索 %s"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"Search API the web_search tool queries on every provider. Leave empty to "
+"keep the provider's built-in search where it has one."
+msgstr "web_search 工具在各模型服务上使用的搜索 API。留空时，模型服务支持内置搜索则保留该方式。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_search_backend
+msgid ""
+"Search API the web_search tool queries. Once set, every agent with web "
+"search enabled searches through it instead of the provider's built-in "
+"connector, on every provider. Country and language follow the company and "
+"the user."
+msgstr ""
+"web_search 工具使用的搜索 API。设置后，所有启用联网搜索的智能体都会采用该服务，替代各模型服务的内置搜索。国家和语言沿用公司及用户设置。"
+
+#. module: muk_ai
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_agent__web_search__tool
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Search Backend"
+msgstr "搜索服务"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/commands/commands.js:0
+msgid "Search MuK AI chats..."
+msgstr "搜索 AI 聊天…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/icon_selector/icon_selector.js:0
+msgid "Search an icon..."
+msgstr "搜索图标…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Search chats..."
+msgstr "搜索聊天…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Search the web"
+msgstr "联网搜索"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Search the web for current information"
+msgstr "搜索互联网获取最新信息"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Search this chat"
+msgstr "搜索此聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/search/search.xml:0
+msgid "Search this chat..."
+msgstr "搜索此聊天…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Searching..."
+msgstr "正在搜索…"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__ai_client_action_timeout
+msgid ""
+"Seconds a chat waits for the browser to carry out an action it asked for "
+"before the cleanup answers for it and lets the turn go on. Zero waits for "
+"good."
+msgstr "浏览器执行聊天请求的操作前允许等待的秒数。超时后，清理任务代为返回结果以继续本轮。设为 0 则无限等待。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__idle_timeout
+msgid "Seconds without a streamed chunk before aborting the connection."
+msgstr "中止连接前没有流式传输数据块的秒数。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Select an active internal user to hand over to."
+msgstr "选择一名有效的内部用户接收移交。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid ""
+"Self-hosted and free: no account and no API key. The instance\n"
+"\t\t\t\t\t\t\t\tmust list <code>json</code> under <code>search.formats</code>,\n"
+"\t\t\t\t\t\t\t\tor it answers 403."
+msgstr ""
+"自建免费服务，无需账号或 API 密钥。实例必须在 <code>search.formats</code> 中启用 "
+"<code>json</code>，否则返回 403。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Send"
+msgstr "发送"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_ir_model__ai_sensitive
+msgid "Sensitive for AI"
+msgstr "对 AI 敏感"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__sequence
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent_suggestion__sequence
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__sequence
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__sequence
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__sequence
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_space__sequence
+msgid "Sequence"
+msgstr "序号"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_ir_actions_server
+msgid "Server Action"
+msgstr "服务器动作"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__serves_chat
+msgid "Serves Chat"
+msgstr "支持聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/usage/usage.xml:0
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__session_id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_event__session_id
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_pending__session_id
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Session"
+msgstr "会话"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__domain
+msgid ""
+"Session domain collecting the chats of a system space. Leave empty for a "
+"personal space, whose chats are filed by hand."
+msgstr "系统空间用于自动收集聊天的会话筛选条件。个人空间留空，聊天由用户手工归入。"
+
+#. module: muk_ai
+#: model:ir.model.constraint,message:muk_ai.constraint_muk_ai_session_event_unique_session_sequence
+msgid "Session event sequence must be unique per session."
+msgstr "同一会话中的事件序号必须唯一。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Session is not in a startable state."
+msgstr "会话当前状态不允许启动。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Session is not waiting for a client action."
+msgstr "会话当前未等待页面操作。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Session is not waiting for approval."
+msgstr "会话当前未等待批准。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Session is not waiting for user input."
+msgstr "会话当前未等待用户输入。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+#: model:ir.actions.act_window,name:muk_ai.action_ai_session
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__session_count
+#: model:ir.ui.menu,name:muk_ai.menu_ai_session
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Sessions"
+msgstr "会话"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_session_event__private_user_id
+msgid ""
+"Set when this line carries something about one person rather than something "
+"said in the chat. Nobody else is shown it, not a reader the chat was shared "
+"with and not a later owner."
+msgstr "此行包含针对某个人的信息，而非聊天内容时设置。除本人之外，分享聊天的阅读者和之后接手的所有者均看不到该内容。"
+
+#. module: muk_ai
+#: model:ir.actions.act_window,name:muk_ai.action_muk_ai_config_settings
+#: model:ir.ui.menu,name:muk_ai.menu_ai_settings
+msgid "Settings"
+msgstr "设置"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+msgid "Share"
+msgstr "分享"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+msgid "Share this chat"
+msgstr "分享此聊天"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__share_user_ids
+msgid "Shared With"
+msgstr "分享给"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Shared with %s person(s), they can read it"
+msgstr "已分享给 %s 人，他们可以阅读"
+
+#. module: muk_ai
+#: model:muk_ai.space,name:muk_ai.space_shared
+msgid "Shared with Me"
+msgstr "分享给我的"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.xml:0
+msgid "Shift"
+msgstr "Shift"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Short description shown to admins..."
+msgstr "向管理员显示的简短说明…"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent_suggestion__label
+msgid "Short title shown on the suggestion button (e.g. 'Explore')."
+msgstr "在建议按钮上显示的短标题（例如 '探索'）。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Show a notification"
+msgstr "显示通知"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Show all chats"
+msgstr "显示所有聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Show available slash commands"
+msgstr "显示可用快捷命令"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.js:0
+msgid "Show friendly view"
+msgstr "显示易读视图"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sources/sources.xml:0
+msgid "Show less"
+msgstr "收起"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Show only unread"
+msgstr "仅显示未读"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Show summary"
+msgstr "显示摘要"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.js:0
+msgid "Show technical view"
+msgstr "显示技术视图"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__signature
+msgid "Signature"
+msgstr "签名"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Skills"
+msgstr "技能"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Slice Runtime"
+msgstr "单次后台执行时间"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_slice_wallclock_seconds
+msgid "Slice Wallclock (s)"
+msgstr "后台执行时间上限（秒）"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_log__source
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_mcp_log_search_inherit_muk_ai
+msgid "Source"
+msgstr "来源"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/artifacts/artifacts.js:0
+msgid "Sources"
+msgstr "来源"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__space_id
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_search
+msgid "Space"
+msgstr "间距"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+#: code:addons/muk_ai/static/src/chat/sidebar_dialogs/sidebar_dialogs.xml:0
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_form
+msgid "Space name"
+msgstr "空间名称"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+#: model:ir.actions.act_window,name:muk_ai.action_ai_space
+#: model:ir.ui.menu,name:muk_ai.menu_ai_space
+msgid "Spaces"
+msgstr "空间"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Start a fresh conversation in this session"
+msgstr "在此会话中开始全新聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Start a new chat or pick a suggestion to begin."
+msgstr "新建聊天或选择建议开始。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Start a new chat to begin."
+msgstr "新建聊天以开始。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__suggestion_ids
+msgid "Starter prompts shown in the empty chat for this agent."
+msgstr "在此智能体的空聊天中显示的起始提示。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"Starter prompts shown in the empty chat for this agent. Leave empty to show "
+"no suggestions."
+msgstr "此智能体空白聊天页显示的入门提示词。留空时不显示建议。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__state
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+msgid "State"
+msgstr "状态"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"基于活动的状态 \n"
+" 逾期：已经超过截止日期 \n"
+" 现今：活动日期是当天 \n"
+" 计划：未来活动。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Still working..."
+msgstr "仍在处理中…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Stop"
+msgstr "停止"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Stop the running session before clearing."
+msgstr "清空前请先停止运行中的会话。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Stop the running session before compacting."
+msgstr "压缩前请先停止运行中的会话。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Stop the session before forking."
+msgstr "创建分支前请先停止会话。"
+
+#. module: muk_ai
+#. odoo-javascript
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Stop the session before handing it over."
+msgstr "移交前请先停止会话。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Stop the session before rewinding."
+msgstr "回退前请先停止会话。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Stop to interrupt..."
+msgstr "点击停止以中断…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__state__stopped
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+msgid "Stopped"
+msgstr "已停止"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_notify.py:0
+msgid "Stopped: %(reason)s"
+msgstr "已停止：%(reason)s"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/base.py:0
+msgid "Stream idle for %ss - aborted"
+msgstr "流式响应已空闲 %s 秒，已终止。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__suggestion_ids
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Suggestions"
+msgstr "建议"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__suggestions
+msgid "Suggestions (JSON)"
+msgstr "建议 (JSON)"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Summarize %s"
+msgstr "汇总 %s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Summarize a %s"
+msgstr "汇总一条 %s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Summarize and collapse older turns to free context"
+msgstr "汇总并折叠早期轮次，释放上下文空间"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Summarizing conversation..."
+msgstr "正在汇总聊天…"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__reasoning_efforts
+msgid "Supported Reasoning Efforts"
+msgstr "支持的推理强度"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__supports_code_interpreter
+msgid "Supports Code Interpreter"
+msgstr "支持代码解释器"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__supports_vision
+msgid "Supports Vision"
+msgstr "支持视觉"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_provider__supports_web_search
+msgid "Supports Web Search"
+msgstr "支持网页搜索"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.js:0
+msgid "Switch agent"
+msgstr "切换智能体"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Switch the active agent"
+msgstr "切换当前智能体"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__disabled_tool_sources
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_tool__disabled_tool_sources
+msgid "Switched Off Tools"
+msgstr "已关闭工具"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/turns.js:0
+msgid "Switched to %s"
+msgstr "已切换到 %s"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_search
+msgid "System"
+msgstr "系统"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__system_prompt
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "System Prompt"
+msgstr "系统提示"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_space_form
+msgid "System Space"
+msgstr "系统空间"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_voice
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Talk to the assistant: realtime STT and spoken replies via TTS."
+msgstr "与助手语音交谈：实时语音识别（STT）及语音回答（TTS）。"
+
+#. module: muk_ai
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_general_suggestion_draft
+msgid "Tasks"
+msgstr "任务"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_model__technical_name
+msgid "Technical Name"
+msgstr "技术名称"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+msgid "Test Connection"
+msgstr "测试连接"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent_suggestion__prompt
+msgid "Text sent to the assistant when the user clicks this suggestion."
+msgstr "当用户点击此建议时发送给助手的文本。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Text sent to the assistant when the user clicks this suggestion..."
+msgstr "用户点击此建议时发送给助手的文字…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.js:0
+msgid "That AI session no longer exists."
+msgstr "该 AI 会话已不存在。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_prompt_variables__odoo_series
+msgid "The Odoo series, for example 20.0."
+msgstr "Odoo 主版本，例如 20.0。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.js:0
+msgid "The agent of a shared chat cannot be changed"
+msgstr "无法更改共享聊天的智能体"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/window.py:0
+msgid "The context of action %(ref)r cannot be extended: %(error)s"
+msgstr "无法扩展操作 %(ref)r 的上下文：%(error)s"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_prompt_variables__company
+msgid "The current company of the chat."
+msgstr "聊天当前所属公司。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"The date, the user, the language, the company and the approval mode are stated in a runtime block that follows the prompt.\n"
+"\t\t\t\t\t\t\t\t\tA value that differs per user or per day keeps the text after it from being cached, so place such values late in the prompt."
+msgstr ""
+"日期、用户、语言、公司和审批模式在提示词后方的运行信息块中提供。随用户或日期变化的值会使其后的文本无法命中缓存，因此请将这类值放在提示词靠后的位置。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/space.py:0
+msgid "The domain of \"%(name)s\" is not a valid session domain: %(error)s"
+msgstr "“%(name)s”的筛选条件不是有效的会话筛选条件：%(error)s"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_prompt_variables__odoo_version
+msgid "The full Odoo release, for example 20.0+e."
+msgstr "完整 Odoo 版本，例如 20.0+e。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/agent.py:0
+msgid "The handoff tools can only be invoked from inside an AI session."
+msgstr "交接工具只能在 AI 会话中调用。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "The model is warned shortly before the limit so it can wrap up."
+msgstr "接近上限时会提醒模型及时结束。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"The prompt is rendered with Odoo's inline-template engine (same as mail templates) when the conversation starts\n"
+"\t\t\t\t\t\t\t\t\tand again on <code>/compact</code>. Each <code>{{ expr }}</code> is evaluated against the session's render context.\n"
+"\t\t\t\t\t\t\t\t\tUse <code>{{ expr ||| fallback }}</code> to provide a default when <code>expr</code> is empty.\n"
+"\t\t\t\t\t\t\t\t\tThe Insert Field button adds a field of a variable at the cursor."
+msgstr ""
+"聊天开始时以及执行 <code>/compact</code> 时，使用 Odoo 内联模板引擎（与邮件模板相同）渲染提示词。每个 <code>{{ "
+"expr }}</code> 都基于会话渲染上下文求值。可使用 <code>{{ expr ||| fallback }}</code> 为 "
+"<code>expr</code> 为空时提供默认值。“插入字段”按钮会在光标处添加某个变量的字段。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_worker.py:0
+msgid "The session is currently busy. Please try again."
+msgstr "会话当前正忙，请稍后再试。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "The space \"%s\" belongs to another user."
+msgstr "空间“%s”属于另一位用户。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/space.py:0
+msgid "The space \"%s\" is maintained by its module and cannot be deleted."
+msgstr "空间“%s”由模块维护，不能删除。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/space.py:0
+msgid "The space \"%s\" is yours to order by hand and cannot be pinned."
+msgstr "空间“%s”由你手工排序，不能固定。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/space.py:0
+msgid ""
+"The space \"%s\" must belong to you and cannot collect chats through a "
+"domain."
+msgstr "空间“%s”必须属于你，不能通过筛选条件收集聊天。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/space.py:0
+msgid ""
+"The space \"%s\" must either belong to a user or collect its chats through a"
+" domain."
+msgstr "空间“%s”必须属于一位用户，或通过筛选条件收集聊天。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/space.py:0
+msgid "The system space \"%s\" cannot carry instructions."
+msgstr "系统空间“%s”不能设置工作说明。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_prompt_variables__user
+msgid "The user of the chat."
+msgstr "聊天所属用户。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/provider.py:0
+msgid ""
+"These providers ship with their addon and cannot be deleted: %(providers)s. "
+"Archive them instead."
+msgstr "这些模型服务由模块提供，不能删除：%(providers)s。请改为归档。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+msgid ""
+"They see the whole transcript, including what the tools returned.\n"
+"                    They cannot reply, rename or re-share it."
+msgstr ""
+"他们可以查看完整聊天，包括工具返回的内容。\n"
+"不能回复、重命名或再次分享。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Thinking"
+msgstr "思考中"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"This agent is pinned to %(provider)s, which has no API key configured. A "
+"pinned provider is never swapped for another vendor: set the key on "
+"%(provider)s, or clear the pin."
+msgstr ""
+"此智能体指定的 %(provider)s 尚未配置 API 密钥。指定服务不会被其他厂商替换；请设置 %(provider)s 的密钥，或清除指定服务。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/revision_mixin.py:0
+msgid "This record has no prompt field."
+msgstr "此记录没有提示词字段。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/agent.py:0
+msgid "This session no longer exists."
+msgstr "此会话已不存在。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_model__reasoning_effort_default
+msgid ""
+"Tier applied when an agent leaves its reasoning effort on \"Model Default\"."
+" Empty sends no effort and lets the provider pick its own default."
+msgstr "智能体将推理强度设为“模型默认值”时采用的档位。留空时不发送推理强度，由模型服务采用其默认值。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Timeout"
+msgstr "超时"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_provider__image_timeout
+msgid ""
+"Timeout in seconds for a single image generation request. Rendering answers "
+"in one long response instead of a stream and high quality regularly outlives"
+" the chat request timeout, so it gets its own budget."
+msgstr "单次图片生成请求的超时秒数。图片生成一次性返回结果而非流式输出，高质量生成往往超出聊天请求超时，因此使用单独的时间限制。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+#: model:muk_ai.agent.suggestion,label:muk_ai.agent_general_suggestion_explore
+msgid "Today"
+msgstr "今天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Toggle artifacts panel"
+msgstr "切换产物面板"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/chat/chat.xml:0
+msgid "Toggle sidebar"
+msgstr "切换侧栏"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_approval__tool_name
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_search
+msgid "Tool"
+msgstr "工具"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__log_ids
+msgid "Tool Calls"
+msgstr "工具调用"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__tool_filter
+msgid "Tool Filter"
+msgstr "工具过滤器"
+
+#. module: muk_ai
+#: model:ir.ui.menu,name:muk_ai.menu_ai_log
+msgid "Tool Logs"
+msgstr "工具日志"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/tool_picker/tool_picker.js:0
+msgid "Tool Picker"
+msgstr "工具选择器"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/search.py:0
+msgid ""
+"Tool adjust_search is client-executed and must run in the webclient tab "
+"holding the chat window, not on the server."
+msgstr "adjust_search 工具由客户端执行，必须在承载聊天窗口的网页标签中运行，不能在服务器上运行。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__essential_tool_names
+msgid ""
+"Tool names that ship with full schemas at session start. Every other catalog"
+" tool is name-only in the prompt and fetched on demand via tool_load. Empty "
+"falls back to a curated default. Names outside the tool filter are dropped."
+msgstr ""
+"会话开始时加载完整参数定义的工具名称。其他工具在提示词中只列名称，通过 tool_load 按需加载。留空采用预选默认值，工具筛选之外的名称会被忽略。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tools_menu/tools_menu.xml:0
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "Tools"
+msgstr "工具"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tools_menu/tools_menu.xml:0
+msgid "Tools of this connector"
+msgstr "此连接器的工具"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__total_cost
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__total_cost
+msgid "Total Cost (USD)"
+msgstr "总成本 (USD)"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/session.js:0
+msgid "Transfer this chat to another user"
+msgstr "将此聊天移交给另一位用户"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__turn_seq
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__turn_seq
+msgid "Turn"
+msgstr "轮次"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_turn_cost_limit
+msgid "Turn Cost Limit"
+msgstr "单轮费用上限"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__turn_cost_spent
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__turn_cost_spent
+msgid "Turn Cost Spent"
+msgstr "本轮已用费用"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Turn Runtime"
+msgstr "单轮执行时间"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__turn_usage
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__turn_usage
+msgid "Turn Usage"
+msgstr "本轮用量"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_turn_wallclock_seconds
+msgid "Turn Wallclock (s)"
+msgstr "单轮时间上限（秒）"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__turn_wallclock_spent
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_loop__turn_wallclock_spent
+msgid "Turn Wallclock Spent"
+msgstr "本轮已用时间"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_loop.py:0
+msgid ""
+"Turn cost budget reached (%(amount).2f %(currency)s). Send a new message to "
+"continue."
+msgstr "已达到本轮费用上限（%(amount).2f %(currency)s）。发送新消息以继续。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_loop.py:0
+msgid ""
+"Turn wallclock budget reached (%(s)s s). Send a new message to continue."
+msgstr "已达到本轮时间上限（%(s)s 秒）。发送新消息以继续。"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_ir_actions_server__state
+#: model:ir.model.fields,field_description:muk_ai.field_ir_cron__state
+msgid "Type"
+msgstr "类型"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Type a message below or pick a suggestion."
+msgstr "在下方输入消息或选择建议。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/conversation/conversation.xml:0
+msgid "Type a message below to begin."
+msgstr "在下方输入消息以开始。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_ir_actions_server__state
+#: model:ir.model.fields,help:muk_ai.field_ir_cron__state
+msgid ""
+"Type of server action. The following values are available:\n"
+"- 'Update a Record': update the values of a record\n"
+"- 'Create Activity': create an activity (Discuss)\n"
+"- 'Send Email': post a message, a note or send an email (Discuss)\n"
+"- 'Send SMS': send SMS, log them on documents (SMS)- 'Add/Remove Followers': add or remove followers to a record (Discuss)\n"
+"- 'Create Record': create a new record with new values\n"
+"- 'Execute Code': a block of Python code that will be executed\n"
+"- 'Send Webhook Notification': send a POST request to an external system, also known as a Webhook\n"
+"- 'Multi Actions': define an action that triggers several other server actions\n"
+msgstr ""
+"服务器操作类型。可使用以下值：\n"
+"- 更新记录：更新记录的值\n"
+"- 创建活动：创建活动（讨论）\n"
+"- 发送电子邮件：发布信息、备注或发送电子邮件（讨论）\n"
+"- 发送短信：发送短信，将其记录在文件中（短信）- 添加/删除关注者：添加或删除记录中的关注者（讨论）\n"
+"- 创建记录：使用新值创建新记录\n"
+"- 执行代码：将执行的 Python 代码块\n"
+"- 发送 Webhook 通知：向外部系统发送 POST 请求，也称为 Webhook\n"
+"- 多步操作：定义一个可触发多个其他服务器操作的操作\n"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "记录上异常活动的类型。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "Type your answer..."
+msgstr "输入你的回答…"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_decision
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Typed choices, scores and yes/no answers from fast decision models."
+msgstr "使用快速决策模型返回固定类型的选项、评分和是非回答。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_kanban
+msgid "Unarchive"
+msgstr "取消归档"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/openai.py:0
+msgid "United States"
+msgstr "美国"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Unknown approval mode %(mode)r."
+msgstr "未知审批模式 %(mode)r。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Unknown reasoning effort %(effort)r."
+msgstr "未知推理强度 %(effort)r。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/window.py:0
+msgid "Unknown target %(value)r. Valid: %(valid)s."
+msgstr "未知目标 %(value)r。可用目标：%(valid)s。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "Unknown tool source %(key)r."
+msgstr "未知工具来源 %(key)r。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/mcp/window.py:0
+msgid "Unknown view_type %(value)r. Valid: %(valid)s."
+msgstr "未知视图类型 %(value)r。可用类型：%(valid)s。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/context_chip/context_chip.xml:0
+msgid "Unpin view context"
+msgstr "取消固定页面上下文"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Unread"
+msgstr "未读"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Unread chats in here"
+msgstr "此空间内的未读聊天"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "Unread only"
+msgstr "仅未读"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "Update %s"
+msgstr "更新  %s"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_form
+msgid "Usage"
+msgstr "用途"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_res_config_settings__module_muk_ai_mistral
+msgid "Use Mistral AI as a provider."
+msgstr "使用 Mistral AI 模型服务。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_card.xml:0
+msgid "Used"
+msgstr "已使用"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_prompt_variables__user
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_approval_search
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_users_kanban_handover
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_users_search_handover
+msgid "User"
+msgstr "用户"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__user_context
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_worker__user_context
+msgid "User Context"
+msgstr "用户上下文"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "User rejected the call."
+msgstr "用户拒绝了调用。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_users_list_handover
+msgid "Users"
+msgstr "用户"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/views/fields/prompt/prompt.js:0
+msgid "Variable"
+msgstr "可变"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__view_context
+msgid "View Context"
+msgstr "视图上下文"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session.py:0
+msgid "View context cleared."
+msgstr "已清除页面上下文。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Voice"
+msgstr "语音"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Wait for"
+msgstr "等待"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/utils/utils.js:0
+#: model:ir.model.fields.selection,name:muk_ai.selection__muk_ai_session__state__waiting
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_session_search
+msgid "Waiting"
+msgstr "等待中"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "Waiting for the owner to answer."
+msgstr "等待所有者回答。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_notify.py:0
+msgid "Waiting for your answer"
+msgstr "等待你的回答"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_agent__web_search
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Web Search"
+msgstr "联网搜索"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_search_api_key
+msgid "Web Search API Key"
+msgstr "联网搜索 API 密钥"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_search_backend
+msgid "Web Search Backend"
+msgstr "联网搜索服务"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_res_config_settings__ai_search_url
+msgid "Web Search URL"
+msgstr "联网搜索地址"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_tool.py:0
+msgid "Web search"
+msgstr "联网搜索"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/web_search.py:0
+msgid "Web search (%s) failed: %s"
+msgstr "联网搜索（%s）失败：%s"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/web_search.py:0
+msgid "Web search backend %s needs a URL."
+msgstr "联网搜索服务 %s 需要地址。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/web_search.py:0
+msgid "Web search backend %s needs an API key."
+msgstr "联网搜索服务 %s 需要 API 密钥。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Web search is enabled, but the model this agent runs on serves no built-in "
+"search and no Web Search Backend is set. Set one in the MuK AI settings, or "
+"pick a model that has one."
+msgstr "已启用联网搜索，但智能体所用模型不提供内置搜索，也未设置联网搜索服务。请在 AI 助手设置中配置搜索服务，或选择支持搜索的模型。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Web search is set to \"Provider Built-in\", but the model this agent runs on"
+" serves no built-in search. Pick a model that has one, or switch to \"Search"
+" Backend\"."
+msgstr "联网搜索设为“模型服务内置搜索”，但智能体所用模型不支持该能力。请选择支持的模型，或切换到“搜索服务”。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Web search is set to \"Search Backend\", but no Web Search Backend is "
+"configured. Set one in the MuK AI settings, or switch to \"Provider Built-"
+"in\"."
+msgstr "联网搜索设为“搜索服务”，但尚未配置联网搜索服务。请在 AI 助手设置中配置，或切换到“模型服务内置搜索”。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid ""
+"Web search would run through the Web Search Backend, but the tool filter of "
+"this agent does not list \"web_search\", so the tool never reaches the "
+"model. Add it on the Tools page, or clear the filter."
+msgstr "联网搜索需要使用搜索服务，但智能体的工具筛选未包含 web_search，模型无法使用该工具。请在工具页添加，或清空筛选。"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_space__retention_mode
+msgid ""
+"What becomes of the finished chats in this space. They follow the general "
+"setting unless this space says otherwise."
+msgstr "此空间中已结束聊天的保留方式。空间未单独设置时，沿用通用设置。"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/share/share.xml:0
+msgid "Who may read it"
+msgstr "允许阅读的用户"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session__claimed_at
+#: model:ir.model.fields,field_description:muk_ai.field_muk_ai_session_worker__claimed_at
+msgid "Worker Claimed At"
+msgstr "工作器认领时间"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_worker.py:0
+msgid "Worker abandoned the session - please retry."
+msgstr "后台进程中断了会话，请重试。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "Workflows"
+msgstr "工作流"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/approval.py:0
+msgid "Yes"
+msgstr "是"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.js:0
+msgid "Yesterday"
+msgstr "昨天"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid ""
+"You act on behalf of {{ user.name ||| the user }} at {{ company.name }}."
+msgstr "你代表 {{ user.name ||| the user }} 在 {{ company.name }} 中工作。"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "You are an Odoo assistant. ..."
+msgstr "你是一位 Odoo 助手。…"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_ai_agent__approval_mode
+msgid ""
+"`ask` prompts before risky writes (deletes, workflow methods, audited-field "
+"updates, high-impact creates). `off` disables approvals entirely."
+msgstr "`ask` 在风险写入（删除、工作流方法、审计字段更新、高影响创建）之前提示。`off` 完全禁用审批。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/context.py:0
+msgid "a list"
+msgstr "列表"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/context.py:0
+msgid "a list of strings"
+msgstr "字符串列表"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/context.py:0
+msgid "a string"
+msgstr "字符串"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.js:0
+msgid "active"
+msgstr "有效"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/agent.py:0
+msgid "agent_id"
+msgstr "agent_id"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/context.py:0
+msgid "an integer"
+msgstr "整数"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "awaiting you"
+msgstr "等待你处理"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "by %s"
+msgstr "由%s"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "cancelled"
+msgstr "已取消"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "compacted"
+msgstr "已压缩"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+msgid "default"
+msgstr "默认"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/core/session/turns.js:0
+msgid "default agent"
+msgstr "默认智能体"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "e.g. Explore"
+msgstr "例如：探索"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_ai_agent_form
+msgid "e.g. Sales Assistant"
+msgstr "例如：销售助手"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_labels.js:0
+msgid "fields"
+msgstr "fields"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.xml:0
+msgid "for newline"
+msgstr "换行"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "from agent"
+msgstr "沿用智能体"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_res_config_settings_form
+msgid "http://searxng:8080"
+msgstr "http://searxng:8080"
+
+#. module: muk_ai
+#: model_terms:ir.ui.view,arch_db:muk_ai.view_muk_ai_provider_form
+msgid "https://my-resource.openai.azure.com/openai/v1"
+msgstr "https://my-resource.openai.azure.com/openai/v1"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sources/sources.xml:0
+msgid "more"
+msgstr "更多"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "msgs"
+msgstr "条消息"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "msgs /"
+msgstr "条消息 /"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/providers/base.py:0
+#: code:addons/muk_ai/providers/google.py:0
+msgid "no image data returned"
+msgstr "未返回图片数据"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/search/search.xml:0
+msgid "of"
+msgstr "的"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "on"
+msgstr "在"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/pills/pills.js:0
+msgid "override"
+msgstr "自定义"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/status/status.js:0
+msgid "resumes in %s"
+msgstr "%s 后继续"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/webclient/systray/systray.xml:0
+msgid "running"
+msgstr "奔跑"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_card.xml:0
+msgid "running..."
+msgstr "正在运行…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/sidebar/sidebar.xml:0
+msgid "thinking..."
+msgstr "正在思考…"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/composer/composer.xml:0
+msgid "to send"
+msgstr "发送"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/turn/turn.xml:0
+msgid "tokens"
+msgstr "词元"
+
+#. module: muk_ai
+#. odoo-javascript
+#: code:addons/muk_ai/static/src/chat/tool_card/tool_card.xml:0
+msgid "tools"
+msgstr "工具"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/session_notify.py:0
+msgid "unknown error"
+msgstr "未知错误"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/context.py:0
+msgid "view_context.%(key)s must be %(type)s."
+msgstr "view_context.%(key)s 必须是 %(type)s。"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/tools/context.py:0
+msgid "view_context.id must be a positive integer."
+msgstr "view_context.id 必须是正整数。"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_ir_websocket
+msgid "websocket message handling"
+msgstr "websocket消息处理"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/model.py:0
+msgid "%(currency)s per M tokens"
+msgstr "%(currency)s / 百万词元"
+
+#. module: muk_ai
+#. odoo-python
+#: code:addons/muk_ai/models/model.py:0
+msgid "%(currency)s per image"
+msgstr "%(currency)s / 张图片"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_ai_session
+msgid "AI Session"
+msgstr "AI 会话"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_mcp_log
+msgid "MCP Audit Log"
+msgstr "MCP 审计日志"
+
+#. module: muk_ai
+#: model:ir.model,name:muk_ai.model_muk_mcp_mixin
+msgid "MCP Tool Mixin"
+msgstr "MCP 工具扩展"
+
+#. module: muk_ai
+#: model:ir.model.fields,field_description:muk_ai.field_muk_mcp_tool__registry
+msgid "Registry"
+msgstr "注册表"
+
+#. module: muk_ai
+#: model:ir.model.fields,help:muk_ai.field_muk_mcp_tool__registry
+msgid "Restrict the tool to a single surface."
+msgstr "限制工具只在一个使用位置可用。"

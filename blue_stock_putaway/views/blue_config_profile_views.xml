@@ -3,13 +3,13 @@
         <field name="name">blue.config.profile.form.inherit.putaway</field><field name="model">blue.config.profile</field>
         <field name="inherit_id" ref="blue_config_asset.blue_config_profile_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet" position="before"><div class="alert alert-info" role="status">系统设置优先：原生上架规则、存储类别和托盘容量先检查；本页代码只增加限制或在同一系统优先级内排序。本场景的使用范围由选择它的原生上架规则决定。</div></xpath>
-            <xpath expr="//notebook" position="inside"><page name="native_rules" string="绑定的上架规则"><field name="putaway_rule_ids" readonly="1"><list create="0" delete="0"><field name="location_in_id"/><field name="product_id"/><field name="category_id"/><field name="location_out_id"/><field name="storage_category_id"/></list></field></page></xpath>
-            <xpath expr="//button[@name='action_validate']" position="after"><button name="action_open_preview" string="真实单据试算" type="object" groups="stock.group_stock_manager"/></xpath>
+            <xpath expr="//sheet" position="before"><div name="putaway_scope_notice" class="alert alert-info" role="status" invisible="hook_code != 'putaway_policy'">系统设置优先：原生上架规则、存储类别和托盘容量先检查；本页代码只增加限制或在同一系统优先级内排序。本场景的使用范围由选择它的原生上架规则决定。</div></xpath>
+            <xpath expr="//notebook" position="inside"><page name="native_rules" string="绑定的上架规则" invisible="hook_code != 'putaway_policy'"><field name="putaway_rule_ids" readonly="1"><list create="0" delete="0"><field name="location_in_id"/><field name="product_id"/><field name="category_id"/><field name="location_out_id"/><field name="storage_category_id"/></list></field></page></xpath>
+            <xpath expr="//button[@name='action_validate']" position="after"><button name="action_open_preview" invisible="hook_code != 'putaway_policy'" string="真实单据试算" type="object" groups="stock.group_stock_manager"/></xpath>
         </field>
     </record>
     <record id="blue_config_profile_action_putaway" model="ir.actions.act_window">
-        <field name="name">上架策略</field><field name="res_model">blue.config.profile</field><field name="view_mode">list,form</field>
+        <field name="name">上架策略</field><field name="res_model">blue.config.profile</field><field name="view_mode">list,form</field><field name="domain">[('hook_code','=','putaway_policy')]</field>
     </record>
     <menuitem id="blue_config_profile_menu_putaway" name="上架策略" parent="stock.menu_stock_config_settings" action="blue_config_profile_action_putaway" sequence="25" groups="stock.group_stock_manager"/>
 </odoo>
