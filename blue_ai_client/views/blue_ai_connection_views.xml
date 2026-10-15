@@ -1,0 +1,39 @@
+<odoo>
+    <record id="blue_ai_connection_view_list" model="ir.ui.view">
+        <field name="name">blue.ai.connection.list</field>
+        <field name="model">blue.ai.connection</field>
+        <field name="arch" type="xml">
+            <list><field name="user_id"/><field name="team_name"/><field name="agent_name"/><field name="task_name"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="blue_ai_connection_view_form" model="ir.ui.view">
+        <field name="name">blue.ai.connection.form</field>
+        <field name="model">blue.ai.connection</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_test_connection" type="object" string="测试用户连接" class="btn-primary"
+                            groups="base.group_system" confirm="将以此用户身份完成云端选择，并调用模型生成一条简短测试回复。"/>
+                </header>
+                <sheet>
+                    <group><field name="user_id"/><field name="active"/><field name="team_name"/>
+                        <field name="agent_name" placeholder="default-agent-Lang"/>
+                        <field name="task_name"/><field name="api_key" password="True" groups="base.group_system"/>
+                    </group>
+                    <p>每个 Odoo 用户对应自己的业务用户 Key 和云端 Agent。连接时自动选择团队 odooAI、此 Agent 和日常任务。知识与技能在云端维护。</p>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="blue_ai_connection_action" model="ir.actions.act_window">
+        <field name="name">宝蓝用户连接</field><field name="res_model">blue.ai.connection</field><field name="view_mode">list,form</field>
+    </record>
+    <record id="blue_ai_session_action" model="ir.actions.act_window">
+        <field name="name">宝蓝代码会话</field><field name="res_model">muk_ai.session</field><field name="view_mode">list,form</field>
+        <field name="domain">[('blue_profile_id', '!=', False)]</field>
+    </record>
+    <menuitem id="blue_ai_connection_menu" name="宝蓝用户连接" parent="muk_ai.menu_ai_config"
+              action="blue_ai_connection_action" sequence="40" groups="base.group_system"/>
+    <menuitem id="blue_ai_session_menu" name="宝蓝代码会话" parent="muk_ai.menu_ai_report"
+              action="blue_ai_session_action" sequence="40" groups="base.group_system"/>
+</odoo>

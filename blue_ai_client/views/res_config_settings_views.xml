@@ -1,0 +1,47 @@
+<odoo>
+    <record id="view_res_config_settings_form" model="ir.ui.view">
+        <field name="name">res.config.settings.form.inherit.blue_cloud</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="muk_ai.view_res_config_settings_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='muk_ai']/block[@name='muk_ai_settings_defaults']" position="before">
+                <block title="宝蓝云端服务" name="blue_ai_cloud_settings" groups="base.group_system">
+                    <field name="blue_provider_id" invisible="1"/><field name="blue_connection_id" invisible="1"/>
+                    <setting string="启用宝蓝云端" help="使用 Chat Completions 连接；核心知识和技能由云端维护。">
+                        <field name="blue_cloud_enabled"/>
+                    </setting>
+                    <setting string="连接与模型">
+                        <div class="content-group">
+                            <div class="row mb-2"><label for="blue_cloud_url" string="服务地址" class="col-4 col-form-label"/>
+                                <div class="col-8"><field name="blue_cloud_url" placeholder="https://odooapi.royalblue56.com/codebuddy/default" class="w-100"/></div>
+                            </div>
+                            <div class="row"><label for="blue_cloud_model" string="模型名称" class="col-4 col-form-label"/>
+                                <div class="col-8"><field name="blue_cloud_model" class="w-100"/></div>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting string="当前用户的云端身份" help="团队和任务固定；Agent 名称与业务用户 Key 按 Odoo 用户分别配置。">
+                        <div class="content-group" invisible="not blue_connection_id">
+                            <div class="row mb-2"><label for="blue_team_name" class="col-4 col-form-label"/>
+                                <div class="col-8"><field name="blue_team_name" class="w-100"/></div>
+                            </div>
+                            <div class="row mb-2"><label for="blue_agent_name" class="col-4 col-form-label"/>
+                                <div class="col-8"><field name="blue_agent_name" placeholder="default-agent-Lang" class="w-100"/></div>
+                            </div>
+                            <div class="row mb-2"><label for="blue_task_name" class="col-4 col-form-label"/>
+                                <div class="col-8"><field name="blue_task_name" class="w-100"/></div>
+                            </div>
+                            <div class="row mb-2"><label for="blue_user_key" string="业务用户 API Key" class="col-4 col-form-label"/>
+                                <div class="col-8"><field name="blue_user_key" password="True" class="w-100"/></div>
+                            </div>
+                            <button name="action_blue_test_connection" type="object" string="保存并测试连接" class="btn-primary mt-2"
+                                    confirm="将保存设置，并调用模型生成一条简短测试回复。"/>
+                        </div>
+                        <div invisible="blue_connection_id">请先在用户连接中为当前用户新建配置。</div>
+                        <button name="action_blue_manage_connections" type="object" string="管理各用户连接" class="btn-link"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

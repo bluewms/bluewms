@@ -14,3 +14,5 @@
 第三方模块来源、许可证、版本和验证记录在 `third-party/`；自研模块迁移、测试边界和源码摘要在 `migrations/`。
 
 业务数据库、附件、登录密码和私有运行配置放在本机用户目录及 Docker 数据卷中，不能提交到公开 GitHub 仓库。
+
+- [宝蓝 AI 云端连接交付](third-party/blue-ai-client-install-2026-10-13.md)：Chat Completions、按用户绑定、自动团队/Agent/任务选择与代码草稿闭环。
