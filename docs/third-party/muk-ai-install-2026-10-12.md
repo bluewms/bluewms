@@ -38,3 +38,7 @@ Docker 镜像无 Chromium，故排除 HOOT 和 MCP Playground 浏览器 tour；A
 仓库外备份／日志目录：`~/.config/bluewms20/backups/muk-ai-20261012-095839/`，含 `bluewms20.dump`、`filestore.tar.gz`、`install.log`、`tests.log`、`assets.log`。没有执行整库恢复演练。测试数据库保留用于后续验证，与开发库分开。
 
 本地源码、版本锁和报告已准备好；本次未提交或推送 GitHub。旧 19 模块与数据库未修改。
+
+## 2026-10-13 中文补充
+
+AI、Skills和MCP的中文翻译已应用到开发库, 共1,290条; POT同步更新, 计价单位补充语言相关显示. 本地补丁已单独写入来源锁, 原官方版本和许可保留. 范围与验收见 [中文翻译记录](muk-ai-zh-2026-10-13.md).

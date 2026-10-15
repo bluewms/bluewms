@@ -6,6 +6,9 @@
 - [模块分类与架构](planning/bluewms20-module-architecture.md)
 - [迁移选择](planning/bluewms20-migration-selection.md)
 - [原生上架规则与增强策略](migrations/putaway-rule-binding-20.md)
+- [WCS 迁移交付](migrations/wcs-20.md)
+- [WCS 迁移规划](planning/bluewms20-wcs-migration.md)
+- [MuK AI 中文翻译](third-party/muk-ai-zh-2026-10-13.md)
 - [Docker 开发环境](../docker/README.md)
 - [多台 Mac 的 Git 同步](git-sync.md)
 

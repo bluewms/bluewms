@@ -1,0 +1,786 @@
+# Translation of Odoo Server.
+# Chinese translation for muk_ai_skills.
+# Reuses BlueWMS19 translations and completes the installed Odoo 20 catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 00:00+0800\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.10.3\n"
+
+#. module: muk_ai_skills
+#: model:ir.module.module,description:base.module_muk_ai_skills
+msgid ""
+"\n"
+"Adds DB-backed skill records that bundle a name, a one-line\n"
+"description for LLM discovery, a markdown body and supporting\n"
+"attachments. Visible skills are listed in a system-prompt\n"
+"addendum so the agent can pick one autonomously, and users\n"
+"can invoke them directly with a /<name> slash command or from\n"
+"the skills panel in the chat composer.\n"
+msgstr ""
+"\n"
+"提供保存在数据库中的技能，包含名称、供模型识别的简短说明、Markdown 正文和附件。可用技能会附加到系统提示词中，供智能体自主选择；用户也可通过 /<name> 命令或聊天输入框的技能面板调用。\n"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,body:muk_ai_skills.skill_reply
+msgid ""
+"\n"
+"Draft a chatter message and open the mail composer wizard pre-filled with the draft. Do NOT post\n"
+"the message - leave it for the user to review and send from the wizard.\n"
+"\n"
+"1. Take the target record (model + id) from `<ui_ctx>`, or from `<linked_record>` when the\n"
+"   session was started from a record. If neither names one,\n"
+"   call `ask_user` once for a record reference.\n"
+"2. Decide what the reply should say:\n"
+"   - If the user already wrote the message text in their request (the prompt after `/reply ...`\n"
+"     reads like a finished sentence to a recipient), use that text almost verbatim and just rewrap\n"
+"     it as short HTML paragraphs.\n"
+"   - If the user only gave a directive (e.g. \"thank them for the quick turnaround\", \"ask when\n"
+"     shipping\"), ground the draft: `search_read` on `mail.message` with domain\n"
+"     `[('model','=',<model>),('res_id','=',<id>),('message_type','in',['comment','email'])]`,\n"
+"     order `date desc`, limit 3, fields `date,subject,body,author_id`. Then write a tactful 60-90\n"
+"     word reply that follows the directive and references the most recent prior message\n"
+"     concretely. If there is no prior message, open with a short re-introduction.\n"
+"3. Wrap the draft as minimal HTML - `<p>...</p>` paragraphs only. No inline styles, no signature\n"
+"   (Odoo appends one).\n"
+"4. Call `open_action`:\n"
+"   - `action_ref`: `mail.action_email_compose_message_wizard`\n"
+"   - `additional_context`:\n"
+"     - `default_model`: target model\n"
+"     - `default_res_ids`: `[<id>]`\n"
+"     - `default_composition_mode`: `comment`\n"
+"     - `default_subtype_xmlid`: `mail.mt_comment`\n"
+"     - `default_body`: the HTML draft\n"
+"5. Reply with one short confirmation line, e.g. `Drafted reply to <display_name>; review and send\n"
+"   it from the composer.` Stop. Do not post the message yourself.\n"
+"        "
+msgstr ""
+"\n"
+"起草记录讨论区消息，打开已填入草稿的邮件编辑窗口。不要直接发布消息，留给用户审阅后在窗口中发送。\n"
+"\n"
+"1. 从 `<ui_ctx>` 获取目标记录（模型 + id）；从记录启动的会话也可使用 `<linked_record>`。两者均未指定记录时，调用一次 `ask_user` 询问记录。\n"
+"2. 确定回复内容：\n"
+"   - 如果用户请求中已经写出了要发送的正文（`/reply ...` 后的内容是面向收件人的完整句子），基本保留原文，只整理成简短 HTML 段落。\n"
+"   - 如果用户只提供要求，例如“感谢对方及时处理”或“询问发货时间”，先通过 `search_read` 读取 `mail.message`，使用域 `[('model','=',<model>),('res_id','=',<id>),('message_type','in',['comment','email'])]`、排序 `date desc`、限制 3 条、字段 `date,subject,body,author_id`。据此撰写得体的 60–90 词回复，遵循用户要求并具体引用最近的消息。没有历史消息时，先作简短介绍。\n"
+"3. 仅用 `<p>...</p>` 段落组成简洁 HTML，不添加内联样式或签名（Odoo 会附加签名）。\n"
+"4. 调用 `open_action`：\n"
+"   - `action_ref`：`mail.action_email_compose_message_wizard`\n"
+"   - `additional_context`：\n"
+"     - `default_model`：目标模型\n"
+"     - `default_res_ids`：`[<id>]`\n"
+"     - `default_composition_mode`：`comment`\n"
+"     - `default_subtype_xmlid`：`mail.mt_comment`\n"
+"     - `default_body`：HTML 草稿\n"
+"5. 用一句话确认，例如“已为 <display_name> 起草回复，请在编辑窗口中审阅并发送。”然后停止，不得自行发布消息。\n"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,body:muk_ai_skills.demo_skill_log
+msgid ""
+"\n"
+"Post a quick internal log note on the pinned record's chatter. Fast complement to `/reply` -\n"
+"no composer, no recipients, no review. Use this when the user just wants to capture a short\n"
+"note for the team.\n"
+"\n"
+"1. Take the target record (model + id) from `<ui_ctx>`, or from `<linked_record>` when the\n"
+"   session was started from a record. If neither names one, call `ask_user` once for a\n"
+"   record reference.\n"
+"2. Take the user's text after `/log ...` as the note body. Do NOT rephrase, expand, or polish it;\n"
+"   that is what `/reply` is for. If the user gave no text after the slash command, call\n"
+"   `ask_user` once asking what to log.\n"
+"3. Call `call_method`:\n"
+"   - `model`: target model\n"
+"   - `method`: `message_post`\n"
+"   - `ids`: `[<id>]`\n"
+"   - `kwargs`:\n"
+"     - `body`: the user's text as plain text - `message_post` escapes strings, so HTML tags\n"
+"       would show up literally in the note\n"
+"     - `subtype_xmlid`: `mail.mt_note`\n"
+"     - `message_type`: `comment`\n"
+"4. Reply with one short confirmation line, e.g. `Logged on <display_name>.` Stop. Do not open\n"
+"   the record or call any other tool.\n"
+msgstr ""
+"\n"
+"在固定记录的讨论区中添加简短内部备注。作为 `/reply` 的快捷补充，无编辑窗口、无收件人、无需审阅，用于用户明确要求为团队记录简短备注时。\n"
+"\n"
+"1. 从 `<ui_ctx>` 获取目标记录（模型 + id）；从记录启动的会话也可使用 `<linked_record>`。两者均未指定记录时，调用一次 `ask_user` 询问。\n"
+"2. 将用户 `/log ...` 后的原文作为备注，不改写、不扩充、不润色；需要润色时应使用 `/reply`。用户未提供正文时，调用一次 `ask_user` 询问要记录什么。\n"
+"3. 调用 `call_method`：\n"
+"   - `model`：目标模型\n"
+"   - `method`：`message_post`\n"
+"   - `ids`：`[<id>]`\n"
+"   - `kwargs`：\n"
+"     - `body`：用户原文，使用纯文本。`message_post` 会转义字符串，HTML 标签将作为文字显示。\n"
+"     - `subtype_xmlid`：`mail.mt_note`\n"
+"     - `message_type`：`comment`\n"
+"4. 用一句话确认，例如“已在 <display_name> 添加备注。”然后停止，不再打开记录或调用其他工具。\n"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,body:muk_ai_skills.demo_skill_escalate
+msgid ""
+"\n"
+"Schedule a `mail.activity` on the pinned record. Use when the user wants to create a follow-up\n"
+"todo, call, meeting, or email reminder tied to a record.\n"
+"\n"
+"1. Take the target record (model + id) from `<ui_ctx>`, or from `<linked_record>` when the\n"
+"   session was started from a record. If neither names one, call `ask_user` once for a\n"
+"   record reference.\n"
+"2. Collect the activity details. If the user already gave them in their request, use those; for\n"
+"   anything still missing, call `ask_user` ONCE with a single combined question covering the\n"
+"   missing pieces (type, deadline, assignee, summary). Acceptable activity types:\n"
+"   - To-Do    → `mail.mail_activity_data_todo`\n"
+"   - Call     → `mail.mail_activity_data_call`\n"
+"   - Meeting  → `mail.mail_activity_data_meeting`\n"
+"   - Email    → `mail.mail_activity_data_email`\n"
+"   Defaults if unspecified after asking once: type = To-Do, deadline = today + 3 days, assignee\n"
+"   = current user (omit `user_id`), summary = short echo of the user's request.\n"
+"3. Resolve the assignee: if a name was given, `search_read` `res.users` with\n"
+"   `[('name','ilike',<name>)]` (fall back to `login`), limit 5. Pick the unique match; if more\n"
+"   than one, call `ask_user` once with the candidate list.\n"
+"4. Call `call_method`:\n"
+"   - `model`: target model\n"
+"   - `method`: `activity_schedule`\n"
+"   - `ids`: `[<id>]`\n"
+"   - `kwargs`:\n"
+"     - `act_type_xmlid`: chosen xmlid\n"
+"     - `date_deadline`: ISO date string `YYYY-MM-DD`\n"
+"     - `summary`: short title\n"
+"     - `user_id`: assignee id (omit to default to current user)\n"
+"     - `note`: optional HTML, only if the user provided extra context\n"
+"5. Reply with one short confirmation: `Scheduled <type> on <display_name> for <date>, assigned\n"
+"   to <assignee>.` Stop. Do not open the record afterwards.\n"
+msgstr ""
+"\n"
+"在固定记录上安排 `mail.activity`。用于用户希望添加与记录相关的待办、电话、会议或邮件提醒时。\n"
+"\n"
+"1. 从 `<ui_ctx>` 获取目标记录（模型 + id）；从记录启动的会话也可使用 `<linked_record>`。两者均未指定记录时，调用一次 `ask_user` 询问。\n"
+"2. 收集活动详情，优先使用用户已提供的信息。仍有缺失时，只调用一次 `ask_user`，用一个问题同时询问缺失的类型、截止日期、负责人和摘要。允许的类型：\n"
+"   - 待办 → `mail.mail_activity_data_todo`\n"
+"   - 电话 → `mail.mail_activity_data_call`\n"
+"   - 会议 → `mail.mail_activity_data_meeting`\n"
+"   - 邮件 → `mail.mail_activity_data_email`\n"
+"   询问一次后仍未指定的内容采用默认值：类型为待办，截止日期为今天 + 3 天，负责人为当前用户（省略 `user_id`），摘要为用户要求的简短概括。\n"
+"3. 确定负责人：如提供了姓名，使用 `search_read` 搜索 `res.users`，域 `[('name','ilike',<name>)]`，不匹配时再按 `login` 搜索，限制 5 条。只有一个匹配时采用；多个匹配时调用一次 `ask_user` 并提供候选名单。\n"
+"4. 调用 `call_method`：\n"
+"   - `model`：目标模型\n"
+"   - `method`：`activity_schedule`\n"
+"   - `ids`：`[<id>]`\n"
+"   - `kwargs`：\n"
+"     - `act_type_xmlid`：所选 xmlid\n"
+"     - `date_deadline`：ISO 日期字符串 `YYYY-MM-DD`\n"
+"     - `summary`：简短标题\n"
+"     - `user_id`：负责人 id（省略时为当前用户）\n"
+"     - `note`：可选 HTML，仅在用户提供了额外信息时使用\n"
+"5. 用一句话确认：“已在 <display_name> 安排 <type>，日期为 <date>，负责人为 <assignee>。”然后停止，不再打开记录。\n"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid "<i class=\"oi me-1\" data-icon=\"attach_file\" title=\"Resources\" role=\"img\"/>"
+msgstr "<i class=\"oi me-1\" data-icon=\"attach_file\" title=\"资源\" role=\"img\"/>"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid ""
+"<i class=\"oi me-1\" data-icon=\"group\" title=\"Shared with everyone\" "
+"role=\"img\"/>Everyone"
+msgstr "<i class=\"oi me-1\" data-icon=\"group\" title=\"所有人可见\" role=\"img\"/>所有人"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid ""
+"<i class=\"oi me-1\" data-icon=\"lock\" title=\"Private to the owner\" "
+"role=\"img\"/>Private"
+msgstr "<i class=\"oi me-1\" data-icon=\"lock\" title=\"仅所有者可见\" role=\"img\"/>私有"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid ""
+"<i class=\"oi me-1\" data-icon=\"lock\" title=\"Shared with selected users\""
+" role=\"img\"/>"
+msgstr "<i class=\"oi me-1\" data-icon=\"lock\" title=\"指定用户可见\" role=\"img\"/>"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid "<i class=\"oi me-1\" data-icon=\"person\" title=\"Agents\" role=\"img\"/>"
+msgstr "<i class=\"oi me-1\" data-icon=\"person\" title=\"智能体\" role=\"img\"/>"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid "<i class=\"oi me-1\" data-icon=\"public\" title=\"Global\" role=\"img\"/>Global"
+msgstr "<i class=\"oi me-1\" data-icon=\"public\" title=\"全局\" role=\"img\"/>全局"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid ""
+"<i class=\"oi me-1\" data-icon=\"push_pin\" title=\"Needs something open\" "
+"role=\"img\"/>"
+msgstr "<i class=\"oi me-1\" data-icon=\"push_pin\" title=\"需打开页面\" role=\"img\"/>"
+
+#. module: muk_ai_skills
+#: model:ir.model,name:muk_ai_skills.model_muk_ai_session
+msgid "AI Session"
+msgstr "AI 会话"
+
+#. module: muk_ai_skills
+#: model:ir.model,name:muk_ai_skills.model_muk_ai_skill
+msgid "AI Skill"
+msgstr "AI 技能"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__active
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Active"
+msgstr "活跃"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Agent"
+msgstr "智能体"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__agent_ids
+msgid "Agents"
+msgstr "智能体"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__agent_ids
+msgid ""
+"Agents that can see this skill. Leave empty to make the skill visible to "
+"every agent."
+msgstr "可以看到此技能的智能体。留空以使该技能对所有智能体可见。"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills_menu/skills_menu.js:0
+msgid "All skills"
+msgstr "所有技能"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__scope__any
+msgid "Anywhere"
+msgstr "任意位置"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid "Archive"
+msgstr "归档"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Archived"
+msgstr "已归档"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__attachment_ids
+msgid ""
+"Attachments listed in the skill manifest. The agent can fetch any of them "
+"via read_resource using the uri from the manifest."
+msgstr "技能清单中列出的附件。智能体可以通过清单中的 URI 使用 read_resource 获取它们。"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Availability"
+msgstr "可入职日期"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__scope
+msgid "Available"
+msgstr "可用"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__body
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Body"
+msgstr "正文"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Body History"
+msgstr "正文历史"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/ai_session.py:0
+msgid "Cannot invoke a skill while the session is %s."
+msgstr "会话处于 %s 状态时无法调用技能。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__skill_type__chat
+msgid "Chat"
+msgstr "聊天"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__create_uid
+msgid "Created by"
+msgstr "创建者"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__create_date
+msgid "Created on"
+msgstr "创建于"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__description
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Description"
+msgstr "描述"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_session__display_name
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__display_name
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_mcp_mixin__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,description:muk_ai_skills.skill_reply
+msgid ""
+"Draft a chatter reply for the pinned record and open the mail composer "
+"wizard pre-filled with the draft."
+msgstr "为固定记录起草讨论区回复，打开已填入草稿的邮件编辑窗口。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__is_editable
+msgid "Editable"
+msgstr "可编辑"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__visibility__everyone
+msgid "Everyone"
+msgstr "所有人"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills/skills.js:0
+msgid "Failed to invoke skill"
+msgstr "调用技能失败"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Global"
+msgstr "全局"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__label
+msgid "Human-readable label shown in lists and the chat menu."
+msgstr "在列表和聊天菜单中显示的人类可读标签。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_session__id
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__id
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_mcp_mixin__id
+msgid "ID"
+msgstr "ID"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__icon
+msgid "Icon"
+msgstr "图标"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__label
+msgid "Label"
+msgstr "标签"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__write_uid
+msgid "Last Updated by"
+msgstr "最后更新者"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__write_date
+msgid "Last Updated on"
+msgstr "最后更新于"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,label:muk_ai_skills.demo_skill_log
+msgid "Log Note"
+msgstr "内部备注"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__name
+msgid ""
+"Lowercase technical identifier used in the slash command and in the LLM-"
+"facing discovery list. Must match [a-z][a-z0-9_]*."
+msgstr "在斜杠命令和面向 LLM 的发现列表中使用的小写技术标识符。必须匹配 [a-z][a-z0-9_]*。"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_res_config_settings_form
+msgid "Manage AI Skills"
+msgstr "管理 AI 技能"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Markdown body returned when the skill is invoked."
+msgstr "调用技能时返回的 Markdown 正文。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__body
+msgid ""
+"Markdown body returned when the skill is invoked. Optional: a manifest-only "
+"skill may rely solely on its attached resources."
+msgstr "调用技能时返回的 Markdown 正文。可选：纯清单的技能可以仅依赖其附加的资源。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__icon
+msgid "Material Symbol shown next to the skill in the chat skills menu."
+msgstr "技能菜单中显示在技能名称旁的 Material Symbol 图标。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__model_ids
+msgid "Models"
+msgstr "模型"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__model_ids
+msgid ""
+"Models the skill applies to. Leave empty to offer it on every model the "
+"scope allows."
+msgstr "适用此技能的业务模型。留空时，在使用范围允许的所有模型上提供该技能。"
+
+#. module: muk_ai_skills
+#: model:ir.module.module,shortdesc:base.module_muk_ai_skills
+msgid "MuK AI Skills"
+msgstr "MuK AI 技能"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "My Skills"
+msgstr "我的技能"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Needs Something Open"
+msgstr "需打开页面"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills_menu/skills_menu.xml:0
+msgid "No skill matches."
+msgstr "没有匹配的技能。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__scope__context
+msgid "On a Record or a List"
+msgstr "记录或列表页面"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__scope__chatter
+msgid "On a Record with a Chatter"
+msgstr "带讨论区的记录页面"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__scope__record
+msgid "On a Single Record"
+msgstr "单条记录页面"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills_menu/skills_menu.xml:0
+msgid "Once something is open"
+msgstr "打开页面后可用"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__description
+msgid ""
+"One-line description shown to the LLM in the system prompt addendum so it "
+"can decide when to invoke the skill."
+msgstr "在系统提示附录中向 LLM 显示的单行描述，以便它可以决定何时调用该技能。"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "One-line description shown to the LLM in the system prompt."
+msgstr "在系统提示中向 LLM 显示的单行描述。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__visibility__owner
+msgid "Only Me"
+msgstr "仅自己"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid "Open"
+msgstr "打开"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__owner_id
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Owner"
+msgstr "所有者"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,description:muk_ai_skills.demo_skill_log
+msgid ""
+"Post a one-line internal log note on the pinned record's chatter - no "
+"composer, no review."
+msgstr "在固定记录的讨论区添加一行内部备注，无编辑窗口，无需审阅。"
+
+#. module: muk_ai_skills
+#: model:ir.module.module,summary:base.module_muk_ai_skills
+msgid "Pre-built AI agent skills the user or LLM can switch into"
+msgstr "用户或模型可调用的预置 AI 技能"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__prompt_history
+msgid "Prompt History"
+msgstr "提示历史"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__prompt_history_metadata
+msgid "Prompt History Metadata"
+msgstr "提示历史元数据"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills_menu/skills_menu.js:0
+msgid "Recently used"
+msgstr "最近使用"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,label:muk_ai_skills.skill_reply
+msgid "Reply"
+msgstr "回复"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__attachment_ids
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Resources"
+msgstr "资源"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__prompt_history_count
+msgid "Revisions"
+msgstr "修订版本"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,label:muk_ai_skills.demo_skill_escalate
+msgid "Schedule Activity"
+msgstr "安排活动"
+
+#. module: muk_ai_skills
+#: model:muk_ai.skill,description:muk_ai_skills.demo_skill_escalate
+msgid ""
+"Schedule a follow-up activity (to-do, call, meeting, email) on the pinned "
+"record."
+msgstr "为固定记录安排跟进活动（待办、电话、会议或邮件）。"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Scope"
+msgstr "范围"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Scoped"
+msgstr "限定范围"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills_menu/skills_menu.xml:0
+msgid "Search skills..."
+msgstr "搜索技能…"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields.selection,name:muk_ai_skills.selection__muk_ai_skill__visibility__users
+msgid "Selected Users"
+msgstr "指定用户"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__sequence
+msgid "Sequence"
+msgstr "序号"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__user_ids
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Shared With"
+msgstr "分享给"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Shared with Everyone"
+msgstr "所有人可见"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Shared with Me"
+msgstr "分享给我的"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "Sharing"
+msgstr "共享"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Skill"
+msgstr "技能"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/ai_session.py:0
+msgid "Skill %(name)r is not available."
+msgstr "技能 %(name)r 不可用。"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/ai_session.py:0
+msgid "Skill %(name)s %(requirement)s."
+msgstr "技能 %(name)s %(requirement)s。"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/skill.py:0
+msgid "Skill %(name)s asks for a chatter, which %(models)s does not have."
+msgstr "技能 %(name)s 需要讨论区，但 %(models)s 没有讨论区。"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/skill.py:0
+msgid "Skill name %(name)r must match [a-z][a-z0-9_]*."
+msgstr "技能名称 %(name)r 必须匹配 [a-z][a-z0-9_]*。"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/mcp/skill.py:0
+msgid "Skill tools can only be invoked from inside an AI session."
+msgstr "技能工具只能从 AI 会话内部调用。"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills_menu/skills_menu.xml:0
+#: model:ir.actions.act_window,name:muk_ai_skills.action_muk_ai_skill
+#: model:ir.ui.menu,name:muk_ai_skills.menu_muk_ai_skill
+msgid "Skills"
+msgstr "技能"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__name
+msgid "Technical Name"
+msgstr "技术名称"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__skill_type
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Type"
+msgstr "类型"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_kanban
+msgid "Unarchive"
+msgstr "取消归档"
+
+#. module: muk_ai_skills
+#. odoo-javascript
+#: code:addons/muk_ai_skills/static/src/chat/skills/skills.js:0
+msgid "Use the skill %s"
+msgstr "使用技能 %s"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__user_count
+msgid "User Count"
+msgstr "用户数量"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__owner_id
+msgid ""
+"User who owns the skill. Only the owner or an administrator can edit or "
+"delete it."
+msgstr "技能所有者。只有所有者或管理员可以编辑或删除。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__user_ids
+msgid ""
+"Users the skill is shared with. If empty, the skill is shared with all "
+"users. New skills default to being private to their owner. Scheduled and "
+"automated agent sessions run as their configured user and only see the "
+"skills visible to that user."
+msgstr ""
+"可以使用此技能的共享用户。留空表示所有用户可用。新技能默认仅所有者可用；定时及自动化智能体以其配置的用户身份运行，只能访问该用户可见的技能。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,field_description:muk_ai_skills.field_muk_ai_skill__visibility
+msgid "Visibility"
+msgstr "可见性"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__scope
+msgid ""
+"What the user must have open for the skill to apply. A skill that acts on "
+"what is on screen is offered only there, and is refused when it is invoked "
+"against nothing."
+msgstr "此技能适用时，用户需要打开的页面。对当前页面操作的技能只会在相应页面提供；没有打开目标时，调用会被拒绝。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__skill_type
+msgid ""
+"Where the skill is offered. Only chat skills are listed to the language "
+"model and invoked by name; every other surface adds its own type and offers "
+"them for the user to pick."
+msgstr "提供技能的使用位置。只有聊天技能会列给语言模型并按名称调用；其他位置按各自类型提供技能供用户选择。"
+
+#. module: muk_ai_skills
+#: model:ir.model.fields,help:muk_ai_skills.field_muk_ai_skill__visibility
+msgid ""
+"Who can pick the skill in chat. The share list stays empty when the skill is"
+" visible to everyone."
+msgstr "哪些用户可在聊天中选择此技能。所有用户可见时，共享用户列表留空。"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_search
+msgid "Works Anywhere"
+msgstr "任何位置均可用"
+
+#. module: muk_ai_skills
+#: model:ir.model.constraint,message:muk_ai_skills.constraint_muk_ai_skill_unique_name_owner
+msgid "You already own a skill with this technical name."
+msgstr "你已拥有同技术名称的技能。"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "e.g. Quote Follow-up"
+msgstr "例如：报价跟进"
+
+#. module: muk_ai_skills
+#: model_terms:ir.ui.view,arch_db:muk_ai_skills.view_muk_ai_skill_form
+msgid "e.g. quote_followup"
+msgstr "例如：quote_followup"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/skill.py:0
+msgid "needs a record open"
+msgstr "需要打开记录"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/skill.py:0
+msgid "needs a record or a list open"
+msgstr "需要打开记录或列表"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/skill.py:0
+msgid "needs a record with a chatter open"
+msgstr "需要打开带讨论区的记录"
+
+#. module: muk_ai_skills
+#. odoo-python
+#: code:addons/muk_ai_skills/models/skill.py:0
+msgid "only on %(models)s"
+msgstr "仅适用于 %(models)s"
+
+#. module: muk_ai_skills
+#: model:ir.model,name:muk_ai_skills.model_muk_mcp_mixin
+msgid "MCP Tool Mixin"
+msgstr "MCP 工具扩展"

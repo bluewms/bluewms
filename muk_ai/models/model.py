@@ -202,11 +202,17 @@ class AIModel(models.Model):
             record.display_name = f'{record.name} ({record.provider_id.display_name})'
 
     @api.depends('modality', 'currency')
+    @api.depends_context('lang')
     def _compute_rate_unit(self) -> None:
         """Spell out the unit the rates are quoted in, e.g. ``USD per M tokens``."""
         for record in self:
             profile = MODALITIES.get(record.modality)
-            record.rate_unit = f'{record.currency} {profile.unit}' if profile else ''
+            if profile and profile.unit == 'per M tokens':
+                record.rate_unit = record.env._('%(currency)s per M tokens', currency=record.currency)
+            elif profile and profile.unit == 'per image':
+                record.rate_unit = record.env._('%(currency)s per image', currency=record.currency)
+            else:
+                record.rate_unit = f'{record.currency} {profile.unit}' if profile else ''
 
     # ----------------------------------------------------------
     # Constraints

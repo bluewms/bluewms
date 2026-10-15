@@ -20,7 +20,8 @@ class BlueConfigProfile(models.Model):
 
     def _scope_snapshot(self):
         result = super()._scope_snapshot()
-        result.update(behavior='native_rule_binding/3', requires_batch_names=self._requires_batch_names())
+        if self.hook_code == 'putaway_policy':
+            result.update(behavior='native_rule_binding/3', requires_batch_names=self._requires_batch_names())
         return result
 
     def _draft_payload(self):

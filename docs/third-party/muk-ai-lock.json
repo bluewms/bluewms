@@ -14,7 +14,23 @@
         "base_setup",
         "muk_mcp"
       ],
-      "local_patches": [],
+      "local_patches": [
+        {
+          "file": "i18n/zh_CN.po",
+          "purpose": "Chinese catalog and current source references",
+          "sha256": "689f5af7eab8aafacefaae48e3130b6ea7e9ba73cc19726d4b33d4ef5469d076"
+        },
+        {
+          "file": "i18n/muk_ai.pot",
+          "purpose": "Chinese catalog and current source references",
+          "sha256": "b4817cdea8aa137829104fe5a7c302c8f0a81c138f0f150060ffa96510798816"
+        },
+        {
+          "file": "models/model.py",
+          "purpose": "Chinese localization; rate label only",
+          "sha256": "69987f1ee44f622c0353f7b77b802663f35be642ab63f56f3b1afcbbcd6b917c"
+        }
+      ],
       "files_sha256": {
         "LICENSE": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
         "README.md": "98812e957186fadab95d669117fce5fd1597482a1098a461fc21985cfe899f0c",
@@ -285,7 +301,18 @@
       "depends": [
         "muk_ai"
       ],
-      "local_patches": [],
+      "local_patches": [
+        {
+          "file": "i18n/zh_CN.po",
+          "purpose": "Chinese catalog and current source references",
+          "sha256": "8c7f155ea9338ead723ad9255f7521d94d5d1a9d00dbfc286a27ab128873497e"
+        },
+        {
+          "file": "i18n/muk_ai_skills.pot",
+          "purpose": "Chinese catalog and current source references",
+          "sha256": "e3607d5df14b08b48e01cfdf67fb0b9b4553441b8fdc7aff6d7bda4fb7c6d906"
+        }
+      ],
       "files_sha256": {
         "LICENSE": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
         "README.md": "2f098ca132c552f15cfa749462d4a63a1d9ecf7a39c3c540706b4b4291fe8fce",
@@ -343,7 +370,18 @@
         "attachment_indexation",
         "muk_web_utils"
       ],
-      "local_patches": [],
+      "local_patches": [
+        {
+          "file": "i18n/zh_CN.po",
+          "purpose": "Chinese catalog and current source references",
+          "sha256": "5f707504b8a47197a1a21430256f08b85eecceb5e974ef4c09b1f5d8a8ab4edb"
+        },
+        {
+          "file": "i18n/muk_mcp.pot",
+          "purpose": "Chinese catalog and current source references",
+          "sha256": "97db6bf22389decc1a5befc0cc63238a929b1fed645d3e605fffafb845a3b6fb"
+        }
+      ],
       "files_sha256": {
         "LICENSE": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
         "README.md": "e71ad26c3b0742892c193eb2bace3a5a0821172da34443554196742db29dc04b",
@@ -468,5 +506,26 @@
         "wizards/show_key.py": "57a08cc62f288f8b649076e996e3048b76c8d242603c8187d92a167464207e1b"
       }
     }
-  ]
+  ],
+  "localization": {
+    "date": "2026-10-13",
+    "language": "zh_CN",
+    "old_translation_source": "odoo19/addons/rent/{muk_ai,muk_ai_skills,muk_mcp}/i18n/zh_CN.po",
+    "entries": {
+      "muk_ai": 927,
+      "muk_ai_skills": 110,
+      "muk_mcp": 253
+    },
+    "total_entries": 1290,
+    "untranslated": 0,
+    "fuzzy": 0,
+    "catalog_reference_validation": true,
+    "placeholder_validation": true,
+    "template_variable_validation": true,
+    "language_context_rate_unit_validation": true,
+    "test_database": "bluewms20_ai_test",
+    "main_database": "bluewms20",
+    "real_provider_calls": 0,
+    "inventory_and_model_parameters_unchanged": true
+  }
 }

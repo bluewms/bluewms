@@ -1,0 +1,13 @@
+<odoo>
+    <data noupdate="1">
+        <record id="cron_wcs_dispatch" model="ir.cron">
+            <field name="name">WCS: 持久队列下发</field>
+            <field name="model_id" ref="model_wcs_request" />
+            <field name="state">code</field>
+            <field name="code">model._cron_dispatch()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True" />
+        </record>
+    </data>
+</odoo>

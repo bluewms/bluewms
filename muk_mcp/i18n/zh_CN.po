@@ -1,0 +1,1563 @@
+# Translation of Odoo Server.
+# Chinese translation for muk_mcp.
+# Reuses BlueWMS19 translations and completes the installed Odoo 20 catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 00:00+0800\n"
+"PO-Revision-Date: 2026-10-13 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.10.3\n"
+
+#. module: muk_mcp
+#: model:ir.module.module,description:base.module_muk_mcp
+msgid ""
+"\n"
+"Implements an MCP (Model Context Protocol) server inside Odoo. AI\n"
+"clients such as Claude Code, Claude Desktop, Codex, Cursor and\n"
+"OpenCode connect to the /api/mcp endpoint with an MCP key and work\n"
+"with the database through tools, prompts and resources, with the\n"
+"access rights of the user the key belongs to. Every call is\n"
+"recorded in an audit log.\n"
+msgstr ""
+"\n"
+"在 Odoo 中提供 MCP（模型上下文协议）服务器。Claude Code、Claude Desktop、Codex、Cursor、OpenCode 等 AI 客户端通过 MCP 密钥连接 /api/mcp，使用工具、提示词和资源访问数据库，权限与密钥所属用户一致。每次调用均记录在审计日志中。\n"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/upload.py:0
+msgid ""
+"%(field)s is not a binary field of %(model)s. Binary fields: %(fields)s"
+msgstr "%(field)s 不是 %(model)s 的二进制字段。二进制字段：%(fields)s"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/upload.py:0
+msgid "%s is empty: upload the file to its link first."
+msgstr "%s 为空：请先通过其链接上传文件。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">in Days</span>"
+msgstr "<span class=\"col-auto ms-2\">天</span>"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "<span class=\"col-auto ms-2\">per Minute</span>"
+msgstr "<span class=\"col-auto ms-2\">每分钟</span>"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_users_form
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_users_form_simple
+msgid ""
+"<span class=\"text-muted\">\n"
+"\t\t\t\t\t\t\tConnect AI assistants.\n"
+"\t\t\t\t\t\t</span>"
+msgstr ""
+"<span class=\"text-muted\">\n"
+"\t\t\t\t\t\t\t连接 AI 助手。\n"
+"\t\t\t\t\t\t</span>"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_show_key_form
+msgid "<strong>Copy this key now.</strong> It will not be shown again."
+msgstr "<strong>请立即复制此密钥。</strong>之后不会再次显示。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid ""
+"<strong>Save</strong> this page and come back here to set up the feature."
+msgstr "<strong>保存</strong> 此页面并返回此处以设置该功能。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/upload.py:0
+msgid "A file name is required with text or data."
+msgstr "提供文本或数据时，必须填写文件名。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/upload.py:0
+msgid "A model and record ID are required with a field."
+msgstr "指定字段时，必须提供模型和记录 ID。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "A record ID is required with a model."
+msgstr "指定模型时，必须提供记录 ID。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key_show__key
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__key_name
+msgid "API Key"
+msgstr "API 密钥"
+
+#. module: muk_mcp
+#: model:ir.actions.act_window,name:muk_mcp.action_mcp_key
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_keys
+msgid "API Keys"
+msgstr "API 密钥"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/tool.py:0
+msgid "Access denied: this tool changes data, but the access is read-only"
+msgstr "访问被拒绝：此工具会修改数据，但当前权限为只读。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__active
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__active
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_sandbox__active
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__active
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_prompt_search
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_search
+msgid "Active"
+msgstr "活跃"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mail.py:0
+msgid ""
+"Activity type %(type)r is not available on %(model)s. Available: %(types)s"
+msgstr "%(model)s 不支持活动类型 %(type)r。可用类型：%(types)s"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_users_form
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_users_form_simple
+msgid "Add MCP Key"
+msgstr "添加 MCP 密钥"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__mcp_annotate_messages
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Annotate Messages"
+msgstr "标记消息"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__sha256
+msgid "Announced SHA-256"
+msgstr "声明的 SHA-256"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__file_size
+msgid "Announced Size"
+msgstr "声明的文件大小"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__arguments
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_prompt_form
+msgid "Arguments"
+msgstr "参数"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__attachment_id
+msgid "Attachment"
+msgstr "附件"
+
+#. module: muk_mcp
+#: model:ir.actions.act_window,name:muk_mcp.action_mcp_log
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_log
+msgid "Audit Log"
+msgstr "审计日志"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_res_config_settings__mcp_log_retention
+msgid "Audit logs older than this many days are automatically deleted."
+msgstr "超过此天数的审计日志将自动删除。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Audit logs older than this period are automatically deleted."
+msgstr "超过此期限的审计日志将自动删除。"
+
+#. module: muk_mcp
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_authentication
+msgid "Authentication"
+msgstr "认证"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__bearer_key
+msgid "Bearer Key"
+msgstr "Bearer 密钥"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__body
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_prompt_form
+msgid "Body"
+msgstr "正文"
+
+#. module: muk_mcp
+#: model_terms:ir.actions.act_window,help:muk_mcp.action_mcp_prompt
+msgid ""
+"Built-in prompts ship with the module. You can add custom\n"
+"\t\t\t\tprompts here; a database prompt overrides a built-in one\n"
+"\t\t\t\twith the same name."
+msgstr "内置提示词随模块提供。你可在此添加自定义提示词；数据库中的同名提示词会覆盖内置提示词。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Calling..."
+msgstr "正在调用…"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_generate_key_form
+msgid "Cancel"
+msgstr "取消"
+
+#. module: muk_mcp
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_catalog
+msgid "Catalog"
+msgstr "目录"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__category
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_search
+msgid "Category"
+msgstr "类别"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Claude Code"
+msgstr "Claude Code"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__claude_code_cmd
+msgid "Claude Code Command"
+msgstr "Claude Code 命令"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Claude Desktop"
+msgstr "Claude Desktop"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__claude_desktop_json
+msgid "Claude Desktop JSON"
+msgstr "Claude Desktop 配置（JSON）"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid "Clear key from this tab"
+msgstr "从此标签页清除密钥"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Close"
+msgstr "关闭"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Code"
+msgstr "代码"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Codex CLI"
+msgstr "Codex CLI"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__codex_toml
+msgid "Codex CLI TOML"
+msgstr "Codex CLI 配置（TOML）"
+
+#. module: muk_mcp
+#: model:ir.ui.menu,name:muk_mcp.menu_connect
+msgid "Connect"
+msgstr "连接"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/wizards/connect.py:0
+#: model:ir.actions.act_window,name:muk_mcp.action_connect
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Connect AI"
+msgstr "连接 AI"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_connect
+msgid "Connect AI Wizard"
+msgstr "连接 AI 向导"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Connect Odoo to your AI"
+msgstr "将 Odoo 连接到您的 AI"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Connect an AI Client"
+msgstr "连接 AI 客户端"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Copied"
+msgstr "已复制"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/resource.py:0
+msgid ""
+"Could not extract text from %(n)s (%(m)s).\n"
+"The file may be scanned, encrypted, empty, or not a text-bearing format.\n"
+"Use format=\"resource\" or format=\"auto\" to get the raw blob."
+msgstr ""
+"无法从 %(n)s（%(m)s）提取文本。\n"
+"文件可能是扫描件、已加密、为空，或不包含文本的格式。\n"
+"使用 format=\"resource\" 或 format=\"auto\" 获取原始文件。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__create_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__create_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__create_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__create_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__create_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__create_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__create_uid
+msgid "Created by"
+msgstr "创建者"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__create_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__create_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__create_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__create_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__create_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__create_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__create_date
+msgid "Created on"
+msgstr "创建于"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Cursor"
+msgstr "Cursor"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__cursor_json
+msgid "Cursor JSON"
+msgstr "Cursor 配置（JSON）"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "DB"
+msgstr "数据库"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_res_config_settings__mcp_rate_limit_requests
+msgid ""
+"Default maximum MCP requests per minute per key. Set to 0 to disable. Used "
+"as default when generating new keys."
+msgstr "每个密钥默认的每分钟最大 MCP 请求数。设置为 0 以禁用。生成新密钥时用作默认值。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Default rate limit for new API keys. Set to 0 to disable."
+msgstr "新 API 密钥的默认速率限制。设置为 0 以禁用。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_key_kanban
+msgid "Delete"
+msgstr "删除"
+
+#. module: muk_mcp
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_log__status__denied
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_search
+msgid "Denied"
+msgstr "已拒绝"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_prompt_form
+msgid "Describe what this prompt does..."
+msgstr "说明此提示词的用途…"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_form
+msgid "Describe what this tool does..."
+msgstr "描述此工具的用途..."
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__description
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_sandbox__description
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__description
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_prompt_form
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_form
+msgid "Description"
+msgstr "描述"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_ir_http__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_mail_message__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key_show__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_mixin__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_sandbox__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:muk_mcp.field_res_users__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_show_key_form
+msgid "Done"
+msgstr "完成"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_transfer__operation__download
+msgid "Download"
+msgstr "下载"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_transfer_search
+msgid "Downloads"
+msgstr "下载"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__duration_ms
+msgid "Duration (ms)"
+msgstr "持续时间（毫秒）"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+msgid "Empty"
+msgstr "空白"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Enter"
+msgstr "输入"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/schema_form/schema_form.xml:0
+msgid "Enter JSON for this complex argument."
+msgstr "为此复杂参数输入 JSON。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Enterprise MCP auth via your IdP (ID-JAG / SEP-990)."
+msgstr "通过企业身份服务认证 MCP（ID-JAG / SEP-990）。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__error_message
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_log__status__error
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_form
+msgid "Error"
+msgstr "错误"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_search
+msgid "Errors"
+msgstr "错误"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__expires_at
+msgid "Expires At"
+msgstr "到期时间"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "Field %(f)r is not a readable binary field on %(m)s."
+msgstr "%(f)r 不是 %(m)s 中可读取的二进制字段。"
+
+#. module: muk_mcp
+#: model:ir.actions.act_window,name:muk_mcp.action_mcp_transfer
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_transfer
+msgid "File Transfers"
+msgstr "文件传输"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_key__key_prefix
+msgid "First 8 characters of the key for identification."
+msgstr "密钥的前 8 个字符用于标识。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_log__key_prefix
+msgid "First characters of the API key used."
+msgstr "所用 API 密钥的开头几位。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Form"
+msgstr "表单"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "Generate Bearer Key"
+msgstr "生成 Bearer 密钥"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_generate_key_form
+msgid "Generate Key"
+msgstr "生成密钥"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid "Generate new"
+msgstr "生成新密钥"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.js:0
+msgid ""
+"Generated key '%s' (prefix %s). Plaintext is now loaded for this tab only."
+msgstr "已生成密钥 '%s'（前缀 %s）。明文仅在此标签页中加载。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "Get prompt"
+msgstr "获取提示词"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "Getting..."
+msgstr "正在获取…"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "HTTP"
+msgstr "HTTP"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_ir_http__id
+#: model:ir.model.fields,field_description:muk_mcp.field_mail_message__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key_show__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_mixin__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_sandbox__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__id
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__id
+#: model:ir.model.fields,field_description:muk_mcp.field_res_users__id
+msgid "ID"
+msgstr "ID"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__ip_address
+msgid "IP Address"
+msgstr "IP 地址"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__input_schema
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_form
+msgid "Input Schema"
+msgstr "输入模式"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Interactive UI resources rendered inline by AI clients."
+msgstr "由 AI 客户端在页面中直接展示的交互资源。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/prompt.py:0
+msgid "Invalid arguments for prompt %(name)s: %(error)s"
+msgstr "提示词 %(name)s 的参数无效：%(error)s"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/tool.py:0
+msgid ""
+"Invalid arguments for tool %(name)s: %(error)s. Expected input schema: "
+"%(schema)s"
+msgstr "工具 %(name)s 的参数无效：%(error)s。要求的输入格式：%(schema)s"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/tools/parser.py:0
+msgid "Invalid record ID: %r"
+msgstr "记录 ID 无效：%r"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_tool__input_schema
+msgid "JSON Schema defining the tool parameters."
+msgstr "定义工具参数的 JSON 模式。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_prompt__arguments
+msgid ""
+"JSON array of argument definitions: [{\"name\": ..., \"description\": ..., "
+"\"required\": ...}]."
+msgstr "参数定义的 JSON 数组：[{\"name\": ..., \"description\": ..., \"required\": ...}]。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "JSON-RPC"
+msgstr "JSON-RPC"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+msgid "JSON-RPC Error"
+msgstr "JSON-RPC 错误"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "JSON-RPC error"
+msgstr "JSON-RPC 错误"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/schema_form/schema_form.xml:0
+msgid "JSON..."
+msgstr "JSON..."
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__key_name
+msgid "Key"
+msgstr "密钥KEY"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__key_hash
+msgid "Key Hash"
+msgstr "密钥哈希"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__key_prefix
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__key_prefix
+msgid "Key Prefix"
+msgstr "密钥前缀"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid "Key label (optional)"
+msgstr "密钥标签（可选）"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid ""
+"Keys are stored in sessionStorage (this tab only). Plaintext is never "
+"persisted server-side after generation."
+msgstr "密钥存储在 sessionStorage 中（仅此标签页）。生成后，明文永远不会在服务器端持久化。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__name
+msgid "Label"
+msgstr "标签"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_log__key_name
+msgid "Label of the API key used."
+msgstr "所用 API 密钥的标签。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__write_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__write_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__write_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__write_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__write_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__write_uid
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__write_uid
+msgid "Last Updated by"
+msgstr "最后更新者"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__write_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__write_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__write_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__write_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__write_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__write_date
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__write_date
+msgid "Last Updated on"
+msgstr "最后更新于"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__last_used
+msgid "Last Used"
+msgstr "最后使用"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Log Retention"
+msgstr "日志保留"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__mcp_log_retention
+msgid "Log Retention (days)"
+msgstr "日志保留（天）"
+
+#. module: muk_mcp
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_logging
+msgid "Logging"
+msgstr "日志"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/core/message/message.xml:0
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_tool__registry__mcp
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_root
+msgid "MCP"
+msgstr "MCP"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_key
+msgid "MCP API Key"
+msgstr "MCP API 密钥"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__module_muk_mcp_access
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "MCP Access"
+msgstr "MCP 访问"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__module_muk_mcp_apps
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "MCP Apps"
+msgstr "MCP 应用"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_log
+msgid "MCP Audit Log"
+msgstr "MCP 审计日志"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__module_muk_mcp_enterprise
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "MCP Enterprise"
+msgstr "MCP 企业认证"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "MCP Extensions"
+msgstr "MCP 扩展"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_transfer
+msgid "MCP File Transfer"
+msgstr "MCP 文件传输"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_generate_key
+msgid "MCP Generate Key"
+msgstr "MCP 生成密钥"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+#: model:ir.model.fields,field_description:muk_mcp.field_mail_mail__mcp_name
+#: model:ir.model.fields,field_description:muk_mcp.field_mail_message__mcp_name
+msgid "MCP Key"
+msgstr "MCP 密钥"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/wizards/generate_key.py:0
+msgid "MCP Key Ready"
+msgstr "MCP 密钥已就绪"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_users__mcp_key_ids
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_users_form
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_users_form_simple
+msgid "MCP Keys"
+msgstr "MCP 密钥"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__module_muk_mcp_oauth
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "MCP OAuth"
+msgstr "MCP OAuth 认证"
+
+#. module: muk_mcp
+#: model:ir.actions.client,name:muk_mcp.action_mcp_playground
+msgid "MCP Playground"
+msgstr "MCP 测试场"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_prompt
+msgid "MCP Prompt"
+msgstr "MCP 提示词"
+
+#. module: muk_mcp
+#: model:ir.actions.act_window,name:muk_mcp.action_mcp_prompt
+msgid "MCP Prompts"
+msgstr "MCP 提示词"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_sandbox
+msgid "MCP Sandbox"
+msgstr "MCP 沙箱"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "MCP Server"
+msgstr "MCP 服务器"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_mixin
+msgid "MCP Tool Mixin"
+msgstr "MCP 工具混入"
+
+#. module: muk_mcp
+#: model:ir.actions.act_window,name:muk_mcp.action_mcp_tool
+msgid "MCP Tools"
+msgstr "MCP 工具"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__mcp_url
+msgid "MCP URL"
+msgstr "MCP 地址"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Mark chatter messages originating from MCP."
+msgstr "标记来自 MCP 的沟通消息。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Max requests"
+msgstr "最大请求数"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_generate_key__rate_limit
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_key__rate_limit
+msgid "Maximum requests per minute. 0 = unlimited."
+msgstr "每分钟最大请求数。0 = 无限制。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__method
+msgid "Method"
+msgstr "方法"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/prompt.py:0
+msgid "Missing required prompt arguments: %s"
+msgstr "缺少必填提示词参数：%s"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__model_name
+msgid "Model"
+msgstr "模型"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "Model %r not found"
+msgstr "未找到模型 %r"
+
+#. module: muk_mcp
+#: model:ir.module.module,summary:base.module_muk_mcp
+msgid "Model Context Protocol server for AI agent integration"
+msgstr "用于 AI 智能体集成的模型上下文协议服务器"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Model-level whitelist - restrict which models AI agents can reach."
+msgstr "模型级白名单，限制 AI 智能体可访问的业务模型。"
+
+#. module: muk_mcp
+#: model:ir.module.module,shortdesc:base.module_muk_mcp
+msgid "MuK MCP Server"
+msgstr "MuK MCP 服务器"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_sandbox__name
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__name
+msgid "Name"
+msgstr "名称"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/res_users.py:0
+msgid "New MCP Key"
+msgstr "新建 MCP 密钥"
+
+#. module: muk_mcp
+#: model_terms:ir.actions.act_window,help:muk_mcp.action_mcp_prompt
+msgid "No MCP prompts configured."
+msgstr "尚未配置 MCP 提示词。"
+
+#. module: muk_mcp
+#: model_terms:ir.actions.act_window,help:muk_mcp.action_mcp_tool
+msgid "No MCP tools configured."
+msgstr "未配置 MCP 工具。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/export.py:0
+msgid "No fields provided"
+msgstr "未提供字段"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "No matching prompts."
+msgstr "没有匹配的提示词。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/playground/playground.xml:0
+msgid "No matching tools."
+msgstr "无匹配的工具。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "No messages returned."
+msgstr "未返回消息。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "No record IDs provided"
+msgstr "未提供记录 ID"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "OAuth 2.1 for MCP - connect Odoo to ChatGPT, Claude and more."
+msgstr "用于 MCP 的 OAuth 2.1，连接 Odoo 与 ChatGPT、Claude 等客户端。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_log__status__ok
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_search
+msgid "OK"
+msgstr "正常"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_form
+msgid "Open Record"
+msgstr "打开记录"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_form
+msgid "Open Records"
+msgstr "打开记录"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid "OpenCode"
+msgstr "OpenCode"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_connect__opencode_json
+msgid "OpenCode JSON"
+msgstr "OpenCode 配置（JSON）"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__operation
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_transfer_search
+msgid "Operation"
+msgstr "作业"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/write.py:0
+msgid "Pass \"values\" as one JSON object."
+msgstr "请将 values 作为单个 JSON 对象传入。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/upload.py:0
+msgid "Pass exactly one of file, text or data."
+msgstr "file、text、data 必须且只能提供一个。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid "Paste MCP key (Bearer token)..."
+msgstr "粘贴 MCP 密钥（Bearer 令牌）..."
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Pick or generate an MCP key first."
+msgstr "请先选择或生成 MCP 密钥。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_connect_form
+msgid ""
+"Pick the AI client you want to use. Local clients\n"
+"                            (Claude Code, Claude Desktop, Codex CLI, Cursor, OpenCode)\n"
+"                            connect via a bearer key."
+msgstr ""
+"选择您要使用的 AI 客户端。本地客户端\n"
+"                            （Claude Code、Claude Desktop、Codex CLI、Cursor、OpenCode）\n"
+"                            通过 bearer 密钥连接。"
+
+#. module: muk_mcp
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_playground
+msgid "Playground"
+msgstr "测试场"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/prompt.py:0
+msgid "Prompt %(name)s Arguments must be a JSON array."
+msgstr "提示词 %(name)s 的参数必须为 JSON 数组。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/prompt.py:0
+msgid "Prompt %(name)s has invalid Arguments JSON: %(error)s"
+msgstr "提示词 %(name)s 的参数 JSON 无效：%(error)s"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_prompt_form
+msgid "Prompt Name"
+msgstr "提示词名称"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/prompt.py:0
+msgid "Prompt not found: %s"
+msgstr "找不到提示词：%s"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.js:0
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_prompts
+msgid "Prompts"
+msgstr "提示词"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__code
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_form
+msgid "Python Code"
+msgstr "Python 代码"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_res_config_settings__mcp_rate_limit_requests
+msgid "Rate Limit (Requests)"
+msgstr "速率限制（请求）"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__rate_limit
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__rate_limit
+msgid "Rate Limit (req/min)"
+msgstr "速率限制（请求/分钟）"
+
+#. module: muk_mcp
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_log__status__rate_limited
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_search
+msgid "Rate Limited"
+msgstr "速率受限"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Rate Limiting"
+msgstr "速率限制"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+msgid "Raw JSON-RPC response"
+msgstr "原始 JSON-RPC 响应"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_tool__category__read
+msgid "Read"
+msgstr "读取"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_generate_key__scope__write
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_key__scope__write
+msgid "Read & Write"
+msgstr "读取和写入"
+
+#. module: muk_mcp
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_generate_key__scope__read
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_key__scope__read
+msgid "Read Only"
+msgstr "只读"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "Record %(model)s/%(id)s not found"
+msgstr "找不到记录 %(model)s/%(id)s"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_form
+msgid "Record Data"
+msgstr "记录数据"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__res_id
+msgid "Record ID"
+msgstr "记录 ID"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__res_ids
+msgid "Record IDs"
+msgstr "记录 ID"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mail.py:0
+msgid "Records of %s have no activities."
+msgstr "%s 的记录没有活动。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mail.py:0
+msgid "Records of %s have no chatter."
+msgstr "%s 的记录没有讨论区。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__registry
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_search
+msgid "Registry"
+msgstr "注册表"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/report.py:0
+msgid "Report %r not found."
+msgstr "未找到报表 %r。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__request_data
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_form
+msgid "Request"
+msgstr "请求"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Reset args"
+msgstr "重置参数"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "Resource %s does not exist."
+msgstr "资源 %s 不存在。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "Resource %s is empty."
+msgstr "资源 %s 为空。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__response_data
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_form
+msgid "Response"
+msgstr "响应"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_tool__registry
+msgid "Restrict the tool to a single surface."
+msgstr "将工具限制为单个界面。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_res_config_settings_form
+msgid "Retention"
+msgstr "保留"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Schema"
+msgstr "模式"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_generate_key__scope
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__scope
+msgid "Scope"
+msgstr "范围"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_key_kanban
+msgid "Scope:"
+msgstr "范围："
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "Search prompts..."
+msgstr "搜索提示词…"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/playground/playground.xml:0
+msgid "Search tools..."
+msgstr "搜索工具..."
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "Select a prompt from the list on the left."
+msgstr "从左侧列表选择提示词。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/playground/playground.xml:0
+msgid "Select a tool from the list on the left."
+msgstr "从左侧列表中选择工具。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__sequence
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_sandbox__sequence
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_tool__sequence
+msgid "Sequence"
+msgstr "序号"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_key_show
+msgid "Show MCP Key"
+msgstr "显示 MCP 密钥"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__status
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_search
+msgid "Status"
+msgstr "状态"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_transfer__key_name
+msgid "The API key the link was issued to."
+msgstr "签发此链接所使用的 API 密钥。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_transfer__attachment_id
+msgid "The attachment an upload fills or a produced file is served from."
+msgstr "上传所写入的附件，或用于提供生成文件的附件。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/upload.py:0
+msgid "The file data is not valid base64."
+msgstr "文件数据不是有效的 base64。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/upload.py:0
+msgid "The file is %(size)s bytes, more than the upload limit of %(limit)s."
+msgstr "文件为 %(size)s 字节，超过 %(limit)s 字节的上传限制。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_muk_mcp_transfer__uri
+msgid "The odoo:// resource a download serves."
+msgstr "此下载提供的 odoo:// 资源。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/transfer.py:0
+msgid "The upload does not match the announced SHA-256."
+msgstr "上传文件与声明的 SHA-256 不一致。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/transfer.py:0
+msgid "The upload has %(got)s bytes, %(want)s were announced."
+msgstr "实际上传 %(got)s 字节，声明大小为 %(want)s 字节。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/transfer.py:0
+msgid ""
+"The upload is empty: send the file as the raw request body (curl -T) or as a"
+" multipart file."
+msgstr "上传内容为空：请将文件作为原始请求正文（curl -T）或 multipart 文件发送。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/tools/xlsx.py:0
+msgid ""
+"There are too many rows (%(count)s rows, limit: %(limit)s) to export as "
+"XLSX. Export as CSV instead, or narrow the selection."
+msgstr "行数过多（%(count)s 行，上限 %(limit)s），无法导出 XLSX。请改用 CSV，或缩小选择范围。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+msgid "This prompt takes no arguments."
+msgstr "此提示词不接受参数。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/schema_form/schema_form.xml:0
+msgid "This tool takes no parameters."
+msgstr "此工具不接受参数。"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_list
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_transfer_list
+msgid "Time"
+msgstr "时间"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_prompt__title
+msgid "Title"
+msgstr "标题"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__token_hash
+msgid "Token Hash"
+msgstr "令牌哈希"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__tool_name
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_search
+msgid "Tool"
+msgstr "工具"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/tool.py:0
+msgid "Tool %(name)s has invalid Input Schema JSON: %(error)s"
+msgstr "工具 %(name)s 的输入模式 JSON 无效：%(error)s"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+msgid "Tool Error"
+msgstr "工具错误"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_tool_form
+msgid "Tool Name"
+msgstr "工具名称"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/tool.py:0
+msgid "Tool arguments must be a JSON object, got %(kind)s"
+msgstr "工具参数必须为 JSON 对象，实际为 %(kind)s。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/models/tool.py:0
+msgid "Tool not found: %s"
+msgstr "未找到工具：%s"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/playground/playground.js:0
+#: model:ir.ui.menu,name:muk_mcp.menu_mcp_tools
+msgid "Tools"
+msgstr "工具"
+
+#. module: muk_mcp
+#: model_terms:ir.actions.act_window,help:muk_mcp.action_mcp_tool
+msgid ""
+"Tools are automatically created when the module is installed.\n"
+"\t\t\t\tYou can add custom tools here."
+msgstr ""
+"安装模块时，工具会自动创建。\n"
+"\t\t\t\t您可以在此处添加自定义工具。"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "Try it"
+msgstr "试用"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__uri
+msgid "URI"
+msgstr "资源地址（URI）"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+msgid "Unknown content block type:"
+msgstr "未知内容块类型："
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/resource.py:0
+msgid "Unsupported format %(f)r; expected one of: %(opts)s."
+msgstr "不支持格式 %(f)r；应为以下之一：%(opts)s。"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mixin.py:0
+msgid "Unsupported resource URI: %r"
+msgstr "不支持资源 URI：%r"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_transfer_search
+msgid "Unused"
+msgstr "未使用"
+
+#. module: muk_mcp
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_transfer__operation__upload
+msgid "Upload"
+msgstr "上传"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_transfer_search
+msgid "Uploads"
+msgstr "上传"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid "Use"
+msgstr "使用"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid "Use existing"
+msgstr "使用现有"
+
+#. module: muk_mcp
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__used
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_transfer_search
+msgid "Used"
+msgstr "已使用"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_res_users
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_key__user_id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_log__user_id
+#: model:ir.model.fields,field_description:muk_mcp.field_muk_mcp_transfer__user_id
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_log_search
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_mcp_transfer_search
+msgid "User"
+msgstr "用户"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/mail.py:0
+msgid "User %s is not an active user."
+msgstr "用户 %s 不是有效用户。"
+
+#. module: muk_mcp
+#: model:ir.model.fields,help:muk_mcp.field_res_config_settings__mcp_annotate_messages
+msgid ""
+"When enabled, chatter messages from MCP operations are marked to distinguish"
+" AI-originated changes from manual ones."
+msgstr "启用后，来自 MCP 操作的通知消息将标记为自动化，以区分 AI 来源的更改和手动更改。"
+
+#. module: muk_mcp
+#: model:ir.model.fields.selection,name:muk_mcp.selection__muk_mcp_tool__category__write
+msgid "Write"
+msgstr "写入"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+msgid "audio ·"
+msgstr "音频 ·"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "curl"
+msgstr "curl"
+
+#. module: muk_mcp
+#: model_terms:ir.ui.view,arch_db:muk_mcp.view_generate_key_form
+msgid "e.g. Claude Desktop, Cursor"
+msgstr "例如：Claude Desktop、Cursor"
+
+#. module: muk_mcp
+#. odoo-python
+#: code:addons/muk_mcp/mcp/read.py:0
+msgid "groupby is required"
+msgstr "需要分组"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/response_panel/response_panel.xml:0
+msgid "image ·"
+msgstr "图片 ·"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "ms"
+msgstr "毫秒"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/key_bar/key_bar.xml:0
+msgid "none"
+msgstr "无"
+
+#. module: muk_mcp
+#. odoo-javascript
+#: code:addons/muk_mcp/static/src/playground/prompts_panel/prompts_panel.xml:0
+#: code:addons/muk_mcp/static/src/playground/tool_detail/tool_detail.xml:0
+msgid "to run"
+msgstr "运行"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP 路由"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_muk_mcp_tool
+msgid "MCP Tool"
+msgstr "MCP 工具"
+
+#. module: muk_mcp
+#: model:ir.model,name:muk_mcp.model_mail_message
+msgid "Message"
+msgstr "消息"
