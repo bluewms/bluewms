@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_muk_ai_provider_form" model="ir.ui.view">
+        <field name="name">muk_ai.provider.form.inherit.blue_cloud</field>
+        <field name="model">muk_ai.provider</field>
+        <field name="inherit_id" ref="muk_ai.view_muk_ai_provider_form"/>
+        <field name="arch" type="xml">
+            <field name="api_key" position="attributes"><attribute name="invisible">name == 'blue_cloud'</attribute></field>
+            <field name="api_key" position="after">
+                <div invisible="name != 'blue_cloud'" groups="base.group_system">
+                    <p>业务用户 Key 在“宝蓝用户连接”中按用户保存。此处共用服务地址、模型与请求限制。</p>
+                </div>
+            </field>
+        </field>
+    </record>
+</odoo>

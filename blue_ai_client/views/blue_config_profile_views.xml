@@ -1,0 +1,13 @@
+<odoo>
+    <record id="blue_config_profile_view_form" model="ir.ui.view">
+        <field name="name">blue.config.profile.form.inherit.blue_ai</field>
+        <field name="model">blue.config.profile</field>
+        <field name="inherit_id" ref="blue_config_asset.blue_config_profile_view_form"/>
+        <field name="arch" type="xml">
+            <button name="action_validate" position="before">
+                <button name="action_blue_ai_chat" string="AI 生成 / 修改" type="object"
+                        groups="stock.group_stock_manager" class="btn-primary"/>
+            </button>
+        </field>
+    </record>
+</odoo>
