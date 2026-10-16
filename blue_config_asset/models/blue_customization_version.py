@@ -22,6 +22,7 @@ class BlueCustomizationVersion(models.Model):
     content_hash = fields.Char('内容校验值', required=True)
     source = fields.Selection([('manual', '人工编辑'), ('example', '标准示例'), ('ai', 'AI生成')], required=True)
     conversation_ref = fields.Char('AI会话引用')
+    knowledge_references = fields.Text('云端参考版本')
     base_release_id = fields.Many2one('blue.config.release', ondelete='restrict', check_company=True)
 
     @api.model_create_multi

@@ -2,7 +2,7 @@
 
 Odoo 20 首期可编辑上架策略闭环。使用方法、AI草稿接口、执行合同、权限和范围见 [交付说明](../docs/migrations/putaway-policy-20.md)。
 
-代码、模板和样例可编辑；保存草稿不会自动发布。正式版本在本地数据库保存，运行不需要云端 API key。
+策略使用受限 AST 解释器执行纯 JSON 数据，不提供 ORM、网络、文件或任意 Python 调用。`_describe(contract)` 为上架 v1/v2 返回机器可读字段、语法、输出和资源限制；由 `blue_ai_client` 返回给模型。正式版本在本地执行，无需云端 API Key 在线。
 
 ## 20.0.1.1.0
 

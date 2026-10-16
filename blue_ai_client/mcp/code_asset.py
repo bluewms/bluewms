@@ -1,9 +1,12 @@
+import json
+
 from odoo import api, models
 from odoo.exceptions import UserError, ValidationError
 
 from odoo.addons.muk_mcp.core.tool import mcp_tool
 
 from ..guard import BINDING_TOKEN
+from ..providers.knowledge import read_policy_knowledge
 
 
 class BlueCodeAssetTools(models.AbstractModel):
@@ -13,7 +16,7 @@ class BlueCodeAssetTools(models.AbstractModel):
         session = self._resolve_mcp_session(self.env._('请从代码资产页面打开 AI 修改。'))
         if not session.blue_profile_id:
             raise UserError(self.env._('此会话没有绑定代码资产。'))
-        session.blue_profile_id._check_manager()
+        session._blue_check_binding()
         return session
 
     def _blue_lock_draft(self, session, expected_hash):
@@ -31,13 +34,16 @@ class BlueCodeAssetTools(models.AbstractModel):
     def _mcp_blue_read_code_asset(self):
         session = self._blue_asset_session()
         profile = session.blue_profile_id
+        schema = self.env['blue.extension.contract']._describe(profile.contract)
+        schema['instance_scope'] = profile._scope_snapshot()
+        bundle, reference = read_policy_knowledge(session._blue_check_binding(), session.blue_knowledge_reference)
+        session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_knowledge_reference': reference})
         return {'profile_id': profile.id, 'name': profile.name, 'hook_code': profile.hook_code,
                 'contract': profile.contract, 'code': profile.draft_code or '',
+                'contract_schema': schema, 'cloud_knowledge': bundle,
                 'tests': profile.draft_tests or '', 'requirements': profile.requirements or '',
                 'draft_hash': session.blue_draft_hash, 'current_draft_hash': profile._draft_hash(),
                 'release_id': profile.active_release_id.id or False,
-                'example_code': profile.template_id.code_text,
-                'example_tests': profile.template_id.test_cases,
                 'record_link': f'blue.config.profile,{profile.id}'}
 
     @api.model
@@ -49,9 +55,12 @@ class BlueCodeAssetTools(models.AbstractModel):
     def _mcp_blue_submit_code_draft(self, code, tests, requirements, expected_hash):
         session = self._blue_asset_session()
         profile = self._blue_lock_draft(session, expected_hash)
+        if not session.blue_knowledge_reference:
+            raise UserError(self.env._('请先读取代码资产和云端批准知识，再提交草稿。'))
         result = profile.action_submit_draft(
             code, tests, requirements, expected_release_id=profile.active_release_id.id or False,
             conversation_ref=f'muk_ai.session:{session.blue_session_uuid}',
+            knowledge_references=json.dumps(session.blue_knowledge_reference, ensure_ascii=False, sort_keys=True),
         )
         session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_draft_hash': result['draft_hash']})
         return result

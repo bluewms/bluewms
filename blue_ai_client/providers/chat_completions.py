@@ -60,8 +60,7 @@ class BlueCloudProvider(ProviderBase):
 
     def headers(self):
         sid = self.env.context.get('blue_ai_session_uuid') or str(uuid.uuid4())
-        connection = self._connection()
-        scope = hashlib.sha256((self.api_key + '\0' + (connection.agent_name or '')).encode()).hexdigest()[:16]
+        scope = self.identity_scope()
         sid = f'{sid}-{scope}'
         return {
             'Authorization': f'Bearer {self.api_key}',
@@ -69,6 +68,13 @@ class BlueCloudProvider(ProviderBase):
             'session-id': sid,
             'x-conversation-id': sid,
         }
+
+    def identity_scope(self):
+        connection = self._connection()
+        values = [str(self.env.uid), self.api_key, connection.agent_name or '',
+                  self.env.context.get('blue_ai_task_name') or TASK_NAME,
+                  str(self.env.company.id), self.env.context.get('blue_ai_contract') or '']
+        return hashlib.sha256('\0'.join(values).encode()).hexdigest()[:32]
 
     def _post(self, path, body, timeout, stream=False):
         """Do not follow credential-bearing redirects or echo upstream bodies."""
@@ -255,7 +261,7 @@ class BlueCloudProvider(ProviderBase):
             if not isinstance(questions, list) or not 1 <= len(questions) <= 3:
                 raise ValueError('invalid questions')
             targets = {'asset_confirm': '是，关联团队资产', 'team': TEAM_NAME,
-                       'agent': agent_name, 'task': TASK_NAME}
+                       'agent': agent_name, 'task': self.env.context.get('blue_ai_task_name') or TASK_NAME}
             answers, answered = {}, []
             for question in questions:
                 qid = question['id']

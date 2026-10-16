@@ -23,7 +23,8 @@ class BlueConfigProfile(models.Model):
     name = fields.Char('场景名称', required=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company, index=True)
-    template_id = fields.Many2one('blue.scene.template', '标准示例', required=True)
+    template_id = fields.Many2one('blue.scene.template', '策略接口', required=True)
+    cloud_managed = fields.Boolean(related='template_id.cloud_managed')
     hook_code = fields.Selection(related='template_id.hook_code', store=True)
     contract = fields.Char(related='template_id.contract')
     requirements = fields.Text('需求说明')
@@ -31,6 +32,7 @@ class BlueConfigProfile(models.Model):
     draft_tests = fields.Text('试算样例 JSON')
     draft_source = fields.Selection([('manual', '人工编辑'), ('example', '标准示例'), ('ai', 'AI生成')], default='manual', required=True)
     conversation_ref = fields.Char('AI会话引用')
+    knowledge_references = fields.Text('云端参考版本', readonly=True, copy=False)
     draft_base_release_id = fields.Many2one('blue.config.release', '草稿基础版本', readonly=True, ondelete='restrict', check_company=True)
     validated_version_id = fields.Many2one('blue.customization.version', '已验证代码版本', readonly=True, ondelete='restrict', check_company=True)
     active_release_id = fields.Many2one('blue.config.release', '当前正式版本', readonly=True, ondelete='restrict', check_company=True)
@@ -40,7 +42,7 @@ class BlueConfigProfile(models.Model):
     release_ids = fields.One2many('blue.config.release', 'profile_id', '发布历史')
     event_ids = fields.One2many('blue.config.event', 'profile_id', '审计记录')
 
-    @api.depends('draft_code', 'draft_tests', 'requirements', 'draft_source', 'conversation_ref', 'template_id', 'validated_version_id', 'active_release_id')
+    @api.depends('draft_code', 'draft_tests', 'requirements', 'draft_source', 'conversation_ref', 'knowledge_references', 'template_id', 'validated_version_id', 'active_release_id')
     def _compute_state(self):
         for profile in self:
             valid = profile.validated_version_id and profile.validated_version_id.content_hash == profile._draft_hash()
@@ -55,14 +57,14 @@ class BlueConfigProfile(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        protected = {'active_release_id', 'validated_version_id', 'draft_base_release_id', 'simulation_result', 'version_ids', 'release_ids', 'event_ids'}
+        protected = {'active_release_id', 'validated_version_id', 'draft_base_release_id', 'simulation_result', 'version_ids', 'release_ids', 'event_ids', 'knowledge_references'}
         if any(protected.intersection(vals) for vals in vals_list):
             raise AccessError(self.env._('Workflow fields cannot be supplied directly.'))
         return super().create(vals_list)
 
     def write(self, vals):
         internal = self.env.context.get('blue_asset_token') is ASSET_TOKEN
-        protected = {'active_release_id', 'validated_version_id', 'draft_base_release_id', 'simulation_result', 'version_ids', 'release_ids', 'event_ids'}
+        protected = {'active_release_id', 'validated_version_id', 'draft_base_release_id', 'simulation_result', 'version_ids', 'release_ids', 'event_ids', 'knowledge_references'}
         if protected.intersection(vals) and not internal:
             raise AccessError(self.env._('Use validation, publication or rollback to change workflow fields.'))
         if {'company_id', 'template_id'}.intersection(vals) and any(self.mapped('release_ids')):
@@ -91,10 +93,14 @@ class BlueConfigProfile(models.Model):
 
     def _draft_payload(self):
         self.ensure_one()
-        return {'contract': self.contract, 'template_id': self.template_id.id,
+        payload = {'contract': self.contract, 'template_id': self.template_id.id,
                 'code': self.draft_code or '', 'tests': self.draft_tests or '',
                 'requirements': self.requirements or '', 'source': self.draft_source,
                 'conversation_ref': self.conversation_ref or ''}
+        # An absent reference keeps pre-upgrade hashes and releases intact.
+        if self.knowledge_references:
+            payload['knowledge_references'] = self.knowledge_references
+        return payload
 
     def _draft_hash(self):
         return digest(self._draft_payload())
@@ -130,11 +136,14 @@ class BlueConfigProfile(models.Model):
 
     def action_load_example(self):
         self._check_manager()
+        if self.cloud_managed:
+            raise UserError(self.env._('此接口的通用示例由云端维护，请使用 AI 生成 / 修改。已有正式代码仍可新建草稿。'))
         self._lock()
         self.with_context(blue_asset_token=ASSET_TOKEN).write({
             'requirements': self.template_id.requirements, 'draft_code': self.template_id.code_text,
             'draft_tests': self.template_id.test_cases, 'draft_source': 'example', 'conversation_ref': False,
             'draft_base_release_id': self.active_release_id.id, 'validated_version_id': False, 'simulation_result': False,
+            'knowledge_references': False,
         })
         return True
 
@@ -145,11 +154,12 @@ class BlueConfigProfile(models.Model):
         if self.active_release_id:
             version = self.active_release_id.version_id
             values.update(draft_code=version.code_text, draft_tests=version.test_cases, requirements=version.requirements,
-                          draft_source='manual', conversation_ref=False)
+                          draft_source='manual', conversation_ref=False, knowledge_references=version.knowledge_references)
         self.with_context(blue_asset_token=ASSET_TOKEN).write(values)
         return True
 
-    def action_submit_draft(self, code, tests, requirements, expected_release_id=False, conversation_ref=False):
+    def action_submit_draft(self, code, tests, requirements, expected_release_id=False, conversation_ref=False,
+                            knowledge_references=False):
         """Future AI tool entry: submit a draft as the current authorized user."""
         self._check_manager()
         self._lock()
@@ -159,6 +169,8 @@ class BlueConfigProfile(models.Model):
             raise ValidationError(self.env._('Draft fields must be bounded text.'))
         if conversation_ref and (type(conversation_ref) is not str or len(conversation_ref) > 256):
             raise ValidationError(self.env._('Invalid conversation reference.'))
+        if knowledge_references and (type(knowledge_references) is not str or len(knowledge_references) > 16384):
+            raise ValidationError(self.env._('Invalid cloud knowledge references.'))
         self.env['blue.extension.contract']._validate_code(code, self.contract)
         if len(tests) > 262144:
             raise ValidationError(self.env._('Trial input is too large.'))
@@ -166,6 +178,7 @@ class BlueConfigProfile(models.Model):
             'draft_code': code, 'draft_tests': tests, 'requirements': requirements, 'draft_source': 'ai',
             'conversation_ref': conversation_ref, 'draft_base_release_id': self.active_release_id.id,
             'validated_version_id': False, 'simulation_result': False,
+            'knowledge_references': knowledge_references,
         })
         return {'profile_id': self.id, 'draft_hash': self._draft_hash(), 'state': 'draft'}
 
@@ -179,6 +192,7 @@ class BlueConfigProfile(models.Model):
             'requirements': self.requirements, 'test_cases': self.draft_tests, 'test_result': canonical(results),
             'content_hash': self._draft_hash(), 'source': self.draft_source, 'conversation_ref': self.conversation_ref,
             'base_release_id': self.draft_base_release_id.id,
+            'knowledge_references': self.knowledge_references,
         })
         self.with_context(blue_asset_token=ASSET_TOKEN).write({'validated_version_id': version.id, 'simulation_result': json.dumps(results, ensure_ascii=False, indent=2)})
         self._record_event('validated', details=version.content_hash)
@@ -198,6 +212,7 @@ class BlueConfigProfile(models.Model):
         snapshot = {'scope': self._scope_snapshot(), 'contracts': {self.hook_code: {
             'version_id': version.id, 'contract': version.contract, 'code': version.code_text,
             'content_hash': version.content_hash, 'tests': version.test_cases,
+            'knowledge_references': version.knowledge_references,
         }}}
         release = self.env['blue.config.release'].with_context(blue_asset_token=ASSET_TOKEN).create({
             'name': self.env._('%s - release', self.name), 'profile_id': self.id, 'company_id': self.company_id.id,

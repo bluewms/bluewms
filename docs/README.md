@@ -7,6 +7,7 @@
 - [模块分类与架构](planning/bluewms20-module-architecture.md)
 - [迁移选择](planning/bluewms20-migration-selection.md)
 - [原生上架规则与增强策略](migrations/putaway-rule-binding-20.md)
+- [上架 AI 云端知识接入与本地接口调整](migrations/putaway-cloud-knowledge-20.md)
 - [WCS 迁移交付](migrations/wcs-20.md)
 - [WCS 迁移规划](planning/bluewms20-wcs-migration.md)
 - [MuK AI 中文翻译](third-party/muk-ai-zh-2026-10-13.md)
