@@ -8,6 +8,6 @@
 | `putaway.same_picking` | [同一作业单优先集中](same-picking.md) | v1／v2 通用字段 | verified |
 | `putaway.same_batch_name` | [跨产品同批次号限制](same-batch-name.md) | v2 | verified |
 
-新增案例从 [模板](../../../templates/example-template.md) 复制，代码和测试写在新文件，并在本目录添加链接。三个案例共九条最小解释器试算，不替代容量／托盘／原生规则等业务回归。
+参考案例按 [案例格式](../../../templates/example-template.md) 记录完整代码、测试和适用合同。三个案例共九条最小解释器试算；生成新草稿时必须重新验证，不能替代容量／托盘／原生规则等真实业务校验。
 
-当前整理尚未重新发布云端，Odoo 仍读取原批准 Skill 的 `04-approved-putaway-examples.md`。人工维护分文件，发布时按 [映射](../../../publication-map.json) 汇编；不直接改运行时资源路径。共同规范见 [上架规范](../specification.md)。
+当前生成以读取工具实际返回的批准案例和本地合同为准，不能声称已经读过未返回的资料。共同能力及限制见 [上架规范](../specification.md)。

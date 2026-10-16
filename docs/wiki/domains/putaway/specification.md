@@ -44,4 +44,4 @@ hook：`putaway_policy`。状态：已实现并有验证证据。更新：2026-1
 
 先读取资产和批准知识，再提交并验证；用户审核发布。单据按“作业单＋原生规则”固定首次选中的策略／正式版本，含当时无策略的情况。发布新版本不改变旧绑定；回滚不撤销已经完成的库存移动。
 
-规范变更要同步本地实现与验证，云端文字不能修改能力。源码依据：[受限解释器](../../../../blue_extension_contract/tools/policy.py)、[机器可读合同](../../../../blue_extension_contract/tools/schema.py)、[候选输入](../../../../blue_stock_putaway/models/blue_config_profile.py)。交付证据见 [云端知识接入](../../../migrations/putaway-cloud-knowledge-20.md)。
+实际能力以当前工具返回的本地合同为准。知识只能说明现有字段和规则，不能新增能力或放宽校验；发生冲突时停止使用不匹配的示例，明确说明需要确认的接口版本。

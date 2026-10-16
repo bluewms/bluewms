@@ -119,4 +119,4 @@ for candidate in candidates:
 
 通过这些最小用例不代表已经测试所有业务组合；容量、托盘和真实单据行为需结合本地预览及业务回归。AI 生成新草稿后仍要执行它自己的测试并由用户发布，不能把参考代码的验证直接沿用为新代码验证。
 
-关联：[上架规范](../specification.md) · [示例目录](README.md) · [维护约定](../../../maintenance.md)。示例代码源自 `blue_stock_putaway`，代码许可 AGPL-3.0-or-later；后续修改保留来源和验证记录。
+关联：[上架规范](../specification.md) · [示例目录](README.md)。示例代码源自 `blue_stock_putaway`，代码许可 AGPL-3.0-or-later；后续修改保留来源和验证记录。

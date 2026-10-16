@@ -1,38 +1,29 @@
-# BlueWMS 项目 Wiki
+# Odoo AI 增强代码生成知识库
 
-更新：2026-10-17。这里是人工维护、Git 审阅的知识来源；供 AI 使用的批准正文发布到 TencentDB-Agent-Memory。Odoo 不会扫描本目录生成代码，修改文件也不会自动更新云端。
+用途：供 **Odoo 内的宝蓝代码助手**理解用户业务需求，并生成指定入口的补充代码和测试。维护日期：2026-10-17。
 
-## 先看哪里
+这里的知识面向运行在 Odoo 中的代码生成助手，不面向仓库源码开发。内容只包含生成通用规则、各业务入口的输入／输出／限制及验证过的代码示例。项目架构、Git 操作、开发机安装、云服务器配置和联调历史单独放在工程文档中，不作为本知识库的生成资料。
 
-| 需要维护的内容 | 文件 |
+## 通用生成说明
+
+| AI 需要了解什么 | 资料 |
 |---|---|
-| 项目分工、本地与云端各保存什么、Code Graph 的定位 | [基础说明](basics/overview.md) |
-| AI 收到什么、如何读取资产、提交、验证及发布 | [AI 生成工作流](basics/ai-generation-workflow.md) |
-| Tencent 服务、团队、Agent、Task、Wiki 与 Skill 配置 | [TencentDB-Agent-Memory 配置](basics/tencent-memory-configuration.md) |
-| 新增、审阅、发布、失效和历史记录怎么维护 | [维护约定](maintenance.md) |
-| 本地文档与现有云端资源如何对应 | [发布映射](publication-map.json) |
-| 新增示例时复制的格式 | [示例模板](templates/example-template.md) |
-| 2026-10-16 配置纠正、联调与旧决策证据 | [历史记录](history/2026-10-16-configuration-and-verification.md) |
+| 自己的任务、输入与输出、能力边界和代码取舍 | [AI 代码生成通用规则](basics/overview.md) |
+| 如何读取当前资产、追问业务需求、提交并验证草稿 | [生成步骤与工具规则](basics/ai-generation-workflow.md) |
+| 一个完整参考案例应包含什么 | [案例格式](templates/example-template.md) |
+
+知识正文供云端批准后读取；当前 Odoo 读取批准 Skill 的指定资源，不会扫描这个本地文件夹。知识只能解释已有能力，实际生成以当前会话返回的本地接口合同为准。
 
 ## 五类 AI 入口
 
-每类一个目录；`specification.md` 只维护规范，`examples/` 只维护案例。每个可执行案例独立一页，代码、测试和证据放在一起。
+每类独立保存 `specification.md` 规范和 `examples/` 案例。示例中的字段、语法和输出只能用于其标明的合同，不能跨领域照搬。
 
-| 业务领域 | hook | 规范 | 示例 | 实现状态 |
+| 生成入口 | hook | 规范 | 示例 | 当前可用性 |
 |---|---|---|---|---|
-| 上架策略 | `putaway_policy` | [上架规范](domains/putaway/specification.md) | [示例目录](domains/putaway/examples/README.md) | 已实现 AI 草稿闭环，三个标准案例已验证 |
-| ERP 接口 | `erp_mapping` | [ERP 规范草案](domains/erp/specification.md) | [需求示例](domains/erp/examples/README.md) | AI 合同与工具待实现 |
-| WCS 生成策略 | `wcs_creation` | [WCS 规范草案](domains/wcs/specification.md) | [需求示例](domains/wcs/examples/README.md) | 已有 WCS 业务与手动策略，AI 入口待接入 |
-| 设备连接接口 | `device_protocol` | [设备规范草案](domains/equipment/specification.md) | [需求示例](domains/equipment/examples/README.md) | AI 合同与工具待实现 |
-| 条码扫描策略 | `barcode_policy` | [条码规范草案](domains/barcode/specification.md) | [需求示例](domains/barcode/examples/README.md) | AI 合同与工具待实现 |
+| 上架策略 | `putaway_policy` | [上架生成规范](domains/putaway/specification.md) | [三个已验证案例](domains/putaway/examples/README.md) | 可读取、提交并验证草稿；人工发布 |
+| ERP 接口 | `erp_mapping` | [ERP 规范草案](domains/erp/specification.md) | [需求案例](domains/erp/examples/README.md) | planned；当前不能生成可执行草稿 |
+| WCS 生成策略 | `wcs_creation` | [WCS 规范草案](domains/wcs/specification.md) | [需求案例](domains/wcs/examples/README.md) | 已有手动业务策略，AI 入口尚未开放 |
+| 设备连接接口 | `device_protocol` | [设备规范草案](domains/equipment/specification.md) | [需求案例](domains/equipment/examples/README.md) | planned；当前不能生成可执行草稿 |
+| 条码扫描策略 | `barcode_policy` | [条码规范草案](domains/barcode/specification.md) | [需求案例](domains/barcode/examples/README.md) | planned；当前不能生成可执行草稿 |
 
-当前实现说明以开发提交 `ad35793` 为依据，交付版本和验证范围见 [上架云端知识接入](../migrations/putaway-cloud-knowledge-20.md)。整理时该提交位于待合并的 PR #4；不要把开发机已安装理解为所有环境已经升级。
-
-## 长期增加内容
-
-1. 改共同原则、流程或配置，进入 `basics/`；改某类输入／输出／限制，进入该类规范。
-2. 新案例从模板复制到该类 `examples/`，用稳定的英文文件名，并在该类示例目录添加链接。
-3. 规划案例标记 `planned`；有准确代码和验证证据后标记 `verified`；云端批准发布另记状态，不能仅靠文件标签认定批准。
-4. 经 PR 审阅后按发布映射更新云端，记录来源提交、发布版本和摘要。新增领域时创建相同结构并更新本页。
-
-本目录不保存凭据、客户原始聊天、数据库备份或真实业务单据。运维记录按日期进入 `history/`，日常规范不要混入某次会话的排错经过。
+只有当前入口已开放且合同匹配的规范／案例可用于生成。planned 文稿只帮助沟通业务需求，不能据此发明工具、接口字段或执行代码。每份新草稿都必须重新验证，参考案例的验证结果不能替代新代码的验证。

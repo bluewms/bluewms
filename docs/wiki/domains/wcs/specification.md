@@ -22,4 +22,4 @@ AI 接入前必须为实际支持版本提供完整机器可读合同，覆盖�
 
 需求案例见 [WCS 示例目录](examples/README.md)。现有手动策略代码和测试继续由模块管理，不在此冒充已批准的 AI 示例。
 
-实现依据：[WCS 合同适配](../../../../blue_wcs_extension/models/blue_extension_contract.py)、[WCS 试算验证](../../../../blue_wcs_extension/models/blue_config_profile.py)、[业务交付](../../../migrations/wcs-20.md)。
+当前 AI 入口未开放，不得根据这份草案直接提交或执行任务生成代码。开放后须先读取本地实际合同，再选择已验证且版本匹配的案例。

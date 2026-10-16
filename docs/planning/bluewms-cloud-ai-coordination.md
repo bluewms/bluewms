@@ -48,4 +48,4 @@ Git 保存公开工程文档和知识来源；云端作为 AI 的知识发布／
 
 - [客户端模块计划](blue-ai-client-module-plan.md)
 - [2026-10-13 首期交付](../third-party/blue-ai-client-install-2026-10-13.md)
-- [2026-10-16 配置、纠正与验证](../wiki/history/2026-10-16-configuration-and-verification.md)
+- [2026-10-16 配置、纠正与验证](../third-party/tencent-memory-configuration-2026-10-16.md)

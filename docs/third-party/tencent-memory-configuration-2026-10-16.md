@@ -2,7 +2,7 @@
 
 知识状态：`historical`。归档：2026-10-17。以下保留原综合文档的内容和当时表述，包含同日客户端改造后的补充；用于追溯，不作为今天的健康检查或持续维护入口。
 
-现行说明见 [Wiki 总目录](../README.md)、[配置说明](../basics/tencent-memory-configuration.md) 和 [上架规范](../domains/putaway/specification.md)。原文件已改为导航，旧章节不再继续追加内容。
+现行说明见 [Wiki 总目录](../wiki/README.md)、[配置说明](../architecture/tencent-memory-configuration.md) 和 [上架规范](../wiki/domains/putaway/specification.md)。原文件已改为导航，旧章节不再继续追加内容。
 
 ---
 
@@ -37,7 +37,7 @@
 
 “文档集中云端”指 AI 使用的知识发布和检索入口，不要求删除开源工程的 README、部署说明、接口源码和 Git 版本记录。云端资料保存来源提交、适用版本与摘要；不要在客户 Odoo 内另维护一套私有知识库。
 
-本轮客户端改造后，`blue.scene.template` 为上架保留 `hook_code`、`contract`、批次要求等运行定义，停止回传通用示例。新接口不含示例正文；原系统接口仅保留兼容 ID 和批次语义，出厂示例正文按准确摘要清理，管理员修改内容保留待处理。当前草稿、正式代码、测试及单据绑定不改。见 [上架云端知识接入交付](../../migrations/putaway-cloud-knowledge-20.md)。
+本轮客户端改造后，`blue.scene.template` 为上架保留 `hook_code`、`contract`、批次要求等运行定义，停止回传通用示例。新接口不含示例正文；原系统接口仅保留兼容 ID 和批次语义，出厂示例正文按准确摘要清理，管理员修改内容保留待处理。当前草稿、正式代码、测试及单据绑定不改。见 [上架云端知识接入交付](../migrations/putaway-cloud-knowledge-20.md)。
 
 ## 3. 当前服务器配置快照
 
@@ -177,20 +177,20 @@ skipped: ask_user pending, call again after user answer
 
 已验证：三个服务健康；共享 Skill 和 Wiki 的访问；私有记忆隔离；三层策略按团队生效；五类与兼容 Task 的 Agent 绑定；Wiki ready／版本 3／五份锁定正文；`else`、`same_picking`、ERP 检索；三个示例的九个用例及上传代码原文一致。
 
-后续客户端验证与升级细节见 [本轮交付](../../migrations/putaway-cloud-knowledge-20.md)。未声称完成：直接 Wiki 检索、任意 Skill 资源读取、四个新 AI 业务入口、多人同时编辑压力验证、所有云端资产逐项业务验收和整套云服务灾备恢复演练。
+后续客户端验证与升级细节见 [本轮交付](../migrations/putaway-cloud-knowledge-20.md)。未声称完成：直接 Wiki 检索、任意 Skill 资源读取、四个新 AI 业务入口、多人同时编辑压力验证、所有云端资产逐项业务验收和整套云服务灾备恢复演练。
 
 Git 保留工程说明和批准知识来源；当前云端知识记录可独立检索。历史交付不重写为今天已经完成的事实；现行计划按本文修正，云端资源升级时更新本文与批准知识版本。
 
-参见 [AI 客户端模块计划](../../planning/blue-ai-client-module-plan.md)、[云端协作方案](../../planning/bluewms-cloud-ai-coordination.md)、[上架规则绑定](../../migrations/putaway-rule-binding-20.md)、[Git 同步](../../git-sync.md)。
+参见 [AI 客户端模块计划](../planning/blue-ai-client-module-plan.md)、[云端协作方案](../planning/bluewms-cloud-ai-coordination.md)、[上架规则绑定](../migrations/putaway-rule-binding-20.md)、[Git 同步](../git-sync.md)。
 
 ## 11. 本次冲突修订索引
 
 | 原有表述／歧义 | 本次更正 | 对应资料 |
 |---|---|---|
-| 云端主持业务工具循环，同时本地也执行多轮工具 | 当前 MuK 主持；云端后台编排单列后续方案，不能双重执行 | [协作方案](../../planning/bluewms-cloud-ai-coordination.md) |
-| 本地安装 blue_ai_skills 或由 Git 同步整套模板 | 云端发布批准正文；Git 留工程文档、回归测试和知识来源 | [正式计划](../../planning/bluewms20-development-plan.md)、[模块架构](../../module-architecture.md)、[Git 同步](../../git-sync.md) |
-| 固定日常任务看起来是永久五类组织方案 | 新上架会话进入上架策略；旧会话兼容日常任务，其他四类随业务合同开放 | [客户端计划](../../planning/blue-ai-client-module-plan.md)、[模块说明](../../../blue_ai_client/README.md) |
-| 读取资产即已返回完整接口规范 | 历史版本仅标识；本轮补齐上架机器可读合同并与真实输入对比 | [客户端计划](../../planning/blue-ai-client-module-plan.md) |
+| 云端主持业务工具循环，同时本地也执行多轮工具 | 当前 MuK 主持；云端后台编排单列后续方案，不能双重执行 | [协作方案](../planning/bluewms-cloud-ai-coordination.md) |
+| 本地安装 blue_ai_skills 或由 Git 同步整套模板 | 云端发布批准正文；Git 留工程文档、回归测试和知识来源 | [正式计划](../planning/bluewms20-development-plan.md)、[模块架构](../module-architecture.md)、[Git 同步](../git-sync.md) |
+| 固定日常任务看起来是永久五类组织方案 | 新上架会话进入上架策略；旧会话兼容日常任务，其他四类随业务合同开放 | [客户端计划](../planning/blue-ai-client-module-plan.md)、[模块说明](../../blue_ai_client/README.md) |
+| 读取资产即已返回完整接口规范 | 历史版本仅标识；本轮补齐上架机器可读合同并与真实输入对比 | [客户端计划](../planning/blue-ai-client-module-plan.md) |
 | 上传／绑定知识即模型已加载全文 | 区分共享、绑定、检索、正文加载；本轮实现批准 Skill 三个资源的真实加载 | 本文第 8 节 |
-| 历史“未连接 Tencent”“安装本地示例”被当作当前要求 | 保留按日期交付事实，加最新约定及兼容说明 | [首期上架](../../migrations/putaway-policy-20.md)、[AI 首期交付](../../third-party/blue-ai-client-install-2026-10-13.md) |
-| 首期本地发布必须依赖云端在线 | 当前本地验证／人工发布按本地权限，商业授权另行建模 | [正式计划](../../planning/bluewms20-development-plan.md) |
+| 历史“未连接 Tencent”“安装本地示例”被当作当前要求 | 保留按日期交付事实，加最新约定及兼容说明 | [首期上架](../migrations/putaway-policy-20.md)、[AI 首期交付](blue-ai-client-install-2026-10-13.md) |
+| 首期本地发布必须依赖云端在线 | 当前本地验证／人工发布按本地权限，商业授权另行建模 | [正式计划](../planning/bluewms20-development-plan.md) |
