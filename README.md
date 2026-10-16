@@ -12,7 +12,7 @@
 - **库存保护**：非负库存控制、库位冻结和禁止入库，含权限与例外处理。
 - **可编辑上架增强**：在 Odoo 原生上架规则中选择增强场景；人工编辑草稿，试算验证后发布，支持执行审计、版本固定及回滚。
 - **系统设置优先**：原生规则、存储类别、容量和混放约束先检查，增强代码在允许范围内进一步筛选／排序。支持整托盘不拆分和跨产品同批次号限制。
-- **界面与 AI 配套**：包含 MuK Web、AI、Skills、MCP 及 `blue_ai_client`。云端模型连接和上架草稿闭环已有验证；每用户仍需配置自己的连接。Wiki／Skill 团队共享已配置，Odoo 云端正文读取与 Task 自动路由待实现。
+- **界面与 AI 配套**：包含 MuK Web、AI、Skills、MCP 及 `blue_ai_client`。上架 AI 从云端批准 Skill 读取示例、本地返回完整合同，新会话进入“上架策略”Task；每用户需配置自己的连接。其他四类 AI 入口按合同逐步接入。
 
 上架增强代码通过受限解释器处理纯数据，避免开放完整 Python 执行能力。保存草稿不会自动发布。场景、正式代码版本和执行记录存储在 Odoo 数据库中。
 
@@ -111,7 +111,7 @@ docker compose -f docker/compose.yaml ps
 
 ## 开发与验证
 
-功能按独立任务分支开发，提交应说明问题、修改范围和验证结果。模块结构或数据发生变化时，更新相应模块版本并执行升级；Python 修改后重启 Odoo。
+功能按独立任务分支开发，提交应说明问题、修改范围和验证结果。`main` 已启用 PR 合并保护，通过任务分支提交 PR 后 squash 合并。模块结构或数据发生变化时，更新相应模块版本并执行升级；Python 修改后重启 Odoo。
 
 2026-10-12 的交付记录包含：
 
@@ -120,7 +120,9 @@ docker compose -f docker/compose.yaml ps
 
 这些是记录中的开发基线结果。测试范围、边界、源码摘要和运行方式见 [上架交付记录](docs/migrations/putaway-rule-binding-20.md)、[库存规则记录](docs/migrations/stock-rules-20.md) 和 [MuK AI 记录](docs/third-party/muk-ai-install-2026-10-12.md)。
 
-数据库中的策略资产、业务记录和附件不通过 Git 同步；Git 管理模块代码、回归测试、公开工程文档及知识来源；供 AI 使用的批准通用示例、说明和 Skill 正文集中云端。当前本地示例仅作兼容，完成模板解耦及知识桥接后再停止回传。
+2026-10-16 上架云端知识改造：AI／上架／WCS 联合测试 150 项通过，两个真实云端生成场景完成读取、提交、验证且未发布。范围与升级方法见 [本轮交付](docs/migrations/putaway-cloud-knowledge-20.md)。
+
+数据库中的策略资产、业务记录和附件不通过 Git 同步；Git 管理模块代码、回归测试、公开工程文档及知识来源；供 AI 使用的批准通用示例、说明和 Skill 正文集中云端。上架 AI 已停止本地通用示例回传，保留本地运行定义、当前代码及本次测试。
 
 ## 参与贡献
 
@@ -137,10 +139,10 @@ docker compose -f docker/compose.yaml ps
 
 - `blue_wcs_*`：自动化设备接口、作业执行与 WCS 协同。
 - 独立条码模块：与库存基础模块分开规划。
-- AI 知识接入：完善受限云端 Wiki／Skill 正文读取、完整合同返回和五类 Task 路由，分离本地运行定义与通用示例；本地保留代码、测试、发布、执行和回滚。
+- AI 知识接入：完善 Wiki 直接检索和更多参考资源，按各入口合同扩展 ERP、WCS、设备和条码；本地保留代码、测试、发布、执行和回滚。
 - 持续完善 Odoo 20 迁移、测试及部署文档。
 
-当前知识分工和已验证配置见 [云端知识与 AI 工作流](docs/architecture/cloud-knowledge-and-ai-workflow.md)。
+供 Odoo 内 AI 生成增强代码使用的通用规则、五类接口规范与示例见 [Odoo AI 代码生成知识库](docs/wiki/README.md)。
 
 进展与范围见 [开发规划](docs/planning/bluewms20-development-plan.md) 和 [模块架构](docs/planning/bluewms20-module-architecture.md)。规划能力在实际交付后再加入“当前功能”。
 

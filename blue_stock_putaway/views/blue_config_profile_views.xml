@@ -10,6 +10,7 @@
     </record>
     <record id="blue_config_profile_action_putaway" model="ir.actions.act_window">
         <field name="name">上架策略</field><field name="res_model">blue.config.profile</field><field name="view_mode">list,form</field><field name="domain">[('hook_code','=','putaway_policy')]</field>
+        <field name="context" eval="{'default_template_id': ref('blue_scene_template_putaway')}"/>
     </record>
     <menuitem id="blue_config_profile_menu_putaway" name="上架策略" parent="stock.menu_stock_config_settings" action="blue_config_profile_action_putaway" sequence="25" groups="stock.group_stock_manager"/>
 </odoo>

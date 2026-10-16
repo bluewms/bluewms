@@ -3,6 +3,7 @@ import json
 from odoo import Command
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import TransactionCase, new_test_user
+from odoo.tools import file_open
 
 from odoo.addons.blue_extension_contract.tools.policy import PolicyError, run_policy
 from odoo.addons.blue_stock_putaway.models.policy_guard import POLICY_TOKEN
@@ -12,6 +13,11 @@ class TestPutaway(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Regression fixtures are test-only data, not installed generation examples.
+        with file_open('blue_stock_putaway/tests/data/putaway_regression_cases.json') as source:
+            examples = json.load(source)
+        for xml_id, values in examples.items():
+            cls.env.ref('blue_stock_putaway.' + xml_id).write(dict(values, cloud_managed=False))
         cls.warehouse = cls.env['stock.warehouse'].create({'name': 'Blue policy test warehouse', 'code': 'BPOL', 'company_id': cls.env.company.id})
         cls.root = cls.env['stock.location'].create({'name': 'Blue policy area', 'usage': 'view', 'location_rank': 'area',
                                                     'location_id': cls.warehouse.lot_stock_id.id, 'company_id': cls.env.company.id})
@@ -36,6 +42,13 @@ class TestPutaway(TransactionCase):
         self.profile.action_validate()
         self.profile.action_publish()
         return self.profile.active_release_id
+
+    def test_machine_contract_matches_actual_putaway_payload_fields(self):
+        payload = self.profile._prepare_putaway_payload(self._line(), self.native_rule)
+        schema = self.env['blue.extension.contract']._describe(self.profile.contract)
+        self.assertEqual(set(payload['request']), set(schema['input']['runtime_request_fields']))
+        self.assertTrue(payload['candidates'])
+        self.assertEqual(set(payload['candidates'][0]), set(schema['input']['runtime_candidate_fields']))
 
     def _stock(self, location, qty, lot=None, product=None):
         return self.env['stock.quant']._update_available_quantity(product or self.product, location, qty, lot_id=lot or self.lots[0])

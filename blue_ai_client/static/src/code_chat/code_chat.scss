@@ -1,0 +1,17 @@
+.o_blue_ai_client_code_window {
+    --mk-window-height: #{'min(644px, calc(100dvh - 80px))'};
+
+    width: 437px;
+
+    &.o_blue_ai_client_code_window_expanded:not(.mk_window_min) {
+        --mk-window-height: #{'min(860px, calc(100dvh - 96px))'};
+
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        width: 1000px;
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 10px;
+        z-index: 1;
+    }
+}

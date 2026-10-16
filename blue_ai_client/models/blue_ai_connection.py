@@ -15,7 +15,7 @@ class BlueAIConnection(models.Model):
     agent_name = fields.Char('云端 Agent 名称', help='与云端名称完全一致，不填写 Agent ID。')
     api_key = fields.Char('业务用户 API Key', groups='base.group_system', copy=False)
     team_name = fields.Char('固定团队', compute='_compute_fixed_names')
-    task_name = fields.Char('固定任务', compute='_compute_fixed_names')
+    task_name = fields.Char('普通聊天任务', compute='_compute_fixed_names')
 
     _unique_user = models.Constraint('unique(user_id)', '每个 Odoo 用户只能有一份云端连接。')
 
