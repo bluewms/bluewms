@@ -142,7 +142,7 @@ docker compose -f docker/compose.yaml ps
 - AI 知识接入：完善 Wiki 直接检索和更多参考资源，按各入口合同扩展 ERP、WCS、设备和条码；本地保留代码、测试、发布、执行和回滚。
 - 持续完善 Odoo 20 迁移、测试及部署文档。
 
-当前知识分工和已验证配置见 [云端知识与 AI 工作流](docs/architecture/cloud-knowledge-and-ai-workflow.md)。
+长期维护的基础说明、五类 AI 规范与示例见 [项目 Wiki](docs/wiki/README.md)。
 
 进展与范围见 [开发规划](docs/planning/bluewms20-development-plan.md) 和 [模块架构](docs/planning/bluewms20-module-architecture.md)。规划能力在实际交付后再加入“当前功能”。
 

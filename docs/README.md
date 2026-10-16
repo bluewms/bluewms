@@ -2,7 +2,7 @@
 
 本仓库管理开发模块、Docker Compose、公开工程说明、知识来源、开发规划和交付记录。供 AI 使用的批准通用示例、业务知识与 Skill 正文集中在云端 TencentDB-Agent-Memory 发布／检索；Git 不充当客户本地私有知识库。
 
-- [云端知识、Tencent 配置与今日 AI 工作流（2026-10-16）](architecture/cloud-knowledge-and-ai-workflow.md)
+- [项目 Wiki：基础说明、五类 AI 规范与示例](wiki/README.md)
 - [开发规划](planning/bluewms20-development-plan.md)
 - [模块分类与架构](planning/bluewms20-module-architecture.md)
 - [迁移选择](planning/bluewms20-migration-selection.md)
@@ -15,6 +15,8 @@
 - [多台 Mac 的 Git 同步](git-sync.md)
 
 `docs/planning/` 收录原 `odoo/bluewms20-doc` 的规划文件。以后维护、同步规划时修改这里；仓库外的旧目录作为历史副本，Git 不会同步那个目录。
+
+`wiki/` 是长期人工维护的知识来源：基础说明、五类规范、逐项示例、发布映射和历史记录分开。具体维护格式与新增方法见 [Wiki 维护约定](wiki/maintenance.md)。
 
 第三方模块来源、许可证、版本和验证记录在 `third-party/`；自研模块迁移、测试边界和源码摘要在 `migrations/`。
 

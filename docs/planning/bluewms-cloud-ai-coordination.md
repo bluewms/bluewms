@@ -1,6 +1,6 @@
 # BlueWMS 云端知识与本地 AI 工具协作方案
 
-更新：2026-10-16。现行依据：[云端知识、Tencent 配置与 AI 工作流](../architecture/cloud-knowledge-and-ai-workflow.md)。原云端任务网关方案保留为后续选项，不作为已实现流程。
+更新：2026-10-16。现行依据：[云端知识、Tencent 配置与 AI 工作流](../wiki/README.md)。原云端任务网关方案保留为后续选项，不作为已实现流程。
 
 ## 当前分工
 
@@ -48,4 +48,4 @@ Git 保存公开工程文档和知识来源；云端作为 AI 的知识发布／
 
 - [客户端模块计划](blue-ai-client-module-plan.md)
 - [2026-10-13 首期交付](../third-party/blue-ai-client-install-2026-10-13.md)
-- [2026-10-16 配置、纠正与验证](../architecture/cloud-knowledge-and-ai-workflow.md)
+- [2026-10-16 配置、纠正与验证](../wiki/history/2026-10-16-configuration-and-verification.md)

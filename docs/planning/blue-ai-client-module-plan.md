@@ -1,6 +1,6 @@
 # blue_ai_client 模块与设置
 
-更新：2026-10-16。现行依据：[云端知识、Tencent 配置与 AI 工作流](../architecture/cloud-knowledge-and-ai-workflow.md)。
+更新：2026-10-16。现行依据：[云端知识、Tencent 配置与 AI 工作流](../wiki/README.md)。
 
 ## 已实现
 

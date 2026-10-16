@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "mode": "manual_reviewed_publication",
+  "updated": "2026-10-17",
+  "note": "来源映射，不是自动同步程序；本次目录重组未发布云端，不改变客户端三个固定资源路径。 sources 相对本文件。",
+  "skill_name": "bluewms-policy-authoring",
+  "existing_skill_resources": [
+    {
+      "path": "01-project-and-governance.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "basics/overview.md",
+        "basics/ai-generation-workflow.md"
+      ],
+      "scope": "共同分工与工作流；发布前复核不含 planned 的执行宣称"
+    },
+    {
+      "path": "02-hook-roadmap.md",
+      "loaded_by_odoo": false,
+      "sources": [
+        "README.md"
+      ],
+      "scope": "五类 hook 与实现状态；规划内容保持 planned"
+    },
+    {
+      "path": "03-policy-contract.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "domains/putaway/specification.md"
+      ],
+      "scope": "上架合同参考；运行时 contract_schema 优先"
+    },
+    {
+      "path": "04-approved-putaway-examples.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "domains/putaway/examples/same-lot.md",
+        "domains/putaway/examples/same-picking.md",
+        "domains/putaway/examples/same-batch-name.md"
+      ],
+      "scope": "仅发布 verified 案例的准确代码、测试、限制与证据"
+    },
+    {
+      "path": "05-cloud-knowledge-plan.md",
+      "loaded_by_odoo": false,
+      "sources": [
+        "basics/tencent-memory-configuration.md",
+        "maintenance.md"
+      ],
+      "scope": "配置和维护方法；不包含凭据或私有运维回执"
+    }
+  ],
+  "wiki_publication": {
+    "source_layout": "preserve_topic_and_example_pages",
+    "review_required": true,
+    "include": [
+      "basics/overview.md",
+      "basics/ai-generation-workflow.md",
+      "basics/tencent-memory-configuration.md",
+      "maintenance.md",
+      "domains/putaway/specification.md",
+      "domains/putaway/examples/README.md",
+      "domains/putaway/examples/same-lot.md",
+      "domains/putaway/examples/same-picking.md",
+      "domains/putaway/examples/same-batch-name.md"
+    ],
+    "note": "可按本目录主题逐页维护；云端页面路径和资源版本由发布时核对，不声称已创建。"
+  },
+  "planned_domain_sources": [
+    "domains/erp/specification.md",
+    "domains/erp/examples/README.md",
+    "domains/wcs/specification.md",
+    "domains/wcs/examples/README.md",
+    "domains/equipment/specification.md",
+    "domains/equipment/examples/README.md",
+    "domains/barcode/specification.md",
+    "domains/barcode/examples/README.md"
+  ],
+  "not_approved_example_sources": [
+    "templates/example-template.md",
+    "history/2026-10-16-configuration-and-verification.md"
+  ],
+  "publication_receipt_required": [
+    "source_commit",
+    "knowledge_ids",
+    "contract_versions",
+    "content_sha256",
+    "cloud_asset_version",
+    "approval_status",
+    "published_at",
+    "operator"
+  ],
+  "assembly": "reviewed_section_selection_not_whole_file_concatenation",
+  "current_odoo_bundle_limit_bytes": 32768,
+  "assembly_note": "sources 是维护来源，不是全文拼接指令；只摘取适用章节、保留准确代码和测试，发布前连同 Skill 主文和 JSON 包装计算 UTF-8 总字节。"
+}
