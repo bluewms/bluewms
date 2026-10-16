@@ -1,6 +1,6 @@
 # 多台 Mac 的 Git 同步
 
-同步仓库为 `https://github.com/bluewms/bluewms.git`。本仓库管理 `bluewms` 下的第三方／自研模块、Docker Compose、脚本和开发文档；官方 Odoo 20 源码目录 `odoo20` 是单独仓库，不在本仓库内。
+同步仓库为 `https://github.com/bluewms/bluewms.git`。本仓库管理 `bluewms` 下的第三方／自研模块、Docker Compose、回归测试、公开工程文档及云端知识来源；官方 Odoo 20 源码目录 `odoo20` 是单独仓库，不在本仓库内。
 
 ## 日常操作
 
@@ -40,5 +40,7 @@ U 盘复制的项目保留旧 Git 历史，但当时新模块尚未提交。首�
 - 本机 Codex 项目关联和登录状态、用户目录里的 skills 安装副本。
 
 这些内容使用配套数据库／附件备份、明确的配置资产导出或技能安装更新。源码中的策略模板和运行框架可以通过 Git 同步；页面中编辑后保存的策略记录仍属于数据库数据。
+
+供 AI 使用的批准示例、业务说明和 Skill 正文由云端发布／检索。Git 保留可审阅的来源和工程文档，拉取 Git 不会自动更新云端资产或每台机器的 Skill 安装。知识升级需独立验证、审批及绑定，见 [现行知识分工](architecture/cloud-knowledge-and-ai-workflow.md)。
 
 开发规划以 `docs/planning/` 为版本控制入口；本机 `odoo/bluewms20-doc` 的历史副本不由这个 Git 仓库同步。

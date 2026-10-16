@@ -1,5 +1,7 @@
 # Odoo 20 与 Owl 3 对 BlueWMS 开发的帮助
 
+> **2026-10-16 现行知识决策**：原调查与按日期的交付条目保留为历史，不能把“当时尚未连接云端”当作当前状态。云端示例／说明／Skill 统一管理，本地保留真实运行合同、策略代码和验证发布；当前仅上架完成 AI 草稿闭环。详见 [云端知识与 AI 工作流](../architecture/cloud-knowledge-and-ai-workflow.md)。
+
 ## 2026-10-12 命名与分类更新
 
 新 20 模块统一采用 `blue_<领域>_<功能>`：库存 `blue_stock_*`、设备 `blue_wcs_*`，条码独立为 `blue_barcode_*`；所有模块直接位于 `bluewms` 下，不建立分类目录。非 `blue_` 的额外 addon 按第三方来源管理，官方 Odoo 基础保持原名。旧 19 名称保留为代码调查和迁移引用，历史 `blueprj_*` 及单功能名称不作为新 20 命名标准。详细目标、来源核查和依赖边界见 [模块分类与命名规划](/Users/jianglang/odoo/bluewms20-doc/bluewms20-module-architecture.md)。

@@ -1,5 +1,7 @@
 # BlueWMS20 模块分类与命名规划
 
+> **2026-10-16 现行知识决策**：AI 知识适配统一在 blue_ai_client，不另建本地示例库式 blue_ai_skills／blue_ai_memory。一个项目团队、各用户 Agent、五类 Task；当前本地模板只作兼容，待解耦后停止示例回传。详见 [云端知识与 AI 工作流](architecture/cloud-knowledge-and-ai-workflow.md)。
+
 版本：1.0｜日期：2026-10-12｜状态：目录与命名原则已确认；具体拆分及旧模块对应关系用于迁移评审，尚未执行改名。
 
 ## 1. 已确认的原则
@@ -23,7 +25,7 @@
 | WCS／设备 | `blue_wcs_base`、`blue_wcs_mita`、`blue_wcs_m4`、`blue_wcs_tusk`、`blue_wcs_modula`、`blue_wcs_barcode` | 任务、设备注册、持久发送、回执及厂商协议；独立条码／盘点桥接 |
 | ERP／外部接口 | `blue_erp_base`、`blue_erp_<系统>` | 鉴权、产品／单据映射、幂等创建与反馈；从旧 WCS 接口逐步分离 |
 | 场景、合同与资产 | `blue_extension_contract`、`blue_config_asset`、`blue_delivery_asset` | 业务合同、受限执行器、版本、统一发布、应用事件、导出与恢复；无 AI 也能运行 |
-| AI／知识／授权 | `blue_ai_client`、`blue_ai_skills`、`blue_ai_license` | MuK provider 与专用工具、blue_ai_client 内的云端知识／记忆适配、授权入口；云端账本另行管理 |
+| AI／知识／授权 | `blue_ai_client`；后续授权按明确需求独立交付 | MuK provider、专用工具及受限云端知识适配；示例／说明／Skill 正文在云端，不另建本地 `blue_ai_skills`／`blue_ai_memory` 知识模块；账本另行管理 |
 | 产品界面 | `blue_web_theme`、`blue_web_login` | 宝蓝主菜单、品牌和登录界面；通过继承扩展 MuK，不修改上游核心 |
 | 看板与培训 | `blue_report_stock`、`blue_training_exam` | 可选报表、看板、培训考试，不进入库存基础强依赖 |
 | 公共平台辅助 | `blue_system_cron`、`blue_dev_environment` | 确有需求时提供秒级任务等；开发标识模块只供开发环境 |
