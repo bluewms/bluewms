@@ -29,5 +29,5 @@ class BlueConfigProfile(models.Model):
             'blue_company_id': self.company_id.id,
             'blue_identity_scope': provider._get_client().identity_scope(),
         })
-        return {'type': 'ir.actions.client', 'tag': 'muk_ai.chat', 'name': session.name,
+        return {'type': 'ir.actions.client', 'tag': 'blue_ai_client.open_code_chat', 'name': session.name,
                 'params': {'session_id': session.id}}

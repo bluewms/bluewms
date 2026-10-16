@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="blue_ai_client.CodeChatWindow" t-inherit="muk_ai.ChatWindow"
+       t-inherit-mode="primary">
+        <xpath expr="//div[hasclass('mk_window')]" position="attributes">
+            <attribute name="t-att-class">{
+                mk_window_min: this.props.minimized,
+                o_blue_ai_client_code_window: !!this.codeWindow(),
+                o_blue_ai_client_code_window_expanded: !!this.codeWindow()?.blueExpanded,
+            }</attribute>
+        </xpath>
+        <xpath expr="//span[@title='Open fullscreen']" position="before">
+            <span t-if="this.codeWindow()"
+                  class="mk_window_btn d-inline-flex align-items-center justify-content-center rounded-3"
+                  t-on-click.stop="() => this.toggleCodeWindowSize()">
+                <span t-if="this.codeWindow().blueExpanded" title="恢复窗口大小"
+                      class="d-inline-flex align-items-center justify-content-center w-100 h-100">
+                    <i class="oi" data-icon="fullscreen_exit"/>
+                </span>
+                <span t-else="" title="放大聊天窗口"
+                      class="d-inline-flex align-items-center justify-content-center w-100 h-100">
+                    <i class="oi" data-icon="fullscreen"/>
+                </span>
+            </span>
+        </xpath>
+        <xpath expr="//span[@title='Open fullscreen']" position="attributes">
+            <attribute name="t-if">!this.codeWindow()</attribute>
+        </xpath>
+    </t>
+</templates>
