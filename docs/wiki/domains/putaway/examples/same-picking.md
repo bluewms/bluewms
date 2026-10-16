@@ -1,12 +1,12 @@
 # 同一作业单优先集中
 
-知识 ID：`putaway.same_picking`  
-知识状态：`verified`（代码与声明用例已验证；云端批准／发布另行记录）  
-hook：`putaway_policy`  
-适用合同：`putaway_policy/1（v2 同字段可用）`  
-来源：开发提交 `ad35793` 的 `blue_stock_putaway/tests/data/putaway_regression_cases.json` 中 `blue_scene_template_same_picking`  
-本页复核日期：2026-10-17  
-代码 SHA-256：`ec0ec15aeb7b7e58f60223ad7fa435c2ebd23482dce02e937759ecd2bf5c2131`  
+- 知识 ID：`putaway.same_picking`
+- 知识状态：`verified`（代码与声明用例已验证；云端批准／发布另行记录）
+- hook：`putaway_policy`
+- 适用合同：`putaway_policy/1（v2 同字段可用）`
+- 来源：开发提交 `ad35793` 的 `blue_stock_putaway/tests/data/putaway_regression_cases.json` 中 `blue_scene_template_same_picking`
+- 本页复核日期：2026-10-17
+- 代码 SHA-256：`ec0ec15aeb7b7e58f60223ad7fa435c2ebd23482dce02e937759ecd2bf5c2131`
 云端发布：原准确案例已在既有批准资源使用；本次分文件整理尚未重新发布。
 
 ## 需求与适用范围
