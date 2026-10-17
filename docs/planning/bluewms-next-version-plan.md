@@ -1,5 +1,7 @@
 # BlueWMS20 下一版本开发计划：AI 定制授权与客户配置资产
 
+> **2026-10-16 现行知识决策**：本文为历史方案，现行实施以正式计划及最新知识决策为准。通用示例／说明／Skill 正文集中云端，当前 MuK 主持工具循环，本地保留真实合同及策略代码／测试／发布执行记录；客户端知识读取和 Task 路由仍待完成。详见 [云端知识与 AI 工作流](../architecture/cloud-knowledge-and-ai-workflow.md)。
+
 ## 2026-10-12 命名与分类更新
 
 新 20 模块统一采用 `blue_<领域>_<功能>`：库存 `blue_stock_*`、设备 `blue_wcs_*`，条码独立为 `blue_barcode_*`；所有模块直接位于 `bluewms` 下，不建立分类目录。非 `blue_` 的额外 addon 按第三方来源管理，官方 Odoo 基础保持原名。旧 19 名称保留为代码调查和迁移引用，历史 `blueprj_*` 及单功能名称不作为新 20 命名标准。详细目标、来源核查和依赖边界见 [模块分类与命名规划](/Users/jianglang/odoo/bluewms20-doc/bluewms20-module-architecture.md)。
@@ -39,7 +41,7 @@
 | 客户授权 | 宝蓝自己的云端授权与 AI 网关 | 一个项目一份授权、密钥更换、年费状态、额度、账单 |
 | 客户知识与实施记忆 | 已选定 TencentDB Agent Memory；实施接入验证 | 客户约束、实施历史、Wiki 示例与知识检索 |
 | 正式配置资产 | PostgreSQL＋不可变配置版本＋对象存储 | 每次正式变更的准确值、时间、发布状态、恢复材料 |
-| 生成代码 | Odoo 持久化脚本版本＋云端资产库；Git 管理模板与基础模块 | 五类入口脚本、本地执行、测试、追溯；复杂结构变更才生成客户模块 |
+| 生成代码 | Odoo 保存当前／正式代码与本次测试；云端管理批准示例／Skill；Git 管理基础模块、公开文档和知识来源 | 五类入口脚本、本地执行、测试、追溯；复杂结构变更才生成客户模块 |
 | 上游模型密钥 | 腾讯云 SSM 自定义凭据等专用保密存储 | 保存模型厂商和 Memory 的服务端凭据 |
 
 需要坚持四个区分：
@@ -807,8 +809,8 @@ draft → validated → approved → released → applied
 | `blue_config_asset` | `blue_extension_contract`、`mail` | 场景 profile／单点覆盖、脚本版本、草稿、统一发布、导出与恢复 | P1 |
 | `blue_wcs_extension` | `blue_wcs`、`blue_extension_contract` | WCS hook、设备注册和发送任务基础 | P1／P3 |
 | `blue_barcode_extension` | `stock_bluebarcode`、`blue_extension_contract` | 条码策略与能力目录 | P1 |
-| `blue_ai_client` | `muk_ai`、`blue_config_asset` | 宝蓝 provider、五类 AI 弹窗、Wiki 生成任务、Tencent 记忆 API 适配、授权与发布工具 | P2 |
-| `blue_ai_skills` | `blue_ai_client`、`muk_ai_skills` | 公开实施技能；仅有实际复用需求时独立安装 | P2 可选 |
+| `blue_ai_client` | `muk_ai`、`blue_config_asset` | 宝蓝 provider、五类 AI 弹窗、Wiki／Skill 受限读取、Tencent 适配、身份与草稿工具；人工发布复用本地资产系统 | P2 |
+| 云端 Wiki／Skill | `blue_ai_client` 的受限只读适配 | 批准示例、说明与 Skill 正文集中云端，不另建本地知识模块 | P2 |
 | `blue_delivery` | `blue_config_asset` | 签名制品、兼容检查、应用计划与恢复 | P3／P4 |
 | `blueprj_<项目名>_<功能>` | 对应标准扩展模块 | 客户独有代码与迁移 | 按项目 |
 

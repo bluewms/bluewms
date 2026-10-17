@@ -1,0 +1,32 @@
+id,name,model_id,group_id/id,operation,domain
+wcs_equipment_user,wcs.equipment user,wcs.equipment,stock.group_stock_user,r,
+wcs_equipment_manager,wcs.equipment manager,wcs.equipment,stock.group_stock_manager,crud,
+wcs_equipment_company,wcs.equipment company,wcs.equipment,,crud,"[('company_id', 'in', company_ids)]"
+wcs_route_user,wcs.route user,wcs.route,stock.group_stock_user,r,
+wcs_route_manager,wcs.route manager,wcs.route,stock.group_stock_manager,crud,
+wcs_route_company,wcs.route company,wcs.route,,crud,"[('company_id', 'in', company_ids)]"
+wcs_plan_user,wcs.plan user,wcs.plan,stock.group_stock_user,r,
+wcs_plan_manager,wcs.plan manager,wcs.plan,stock.group_stock_manager,cru,
+wcs_plan_worker_create,wcs.plan workflow,wcs.plan,stock.group_stock_user,cru,
+wcs_plan_company,wcs.plan company,wcs.plan,,crud,"[('company_id', 'in', company_ids)]"
+wcs_plan_line_user,wcs.plan.line user,wcs.plan.line,stock.group_stock_user,r,
+wcs_plan_line_manager,wcs.plan.line manager,wcs.plan.line,stock.group_stock_manager,cru,
+wcs_plan_line_worker_create,wcs.plan.line workflow,wcs.plan.line,stock.group_stock_user,cru,
+wcs_plan_line_company,wcs.plan.line company,wcs.plan.line,,crud,"[('company_id', 'in', company_ids)]"
+wcs_request_user,wcs.request user,wcs.request,stock.group_stock_user,r,
+wcs_request_manager,wcs.request manager,wcs.request,stock.group_stock_manager,cru,
+wcs_request_worker_create,wcs.request workflow,wcs.request,stock.group_stock_user,cru,
+wcs_request_company,wcs.request company,wcs.request,,crud,"[('company_id', 'in', company_ids)]"
+wcs_event_user,wcs.event user,wcs.event,stock.group_stock_user,r,
+wcs_event_manager,wcs.event manager,wcs.event,stock.group_stock_manager,cru,
+wcs_event_worker_create,wcs.event workflow,wcs.event,stock.group_stock_user,cru,
+wcs_event_company,wcs.event company,wcs.event,,crud,"[('company_id', 'in', company_ids)]"
+wcs_reconciliation_manager,wcs reconciliation manager,wcs.reconciliation,stock.group_stock_manager,crud,
+wcs_equipment_category_user,wcs.equipment.category user,wcs.equipment.category,stock.group_stock_user,r,
+wcs_equipment_category_manager,wcs.equipment.category manager,wcs.equipment.category,stock.group_stock_manager,crud,
+wcs_equipment_category_company,wcs.equipment.category company,wcs.equipment.category,,crud,"[('company_id','in',company_ids)]"
+wcs_team_user,wcs.team user,wcs.team,stock.group_stock_user,r,
+wcs_team_manager,wcs.team manager,wcs.team,stock.group_stock_manager,crud,
+wcs_team_company,wcs.team company,wcs.team,,crud,"[('company_id','in',company_ids)]"
+wcs_stage_user,wcs stage user,wcs.stage,stock.group_stock_user,r,
+wcs_stage_manager,wcs stage manager,wcs.stage,stock.group_stock_manager,cru,

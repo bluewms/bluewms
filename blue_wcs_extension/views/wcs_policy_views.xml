@@ -1,0 +1,36 @@
+<odoo>
+    <record id="preview_access" model="ir.access"><field name="name">WCS preview manager</field><field name="model_id" ref="model_wcs_preview"/><field name="group_id" ref="stock.group_stock_manager"/><field name="operation">crud</field></record>
+    <record id="wcs_profile_form" model="ir.ui.view"><field name="name">blue.config.profile.wcs</field><field name="model">blue.config.profile</field><field name="inherit_id" ref="blue_config_asset.blue_config_profile_view_form"/><field name="arch" type="xml">
+        <xpath expr="//header" position="inside"><button name="action_open_wcs_preview" string="真实作业试算" type="object" groups="stock.group_stock_manager" invisible="hook_code != 'wcs_creation'"/></xpath>
+        <xpath expr="//page[@name='code']/p" position="attributes"><attribute name="invisible">hook_code == 'wcs_creation'</attribute></xpath>
+        <xpath expr="//page[@name='code']" position="inside"><p invisible="hook_code != 'wcs_creation'">原作业类型设置提供默认作业. 创建配置可修改创建条件、设备、起点、目的点和前后作业关系, 输出result为实际要创建的作业列表. 保存草稿不会生效.</p></xpath>
+        <xpath expr="//group[@name='scene_scope']" position="inside"><field name="hook_code" invisible="1"/><field name="wcs_upgrade_notice" readonly="1" invisible="not wcs_upgrade_notice"/></xpath>
+    </field></record>
+    <record id="wcs_type_form" model="ir.ui.view"><field name="name">stock.picking.type.wcs</field><field name="model">stock.picking.type</field><field name="inherit_id" ref="stock.view_picking_type_form"/><field name="arch" type="xml">
+        <xpath expr="//page[@name='hardware']" position="after">
+            <page name="wcs_app" string="WCS"><group name="wcs" string="WCS" groups="stock.group_stock_manager"><group>
+                <field name="blue_wcs_enabled"/><field name="wcs_type"/><field name="wcs_generate_condition"/>
+                <field name="equipment_category_id"/><field name="equipment_id"/><field name="task_type"/>
+                <field name="auto_create_wcs_request_execute"/><field name="wcs_request_mode"/><field name="is_create_wcs_by_container"/>
+                <field name="is_auto_validate"/><field name="is_wcs_required_for_validate"/>
+            </group><group string="创建配置"><field name="blue_wcs_profile_id"/><field name="blue_wcs_ready_mode"/>
+                <field name="wcs_secondary_equipment_id" invisible="wcs_request_mode != 'relay'"/><field name="wcs_intermediate_location_id" invisible="wcs_request_mode != 'relay'"/>
+                <p>原字段是默认设置. 可选创建配置对条件和任务生成做补充或修改, 不需要单独维护线路.</p>
+            </group></group></page>
+        </xpath>
+    </field></record>
+    <record id="wcs_picking_form" model="ir.ui.view"><field name="name">stock.picking.wcs</field><field name="model">stock.picking</field><field name="inherit_id" ref="stock.view_picking_form"/><field name="arch" type="xml">
+        <xpath expr="//div[@name='button_box']" position="inside"><button class="oe_stat_button" name="action_to_blue_wcs_request" icon="fa-truck" type="object" invisible="wsc_request_count == 0"><field name="wsc_request_count" widget="statinfo" string="WCS作业"/></button></xpath>
+        <xpath expr="//button[@name='button_validate']" position="before"><button name="action_create_wcs_request_from_button" string="执行WCS" type="object" class="oe_highlight" groups="stock.group_stock_user" invisible="not blue_wcs_enabled or state in ['draft','done','cancel']"/></xpath>
+        <xpath expr="//label[@for='scheduled_date']" position="before"><field name="wcs_stage" readonly="1"/></xpath>
+        <xpath expr="//page[@name='note']" position="after"><page name="wcs_request" string="WCS作业" invisible="not blue_wcs_enabled and not wcs_request_ids"><field name="blue_wcs_enabled" invisible="1"/>
+            <field name="wcs_request_ids" readonly="1"><list create="0" delete="0"><field name="product_id"/><field name="location_res_id"/><field name="location_dest_id"/><field name="package_id"/><field name="container_id" optional="hide"/><field name="equipment_id"/><field name="product_qty"/><field name="product_uom_id"/><field name="request_date"/><field name="stage_id"/></list></field>
+            <group string="创建配置版本" groups="stock.group_stock_manager"><field name="blue_wcs_policy_fixed"/><field name="blue_wcs_release_id"/></group>
+        </page></xpath>
+    </field></record>
+    <record id="wcs_picking_list" model="ir.ui.view"><field name="name">stock.picking.list.wcs</field><field name="model">stock.picking</field><field name="inherit_id" ref="stock.vpicktree"/><field name="arch" type="xml"><field name="state" position="before"><field name="wcs_stage" optional="show"/></field></field></record>
+    <record id="wcs_location_form" model="ir.ui.view"><field name="name">stock.location.form.wcs</field><field name="model">stock.location</field><field name="inherit_id" ref="stock.view_location_form"/><field name="arch" type="xml"><field name="usage" position="after"><field name="agv_map_point"/></field></field></record>
+    <record id="wcs_preview_form" model="ir.ui.view"><field name="name">wcs.preview.form</field><field name="model">wcs.preview</field><field name="arch" type="xml"><form><group><field name="profile_id" string="创建配置"/><field name="picking_id"/></group><notebook><page string="试算结果"><field name="result"/></page><page string="技术数据" groups="base.group_system"><field name="technical_result"/></page></notebook><footer><button name="action_preview" string="试算" type="object" class="btn-primary"/><button string="关闭" special="cancel"/></footer></form></field></record>
+    <record id="wcs_profile_action" model="ir.actions.act_window"><field name="name">WCS创建配置</field><field name="res_model">blue.config.profile</field><field name="view_mode">list,form</field><field name="domain">[('hook_code','=','wcs_creation')]</field><field name="context" eval="{'default_template_id': ref('blue_wcs_extension.template_ready')}"/></record>
+    <menuitem id="wcs_policy_menu" name="创建配置" parent="blue_wcs_base.wcs_menu" action="wcs_profile_action" sequence="60" groups="stock.group_stock_manager"/>
+</odoo>

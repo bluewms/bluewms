@@ -1,0 +1,40 @@
+<odoo>
+  <record id="template_ready" model="blue.scene.template">
+    <field name="name">沿用原WCS默认创建规则</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/2</field>
+    <field name="requirements">以原作业类型的设备、任务类型、单双作业和容器设置为默认, 可修改创建条件、起终点和依赖. 系统复核数量、公司及库存约束.</field>
+    <field name="code_text">result = []
+for candidate in candidates:
+    if request["ready"] and request["default_condition_met"]:
+        result.append(candidate)
+</field>
+    <field name="test_cases">[{"name": "满足条件", "input": {"request": {"ready": true, "default_condition_met": true, "all_confirmed": true, "source_id": 10, "destination_id": 20, "allowed_location_ids": [10, 15, 20], "allowed_equipment_ids": [1, 2]}, "candidates": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, "expected_tasks": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, {"name": "等待确认", "input": {"request": {"ready": false, "default_condition_met": true, "all_confirmed": true, "source_id": 10, "destination_id": 20, "allowed_location_ids": [10, 15, 20], "allowed_equipment_ids": [1, 2]}, "candidates": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, "expected_tasks": []}]</field>
+  </record>
+  <record id="template_all_confirmed" model="blue.scene.template">
+    <field name="name">全部确认后创建</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/2</field>
+    <field name="requirements">以原作业类型的设备、任务类型、单双作业和容器设置为默认, 可修改创建条件、起终点和依赖. 系统复核数量、公司及库存约束.</field>
+    <field name="code_text">result = []
+for candidate in candidates:
+    if request["ready"] and request["all_confirmed"]:
+        result.append(candidate)
+</field>
+    <field name="test_cases">[{"name": "满足条件", "input": {"request": {"ready": true, "default_condition_met": true, "all_confirmed": true, "source_id": 10, "destination_id": 20, "allowed_location_ids": [10, 15, 20], "allowed_equipment_ids": [1, 2]}, "candidates": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, "expected_tasks": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, {"name": "等待确认", "input": {"request": {"ready": false, "default_condition_met": true, "all_confirmed": true, "source_id": 10, "destination_id": 20, "allowed_location_ids": [10, 15, 20], "allowed_equipment_ids": [1, 2]}, "candidates": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, "expected_tasks": []}]</field>
+  </record>
+  <record id="template_relay" model="blue.scene.template">
+    <field name="name">同货两段搬运创建配置</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/2</field>
+    <field name="requirements">示例使用源位置上级作为交接位置, 请按现场交接位置和设备模板修改并试算. 两段只计算一次货物数量.</field>
+    <field name="code_text">result = []
+if request["ready"]:
+    result = [
+        {"equipment_id": request["equipment_id"], "location_res_id": request["source_id"], "location_dest_id": request["source_parent_id"], "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "第一段搬运"},
+        {"equipment_id": request["equipment_id"], "location_res_id": request["source_parent_id"], "location_dest_id": request["destination_id"], "role": "goods", "task_type": "TRANSFER", "dependency_step": 1, "dependency_event": "end", "dependency_point": "", "reason": "第二段搬运"}
+    ]
+</field>
+    <field name="test_cases">[{"name": "两段任务", "input": {"request": {"ready": true, "default_condition_met": true, "all_confirmed": true, "source_id": 10, "destination_id": 20, "allowed_location_ids": [10, 15, 20], "allowed_equipment_ids": [1, 2], "equipment_id": 1, "source_parent_id": 15}, "candidates": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, "expected_tasks": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 15, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "第一段搬运"}, {"equipment_id": 1, "location_res_id": 15, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 1, "dependency_event": "end", "dependency_point": "", "reason": "第二段搬运"}]}, {"name": "未就绪", "input": {"request": {"ready": false, "default_condition_met": true, "all_confirmed": true, "source_id": 10, "destination_id": 20, "allowed_location_ids": [10, 15, 20], "allowed_equipment_ids": [1, 2], "equipment_id": 1, "source_parent_id": 15}, "candidates": [{"equipment_id": 1, "location_res_id": 10, "location_dest_id": 20, "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "默认WCS作业"}]}, "expected_tasks": []}]</field>
+  </record>
+</odoo>

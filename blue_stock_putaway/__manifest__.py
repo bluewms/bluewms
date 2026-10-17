@@ -1,7 +1,7 @@
 {
     'name': 'BlueWMS 可编辑上架策略',
     'summary': '保留原生规则、整托盘容量、跨产品批次号补充限制与版本回滚',
-    'version': '20.0.1.2.0',
+    'version': '20.0.1.3.0',
     'author': '宁波宝蓝物流科技有限公司',
     'website': 'https://www.bluewms.com',
     'license': 'AGPL-3',

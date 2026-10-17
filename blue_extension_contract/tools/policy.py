@@ -77,7 +77,8 @@ def validate_code(code):
 
 
 class Interpreter:
-    def __init__(self, payload):
+    def __init__(self, payload, id_key="location_id"):
+        self.id_key = id_key
         self.variables = {'request': payload['request'], 'candidates': payload['candidates']}
         self.steps = 0
 
@@ -170,17 +171,22 @@ class Interpreter:
                 if type(result) is not list or len(result) >= MAX_CANDIDATES:
                     raise PolicyError('Result must be a list of at most 200 entries.')
                 value = self.expression(node.value.args[0])
-                # Do not allow aliased input lists or recursively aliased result trees.
-                if type(value) is not dict or set(value) != {'location_id', 'score', 'reason'}:
-                    raise PolicyError('Each result needs location_id, score and reason.')
-                if type(value['location_id']) is not int or type(value['score']) not in (int, float) or type(value['reason']) is not str:
-                    raise PolicyError('Invalid result value types.')
-                result.append(dict(value))
+                self.append_result(result, value)
             else:
                 raise PolicyError('Unsupported statement.')
 
+    def append_result(self, result, value):
+        # Copy validated scalar values; never retain aliased JSON input objects.
+        if type(value) is not dict or set(value) != {self.id_key, 'score', 'reason'}:
+            raise PolicyError('Each result needs candidate identity, score and reason.')
+        if type(value[self.id_key]) is not int or type(value['score']) not in (int, float) or type(value['reason']) is not str:
+            raise PolicyError('Invalid result value types.')
+        result.append(dict(value))
 
-def run_policy(code, payload):
+
+def run_policy(code, payload, id_key="location_id"):
+    if id_key not in ("location_id", "route_id"):
+        raise PolicyError("Unsupported candidate identity.")
     tree = validate_code(code)
     try:
         encoded = json.dumps(payload, allow_nan=False)
@@ -192,12 +198,12 @@ def run_policy(code, payload):
     if type(payload) is not dict or set(payload) != {'request', 'candidates'} or type(payload['request']) is not dict or type(payload['candidates']) is not list:
         raise PolicyError('Input needs request and candidates.')
     candidates = payload['candidates']
-    if len(candidates) > MAX_CANDIDATES or any(type(item) is not dict or type(item.get('location_id')) is not int for item in candidates):
+    if len(candidates) > MAX_CANDIDATES or any(type(item) is not dict or type(item.get(id_key)) is not int for item in candidates):
         raise PolicyError('Input supports at most 200 candidate locations.')
-    allowed_ids = [item['location_id'] for item in candidates]
+    allowed_ids = [item[id_key] for item in candidates]
     if len(set(allowed_ids)) != len(allowed_ids):
         raise PolicyError('Duplicate candidate location.')
-    interpreter = Interpreter(payload)
+    interpreter = Interpreter(payload, id_key)
     try:
         interpreter.statements(tree.body)
     except RecursionError as error:
@@ -207,9 +213,9 @@ def run_policy(code, payload):
         raise PolicyError('Code must produce a result list.')
     seen = set()
     for item in result:
-        if type(item) is not dict or set(item) != {'location_id', 'score', 'reason'}:
+        if type(item) is not dict or set(item) != {id_key, 'score', 'reason'}:
             raise PolicyError('Invalid result schema.')
-        location_id, score, reason = item['location_id'], item['score'], item['reason']
+        location_id, score, reason = item[id_key], item['score'], item['reason']
         if type(location_id) is not int or location_id not in allowed_ids or location_id in seen:
             raise PolicyError('Result must use unique approved candidate IDs.')
         if type(score) not in (int, float) or not math.isfinite(score) or abs(score) > 100000:
@@ -217,4 +223,4 @@ def run_policy(code, payload):
         if type(reason) is not str or len(reason) > 512:
             raise PolicyError('Reason must be text of at most 512 characters.')
         seen.add(location_id)
-    return sorted(result, key=lambda item: (item['score'], item['location_id']))
+    return sorted(result, key=lambda item: (item['score'], item[id_key]))

@@ -1,0 +1,74 @@
+<odoo noupdate="1">
+  <record id="stage_pending_send" model="wcs.stage">
+    <field name="name">就绪</field>
+    <field name="code">pending_send</field>
+    <field name="sequence">10</field>
+    <field name="done" eval="False" />
+    <field name="fold" eval="False" />
+    <field name="is_in_progres" eval="False" />
+  </record>
+  <record id="stage_waiting" model="wcs.stage">
+    <field name="name">等待前置作业</field>
+    <field name="code">waiting</field>
+    <field name="sequence">20</field>
+    <field name="done" eval="False" />
+    <field name="fold" eval="False" />
+    <field name="is_in_progres" eval="False" />
+  </record>
+  <record id="stage_sending" model="wcs.stage">
+    <field name="name">下发中</field>
+    <field name="code">sending</field>
+    <field name="sequence">30</field>
+    <field name="done" eval="False" />
+    <field name="fold" eval="False" />
+    <field name="is_in_progres" eval="True" />
+  </record>
+  <record id="stage_accepted" model="wcs.stage">
+    <field name="name">进行中</field>
+    <field name="code">accepted</field>
+    <field name="sequence">40</field>
+    <field name="done" eval="False" />
+    <field name="fold" eval="False" />
+    <field name="is_in_progres" eval="True" />
+  </record>
+  <record id="stage_running" model="wcs.stage">
+    <field name="name">执行中</field>
+    <field name="code">running</field>
+    <field name="sequence">50</field>
+    <field name="done" eval="False" />
+    <field name="fold" eval="False" />
+    <field name="is_in_progres" eval="True" />
+  </record>
+  <record id="stage_completed" model="wcs.stage">
+    <field name="name">已完成</field>
+    <field name="code">completed</field>
+    <field name="sequence">60</field>
+    <field name="done" eval="True" />
+    <field name="fold" eval="True" />
+    <field name="is_in_progres" eval="False" />
+  </record>
+  <record id="stage_cancelled" model="wcs.stage">
+    <field name="name">已取消</field>
+    <field name="code">cancelled</field>
+    <field name="sequence">70</field>
+    <field name="done" eval="True" />
+    <field name="fold" eval="True" />
+    <field name="is_in_progres" eval="False" />
+  </record>
+  <record id="stage_unknown" model="wcs.stage">
+    <field name="name">待核对</field>
+    <field name="code">unknown</field>
+    <field name="sequence">80</field>
+    <field name="done" eval="False" />
+    <field name="fold" eval="False" />
+    <field name="is_in_progres" eval="False" />
+  </record>
+  <record id="stage_failed" model="wcs.stage">
+    <field name="name">下发失败</field>
+    <field name="code">failed</field>
+    <field name="sequence">90</field>
+    <field name="done" eval="False" />
+    <field name="fold" eval="False" />
+    <field name="is_in_progres" eval="False" />
+  </record>
+</odoo>
