@@ -31,8 +31,10 @@
       "hook_code": null,
       "candidate_contracts": [],
       "sources": [
+        "README.md",
         "basics/overview.md",
-        "basics/ai-generation-workflow.md"
+        "basics/ai-generation-workflow.md",
+        "templates/example-template.md"
       ],
       "cloud_skeleton": {
         "created_this_round": false,
@@ -44,8 +46,16 @@
       "instance_wiki_id": null,
       "local_contract_implemented": false,
       "native_retrieval_enabled": false,
-      "approved_for_native_generation": false,
-      "role_assignment": "proposed_common_rules_role_existing_resource_unchanged"
+      "approved_for_native_generation": true,
+      "role_assignment": "published_common_generation_rules",
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 4,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "approved"
+      }
     },
     {
       "scope": "putaway",
@@ -71,7 +81,15 @@
       "instance_wiki_id": null,
       "local_contract_implemented": true,
       "native_retrieval_enabled": false,
-      "approved_for_native_generation": false
+      "approved_for_native_generation": true,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 5,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "approved"
+      }
     },
     {
       "scope": "erp",
@@ -92,7 +110,15 @@
       "instance_wiki_id": null,
       "local_contract_implemented": false,
       "native_retrieval_enabled": false,
-      "approved_for_native_generation": false
+      "approved_for_native_generation": false,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 2,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "candidate"
+      }
     },
     {
       "scope": "wcs",
@@ -127,10 +153,18 @@
       "instance_wiki_id": null,
       "local_contract_implemented": true,
       "native_retrieval_enabled": false,
-      "approved_for_native_generation": false
+      "approved_for_native_generation": true,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 14,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "approved"
+      }
     },
     {
-      "scope": "device",
+      "scope": "equipment",
       "display_name": "Odoo-AI-设备接口",
       "hook_code": "device_protocol",
       "candidate_contracts": [],
@@ -148,7 +182,15 @@
       "instance_wiki_id": null,
       "local_contract_implemented": false,
       "native_retrieval_enabled": false,
-      "approved_for_native_generation": false
+      "approved_for_native_generation": false,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 2,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "candidate"
+      }
     },
     {
       "scope": "barcode",
@@ -169,7 +211,15 @@
       "instance_wiki_id": null,
       "local_contract_implemented": false,
       "native_retrieval_enabled": false,
-      "approved_for_native_generation": false
+      "approved_for_native_generation": false,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 2,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "candidate"
+      }
     }
   ],
   "routes": {
@@ -205,7 +255,7 @@
     "device_protocol": {
       "scopes": [
         "common",
-        "device"
+        "equipment"
       ],
       "contracts": [],
       "activate_after_integration": false
@@ -256,7 +306,8 @@
     "current_approved_skill_version": 4,
     "current_skill_preserved": true,
     "target_skill_role": "thin_workflow_no_example_copies",
-    "native_wiki_migration_implemented": false
+    "native_wiki_migration_implemented": false,
+    "native_wiki_migration_complete": false
   },
   "deployment": {
     "git_fast_forward_completed": true,
@@ -270,5 +321,7 @@
     "docs/migrations",
     "docs/third-party",
     "docs/wiki-publication"
-  ]
+  ],
+  "knowledge_source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+  "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
 }

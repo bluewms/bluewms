@@ -1,8 +1,8 @@
 {
-  "schema_version": 2,
-  "mode": "manual_reviewed_publication",
+  "schema_version": 3,
+  "mode": "legacy_skill_compatibility_map_not_native_publication",
   "updated": "2026-10-18",
-  "note": "仅发布 Odoo 内 AI 增强代码生成资料；sources 相对 source_root。工程开发、Git、服务器配置、运维及历史不进入生成知识。人工映射，不是自动同步程序。",
+  "note": "本表保留旧 Skill 的客户端要求，不是原生 Wiki 发布指令。六库已单独发布 29 份准确资料；新链路状态见原生检索规划及验收记录。",
   "skill_name": "bluewms-policy-authoring",
   "existing_skill_resources": [
     {
@@ -54,19 +54,21 @@
     },
     {
       "path": "06-wcs-creation-contract.md",
-      "loaded_by_odoo": true,
+      "loaded_by_odoo": false,
       "sources": [
         "domains/wcs/specification.md",
         "domains/wcs/configuration-guide.md",
         "domains/wcs/wcs-creation-v4-contract.json"
       ],
-      "scope": "WCS /4独立批准资源，仅由WCS工具读取，云端待用户发布",
+      "scope": "旧 WCS Skill 客户端要求的资源；未补写。WCS /4 规范与案例现已单独发布到原生 Wiki。",
       "eligible_for_generation": true,
-      "cloud_approved": false
+      "cloud_approved": false,
+      "required_by_legacy_client": true,
+      "cloud_present": false
     },
     {
       "path": "07-approved-wcs-examples.md",
-      "loaded_by_odoo": true,
+      "loaded_by_odoo": false,
       "sources": [
         "domains/wcs/specification.md",
         "domains/wcs/configuration-guide.md",
@@ -83,9 +85,11 @@
         "domains/wcs/examples/relay.md",
         "domains/wcs/examples/empty.md"
       ],
-      "scope": "WCS /4独立批准资源，仅由WCS工具读取，云端待用户发布",
+      "scope": "旧 WCS Skill 客户端要求的资源；未补写。WCS /4 规范与案例现已单独发布到原生 Wiki。",
       "eligible_for_generation": true,
-      "cloud_approved": false
+      "cloud_approved": false,
+      "required_by_legacy_client": true,
+      "cloud_present": false
     }
   ],
   "wiki_publication": {
@@ -114,7 +118,7 @@
       "domains/wcs/examples/relay.md",
       "domains/wcs/examples/empty.md"
     ],
-    "note": "仅按基础生成规则、各类接口规范和示例逐页发布；不得导入 docs/ 工程文档、运维配置或历史目录。当前未执行云端发布。"
+    "note": "原生六库已发布，实际范围以独立发布清单为准。旧 Skill 未改，Odoo 页面正式读取路径尚未切换。"
   },
   "planned_domain_sources": [
     "domains/erp/specification.md",
@@ -149,7 +153,8 @@
     "cloud_server_deployment_and_credentials",
     "operations_and_chat_debug_history"
   ],
-  "local_verified_unpublished_domain_sources": [
+  "native_publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json",
+  "legacy_wcs_skill_requirements": [
     {
       "hook": "wcs_creation",
       "contract": "wcs_creation/4",
@@ -169,10 +174,12 @@
         "domains/wcs/examples/relay.md",
         "domains/wcs/examples/empty.md"
       ],
-      "loaded_by_odoo_cloud_bridge": true,
+      "loaded_by_odoo_cloud_bridge": false,
       "runtime_context": "approved_cloud_required",
       "cloud_approved": false,
-      "note": "客户端已接入同项目Skill的01/06/07，要求WCS /4批准标记及真实Wiki来源。正文尚待用户最后写入和批准；无本地或上架回退。"
+      "note": "本项仅描述旧 Skill 资源缺失。WCS /4 原生 Wiki 正文已批准，不等于现有 Skill 客户端已能读取。",
+      "required_by_legacy_client": true,
+      "native_wiki_published": true
     }
   ]
 }

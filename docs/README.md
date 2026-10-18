@@ -6,6 +6,7 @@
 - [维护者：TencentDB-Agent-Memory 配置](architecture/tencent-memory-configuration.md)
 - [维护者：AI 生成知识的维护与发布](architecture/ai-generation-knowledge-maintenance.md)
 - [维护者：原生 Wiki 检索与五类知识库规划](architecture/native-wiki-retrieval-plan.md)
+- [六库知识发布与真实模型问答验收](wiki-publication/native-wiki-20261018.md)
 - [开发规划](planning/bluewms20-development-plan.md)
 - [模块分类与架构](planning/bluewms20-module-architecture.md)
 - [迁移选择](planning/bluewms20-migration-selection.md)
