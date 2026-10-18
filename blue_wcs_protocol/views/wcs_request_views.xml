@@ -1,0 +1,22 @@
+<odoo>
+    <record id="wcs_request_view_form" model="ir.ui.view">
+        <field name="name">wcs.request.form.inherit.protocol</field>
+        <field name="model">wcs.request</field>
+        <field name="inherit_id" ref="blue_wcs_base.request_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='technical']" position="after">
+                <page name="protocol_completion" string="设备协议与实际位置" invisible="not protocol_release_id">
+                    <group>
+                        <field name="protocol_release_id"/>
+                        <field name="protocol_category_id"/>
+                        <field name="protocol_planned_location_id"/>
+                        <field name="protocol_actual_location_id"/>
+                        <field name="protocol_reported_point"/>
+                        <field name="protocol_subposition"/>
+                    </group>
+                    <field name="protocol_last_callback" widget="json"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

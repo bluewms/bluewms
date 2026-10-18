@@ -10,6 +10,7 @@
 |---|---|
 | 当前已完成什么、下一步做什么 | [开发计划](planning/bluewms20-development-plan.md) |
 | 设备接口 AI 的已确认需求与实施顺序 | [设备接口规划](planning/device-protocol-ai-plan.md) |
+| 类别级设备 AI、TUSK 回调与两类位置回写 | [设备接口交付](migrations/device-protocol-20.md) |
 | 模块命名、依赖和已实现模块 | [模块架构](module-architecture.md) |
 | 开发、验证、权限和提交约定 | [开发规则](planning/bluewms-development.md) |
 | 尚未选择／迁移的库存功能 | [迁移候选](planning/bluewms20-migration-selection.md) |
@@ -26,7 +27,7 @@
 | WCS 参数、任务创建、版本与设备边界 | [WCS 使用说明](migrations/wcs-20.md) · [编排设计](design/wcs-v4-orchestration.md) |
 | 原生 Wiki、五类 Task、页面入口及验证 | [AI 接入说明](migrations/native-wiki-runtime-20.md) · [脱敏验收](migrations/native-wiki-runtime-20.validation.json) |
 
-上架与 WCS /4 已有可执行 AI 草稿闭环；ERP、设备、条码目前只开放知识沟通，执行合同仍为 planned。已发布业务在本地执行，知识正文和云端服务不能放宽本地合同或库存约束。
+上架、WCS /4 与设备协议 /1 提供 AI 草稿流程；设备以 TUSK 和受控位置回写先行，见设备接口交付。ERP、条码目前只开放知识沟通，执行合同仍为 planned。已发布业务在本地执行，知识正文和云端服务不能放宽本地合同或库存约束。
 
 ## 云端与知识维护
 

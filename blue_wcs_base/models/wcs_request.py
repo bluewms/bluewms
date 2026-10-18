@@ -122,9 +122,12 @@ class WcsRequest(models.Model):
     def write(self, vals):
         if self.env.context.get('blue_wcs_token') is not WCS_TOKEN:
             raise AccessError(self.env._('Use WCS workflow actions.'))
-        if set(vals) - {'state', 'dispatch_date', 'done_date', 'payload', 'last_result'}:
+        if set(vals) - self._wcs_workflow_fields():
             raise AccessError(self.env._('Task instructions are immutable.'))
         return super().write(vals)
+
+    def _wcs_workflow_fields(self):
+        return {'state', 'dispatch_date', 'done_date', 'payload', 'last_result'}
 
     def unlink(self):
         raise UserError(self.env._('Keep WCS task history.'))
@@ -160,7 +163,7 @@ class WcsRequest(models.Model):
         expected_adapter = snapshot.get('adapters', {}).get(str(self.equipment_id.id))
         if expected_adapter and self.equipment_id.adapter_code != expected_adapter:
             raise UserError(self.env._('Device protocol changed; reconcile the fixed task before sending.'))
-        if self.equipment_id.adapter_code != 'simulation' and not (self.equipment_id.sudo().callback_token or self.equipment_id.sudo().category_id.callback_token):
+        if self._requires_callback_auth() and not (self.equipment_id.sudo().callback_token or self.equipment_id.sudo().category_id.callback_token):
             # Fixed device field only: require callback authentication before real dispatch.
             raise UserError(self.env._('Configure device callback authentication before dispatch.'))
         if plan.picking_id.state in ('cancel', 'done') or not self.equipment_id.active:
@@ -169,8 +172,7 @@ class WcsRequest(models.Model):
                 or self.location_dest_id._blue_stock_blocking_location(receiving=True)):
             raise UserError(self.env._('WCS task locations are blocked.'))
         if self.role == 'goods' and not plan.carrier_id and snapshot.get('contract') in ('wcs_creation/3', 'wcs_creation/4'):
-            if not (self.equipment_id.adapter_code == 'simulation'
-                    or (self.equipment_id.adapter_code == 'json' and self.equipment_id.supports_loose_goods)):
+            if not self.equipment_id._supports_wcs_loose_goods():
                 raise UserError(self.env._('Device no longer supports these loose goods.'))
         if self.goods_mode == 'repeat' and self.equipment_id.adapter_code != 'simulation' and not self.equipment_id.supports_repeated_goods:
             raise UserError(self.env._('Device no longer supports repeated goods programs.'))
@@ -322,7 +324,7 @@ class WcsRequest(models.Model):
                     task.with_context(blue_wcs_token=WCS_TOKEN).write({'state': 'failed', 'last_result': str(error)})
                     cr.commit()  # Own cursor: persist this pre-send failure.
                     continue
-                connection = task.equipment_id._connection_snapshot()
+                connection = task._dispatch_connection()
                 task_id = task.id
                 task.with_context(blue_wcs_token=WCS_TOKEN).write({'state': 'sending', 'dispatch_date': fields.Datetime.now(), 'payload': json.dumps(payload, ensure_ascii=False)})
                 cr.commit()  # Own cursor: durable claim before external side effect.
@@ -336,3 +338,10 @@ class WcsRequest(models.Model):
                 cr.commit()  # Own cursor: acknowledgement, preserving any earlier callback.
         stale = self.search([('state', '=', 'sending'), ('dispatch_date', '<', fields.Datetime.subtract(fields.Datetime.now(), minutes=10))])
         stale.with_context(blue_wcs_token=WCS_TOKEN).write({'state': 'unknown', 'last_result': 'Sender interrupted; reconcile with the device.'})
+
+    def _dispatch_connection(self):
+        self.ensure_one()
+        return self.equipment_id._connection_snapshot()
+
+    def _requires_callback_auth(self):
+        return self.equipment_id.adapter_code != 'simulation'

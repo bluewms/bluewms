@@ -1,0 +1,64 @@
+{
+  "contract": "device_protocol/1",
+  "hook_code": "device_protocol",
+  "schema_version": 1,
+  "phases": [
+    "request",
+    "response",
+    "callback"
+  ],
+  "input": {
+    "request": {
+      "phase": "request|response|callback",
+      "task": {
+        "task_id": "text",
+        "source": "text",
+        "destination": "text",
+        "template": "text",
+        "carrier": "text",
+        "device_code": "text",
+        "role": "goods|empty_supply|empty_return",
+        "operation": "incoming|outgoing|internal"
+      },
+      "message": "JSON response or one callback object; empty for request",
+      "http_status": "integer",
+      "parameters": "administrator-approved non-secret vendor parameters"
+    },
+    "candidates": "up to 200 goods objects: product_code, quantity, uom, lot"
+  },
+  "output": {
+    "request": {
+      "body": "JSON object"
+    },
+    "response": {
+      "state": "accepted|rejected|unknown",
+      "reason": "text <=512"
+    },
+    "callback": {
+      "task_id": "same task_id",
+      "event": "end",
+      "point": "reported point",
+      "subposition": "package subposition, or empty",
+      "destination_code": "exact approved location code, or empty",
+      "response": "bounded vendor acknowledgement object"
+    }
+  },
+  "syntax": "JSON literals, local assignments, if/else, for candidate in candidates, .get, local .append, slices, str/int/float/len; no imports, eval, ORM, attributes or networking",
+  "manual_settings": [
+    "adapter_code",
+    "company",
+    "technician",
+    "IP",
+    "submit_path",
+    "credentials",
+    "callback_mode",
+    "allowed_destination_root",
+    "allowed_writebacks"
+  ],
+  "limits": {
+    "code_characters": 32768,
+    "input_bytes": 262144,
+    "items": 200,
+    "steps": 30000
+  }
+}

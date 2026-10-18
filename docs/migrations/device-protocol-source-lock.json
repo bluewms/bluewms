@@ -1,0 +1,209 @@
+{
+  "date": "2026-10-18",
+  "source_commit": "7d77ae713b81ddef4de856361ac14ea99fedf967",
+  "mode": "protocol_reference_only_not_wholesale_module_migration",
+  "references": [
+    {
+      "module": "blue_wcs_tusk",
+      "path": "blue_wcs_tusk/__init__.py",
+      "sha256": "3faf44e3c5c6f5f40de1f6c8719ddc84141fb48a21a442091a19acb0c5ef67a1",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_tusk",
+      "path": "blue_wcs_tusk/__manifest__.py",
+      "sha256": "b05d8c7ad3a6802a8f01fee1ab9993e3c33964d4be5b8823d63bce92b79db972",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_tusk",
+      "path": "blue_wcs_tusk/contorllers/__init__.py",
+      "sha256": "e0a16a10fd901c56cf37ae9e40931d1ac98dcf6bfbcb05affc5475a56fe490b9",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_tusk",
+      "path": "blue_wcs_tusk/contorllers/main.py",
+      "sha256": "39aa6f55cd8d09601518defefb07740e6d9c41e51bfa79c580b1ac38e71c439d",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_tusk",
+      "path": "blue_wcs_tusk/models/__init__.py",
+      "sha256": "46fb6e1fdcebfbeb45992050d3362c616346c51c7888eee61b9d7357c7f18b90",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_tusk",
+      "path": "blue_wcs_tusk/models/blue_wcs_request.py",
+      "sha256": "746be6e1fa6a56817823254cf233d94aeabc765abad167ed0426ee3066251f12",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_m4",
+      "path": "blue_wcs_m4/__init__.py",
+      "sha256": "3faf44e3c5c6f5f40de1f6c8719ddc84141fb48a21a442091a19acb0c5ef67a1",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_m4",
+      "path": "blue_wcs_m4/__manifest__.py",
+      "sha256": "2186333c34151e2dc6a305095b2435340c728c054c50c8be42e65b34efccfbf5",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_m4",
+      "path": "blue_wcs_m4/contorllers/__init__.py",
+      "sha256": "e0a16a10fd901c56cf37ae9e40931d1ac98dcf6bfbcb05affc5475a56fe490b9",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_m4",
+      "path": "blue_wcs_m4/contorllers/main.py",
+      "sha256": "754902f2386390378003fb16327496a6e1e8cf9f2bd258fbcacac589ea2c8d03",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_m4",
+      "path": "blue_wcs_m4/models/__init__.py",
+      "sha256": "46fb6e1fdcebfbeb45992050d3362c616346c51c7888eee61b9d7357c7f18b90",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_m4",
+      "path": "blue_wcs_m4/models/blue_wcs_request.py",
+      "sha256": "b05abc5fbb0da07cc054802ad81b43edb8bcfd4dba2e8152424b18cdcaf42703",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/__init__.py",
+      "sha256": "3faf44e3c5c6f5f40de1f6c8719ddc84141fb48a21a442091a19acb0c5ef67a1",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/__manifest__.py",
+      "sha256": "4f480f5a94bd6d13975302bcffbdf8df0723453e5e5863da40f976e5b1546750",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/contorllers/__init__.py",
+      "sha256": "e0a16a10fd901c56cf37ae9e40931d1ac98dcf6bfbcb05affc5475a56fe490b9",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/contorllers/main.py",
+      "sha256": "d20c2544e426cef7cd5ec234b421e3817699e063443f6d6927171f69a90c7882",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/models/__init__.py",
+      "sha256": "36633487fd45b6765f0c4fe909b2f7b050d1254859ddd09d982c44bcc2a94043",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/models/blue_wcs_request.py",
+      "sha256": "4e56c9c7fe7af3c0c8c15cc94096bea5ca7873ac0a5bbb650adc528d27db4ba7",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/models/stock_picking.py",
+      "sha256": "22dd5d02f35c8fa3b3df73630d5db4fbdde8bbb0ff6eee56214b399a31a7ea83",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita",
+      "path": "blue_wcs_mita/models/stock_picking_type.py",
+      "sha256": "115f09f0060cf2635b9825a1dee992895719853173ed78be26e853c7ea697674",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/__init__.py",
+      "sha256": "3faf44e3c5c6f5f40de1f6c8719ddc84141fb48a21a442091a19acb0c5ef67a1",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/__manifest__.py",
+      "sha256": "2ca1774fc7ab4d30d8cc81beb29c725003ee0f326a6fdc3218d3741a5f41bfb6",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/contorllers/__init__.py",
+      "sha256": "e0a16a10fd901c56cf37ae9e40931d1ac98dcf6bfbcb05affc5475a56fe490b9",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/contorllers/main.py",
+      "sha256": "82cf55666b367d2c6006adea8eb3b0e60f19669ff3c85f9e2b6a90b8aa6cee4d",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/models/__init__.py",
+      "sha256": "da90b6beba16224d3f3a4810b1bd38c162265d0dc8503e24595462c37727c9f5",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/models/blue_stock_location.py",
+      "sha256": "a332663b48ae7642e9d3b175e816b2fe77e158e673d3eb4be074fd0a1ac1a194",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/models/blue_stock_picking.py",
+      "sha256": "078665b2268e931a0af1a817cfea12b65a6409b7b86e03dc373fe4b6a651c167",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/models/blue_stock_quant.py",
+      "sha256": "472cb090716272c12796f2cc9aa03ad0ee127910c29678fb0a875d1fa42e75e7",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_modula",
+      "path": "blue_wcs_modula/models/blue_wcs_request.py",
+      "sha256": "ffbfacfac2a2deeec1b5debb461aabac66090ac90340b1f5f65202a338a9bf18",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita_barcode",
+      "path": "blue_wcs_mita_barcode/__init__.py",
+      "sha256": "031e2a2f175bf404e4d39305edc490d01769602a46558172f67e14e333837fda",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita_barcode",
+      "path": "blue_wcs_mita_barcode/__manifest__.py",
+      "sha256": "442dd83ae06d11371d807c4749221d43c9dc6902786f1bd17809111b6e6c1f0f",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita_barcode",
+      "path": "blue_wcs_mita_barcode/models/__init__.py",
+      "sha256": "d5becc17f4b2c1d8e449ca21bbdf31ae3c795945a12d36139ad1980338bb478b",
+      "declared_license": "AGPL-3"
+    },
+    {
+      "module": "blue_wcs_mita_barcode",
+      "path": "blue_wcs_mita_barcode/models/stock_picking.py",
+      "sha256": "06f21550e38988de589d3869b181356dc1779427e6c4e6cff3ec836628101699",
+      "declared_license": "AGPL-3"
+    }
+  ],
+  "new_contract": "device_protocol/1",
+  "new_module": "blue_wcs_protocol",
+  "live_verified_vendor_scope": "pending_real_device_acceptance",
+  "legacy_credentials_imported": false
+}

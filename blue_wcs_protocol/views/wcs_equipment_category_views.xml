@@ -1,0 +1,85 @@
+<odoo>
+    <record id="wcs_equipment_category_view_form" model="ir.ui.view">
+        <field name="name">wcs.equipment.category.form.inherit.protocol</field>
+        <field name="model">wcs.equipment.category</field>
+        <field name="inherit_id" ref="blue_wcs_base.category_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button name="action_protocol_ai" type="object" string="AI 生成 / 修改" class="oe_highlight" invisible="adapter_code != 'protocol' or not protocol_profile_id" groups="stock.group_stock_manager"/>
+                    <button name="action_protocol_validate" type="object" string="报文试算 / 验证" invisible="adapter_code != 'protocol' or not protocol_profile_id" groups="stock.group_stock_manager"/>
+                    <button name="action_protocol_publish" type="object" string="发布" invisible="adapter_code != 'protocol' or not protocol_profile_id" groups="stock.group_stock_manager"/>
+                    <button name="action_protocol_new_draft" type="object" string="新建草稿" invisible="adapter_code != 'protocol' or not protocol_profile_id" groups="stock.group_stock_manager"/>
+                    <button name="action_protocol_rollback" type="object" string="回滚" invisible="adapter_code != 'protocol' or not protocol_release_id" groups="stock.group_stock_manager"/>
+                    <field name="protocol_state" widget="statusbar" invisible="adapter_code != 'protocol'"/>
+                </header>
+            </xpath>
+            <field name="equipment_ids" position="replace">
+                <group name="protocol_devices">
+                    <button name="action_view_equipment" type="object" string="查看设备" icon="fa-cogs"/>
+                    <field name="equipment_count" readonly="1"/>
+                </group>
+                <group name="protocol_manual_configuration" string="可编辑接口设置" invisible="adapter_code != 'protocol'" groups="base.group_system">
+                    <group>
+                        <field name="protocol_auth_mode"/>
+                        <field name="protocol_key_header" invisible="protocol_auth_mode != 'headers'"/>
+                        <field name="protocol_secret_header" invisible="protocol_auth_mode != 'headers'"/>
+                        <field name="protocol_callback_mode"/>
+                        <field name="protocol_task_key"/>
+                        <field name="protocol_tusk_compat"/>
+                        <field name="protocol_parameters"/>
+                    </group>
+                    <group>
+                        <field name="protocol_allow_subposition"/>
+                        <field name="protocol_allow_destination"/>
+                        <field name="protocol_destination_root_id" invisible="not protocol_allow_destination" required="protocol_allow_destination"/>
+                    </group>
+                    <div class="text-muted" colspan="2">连接及回写范围由人工维护. 旧 TUSK 下发路径为 /rpc/createTask; 最终完成回调兼容 /api/blue_wcs_tusk/feedbackTask.</div>
+                </group>
+                <notebook name="protocol_notebook" invisible="adapter_code != 'protocol' or not protocol_profile_id">
+                    <page name="protocol_code_page" string="接口代码">
+                        <field name="protocol_profile_id" invisible="1"/>
+                        <field name="protocol_requirements" placeholder="描述厂商报文、接收条件及完成位置如何回写" readonly="not protocol_profile_id"/>
+                        <field name="protocol_code" widget="ace" options="{'mode': 'python'}" readonly="not protocol_profile_id"/>
+                    </page>
+                    <page name="protocol_tests_page" string="报文试算">
+                        <div class="text-muted">这里只计算报文,不会向设备发送请求. 必须覆盖下发、响应和回调三个阶段.</div>
+                        <field name="protocol_tests" widget="ace" options="{'mode': 'json'}"/>
+                        <field name="protocol_result" readonly="1"/>
+                    </page>
+                    <page name="protocol_versions_page" string="发布与历史">
+                        <field name="protocol_release_id" readonly="1"/>
+                        <button name="action_protocol_versions" type="object" string="查看完整代码与版本历史"/>
+                    </page>
+                </notebook>
+            </field>
+        </field>
+    </record>
+    <record id="wcs_equipment_view_form" model="ir.ui.view">
+        <field name="name">wcs.equipment.form.inherit.protocol</field>
+        <field name="model">wcs.equipment</field>
+        <field name="inherit_id" ref="blue_wcs_base.equipment_form"/>
+        <field name="arch" type="xml">
+            <field name="serial_no" position="after">
+                <field name="protocol_device_code" invisible="adapter_code != 'protocol'"/>
+            </field>
+        </field>
+    </record>
+    <record id="blue_config_profile_view_form" model="ir.ui.view">
+        <field name="name">blue.config.profile.form.inherit.device.protocol</field>
+        <field name="model">blue.config.profile</field>
+        <field name="inherit_id" ref="blue_config_asset.blue_config_profile_view_form"/>
+        <field name="priority">60</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='code']/p" position="attributes">
+                <attribute name="invisible" add="contract == 'device_protocol/1'" separator=" or "/>
+            </xpath>
+            <xpath expr="//page[@name='code']" position="inside">
+                <p invisible="contract != 'device_protocol/1'">设备协议分别处理下发、响应和完成回调. 代码只转换 JSON 报文; 地址、认证及回写范围由人工设置, 写入由固定服务校验执行.</p>
+            </xpath>
+            <field name="contract" position="after">
+                <field name="device_category_id" readonly="1" invisible="contract != 'device_protocol/1'"/>
+            </field>
+        </field>
+    </record>
+</odoo>

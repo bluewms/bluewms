@@ -1,0 +1,8 @@
+<odoo>
+    <record id="blue_scene_template_device_protocol" model="blue.scene.template">
+        <field name="name">设备 HTTP 协议接口 /1</field>
+        <field name="hook_code">device_protocol</field>
+        <field name="contract">device_protocol/1</field>
+        <field name="cloud_managed" eval="True"/>
+    </record>
+</odoo>

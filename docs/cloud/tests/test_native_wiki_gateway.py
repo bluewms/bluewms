@@ -22,8 +22,8 @@ class FakeGateway(module.NativeWikiGateway):
         self.assets = {}
         self.pages = {}
         self.versions = {}
-        for scope, refs in {'common': ['basics/overview.md'], 'putaway': ['domains/putaway/specification.md', 'domains/putaway/examples/same-picking.md'], 'wcs': ['domains/wcs/specification.md'], 'erp': ['domains/erp/specification.md']}.items():
-            contracts = [] if scope in ['common', 'erp'] else ['putaway_policy/2'] if scope == 'putaway' else ['wcs_creation/4']
+        for scope, refs in {'common': ['basics/overview.md'], 'putaway': ['domains/putaway/specification.md', 'domains/putaway/examples/same-picking.md'], 'wcs': ['domains/wcs/specification.md'], 'erp': ['domains/erp/specification.md'], 'equipment': ['domains/equipment/specification.md']}.items():
+            contracts = [] if scope in ['common', 'erp'] else ['putaway_policy/2'] if scope == 'putaway' else ['device_protocol/1'] if scope == 'equipment' else ['wcs_creation/4']
             self.pages[scope] = {ref: '---\ncontracts: ' + json.dumps(contracts) + '\n---\nAccurate reference.' for ref in refs}
             self.versions[scope] = '2'
             metadata = {'scope': scope, 'purpose': 'odoo_runtime_code_generation', 'generation_ready': scope != 'erp',
@@ -183,6 +183,14 @@ class TestNativeGateway(unittest.TestCase):
         self.gateway.task_link_active = False
         with self.assertRaises(module.Rejected):
             self.request('identity')
+
+    def test_device_contract_requires_approved_device_wiki(self):
+        self.payload.update(hook_code='device_protocol', contract='device_protocol/1')
+        context = self.request('context')
+        self.assertEqual(context['catalog'][1]['scope'], 'equipment')
+        self.gateway.assets['equipment']['status'] = 'candidate'
+        with self.assertRaises(module.Rejected):
+            self.request('context')
 
     def test_query_and_reference_limits(self):
         for query in ['', 'x' * 257, None]:

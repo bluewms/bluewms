@@ -26,7 +26,7 @@ Odoo 只保存当前用户的业务 Key 与准确 Agent 名称。通道服务凭
 | putaway_policy | 上架策略 | 绑定资产的生成／验证，以及只读知识沟通 |
 | wcs_creation | WCS生成策略 | /4 生成／验证，以及只读知识沟通 |
 | erp_mapping | ERP接口 | 仅知识沟通，执行合同 planned |
-| device_protocol | 设备连接接口 | 仅知识沟通，执行合同 planned |
+| device_protocol | 设备连接接口 | /1 类别级 HTTP 协议草稿、试算及受控位置回写 |
 | barcode_policy | 条码扫描策略 | 仅知识沟通，执行合同 planned |
 | 普通聊天 | 日常任务 | 普通聊天与测试连接，不作为业务回退 |
 
@@ -44,10 +44,10 @@ Task 是业务分类，不是跨客户隐私边界。该部署记忆隔离不能
 | putaway | Odoo-AI-上架策略 | 上架规范及三个准确案例 |
 | wcs | Odoo-AI-WCS任务生成 | /4 规范、合同核对及十个准确案例 |
 | erp | Odoo-AI-ERP接口 | planned 需求资料 |
-| equipment | Odoo-AI-设备接口 | planned 需求资料 |
+| equipment | Odoo-AI-设备接口 | /1 规范、两个 TUSK 准确案例及四类旧协议参考 |
 | barcode | Odoo-AI-条码策略 | planned 需求资料 |
 
-当前六库均有索引，通用／上架／WCS 资产已批准；后三类仍为 candidate，`generation_ready=false`。资源目录只说明可发现，不等于读过正文，更不等于获得生成／发布权限。
+六库均有索引；设备 /1 随设备接口交付更新合同、示例及批准元数据。通用／上架／WCS 继续批准，ERP／条码保持 candidate、`generation_ready=false`。具体发布版本见设备交付及发布回执。资源可发现不等于已读过正文，也不等于取得生成／发布权限。
 
 资料设置团队可读并显式绑定目标 Agent。通道按固定逻辑清单检查用户 ACL、团队、Agent 绑定、用途、合同、批准页、索引状态和真实摘要；不接受任意 Wiki ID。Wiki 版本为字符串，不能套用旧 Skill 的整数版本规则。
 
