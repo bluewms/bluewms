@@ -72,12 +72,26 @@ class AISession(models.Model):
         profile._check_manager()
         if self.blue_contract and (profile.contract != self.blue_contract or profile.company_id != self.blue_company_id):
             raise UserError(self.env._('资产接口或公司已改变，请重新打开 AI 修改。'))
+        reference = self.blue_knowledge_reference
+        if profile.hook_code == 'wcs_creation' and reference and (
+                reference.get('source') != 'tencent_skill_bridge'
+                or reference.get('hook_code') != profile.hook_code or reference.get('contract') != profile.contract):
+            raise UserError(self.env._('知识引用方式已升级, 请从资产页面重新打开AI会话.'))
         provider = self._resolve_provider()
         if provider.name != 'blue_cloud' or not provider.active:
             raise UserError(self.env._('代码会话必须使用宝蓝云端连接。'))
         return provider._get_client()
 
     def _system_prompt_addenda(self):
+        if self.blue_profile_id and self.blue_profile_id.hook_code == 'wcs_creation':
+            return [self.env._(
+                '本会话仅允许修改WCS代码资产 ID %s. 先调用blue_read_code_asset读取本地contract_schema、'
+                '实际草稿、测试与摘要. 工具会按WCS合同读取批准云端正文并固定版本; 缺失/未批准/超时须报错, 禁止本地示例或上架知识兜底. '
+                '不得套用上架排序合同. 按wcs_creation/4对全部有效行create/wait/exclude、数量/容器组合/'
+                '行与单据位置映射后编排任务. 允许同计划内明确repeat相同数据的多任务, 独立身份且后张等前张end, '
+                '计划数量与库存只记一次. 人工设备/任务类型和开关不可替换. 仅使用本会话的草稿工具, '
+                '没有ORM/网络/文件/设备/发布权限. 保存并验证草稿后由用户发布. '
+                '只在业务需求不清楚时ask_user, 不要在同一轮同时调用ask_user和资产工具.', self.blue_profile_id.id)]
         if self.blue_profile_id:
             return [self.env._(
                 '本会话仅允许修改代码资产 ID %s。先调用 blue_read_code_asset 获取实际代码、'

@@ -42,7 +42,7 @@ For example, a user can request “Keep goods from the same receipt together and
 
 The customization workflow is: **describe the requirement → read knowledge and existing configuration → generate or revise a draft → run trials and validation → user review and publication → local business execution**.
 
-The current development version supports the putaway AI draft workflow: read approved cloud examples and the installed local contract, generate a draft, run validation, and let the user publish it. The AI button opens a larger floating chat on the existing business page, with enlarge and restore controls. The ERP, WCS, equipment and barcode AI entry points are being developed against their own contracts and validation requirements.
+The current development version supports the putaway AI draft workflow: read approved cloud examples and the installed local contract, generate a draft, run validation, and let the user publish it. The AI button opens a larger floating chat on the existing business page, with enlarge and restore controls. WCS /4 also has local line enhancement and repeated-task orchestration with draft tools; its dedicated approved cloud knowledge is pending. ERP, equipment and barcode entry points remain under development against their own contracts.
 
 Code and configuration are managed as database assets, with version history, change review, execution tracing and rollback. A change to one entry point preserves other configurations; coordinated changes check their relationships. Generated code operates within exposed interfaces, user permissions and system inventory rules. New models, fields and frontend components are delivered through regular modules.
 

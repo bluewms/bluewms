@@ -36,11 +36,14 @@ class BlueCodeAssetTools(models.AbstractModel):
         profile = session.blue_profile_id
         schema = self.env['blue.extension.contract']._describe(profile.contract)
         schema['instance_scope'] = profile._scope_snapshot()
-        bundle, reference = read_policy_knowledge(session._blue_check_binding(), session.blue_knowledge_reference)
+        bundle, reference = read_policy_knowledge(session._blue_check_binding(), session.blue_knowledge_reference,
+                                                   hook_code=profile.hook_code, contract=profile.contract)
+        if profile.hook_code == 'wcs_creation' and (reference.get('hook_code') != profile.hook_code or reference.get('contract') != profile.contract):
+            raise UserError(self.env._('批准知识与WCS合同不一致, 当前草稿未修改.'))
         session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_knowledge_reference': reference})
         return {'profile_id': profile.id, 'name': profile.name, 'hook_code': profile.hook_code,
                 'contract': profile.contract, 'code': profile.draft_code or '',
-                'contract_schema': schema, 'cloud_knowledge': bundle,
+                'contract_schema': schema, 'contract_specification': schema, 'cloud_knowledge': bundle,
                 'tests': profile.draft_tests or '', 'requirements': profile.requirements or '',
                 'draft_hash': session.blue_draft_hash, 'current_draft_hash': profile._draft_hash(),
                 'release_id': profile.active_release_id.id or False,
@@ -56,7 +59,7 @@ class BlueCodeAssetTools(models.AbstractModel):
         session = self._blue_asset_session()
         profile = self._blue_lock_draft(session, expected_hash)
         if not session.blue_knowledge_reference:
-            raise UserError(self.env._('请先读取代码资产和云端批准知识，再提交草稿。'))
+            raise UserError(self.env._('请先读取代码资产及本会话对应的参考上下文, 再提交草稿.'))
         result = profile.action_submit_draft(
             code, tests, requirements, expected_release_id=profile.active_release_id.id or False,
             conversation_ref=f'muk_ai.session:{session.blue_session_uuid}',

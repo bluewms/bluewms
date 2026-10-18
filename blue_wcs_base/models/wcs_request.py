@@ -1,6 +1,7 @@
 import hashlib
 import json
 import uuid
+from collections import defaultdict
 
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
@@ -48,6 +49,11 @@ class WcsRequest(models.Model):
     source_point = fields.Char('起点站点', required=True)
     destination_point = fields.Char('目的站点', required=True)
     carrier_code = fields.Char('载具编码')
+    goods_mode = fields.Selection([('primary', '首个货物程序'), ('repeat', '同数据后续程序'), ('relay', '连续接力'), ('empty', '空载具配合')], readonly=True)
+    source_ref = fields.Char('设备起点映射来源', readonly=True)
+    destination_ref = fields.Char('设备终点映射来源', readonly=True)
+    source_scope = fields.Boolean('设备起点是库区', readonly=True)
+    destination_scope = fields.Boolean('设备终点是库区', readonly=True)
     task_type = fields.Char('设备任务模板', required=True)
     predecessor_id = fields.Many2one('wcs.request', '前置任务', check_company=True, ondelete='restrict')
     dependency_event = fields.Selection([('end', '完成'), ('take', '取货'), ('point', '指定点'), ('point_or_take', '取货或点位通知')], default='end', required=True)
@@ -137,7 +143,7 @@ class WcsRequest(models.Model):
                    for row in self.plan_id.line_ids] if self.role == 'goods' else []
         if self.equipment_id.adapter_code == 'hik':
             return {'taskType': self.task_type, 'robotTaskCode': self.name,
-                    'targetRoute': [{'type': 'ZONE' if self.location_res_id.usage == 'view' else 'SITE', 'code': self.source_point}, {'type': 'ZONE' if self.location_dest_id.usage == 'view' or self.location_dest_id.location_rank == 'area' else 'SITE', 'code': self.destination_point}],
+                    'targetRoute': [{'type': 'ZONE' if self.source_scope or self.location_res_id.usage == 'view' else 'SITE', 'code': self.source_point}, {'type': 'ZONE' if self.destination_scope or self.location_dest_id.usage == 'view' or self.location_dest_id.location_rank == 'area' else 'SITE', 'code': self.destination_point}],
                     'initPriority': 50, 'extra': {'carrierInfo': [{'carrierCode': self.carrier_code}]} if self.carrier_code else {}}
         return {'task_id': self.name, 'plan_id': self.plan_id.name, 'role': self.role,
                 'source': self.source_point, 'destination': self.destination_point,
@@ -150,7 +156,8 @@ class WcsRequest(models.Model):
     def _preflight(self):
         self.ensure_one()
         plan = self.plan_id
-        expected_adapter = json.loads(plan.snapshot).get('adapters', {}).get(str(self.equipment_id.id))
+        snapshot = json.loads(plan.snapshot)
+        expected_adapter = snapshot.get('adapters', {}).get(str(self.equipment_id.id))
         if expected_adapter and self.equipment_id.adapter_code != expected_adapter:
             raise UserError(self.env._('Device protocol changed; reconcile the fixed task before sending.'))
         if self.equipment_id.adapter_code != 'simulation' and not (self.equipment_id.sudo().callback_token or self.equipment_id.sudo().category_id.callback_token):
@@ -158,10 +165,27 @@ class WcsRequest(models.Model):
             raise UserError(self.env._('Configure device callback authentication before dispatch.'))
         if plan.picking_id.state in ('cancel', 'done') or not self.equipment_id.active:
             raise UserError(self.env._('Operation or device is no longer available.'))
-        goods_start = self.role == 'goods' and (not self.predecessor_id or self.predecessor_id.role != 'goods')
+        if (self.location_res_id._blue_stock_blocking_location()
+                or self.location_dest_id._blue_stock_blocking_location(receiving=True)):
+            raise UserError(self.env._('WCS task locations are blocked.'))
+        if self.role == 'goods' and not plan.carrier_id and snapshot.get('contract') in ('wcs_creation/3', 'wcs_creation/4'):
+            if not (self.equipment_id.adapter_code == 'simulation'
+                    or (self.equipment_id.adapter_code == 'json' and self.equipment_id.supports_loose_goods)):
+                raise UserError(self.env._('Device no longer supports these loose goods.'))
+        if self.goods_mode == 'repeat' and self.equipment_id.adapter_code != 'simulation' and not self.equipment_id.supports_repeated_goods:
+            raise UserError(self.env._('Device no longer supports repeated goods programs.'))
+        if (self.source_scope or self.destination_scope) and self.equipment_id.adapter_code not in ('simulation', 'hik') and not self.equipment_id.supports_location_scope:
+            raise UserError(self.env._('Device no longer supports area position mappings.'))
+        if self.predecessor_id and self.predecessor_id.state != 'completed' and self.dependency_event == 'end':
+            raise UserError(self.env._('Complete the predecessor before dispatch.'))
+        goods_start = self.role == 'goods' and (snapshot.get('contract') == 'wcs_creation/4' or not self.predecessor_id or self.predecessor_id.role != 'goods')
         if self.role == 'goods':
+            if snapshot.get('contract') == 'wcs_creation/4':
+                self._check_fixed_carrier()
             for row in plan.line_ids:
                 line = row.move_line_id
+                if (snapshot.get('settings', {}).get('quantity_basis') == 'confirmed' or snapshot.get('line_decisions', {}).get(str(line.id), {}).get('quantity_basis') == 'confirmed') and not line.picked:
+                    raise UserError(self.env._('Actual WCS goods are no longer confirmed.'))
                 if line.product_id != row.product_id or line.lot_id != row.lot_id or line.uom_id != row.uom_id or line.uom_id.compare(line.quantity, row.quantity) < 0:
                     raise UserError(self.env._('Planned goods changed; reconcile this plan.'))
                 if line.location_id._blue_stock_blocking_location() or line.location_dest_id._blue_stock_blocking_location(receiving=True):
@@ -171,7 +195,10 @@ class WcsRequest(models.Model):
                         ('company_id', '=', self.company_id.id), ('location_id', '=', line.location_id.id),
                         ('product_id', '=', row.product_id.id), ('lot_id', '=', row.lot_id.id),
                         ('package_id', '=', line.package_id.id), ('owner_id', '=', line.owner_id.id)])
-                    required = row.uom_id._compute_quantity(row.quantity, row.product_id.uom_id, round=False)
+                    matching_rows = plan.line_ids.filtered(lambda item: item.product_id == row.product_id and item.lot_id == row.lot_id
+                        and item.move_line_id.package_id == line.package_id and item.move_line_id.owner_id == line.owner_id
+                        and item.move_line_id.location_id == line.location_id) if snapshot.get('contract') == 'wcs_creation/4' else row
+                    required = sum(item.uom_id._compute_quantity(item.quantity, item.product_id.uom_id, round=False) for item in matching_rows)
                     if (row.product_id.uom_id.compare(sum(quants.mapped('quantity')), required) < 0
                             or row.product_id.uom_id.compare(sum(quants.mapped('reserved_quantity')), required) < 0):
                         raise UserError(self.env._('Reserved stock changed before device dispatch.'))
@@ -181,6 +208,27 @@ class WcsRequest(models.Model):
                                                         package=row.package_id.outermost_package_id):
                         raise UserError(self.env._('Destination capacity or storage rules changed.'))
 
+
+    def _check_fixed_carrier(self):
+        self.ensure_one()
+        plan = self.plan_id
+        picking = plan.picking_id
+        carrier = plan.carrier_id
+        if not carrier:
+            return
+        current_lines = picking.move_line_ids.filtered(lambda line: line.quantity > 0 and (line.result_package_id if picking.picking_type_id.code == 'incoming' else line.package_id).outermost_package_id == carrier)
+        if set(current_lines.ids) != set(plan.line_ids.move_line_id.ids):
+            raise UserError(self.env._('Carrier contents changed after planning; reconcile before dispatch.'))
+        if picking.picking_type_id.code == 'incoming':
+            return
+        dimensions = defaultdict(float)
+        for row in plan.line_ids:
+            line = row.move_line_id
+            dimensions[(row.product_id.id, row.lot_id.id, line.package_id.id, line.owner_id.id, line.location_id.id)] += row.uom_id._compute_quantity(row.quantity, row.product_id.uom_id, round=False)
+        for quant in carrier.contained_quant_ids:
+            key = (quant.product_id.id, quant.lot_id.id, quant.package_id.id, quant.owner_id.id, quant.location_id.id)
+            if quant.quantity > 0 and quant.uom_id.compare(dimensions[key], quant.quantity) != 0:
+                raise UserError(self.env._('Carrier stock contents changed after planning; reconcile before dispatch.'))
 
     def _receive_event(self, event_id, event, point='', actual_destination=''):
         self.ensure_one()
@@ -195,7 +243,9 @@ class WcsRequest(models.Model):
             return True
         if self.state in ('waiting', 'pending_send', 'failed', 'cancelled'):
             raise UserError(self.env._('This task has not been sent.'))
-        if event == 'end' and actual_destination and actual_destination != self.destination_point:
+        expected_bins = {(row.move_line_id.location_dest_id.agv_map_point or row.move_line_id.location_dest_id.barcode) for row in self.plan_id.line_ids} if self.destination_scope and self.role == 'goods' else set()
+        mapped_bin = self.destination_scope and len(expected_bins) == 1 and actual_destination in expected_bins
+        if event == 'end' and actual_destination and actual_destination != self.destination_point and not mapped_bin:
             raise ValidationError(self.env._('Unexpected actual destination; reconcile before completing.'))
         self.env['wcs.event'].with_context(blue_wcs_token=WCS_TOKEN).create({
             'request_id': self.id, 'company_id': self.company_id.id, 'external_id': event_id,

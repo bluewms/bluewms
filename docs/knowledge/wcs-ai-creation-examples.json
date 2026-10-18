@@ -1,0 +1,1062 @@
+[
+  {
+    "key": "ready",
+    "name": "AI逐行直达",
+    "code": "if request[\"phase\"] == \"configure\":\n    result = {\"condition\": \"ready\", \"mode\": \"single\", \"quantity_basis\": \"confirmed\" if request[\"operation\"] == \"incoming\" else \"reserved\", \"group_by_container\": False}\nelse:\n    result = []\n    for candidate in candidates:\n        if request[\"ready\"] and request[\"default_condition_met\"]:\n            result.append(candidate)\n",
+    "tests": [
+      {
+        "name": "策略先于分组",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "internal"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "single",
+          "quantity_basis": "reserved",
+          "group_by_container": false
+        }
+      },
+      {
+        "name": "入库实际确认",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "incoming"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "single",
+          "quantity_basis": "confirmed",
+          "group_by_container": false
+        }
+      },
+      {
+        "name": "创建编排",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "single",
+              "quantity_basis": "reserved",
+              "group_by_container": false
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": true,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": [
+          {
+            "equipment_id": 1,
+            "location_res_id": 10,
+            "location_dest_id": 20,
+            "role": "goods",
+            "task_type": "TRANSFER",
+            "dependency_step": 0,
+            "dependency_event": "end",
+            "dependency_point": "",
+            "reason": "基础逐行直达作业"
+          }
+        ]
+      },
+      {
+        "name": "等待",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "single",
+              "quantity_basis": "reserved",
+              "group_by_container": false
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": false,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": []
+      }
+    ]
+  },
+  {
+    "key": "all_confirmed",
+    "name": "AI全部确认后创建",
+    "code": "if request[\"phase\"] == \"configure\":\n    result = {\"condition\": \"all_confirmed\", \"mode\": \"single\", \"quantity_basis\": \"confirmed\" if request[\"operation\"] == \"incoming\" else \"reserved\", \"group_by_container\": False}\nelse:\n    result = []\n    for candidate in candidates:\n        if request[\"ready\"] and request[\"default_condition_met\"]:\n            result.append(candidate)\n",
+    "tests": [
+      {
+        "name": "策略先于分组",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "internal"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "all_confirmed",
+          "mode": "single",
+          "quantity_basis": "reserved",
+          "group_by_container": false
+        }
+      },
+      {
+        "name": "入库实际确认",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "incoming"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "all_confirmed",
+          "mode": "single",
+          "quantity_basis": "confirmed",
+          "group_by_container": false
+        }
+      },
+      {
+        "name": "创建编排",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "all_confirmed",
+              "mode": "single",
+              "quantity_basis": "reserved",
+              "group_by_container": false
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": true,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": [
+          {
+            "equipment_id": 1,
+            "location_res_id": 10,
+            "location_dest_id": 20,
+            "role": "goods",
+            "task_type": "TRANSFER",
+            "dependency_step": 0,
+            "dependency_event": "end",
+            "dependency_point": "",
+            "reason": "基础逐行直达作业"
+          }
+        ]
+      },
+      {
+        "name": "等待",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "all_confirmed",
+              "mode": "single",
+              "quantity_basis": "reserved",
+              "group_by_container": false
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": false,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": []
+      },
+      {
+        "name": "部分未确认",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "all_confirmed",
+              "mode": "single",
+              "quantity_basis": "reserved",
+              "group_by_container": false
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": true,
+            "all_confirmed": false,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": false
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": []
+      }
+    ]
+  },
+  {
+    "key": "relay",
+    "name": "AI同货两段接力",
+    "code": "if request[\"phase\"] == \"configure\":\n    result = {\"condition\": \"ready\", \"mode\": \"relay\", \"quantity_basis\": \"confirmed\" if request[\"operation\"] == \"incoming\" else \"reserved\", \"group_by_container\": True}\nelse:\n    result = []\n    for candidate in candidates:\n        if request[\"ready\"] and request[\"default_condition_met\"]:\n            result.append(candidate)\n",
+    "tests": [
+      {
+        "name": "策略先于分组",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "internal"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "relay",
+          "quantity_basis": "reserved",
+          "group_by_container": true
+        }
+      },
+      {
+        "name": "入库实际确认",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "incoming"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "relay",
+          "quantity_basis": "confirmed",
+          "group_by_container": true
+        }
+      },
+      {
+        "name": "创建编排",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "relay",
+              "quantity_basis": "reserved",
+              "group_by_container": true
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": true,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 15,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            },
+            {
+              "equipment_id": 2,
+              "location_res_id": 15,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "LEG2",
+              "dependency_step": 1,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": [
+          {
+            "equipment_id": 1,
+            "location_res_id": 10,
+            "location_dest_id": 15,
+            "role": "goods",
+            "task_type": "TRANSFER",
+            "dependency_step": 0,
+            "dependency_event": "end",
+            "dependency_point": "",
+            "reason": "基础逐行直达作业"
+          },
+          {
+            "equipment_id": 2,
+            "location_res_id": 15,
+            "location_dest_id": 20,
+            "role": "goods",
+            "task_type": "LEG2",
+            "dependency_step": 1,
+            "dependency_event": "end",
+            "dependency_point": "",
+            "reason": "基础逐行直达作业"
+          }
+        ]
+      },
+      {
+        "name": "等待",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "relay",
+              "quantity_basis": "reserved",
+              "group_by_container": true
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": false,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 15,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            },
+            {
+              "equipment_id": 2,
+              "location_res_id": 15,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "LEG2",
+              "dependency_step": 1,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": []
+      }
+    ]
+  },
+  {
+    "key": "container",
+    "name": "AI按容器直达",
+    "code": "if request[\"phase\"] == \"configure\":\n    result = {\"condition\": \"ready\", \"mode\": \"single\", \"quantity_basis\": \"confirmed\" if request[\"operation\"] == \"incoming\" else \"reserved\", \"group_by_container\": True}\nelse:\n    result = []\n    for candidate in candidates:\n        if request[\"ready\"] and request[\"default_condition_met\"]:\n            result.append(candidate)\n",
+    "tests": [
+      {
+        "name": "策略先于分组",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "internal"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "single",
+          "quantity_basis": "reserved",
+          "group_by_container": true
+        }
+      },
+      {
+        "name": "入库实际确认",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "incoming"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "single",
+          "quantity_basis": "confirmed",
+          "group_by_container": true
+        }
+      },
+      {
+        "name": "创建编排",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "single",
+              "quantity_basis": "reserved",
+              "group_by_container": true
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": true,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": [
+          {
+            "equipment_id": 1,
+            "location_res_id": 10,
+            "location_dest_id": 20,
+            "role": "goods",
+            "task_type": "TRANSFER",
+            "dependency_step": 0,
+            "dependency_event": "end",
+            "dependency_point": "",
+            "reason": "基础逐行直达作业"
+          }
+        ]
+      },
+      {
+        "name": "等待",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "single",
+              "quantity_basis": "reserved",
+              "group_by_container": true
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": false,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 20,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": []
+      }
+    ]
+  },
+  {
+    "key": "empty_return",
+    "name": "AI空载具配合",
+    "code": "if request[\"phase\"] == \"configure\":\n    result = {\"condition\": \"ready\", \"mode\": \"double_in\", \"quantity_basis\": \"confirmed\" if request[\"operation\"] == \"incoming\" else \"reserved\", \"group_by_container\": True}\nelse:\n    result = []\n    for candidate in candidates:\n        if request[\"ready\"] and request[\"default_condition_met\"]:\n            result.append(candidate)\n",
+    "tests": [
+      {
+        "name": "策略先于分组",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "internal"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "double_in",
+          "quantity_basis": "reserved",
+          "group_by_container": true
+        }
+      },
+      {
+        "name": "入库实际确认",
+        "input": {
+          "request": {
+            "phase": "configure",
+            "operation": "incoming"
+          },
+          "candidates": []
+        },
+        "expected_result": {
+          "condition": "ready",
+          "mode": "double_in",
+          "quantity_basis": "confirmed",
+          "group_by_container": true
+        }
+      },
+      {
+        "name": "创建编排",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "double_in",
+              "quantity_basis": "reserved",
+              "group_by_container": true
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": true,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20,
+              25
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 25,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            },
+            {
+              "equipment_id": 1,
+              "location_res_id": 20,
+              "location_dest_id": 10,
+              "role": "empty_return",
+              "task_type": "TRANSFER",
+              "dependency_step": 1,
+              "dependency_event": "point_or_take",
+              "dependency_point": "A",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": [
+          {
+            "equipment_id": 1,
+            "location_res_id": 10,
+            "location_dest_id": 25,
+            "role": "goods",
+            "task_type": "TRANSFER",
+            "dependency_step": 0,
+            "dependency_event": "end",
+            "dependency_point": "",
+            "reason": "基础逐行直达作业"
+          },
+          {
+            "equipment_id": 1,
+            "location_res_id": 20,
+            "location_dest_id": 10,
+            "role": "empty_return",
+            "task_type": "TRANSFER",
+            "dependency_step": 1,
+            "dependency_event": "point_or_take",
+            "dependency_point": "A",
+            "reason": "基础逐行直达作业"
+          }
+        ]
+      },
+      {
+        "name": "等待",
+        "input": {
+          "request": {
+            "phase": "tasks",
+            "settings": {
+              "condition": "ready",
+              "mode": "double_in",
+              "quantity_basis": "reserved",
+              "group_by_container": true
+            },
+            "operation": "internal",
+            "wcs_type": "out",
+            "ready": false,
+            "all_confirmed": true,
+            "source_id": 10,
+            "destination_id": 20,
+            "source_parent_id": 15,
+            "destination_parent_id": 25,
+            "equipment_id": 1,
+            "task_type": "TRANSFER",
+            "secondary_equipment_id": 2,
+            "secondary_task_type": "LEG2",
+            "intermediate_location_id": 15,
+            "allowed_location_ids": [
+              10,
+              15,
+              20,
+              25
+            ],
+            "allowed_equipment_ids": [
+              1,
+              2
+            ],
+            "allowed_goods_destinations": [
+              20,
+              25
+            ],
+            "equipment": {
+              "1": {
+                "name": "Primary",
+                "category_id": 1,
+                "task_type": "TRANSFER"
+              },
+              "2": {
+                "name": "Secondary",
+                "category_id": 2,
+                "task_type": "LEG2"
+              }
+            },
+            "default_condition_met": true
+          },
+          "candidates": [
+            {
+              "equipment_id": 1,
+              "location_res_id": 10,
+              "location_dest_id": 25,
+              "role": "goods",
+              "task_type": "TRANSFER",
+              "dependency_step": 0,
+              "dependency_event": "end",
+              "dependency_point": "",
+              "reason": "基础逐行直达作业"
+            },
+            {
+              "equipment_id": 1,
+              "location_res_id": 20,
+              "location_dest_id": 10,
+              "role": "empty_return",
+              "task_type": "TRANSFER",
+              "dependency_step": 1,
+              "dependency_event": "point_or_take",
+              "dependency_point": "A",
+              "reason": "基础逐行直达作业"
+            }
+          ]
+        },
+        "expected_result": []
+      }
+    ]
+  }
+]

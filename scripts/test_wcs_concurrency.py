@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from psycopg2.errors import SerializationFailure
 from odoo import api
 from odoo.tests import new_test_user
+from odoo.tools import file_open
 
 if not env.cr.dbname.endswith('_test'):
     raise RuntimeError('Use an isolated *_test database, never the development database.')
@@ -31,13 +32,21 @@ with registry.cursor() as cr:
     picking.action_confirm()
     picking.action_assign()
     picking.move_line_ids.result_package_id = package
-    devices = fixture['wcs.equipment'].create([{'name': 'WCS concurrency device ' + suffix, 'company_id': fixture.company.id},
+    category = fixture['wcs.equipment.category'].create({'name': 'Concurrency simulation ' + suffix, 'company_id': fixture.company.id})
+    devices = fixture['wcs.equipment'].create([{'name': 'WCS concurrency device ' + suffix, 'company_id': fixture.company.id, 'category_id': category.id},
                                               {'name': 'WCS concurrency second ' + suffix, 'company_id': fixture.company.id}])
     intermediate = fixture['stock.location'].create({'name': 'WCS concurrency handoff ' + suffix,
         'location_id': source.id, 'usage': 'internal', 'company_id': fixture.company.id, 'agv_map_point': 'X'})
     source.agv_map_point = 'A'
     destination.agv_map_point = 'B'
-    operation.write({'equipment_id': devices[0].id, 'wcs_secondary_equipment_id': devices[1].id,
+    profile = fixture['blue.config.profile'].create({'name': 'Concurrency relay ' + suffix, 'template_id': fixture.ref('blue_wcs_extension.template_relay_v3').id})
+    with file_open('blue_wcs_extension/tests/data/legacy_wcs_regression_cases.json') as source_file:
+        case = json.load(source_file)['template_relay_v3']
+    profile.action_submit_draft(case['code_text'], case['test_cases'], 'Isolated legacy concurrency regression fixture')
+    profile.action_validate()
+    profile.action_publish()
+    operation.write({'wcs_type': 'out', 'task_type': 'TRANSFER', 'wcs_secondary_task_type': 'TRANSFER',
+        'equipment_category_id': category.id, 'blue_wcs_profile_id': profile.id, 'equipment_id': devices[0].id, 'wcs_secondary_equipment_id': devices[1].id,
         'wcs_request_mode': 'relay', 'wcs_intermediate_location_id': intermediate.id,
         'is_create_wcs_by_container': True, 'is_wcs_required_for_validate': True})
     user = new_test_user(fixture, login='wcs_concurrent_' + suffix, groups='stock.group_stock_user')

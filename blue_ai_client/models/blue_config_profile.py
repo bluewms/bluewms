@@ -9,8 +9,10 @@ class BlueConfigProfile(models.Model):
 
     def action_blue_ai_chat(self):
         self._check_manager()
-        if self.hook_code != 'putaway_policy':
-            raise UserError(self.env._('当前 AI 代码入口仅开放上架策略，其他入口须先完成合同和业务验证。'))
+        if self.hook_code not in ('putaway_policy', 'wcs_creation'):
+            raise UserError(self.env._('当前 AI 代码入口支持上架策略及WCS /4, 其他入口须先完成合同和业务验证.'))
+        if self.hook_code == 'wcs_creation' and self.contract != 'wcs_creation/4':
+            raise UserError(self.env._('旧WCS合同和正式版本保留. 完整AI编排请新建/4配置后试算发布, 不自动转换旧资产.'))
         provider = self.env.ref('blue_ai_client.provider_blue_cloud')
         if not provider.active or not provider._can_serve():
             raise UserError(self.env._('请先启用宝蓝云端服务，并配置当前用户的连接。'))

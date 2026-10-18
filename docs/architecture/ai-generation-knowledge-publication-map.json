@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "mode": "manual_reviewed_publication",
-  "updated": "2026-10-17",
+  "updated": "2026-10-18",
   "note": "仅发布 Odoo 内 AI 增强代码生成资料；sources 相对 source_root。工程开发、Git、服务器配置、运维及历史不进入生成知识。人工映射，不是自动同步程序。",
   "skill_name": "bluewms-policy-authoring",
   "existing_skill_resources": [
@@ -51,6 +51,41 @@
       "scope": "历史配置资料，当前客户端不读取；不再从工程运维文档汇编发布到生成知识库。",
       "eligible_for_generation": false,
       "publication_action": "retain_legacy_resource_without_republishing_as_generation_knowledge"
+    },
+    {
+      "path": "06-wcs-creation-contract.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "domains/wcs/specification.md",
+        "domains/wcs/configuration-guide.md",
+        "domains/wcs/wcs-creation-v4-contract.json"
+      ],
+      "scope": "WCS /4独立批准资源，仅由WCS工具读取，云端待用户发布",
+      "eligible_for_generation": true,
+      "cloud_approved": false
+    },
+    {
+      "path": "07-approved-wcs-examples.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "domains/wcs/specification.md",
+        "domains/wcs/configuration-guide.md",
+        "domains/wcs/wcs-creation-v4-contract.json",
+        "domains/wcs/examples/README.md",
+        "domains/wcs/examples/ready.md",
+        "domains/wcs/examples/repeat.md",
+        "domains/wcs/examples/triple.md",
+        "domains/wcs/examples/filter.md",
+        "domains/wcs/examples/all_picked.md",
+        "domains/wcs/examples/container.md",
+        "domains/wcs/examples/weight.md",
+        "domains/wcs/examples/scope.md",
+        "domains/wcs/examples/relay.md",
+        "domains/wcs/examples/empty.md"
+      ],
+      "scope": "WCS /4独立批准资源，仅由WCS工具读取，云端待用户发布",
+      "eligible_for_generation": true,
+      "cloud_approved": false
     }
   ],
   "wiki_publication": {
@@ -63,15 +98,27 @@
       "domains/putaway/examples/README.md",
       "domains/putaway/examples/same-lot.md",
       "domains/putaway/examples/same-picking.md",
-      "domains/putaway/examples/same-batch-name.md"
+      "domains/putaway/examples/same-batch-name.md",
+      "domains/wcs/specification.md",
+      "domains/wcs/configuration-guide.md",
+      "domains/wcs/wcs-creation-v4-contract.json",
+      "domains/wcs/examples/README.md",
+      "domains/wcs/examples/ready.md",
+      "domains/wcs/examples/repeat.md",
+      "domains/wcs/examples/triple.md",
+      "domains/wcs/examples/filter.md",
+      "domains/wcs/examples/all_picked.md",
+      "domains/wcs/examples/container.md",
+      "domains/wcs/examples/weight.md",
+      "domains/wcs/examples/scope.md",
+      "domains/wcs/examples/relay.md",
+      "domains/wcs/examples/empty.md"
     ],
     "note": "仅按基础生成规则、各类接口规范和示例逐页发布；不得导入 docs/ 工程文档、运维配置或历史目录。当前未执行云端发布。"
   },
   "planned_domain_sources": [
     "domains/erp/specification.md",
     "domains/erp/examples/README.md",
-    "domains/wcs/specification.md",
-    "domains/wcs/examples/README.md",
     "domains/equipment/specification.md",
     "domains/equipment/examples/README.md",
     "domains/barcode/specification.md",
@@ -101,5 +148,31 @@
     "development_machine_and_skill_installation",
     "cloud_server_deployment_and_credentials",
     "operations_and_chat_debug_history"
+  ],
+  "local_verified_unpublished_domain_sources": [
+    {
+      "hook": "wcs_creation",
+      "contract": "wcs_creation/4",
+      "sources": [
+        "domains/wcs/specification.md",
+        "domains/wcs/configuration-guide.md",
+        "domains/wcs/wcs-creation-v4-contract.json",
+        "domains/wcs/examples/README.md",
+        "domains/wcs/examples/ready.md",
+        "domains/wcs/examples/repeat.md",
+        "domains/wcs/examples/triple.md",
+        "domains/wcs/examples/filter.md",
+        "domains/wcs/examples/all_picked.md",
+        "domains/wcs/examples/container.md",
+        "domains/wcs/examples/weight.md",
+        "domains/wcs/examples/scope.md",
+        "domains/wcs/examples/relay.md",
+        "domains/wcs/examples/empty.md"
+      ],
+      "loaded_by_odoo_cloud_bridge": true,
+      "runtime_context": "approved_cloud_required",
+      "cloud_approved": false,
+      "note": "客户端已接入同项目Skill的01/06/07，要求WCS /4批准标记及真实Wiki来源。正文尚待用户最后写入和批准；无本地或上架回退。"
+    }
   ]
 }

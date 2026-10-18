@@ -1,6 +1,6 @@
 # Odoo AI 增强代码生成知识库
 
-用途：供 **Odoo 内的宝蓝代码助手**理解用户业务需求，并生成指定入口的补充代码和测试。维护日期：2026-10-17。
+用途：供 **Odoo 内的宝蓝代码助手**理解用户业务需求，并生成指定入口的补充代码和测试。维护日期：2026-10-18。
 
 这里的知识面向运行在 Odoo 中的代码生成助手，不面向仓库源码开发。内容只包含生成通用规则、各业务入口的输入／输出／限制及验证过的代码示例。项目架构、Git 操作、开发机安装、云服务器配置和联调历史单独放在工程文档中，不作为本知识库的生成资料。
 
@@ -22,7 +22,7 @@
 |---|---|---|---|---|
 | 上架策略 | `putaway_policy` | [上架生成规范](domains/putaway/specification.md) | [三个已验证案例](domains/putaway/examples/README.md) | 可读取、提交并验证草稿；人工发布 |
 | ERP 接口 | `erp_mapping` | [ERP 规范草案](domains/erp/specification.md) | [需求案例](domains/erp/examples/README.md) | planned；当前不能生成可执行草稿 |
-| WCS 生成策略 | `wcs_creation` | [WCS 规范草案](domains/wcs/specification.md) | [需求案例](domains/wcs/examples/README.md) | 已有手动业务策略，AI 入口尚未开放 |
+| WCS 生成策略 | `wcs_creation` | [WCS /4规范](domains/wcs/specification.md) | [已验证案例](domains/wcs/examples/README.md) | /4只读桥接与草稿工具就绪, 云端正文待用户最后写入/批准 |
 | 设备连接接口 | `device_protocol` | [设备规范草案](domains/equipment/specification.md) | [需求案例](domains/equipment/examples/README.md) | planned；当前不能生成可执行草稿 |
 | 条码扫描策略 | `barcode_policy` | [条码规范草案](domains/barcode/specification.md) | [需求案例](domains/barcode/examples/README.md) | planned；当前不能生成可执行草稿 |
 

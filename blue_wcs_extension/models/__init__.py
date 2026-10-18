@@ -3,6 +3,7 @@ from . import blue_scene_template
 from . import blue_config_profile
 from . import stock_picking_type
 from . import stock_picking
+from . import stock_picking_v4
 from . import stock_move_line
 from . import stock_package
 from . import blue_config_event

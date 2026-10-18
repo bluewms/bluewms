@@ -10,7 +10,7 @@ from odoo.tests import tagged
 
 from odoo.addons.base.tests.common import BaseCommon
 
-from ..providers.knowledge import MAX_RESPONSE, RESOURCE_PATHS, SKILL_NAME, read_policy_knowledge
+from ..providers.knowledge import MAX_RESPONSE, RESOURCE_PATHS, SKILL_NAME, WCS_RESOURCE_PATHS, read_policy_knowledge
 
 
 @tagged('post_install', '-at_install')
@@ -46,8 +46,11 @@ class TestCloudKnowledge(BaseCommon):
             return self._response({'items': [{'name': SKILL_NAME, 'skill_id': 'skl-approved'}]})
         if operation == 'get':
             return self._response(copy.deepcopy(self.skill))
-        return self._response({'path': kwargs['json']['path'], 'version': 7,
-                               'encoding': 'utf-8', 'content': 'Approved cloud body'})
+        path = kwargs['json']['path']
+        content = 'Approved cloud body'
+        if path in WCS_RESOURCE_PATHS[1:]:
+            content = '<!-- bluewms-knowledge ' + json.dumps(getattr(self, 'wcs_header', {})) + ' -->\nWCS approved body'
+        return self._response({'path': path, 'version': 7, 'encoding': 'utf-8', 'content': content})
 
     def test_reads_acl_filtered_approved_version_and_manifest_resources(self):
         bundle, reference = read_policy_knowledge(self.client)
@@ -105,4 +108,53 @@ class TestCloudKnowledge(BaseCommon):
         self.transport.post.side_effect = requests.Timeout('private-test-key')
         with self.assertRaises(UserError) as raised:
             read_policy_knowledge(self.client)
+        self.assertNotIn('private-test-key', str(raised.exception))
+
+    def _enable_wcs(self):
+        self.skill['manifest'] = [{'path': path, 'is_executable': False} for path in RESOURCE_PATHS + WCS_RESOURCE_PATHS]
+        self.skill['metadata']['approved_contracts'] = {'wcs_creation': ['wcs_creation/4']}
+        self.skill['metadata']['wiki_source'] = {'wiki_id': 'test-project-wiki', 'version': 2}
+        self.wcs_header = {'approved': True, 'hook_code': 'wcs_creation', 'contracts': ['wcs_creation/4']}
+
+    def test_wcs_reads_its_approved_contract_and_examples_not_putaway(self):
+        self._enable_wcs()
+        bundle, reference = read_policy_knowledge(self.client, hook_code='wcs_creation', contract='wcs_creation/4')
+        self.assertEqual(bundle['hook_code'], 'wcs_creation')
+        self.assertEqual(reference['contract'], 'wcs_creation/4')
+        paths = [call['json']['path'] for _, call in self.requests if 'path' in call['json']]
+        self.assertEqual(paths, list(WCS_RESOURCE_PATHS))
+        self.assertNotIn('04-approved-putaway-examples.md', paths)
+        self.assertEqual(read_policy_knowledge(self.client, reference, 'wcs_creation', 'wcs_creation/4')[1], reference)
+
+    def test_wcs_wrong_hook_contract_header_and_missing_body_fail_closed(self):
+        self._enable_wcs()
+        for change in ({'hook_code': 'putaway_policy'}, {'contracts': ['wcs_creation/3']}, {'approved': False}):
+            original = dict(self.wcs_header)
+            self.wcs_header.update(change)
+            with self.subTest(change=change), self.assertRaises(UserError):
+                read_policy_knowledge(self.client, hook_code='wcs_creation', contract='wcs_creation/4')
+            self.wcs_header = original
+        self.skill['metadata']['approved_contracts'] = {'wcs_creation': ['wcs_creation/3']}
+        with self.assertRaises(UserError):
+            read_policy_knowledge(self.client, hook_code='wcs_creation', contract='wcs_creation/4')
+        self._enable_wcs()
+        self.skill['manifest'] = [{'path': RESOURCE_PATHS[0]}]
+        with self.assertRaises(UserError):
+            read_policy_knowledge(self.client, hook_code='wcs_creation', contract='wcs_creation/4')
+
+    def test_old_local_only_wcs_reference_requires_reopen(self):
+        with self.assertRaises(UserError):
+            read_policy_knowledge(self.client, {'source': 'local_wcs_contract'}, 'wcs_creation', 'wcs_creation/4')
+        self.transport.post.assert_not_called()
+
+    def test_wcs_requires_observed_wiki_source_and_has_no_timeout_fallback(self):
+        self._enable_wcs()
+        for source in (None, {}, {'wiki_id': 'observed-wiki', 'version': None}):
+            self.skill['metadata']['wiki_source'] = source
+            with self.subTest(source=source), self.assertRaises(UserError):
+                read_policy_knowledge(self.client, hook_code='wcs_creation', contract='wcs_creation/4')
+        self._enable_wcs()
+        self.transport.post.side_effect = requests.Timeout('private-test-key')
+        with self.assertRaises(UserError) as raised:
+            read_policy_knowledge(self.client, hook_code='wcs_creation', contract='wcs_creation/4')
         self.assertNotIn('private-test-key', str(raised.exception))

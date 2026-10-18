@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import new_test_user, tagged
+from odoo.tools import file_open
 
 from odoo.addons.base.tests.common import BaseCommon
 from odoo.addons.muk_ai.providers.base import PROVIDER_STATE_KEY
@@ -334,3 +335,77 @@ class TestBlueCloud(BaseCommon):
         self.connection.sudo().active = False
         with self.assertRaises(UserError):
             self.provider.with_user(self.manager).with_context(active_test=False)._get_client().headers()
+
+    def test_wcs_asset_tools_return_v4_contract_and_never_publish(self):
+        template = self.env.ref('blue_wcs_extension.blue_scene_template_wcs', raise_if_not_found=False)
+        if not template:
+            self.skipTest('WCS extension is not installed in this database.')
+        profile = self.env['blue.config.profile'].with_user(self.manager).create({'name': 'WCS cloud contract test', 'template_id': template.id})
+        with file_open('blue_wcs_extension/tests/data/legacy_wcs_regression_cases.json') as source:
+            fixture = json.load(source)['template_repeat_v4']
+        profile.action_submit_draft(fixture['code_text'], fixture['test_cases'], 'WCS test user draft')
+        action = profile.with_user(self.manager).action_blue_ai_chat()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=action['params']['session_id'])
+        plans_before = self.env['wcs.plan'].with_user(self.manager).search_count([])
+        wcs_reference = dict(self.reference, source='tencent_skill_bridge', hook_code='wcs_creation', contract='wcs_creation/4')
+        with patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge', return_value=({'approved': True, 'hook_code': 'wcs_creation', 'resources': []}, wcs_reference)) as reader:
+            asset = tools._mcp_blue_read_code_asset()
+        self.assertEqual(reader.call_args.kwargs['hook_code'], 'wcs_creation')
+        self.assertEqual(reader.call_args.kwargs['contract'], 'wcs_creation/4')
+        self.assertTrue(asset['cloud_knowledge']['approved'])
+        self.assertNotIn('example_code', asset)
+        self.assertNotIn('example_tests', asset)
+        self.assertEqual(asset['contract_schema'], asset['contract_specification'])
+        session = self.env['muk_ai.session'].with_user(self.manager).browse(action['params']['session_id'])
+        self.assertEqual(action['tag'], 'blue_ai_client.open_code_chat')
+        self.assertEqual(session.blue_task_name, 'WCS生成策略')
+        self.assertIn('repeat', session._system_message()['content'][0]['text'])
+        self.assertEqual(asset['contract_specification']['contract'], 'wcs_creation/4')
+        self.assertEqual(asset['contract_specification']['tasks_output']['maxItems'], 4)
+        saved = tools._mcp_blue_submit_code_draft(asset['code'], asset['tests'], 'AI WCS draft only', asset['draft_hash'])
+        result = tools._mcp_blue_validate_code_draft(saved['draft_hash'])
+        self.assertTrue(result['valid'])
+        self.assertFalse(result['published'])
+        self.assertFalse(profile.active_release_id)
+        self.assertEqual(json.loads(profile.with_user(self.manager).validated_version_id.knowledge_references)['source'], 'tencent_skill_bridge')
+        self.assertEqual(self.env['wcs.plan'].with_user(self.manager).search_count([]), plans_before)
+
+    def test_wcs_unread_context_and_unsupported_other_hooks_stay_blocked(self):
+        template = self.env.ref('blue_wcs_extension.blue_scene_template_wcs', raise_if_not_found=False)
+        if not template:
+            self.skipTest('WCS extension is not installed.')
+        profile = self.env['blue.config.profile'].with_user(self.manager).create({'name': 'Unread WCS', 'template_id': template.id})
+        with file_open('blue_wcs_extension/tests/data/legacy_wcs_regression_cases.json') as source:
+            fixture = json.load(source)['template_repeat_v4']
+        profile.action_submit_draft(fixture['code_text'], fixture['test_cases'], 'WCS test user draft')
+        action = profile.action_blue_ai_chat()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=action['params']['session_id'])
+        with self.assertRaises(UserError):
+            tools._mcp_blue_submit_code_draft(profile.draft_code, profile.draft_tests, 'WCS unread', profile._draft_hash())
+        self.assertFalse(profile.validated_version_id)
+        old_template = self.env.ref('blue_wcs_extension.template_ready')
+        old_profile = self.env['blue.config.profile'].with_user(self.manager).create({'name': 'Old WCS', 'template_id': old_template.id})
+        with self.assertRaises(UserError):
+            old_profile.action_blue_ai_chat()
+
+    def test_old_local_wcs_session_cannot_submit_or_validate_after_upgrade(self):
+        template = self.env.ref('blue_wcs_extension.blue_scene_template_wcs', raise_if_not_found=False)
+        if not template:
+            self.skipTest('WCS extension is not installed.')
+        profile = self.env['blue.config.profile'].with_user(self.manager).create({'name': 'Old local WCS chat', 'template_id': template.id})
+        action = profile.action_blue_ai_chat()
+        session = self.env['muk_ai.session'].with_user(self.manager).browse(action['params']['session_id'])
+        session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({
+            'blue_knowledge_reference': {'source': 'local_wcs_contract', 'contract': 'wcs_creation/4'},
+        })
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        before = profile._draft_hash()
+        for operation in (
+                lambda: tools._mcp_blue_read_code_asset(),
+                lambda: tools._mcp_blue_submit_code_draft('', '', 'overwrite old session', before),
+                lambda: tools._mcp_blue_validate_code_draft(before)):
+            with self.assertRaisesRegex(UserError, '重新打开AI会话'):
+                operation()
+        self.assertEqual(profile._draft_hash(), before)
+        self.assertFalse(profile.validated_version_id)
+        self.assertFalse(profile.active_release_id)
