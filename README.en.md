@@ -107,6 +107,8 @@ Subsequent product tags follow `Vmajor.minor.patch`, such as `V2.1.0` and `V2.0.
 
 Production releases are published through [GitHub Releases](https://github.com/bluewms/bluewms/releases), with release notes, installation and upgrade instructions, and applicable deployment requirements.
 
+Production Odoo release archives exclude `docs/`. Documentation, knowledge sources and the separately deployed cloud service under `docs/cloud/` remain in the development Git repository. The root `.gitattributes` applies this exclusion to `git archive`; other packaging methods must also exclude this directory and preserve each module's licenses and attribution notices.
+
 ## Documentation and contributions
 
 - [Documentation index](docs/README.md): business guides, architecture and engineering documentation.

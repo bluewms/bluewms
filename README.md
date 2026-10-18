@@ -107,6 +107,8 @@ docker compose -f docker/compose.yaml ps
 
 正式发布通过 [GitHub Releases](https://github.com/bluewms/bluewms/releases) 提供版本说明、安装与升级指引及适用的部署要求。
 
+正式 Odoo 发行包不包含 `docs/`；文档、知识维护来源及 `docs/cloud/` 云端配套服务仍保留在开发 Git 仓库。根目录 `.gitattributes` 已为 `git archive` 设置排除规则；其他打包方式也须排除该目录，并保留各模块的许可证与来源声明。
+
 ## 文档与贡献
 
 - [文档目录](docs/README.md)：业务说明、架构与工程文档入口。

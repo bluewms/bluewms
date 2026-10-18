@@ -1,5 +1,7 @@
 # Native Wiki read-only gateway
 
+This directory contains separately deployed cloud service sources and deployment material. It is not an Odoo addon. It remains in the development Git repository under `docs/cloud/`; production Odoo release archives exclude `docs/`.
+
 This gateway forwards authenticated Odoo requests to TencentDB-Agent-Memory's standard `tools/list` and `tools/call` APIs. Tencent performs BM25 search and full-page reads. There is no local example library, Skill dependency, reindexer or arbitrary URL forwarding here.
 
 Use the existing HTTPS model origin. Deploy `native_wiki_gateway.py` with Python 3.9+, adapt the service unit, and include `nginx-native-wiki.conf` inside that origin's HTTPS server. The process listens only on loopback port 8430. Keep deployment configuration and its service credential outside Git, readable only by the dedicated service account. The Odoo client continues to use its existing business user Key.
@@ -14,4 +16,4 @@ The HTTPS interface is limited to `identity`, `context`, `search`, `read` and `v
 
 Before deployment, back up affected service/reverse-proxy files and metadata. Validate the proxy configuration, then reload it. Updating gateway code requires restarting this service; vendor containers are unchanged. For rollback, restore the previous reviewed gateway release and private configuration. Old Skill assets may remain available for older clients; this gateway never uses them as fallback.
 
-Run gateway checks with `python3 -m unittest discover -s cloud/tests`. Odoo integration tests live in `blue_ai_client/tests`; run them in an isolated database with a matching dbfilter. Deployment and real Task-routing evidence are recorded in `docs/migrations/native-wiki-runtime-20.md`.
+From the repository root, run gateway checks with `python3 -m unittest discover -s docs/cloud/tests`. Odoo integration tests live in `blue_ai_client/tests`; run them in an isolated database with a matching dbfilter. Deployment and real Task-routing evidence are recorded in [the runtime guide](../migrations/native-wiki-runtime-20.md).
