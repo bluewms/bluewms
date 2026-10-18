@@ -8,6 +8,7 @@ from odoo.tests import new_test_user, tagged
 from odoo.addons.base.tests.common import BaseCommon
 from odoo.addons.muk_ai.providers.base import PROVIDER_STATE_KEY
 
+from ..guard import BINDING_TOKEN
 from ..providers.chat_completions import BlueCloudProvider, normalize_url
 
 
@@ -42,6 +43,14 @@ class TestBlueCloud(BaseCommon):
         })
         cls.profile = cls.env['blue.config.profile'].create({'name': 'Cloud scene', 'template_id': cls.template.id})
         cls.profile.with_user(cls.manager).action_load_example()
+
+    def setUp(self):
+        super().setUp()
+        self.reference = {'skill_id': 'approved-test-skill', 'name': 'bluewms-policy-authoring', 'version': 4}
+        self.knowledge = patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge',
+                               return_value=({'approved': True, 'resources': []}, self.reference))
+        self.knowledge.start()
+        self.addCleanup(self.knowledge.stop)
 
     def _client(self):
         return self.provider.with_user(self.manager).with_context(blue_ai_session_uuid='stable-test-id')._get_client()
@@ -152,6 +161,7 @@ class TestBlueCloud(BaseCommon):
     def test_invalid_code_cannot_be_submitted(self):
         session = self._session()
         tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        tools._mcp_blue_read_code_asset()
         with self.assertRaises(ValidationError):
             tools._mcp_blue_submit_code_draft('import os', self.tests, 'unsafe', session.blue_draft_hash)
         self.assertEqual(self.profile.with_user(self.manager).draft_code, self.code)
@@ -199,6 +209,91 @@ class TestBlueCloud(BaseCommon):
         self.assertIn('error', result)
         names = {entry['name'] for entry in session._get_filtered_catalog()}
         self.assertNotIn('call_method', names)
+
+    def test_asset_read_returns_contract_and_cloud_body_without_local_examples(self):
+        session = self._session()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        result = tools._mcp_blue_read_code_asset()
+        self.assertNotIn('example_code', result)
+        self.assertNotIn('example_tests', result)
+        self.assertTrue(result['cloud_knowledge']['approved'])
+        self.assertEqual(result['contract_schema']['contract'], self.profile.contract)
+        self.assertIn('package_capacity', result['contract_schema']['input']['runtime_candidate_fields'])
+        self.assertIn('If', result['contract_schema']['syntax']['ast_nodes'])
+        self.assertEqual(session.blue_task_name, '上架策略')
+        saved = tools._mcp_blue_submit_code_draft(self.code, self.tests, 'generated', result['draft_hash'])
+        tools._mcp_blue_validate_code_draft(saved['draft_hash'])
+        version = self.profile.with_user(self.manager).validated_version_id
+        self.assertEqual(json.loads(version.knowledge_references), self.reference)
+
+    def test_submit_requires_real_knowledge_read(self):
+        session = self._session()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        with self.assertRaises(UserError):
+            tools._mcp_blue_submit_code_draft(self.code, self.tests, 'unread', session.blue_draft_hash)
+
+    def test_identity_and_scope_changes_require_a_new_session(self):
+        session = self._session()
+        self.connection.sudo().agent_name = 'changed-agent'
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        with self.assertRaises(UserError):
+            tools._mcp_blue_read_code_asset()
+        self.assertFalse(session.blue_knowledge_reference)
+
+    def test_disabled_provider_stops_asset_knowledge_reads(self):
+        session = self._session()
+        self.provider.with_user(self.env.ref('base.user_admin')).active = False
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        with self.assertRaises(UserError):
+            tools._mcp_blue_read_code_asset()
+        self.assertFalse(session.blue_knowledge_reference)
+
+    def test_legacy_session_keeps_daily_task_without_rebinding_the_asset(self):
+        session = self._session()
+        session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({
+            'blue_task_name': False, 'blue_contract': False, 'blue_company_id': False, 'blue_identity_scope': False,
+        })
+        self.assertEqual(session._resolve_provider().env.context['blue_ai_task_name'], '日常任务')
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        self.assertEqual(tools._mcp_blue_read_code_asset()['profile_id'], self.profile.id)
+
+    def test_cloud_failure_preserves_draft_and_cannot_fake_a_read(self):
+        session = self._session()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        before = self.profile.with_user(self.manager)._draft_hash()
+        with patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge', side_effect=UserError('unavailable')):
+            with self.assertRaises(UserError):
+                tools._mcp_blue_read_code_asset()
+        self.assertFalse(session.blue_knowledge_reference)
+        self.assertEqual(self.profile.with_user(self.manager)._draft_hash(), before)
+
+    def test_new_task_has_a_separate_proxy_identity_and_exact_selection(self):
+        daily = self._client()
+        policy = self.provider.with_user(self.manager).with_context(
+            blue_ai_session_uuid='stable-test-id', blue_ai_task_name='上架策略')._get_client()
+        self.assertNotEqual(daily.headers()['x-conversation-id'], policy.headers()['x-conversation-id'])
+        init = {'function': {'arguments': json.dumps({'questions': [
+            {'id': 'task', 'options': ['日常任务 (old)', '上架策略 (new)']}]})}}
+        answer = policy._answer_initialization(init, 'personal-agent')
+        self.assertEqual(answer['result']['answers']['task'], '上架策略 (new)')
+
+    def test_runtime_definition_has_no_installed_putaway_example(self):
+        definition = self.env.ref('blue_stock_putaway.blue_scene_template_putaway', raise_if_not_found=False)
+        if definition:
+            definition = definition.with_user(self.manager)
+            self.assertTrue(definition.cloud_managed)
+            self.assertFalse(definition.code_text)
+            self.assertFalse(definition.test_cases)
+            profile = self.env['blue.config.profile'].with_user(self.manager).create({'name': 'Cloud only', 'template_id': definition.id})
+            with self.assertRaises(UserError):
+                profile.with_user(self.manager).action_load_example()
+
+    def test_prompt_omits_unavailable_file_and_muk_skill_instructions(self):
+        session = self._session()
+        text = session._system_message()['content'][0]['text']
+        self.assertNotIn('<files>', text)
+        self.assertNotIn('<available_skills>', text)
+        self.assertIn('不要在同一轮', text)
 
     def test_shared_reader_cannot_steer_asset_tools(self):
         session = self._session()

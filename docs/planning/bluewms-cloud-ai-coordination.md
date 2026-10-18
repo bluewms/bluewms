@@ -1,6 +1,6 @@
 # BlueWMS 云端知识与本地 AI 工具协作方案
 
-更新：2026-10-16。现行依据：[云端知识、Tencent 配置与 AI 工作流](../architecture/cloud-knowledge-and-ai-workflow.md)。原云端任务网关方案保留为后续选项，不作为已实现流程。
+更新：2026-10-16。现行依据：[云端知识、Tencent 配置与 AI 工作流](../wiki/README.md)。原云端任务网关方案保留为后续选项，不作为已实现流程。
 
 ## 当前分工
 
@@ -32,9 +32,9 @@
 
 已批准示例和说明统一在云端按 Odoo／模块／hook／合同版本维护。生成前读取准确正文、来源、版本和批准状态，不能只凭标题或语义摘要。
 
-当前代理 Skill／Wiki 的说明依赖客户端 Bash/curl，而 Odoo 没有这些工具。因此，上传／绑定成功不能当作模型已取得全文。需在 `blue_ai_client` 实现受限只读桥接或明确的服务端正文注入；禁止向模型开放任意 URL、文件、ORM 或 shell。
+当前代理通用说明依赖客户端 Bash/curl，而 Odoo 使用服务端固定 Skill bridge 读取批准上架知识，把正文返回资产工具结果。上传／绑定成功和模型真正取得全文分别验证，禁止向模型开放任意 URL、文件、ORM 或 shell。直接 Wiki 检索及新增资源按需扩展。
 
-顺序：只读知识接入 → 完整合同 → Task 路由 → 运行定义和示例解耦／停止本地示例回传 → 四个新 AI 入口。当前不删除本地模板，当前／正式代码及本次验证用例继续本地保存。
+上架已实现只读知识接入、完整合同、新会话 Task 路由和停止本地示例回传；旧运行定义、当前／正式代码及本次验证用例继续本地保存。后续按具体合同接入 ERP、WCS、设备和条码，见 [本轮交付](../migrations/putaway-cloud-knowledge-20.md)。
 
 Git 保存公开工程文档和知识来源；云端作为 AI 的知识发布／检索入口。私人聊天、密码和管理凭据不进入公开 Git 或共享知识。错误推断先纠正源记忆，再修正画像与场景，并核验新会话。
 
@@ -48,4 +48,4 @@ Git 保存公开工程文档和知识来源；云端作为 AI 的知识发布／
 
 - [客户端模块计划](blue-ai-client-module-plan.md)
 - [2026-10-13 首期交付](../third-party/blue-ai-client-install-2026-10-13.md)
-- [2026-10-16 配置、纠正与验证](../architecture/cloud-knowledge-and-ai-workflow.md)
+- [2026-10-16 配置、纠正与验证](../third-party/tencent-memory-configuration-2026-10-16.md)

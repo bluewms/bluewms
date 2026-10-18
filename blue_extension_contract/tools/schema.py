@@ -1,0 +1,92 @@
+"""Machine-readable description of the installed putaway interpreter and payload."""
+
+from .policy import ALLOWED_NODES, MAX_CANDIDATES, MAX_CODE, MAX_STEPS
+
+
+def putaway_schema(contract):
+    def fields(definitions):
+        return {name: {'type': kind, 'description': description} for name, kind, description in definitions}
+
+    return {
+        'schema_version': 1, 'contract': contract, 'hook_code': 'putaway_policy',
+        'language': 'bounded_python_ast',
+        'input': {
+            'type': 'object', 'required': ['request', 'candidates'], 'additionalProperties': False,
+            'runtime_request_fields': fields([
+                ('unit', 'string', 'package or loose; one whole outer pallet or one loose move line'),
+                ('package_id', ['integer', 'boolean'], 'Outermost package ID, or false for loose goods'),
+                ('package_type_id', ['integer', 'boolean'], 'Package type ID or false'),
+                ('package_count', 'integer', 'One for a package, zero for loose goods'),
+                ('product_id', ['integer', 'boolean'], 'Single product ID or false for multiple products'),
+                ('product_ids', 'array[integer]', 'All product IDs in the allocation unit'),
+                ('lot_id', ['integer', 'boolean'], 'Move line product-specific lot ID or false'),
+                ('batch_name', ['string', 'boolean'], 'Single known batch name across the whole unit, else false'),
+                ('batch_names', 'array[string]', 'Distinct known batch names, sorted'),
+                ('has_single_batch_name', 'boolean', 'Exactly one batch name and no untracked contents'),
+                ('has_unknown_batch', 'boolean', 'At least one positive-quantity content has no batch name'),
+                ('quantities', 'object[string,number]', 'Product IDs as string keys; quantities in each product base UoM'),
+                ('picking_id', 'integer', 'Current stock picking ID'),
+                ('quantity', ['number', 'boolean'], 'Loose quantity in base UoM; false for a whole package'),
+                ('company_id', 'integer', 'Allocation company ID'),
+                ('warehouse_id', ['integer', 'boolean'], 'Warehouse ID or false'),
+                ('rule_id', ['integer', 'boolean'], 'Current native putaway rule ID or false'),
+            ]),
+            'runtime_candidate_fields': fields([
+                ('location_id', 'integer', 'Approved internal destination location ID'),
+                ('name', 'string', 'Full location name'),
+                ('system_priority', 'integer', 'Native rule priority; cannot be overridden by AI score'),
+                ('same_lot', 'boolean', 'Location has a matching product and lot-name pair'),
+                ('same_picking', 'boolean', 'Current picking has pending goods here, or completed goods still present'),
+                ('empty', 'boolean', 'No positive stock or pending positive-quantity goods'),
+                ('batch_name_matches', 'boolean', 'All known contents match the incoming batch name, with no unknown batch'),
+                ('batch_names', 'array[string]', 'Distinct stock and pending batch names'),
+                ('has_unknown_batch', 'boolean', 'Positive stock or pending goods without a batch name'),
+                ('current_product_qty', 'number', 'Stock plus pending quantity of the current line product'),
+                ('occupied_packages', 'integer', 'Distinct outer matching-type pallets, stock plus pending; zero for loose'),
+                ('package_capacity', ['number', 'boolean'], 'Configured package-type capacity, or false if absent'),
+                ('packages_after', 'integer', 'Distinct pallets after this allocation; zero for loose'),
+                ('max_quantity', 'number', 'Current line quantity for an accepted whole package, or allowed loose quantity'),
+                ('fits_all', 'boolean', 'True for a whole accepted pallet; loose quantity fits in full'),
+            ]),
+            'trial_payload': 'request is a JSON object; candidates have unique integer location_id. Include every field read by this code.',
+        },
+        'syntax': {
+            'ast_nodes': [node.__name__ for node in ALLOWED_NODES],
+            'assignment': 'Assign to a single local variable; request, candidates and candidate are read-only.',
+            'loop': 'for candidate in candidates; no nested loops or for/else',
+            'conditions': 'if/elif/else, conditional expressions, and/or/not, comparisons, in/not in',
+            'arithmetic': '+, -, *, / with finite bounded numbers only; no string multiplication or concatenation',
+            'lookup': 'Existing string keys of JSON dictionaries via brackets only; no list indexing',
+            'only_call': 'result.append({...})',
+            'result_initialization': 'Assign result = [] before appending.',
+            'unavailable': ['imports', 'ORM/env', 'attributes', 'dict.get', 'sort/sorted', 'len',
+                            'functions', 'comprehensions', 'while', 'break/continue', 'filesystem', 'network', 'eval/exec'],
+        },
+        'output': {
+            'variable': 'result', 'type': 'array', 'maxItems': MAX_CANDIDATES,
+            'item': {'required': ['location_id', 'score', 'reason'], 'additionalProperties': False,
+                     'location_id': 'unique integer from approved candidates; a subset is allowed',
+                     'score': {'type': 'number', 'finite': True, 'minimum': -100000, 'maximum': 100000},
+                     'reason': {'type': 'string', 'maxLength': 512}},
+            'interpreter_order': ['score ASC', 'location_id ASC'],
+            'business_order': ['system_priority ASC', 'score ASC', 'location_id ASC'],
+            'empty_result': 'No destination approved by this enhancement; never relax native constraints.',
+        },
+        'limits': {'code_characters': MAX_CODE, 'ast_nodes': 2000, 'execution_steps': MAX_STEPS,
+                   'candidates': MAX_CANDIDATES, 'payload_json_characters': 262144,
+                   'text_constant_characters': 512, 'number_constant_absolute': 1e9,
+                   'arithmetic_absolute': 1e12, 'variable_name_characters': 64},
+        'tests': {'encoding': 'JSON string', 'minItems': 1, 'maxItems': 20, 'max_characters': 262144,
+                  'case_required': {'name': 'string', 'input': '{request: object, candidates: array}',
+                                    'expected_order': 'array[integer location_id] in interpreter order'},
+                  'additional_case_properties': False,
+                  'note': 'Pure interpreter trials do not replace real picking preview or native priority/capacity checks.'},
+        'business_invariants': [
+            'Native rules determine scope and precedence; enhancement only filters or ranks approved candidates.',
+            'Capacity, pallet count, weight, product mixing, stock restrictions and company access remain enforced.',
+            'A whole pallet is atomic; only loose goods may split when capacity is insufficient.',
+            'Batch-name equality can span products; lot IDs are product-specific.',
+            'A picking and native-rule binding keeps its first selected release; publication affects later bindings.',
+            'AI may save and validate drafts. A local inventory manager publishes or rolls back.',
+        ],
+    }

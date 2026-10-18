@@ -2,11 +2,18 @@ from odoo import api, models
 from odoo.exceptions import ValidationError
 
 from ..tools.policy import PolicyError, run_policy, validate_code
+from ..tools.schema import putaway_schema
 
 
 class BlueExtensionContract(models.AbstractModel):
     _name = 'blue.extension.contract'
     _description = 'Blue policy contract'
+
+    @api.model
+    def _describe(self, contract):
+        if contract not in ('putaway_policy/1', 'putaway_policy/2'):
+            raise ValidationError(self.env._('Unsupported policy contract.'))
+        return putaway_schema(contract)
 
     @api.model
     def _validate_code(self, code, contract='putaway_policy/1'):

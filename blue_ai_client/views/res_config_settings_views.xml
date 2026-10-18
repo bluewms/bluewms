@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </setting>
-                    <setting string="当前用户的云端身份" help="团队和任务固定；Agent 名称与业务用户 Key 按 Odoo 用户分别配置。">
+                    <setting string="当前用户的云端身份" help="团队固定；上架会话使用上架策略任务，其他聊天兼容日常任务。Agent 与 Key 按用户配置。">
                         <div class="content-group" invisible="not blue_connection_id">
                             <div class="row mb-2"><label for="blue_team_name" class="col-4 col-form-label"/>
                                 <div class="col-8"><field name="blue_team_name" class="w-100"/></div>

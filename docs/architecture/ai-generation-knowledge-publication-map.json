@@ -1,0 +1,105 @@
+{
+  "schema_version": 2,
+  "mode": "manual_reviewed_publication",
+  "updated": "2026-10-17",
+  "note": "仅发布 Odoo 内 AI 增强代码生成资料；sources 相对 source_root。工程开发、Git、服务器配置、运维及历史不进入生成知识。人工映射，不是自动同步程序。",
+  "skill_name": "bluewms-policy-authoring",
+  "existing_skill_resources": [
+    {
+      "path": "01-project-and-governance.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "basics/overview.md",
+        "basics/ai-generation-workflow.md"
+      ],
+      "scope": "保留兼容文件名，正文仅为 AI 生成通用规则及工具步骤，不含项目开发或团队运维",
+      "eligible_for_generation": true
+    },
+    {
+      "path": "02-hook-roadmap.md",
+      "loaded_by_odoo": false,
+      "sources": [
+        "README.md"
+      ],
+      "scope": "五类 hook 与实现状态；规划内容保持 planned",
+      "eligible_for_generation": false
+    },
+    {
+      "path": "03-policy-contract.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "domains/putaway/specification.md"
+      ],
+      "scope": "上架合同参考；运行时 contract_schema 优先",
+      "eligible_for_generation": true
+    },
+    {
+      "path": "04-approved-putaway-examples.md",
+      "loaded_by_odoo": true,
+      "sources": [
+        "domains/putaway/examples/same-lot.md",
+        "domains/putaway/examples/same-picking.md",
+        "domains/putaway/examples/same-batch-name.md"
+      ],
+      "scope": "仅发布 verified 案例的准确代码、测试、限制与证据",
+      "eligible_for_generation": true
+    },
+    {
+      "path": "05-cloud-knowledge-plan.md",
+      "loaded_by_odoo": false,
+      "sources": [],
+      "scope": "历史配置资料，当前客户端不读取；不再从工程运维文档汇编发布到生成知识库。",
+      "eligible_for_generation": false,
+      "publication_action": "retain_legacy_resource_without_republishing_as_generation_knowledge"
+    }
+  ],
+  "wiki_publication": {
+    "source_layout": "preserve_topic_and_example_pages",
+    "review_required": true,
+    "include": [
+      "basics/overview.md",
+      "basics/ai-generation-workflow.md",
+      "domains/putaway/specification.md",
+      "domains/putaway/examples/README.md",
+      "domains/putaway/examples/same-lot.md",
+      "domains/putaway/examples/same-picking.md",
+      "domains/putaway/examples/same-batch-name.md"
+    ],
+    "note": "仅按基础生成规则、各类接口规范和示例逐页发布；不得导入 docs/ 工程文档、运维配置或历史目录。当前未执行云端发布。"
+  },
+  "planned_domain_sources": [
+    "domains/erp/specification.md",
+    "domains/erp/examples/README.md",
+    "domains/wcs/specification.md",
+    "domains/wcs/examples/README.md",
+    "domains/equipment/specification.md",
+    "domains/equipment/examples/README.md",
+    "domains/barcode/specification.md",
+    "domains/barcode/examples/README.md"
+  ],
+  "not_approved_example_sources": [
+    "templates/example-template.md"
+  ],
+  "publication_receipt_required": [
+    "source_commit",
+    "knowledge_ids",
+    "contract_versions",
+    "content_sha256",
+    "cloud_asset_version",
+    "approval_status",
+    "published_at",
+    "operator"
+  ],
+  "assembly": "reviewed_section_selection_not_whole_file_concatenation",
+  "current_odoo_bundle_limit_bytes": 32768,
+  "assembly_note": "sources 是维护来源，不是全文拼接指令；只摘取适用章节、保留准确代码和测试，发布前连同 Skill 主文和 JSON 包装计算 UTF-8 总字节。",
+  "source_root": "../wiki",
+  "audience": "odoo_runtime_code_generation_assistant",
+  "excluded_content_categories": [
+    "repository_architecture_and_source_development",
+    "git_and_pull_request_procedures",
+    "development_machine_and_skill_installation",
+    "cloud_server_deployment_and_credentials",
+    "operations_and_chat_debug_history"
+  ]
+}

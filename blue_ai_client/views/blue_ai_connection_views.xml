@@ -20,7 +20,7 @@
                         <field name="agent_name" placeholder="default-agent-Lang"/>
                         <field name="task_name"/><field name="api_key" password="True" groups="base.group_system"/>
                     </group>
-                    <p>每个 Odoo 用户对应自己的业务用户 Key 和云端 Agent。连接时自动选择团队 odooAI、此 Agent 和日常任务。知识与技能在云端维护。</p>
+                    <p>每个 Odoo 用户对应自己的业务用户 Key 和云端 Agent。团队为 odooAI；新上架代码会话进入“上架策略”任务，普通聊天及旧会话保留“日常任务”。批准示例由云端只读提供。</p>
                 </sheet>
             </form>
         </field>

@@ -42,6 +42,8 @@ For example, a user can request “Keep goods from the same receipt together and
 
 The customization workflow is: **describe the requirement → read knowledge and existing configuration → generate or revise a draft → run trials and validation → user review and publication → local business execution**.
 
+The current development version supports the putaway AI draft workflow: read approved cloud examples and the installed local contract, generate a draft, run validation, and let the user publish it. The AI button opens a larger floating chat on the existing business page, with enlarge and restore controls. The ERP, WCS, equipment and barcode AI entry points are being developed against their own contracts and validation requirements.
+
 Code and configuration are managed as database assets, with version history, change review, execution tracing and rollback. A change to one entry point preserves other configurations; coordinated changes check their relationships. Generated code operates within exposed interfaces, user permissions and system inventory rules. New models, fields and frontend components are delivered through regular modules.
 
 ## Cloud knowledge, local execution
@@ -108,11 +110,13 @@ Production releases are published through [GitHub Releases](https://github.com/b
 ## Documentation and contributions
 
 - [Documentation index](docs/README.md): business guides, architecture and engineering documentation.
+- [Odoo AI code-generation knowledge](docs/wiki/README.md): generation rules, interface specifications and examples for the assistant inside Odoo.
+- [Putaway AI floating chat](docs/migrations/putaway-ai-floating-chat-20.md): usage and validation of the chat that preserves the business page.
 - [Git collaboration guide](docs/git-sync.md): source synchronization and branch workflows.
 - [Issues](https://github.com/bluewms/bluewms/issues): report problems with reproduction steps, expected behavior and sanitized logs.
 - [Pull requests](https://github.com/bluewms/bluewms/pulls): contribute code, integrations, examples and documentation.
 
-Describe the purpose, impact and validation of each change, and preserve third-party sources and copyright notices. Keep real passwords, API keys, customer business data, database backups and private attachments out of the source repository.
+Submit changes from a task branch through a pull request and squash merge into `main`. Describe the purpose, impact and validation of each change, and preserve third-party sources and copyright notices. Keep real passwords, API keys, customer business data, database backups and private attachments out of the source repository.
 
 ## Licenses and attribution
 
