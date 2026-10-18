@@ -1,66 +1,49 @@
-# BlueWMS20 本机 Docker 开发环境
+# Docker 开发与维护
 
-- Odoo：本机 `odoo:20` 镜像。
-- 数据库：`postgres:16.0`，独立容器与数据卷。
-- 访问地址：<http://localhost:8070>。
-- 数据库名称：`bluewms20`。
-- 界面语言：简体中文，管理员时区：Asia/Shanghai。
-- PostgreSQL：`localhost:5436`，业务账号 `odoo`。
-- 维护者本机凭据：`~/.config/bluewms20/access.md`，未放入 Git；新部署自行设置数据库管理密码和登录信息。
+本项目在 Docker 运行 Odoo 20 与 PostgreSQL。实际镜像／架构及核查日期见[部署锁](deployment-lock.json)，当前模块能力见[开发计划](../docs/planning/bluewms20-development-plan.md)。该锁中的历史测试数字不代表本轮重新测试。
 
-## 目录与持久化
+## 配置与持久数据
 
-| 本机／Docker 卷 | 容器位置 | 用途 |
-|---|---|---|
-| 本项目根目录 `bluewms` | `/mnt/extra-addons` | 开发模块，每个模块直接放在根目录的子目录中 |
-| 私有运行配置 `~/.config/bluewms20/odoo.conf` | `/etc/odoo/odoo.conf` | 从旧配置复制并适配 Odoo 20；只读挂载 |
-| `bluewms20-odoo-data` | `/var/lib/odoo` | filestore、sessions 等数据 |
-| `bluewms20-postgres-data` | `/var/lib/postgresql/data` | PostgreSQL 持久数据 |
+| 内容 | 容器位置／说明 |
+|---|---|
+| 仓库根目录的 addon | 挂载至 `/mnt/extra-addons`，每模块一个直接子目录 |
+| 私有 `odoo.conf` | 只读挂载至 `/etc/odoo/odoo.conf` |
+| `bluewms20-odoo-data` | `/var/lib/odoo`，包括 filestore 和会话 |
+| `bluewms20-postgres-data` | PostgreSQL 持久数据 |
 
-原配置来源：`/Users/jianglang/odoo/odoo19/doc/config/odoo.conf`。
+默认服务端口为 Odoo `localhost:8070`、PostgreSQL `localhost:5436`，开发库名 `bluewms20`。新机器设置 `BLUEWMS_RUNTIME_DIR` 指向自己的私有目录，准备独立密码与配置；不要复制另一台机器的登录信息或把备份提交到 Git。首次安装示例见[仓库首页](../README.md#docker-配置)。
 
-原文件保持原样。运行副本调整了数据库连接、模块路径、独立库名、演示数据和 Odoo 20 参数；不挂载旧 19 的 OLS／rent 模块。
-
-维护者验证环境的管理主密码沿用原值，运行副本采用哈希保存。新部署按仓库首页准备自己的私有配置并创建登录账号；维护者本机的密码文件不随 Git 分发。
-
-`deployment-lock.json` 记录安装时的镜像标识、架构、目录和已完成验证。初始化环境已建立。2026-10-12 首批 7 个 MuK Web 模块及 3 个必要依赖已安装到开发库；同日 `muk_ai`、`muk_ai_skills`、`muk_mcp` 也已安装，309 项后端／HTTP 测试及前端资源编译通过；真实模型配置与浏览器交互待验证。WMS 与客户模块仍在后续阶段安装。AI 安装详情见 [安装记录](../docs/third-party/muk-ai-install-2026-10-12.md)。来源、版本锁、实际验证和限制见 [首批迁移记录](../docs/third-party/muk-web-migration-2026-10-12.md)。
+Compose 从私有目录读取 `odoo.conf` 和 `db-password`。相邻官方 `odoo20` 参考源码不自动替代镜像内的运行代码；也不挂载旧 19 的 addons。
 
 ## 常用操作
 
-在项目根目录执行：
+从项目根目录执行：
 
 ```sh
 docker compose -f docker/compose.yaml up -d
 docker compose -f docker/compose.yaml ps
 docker compose -f docker/compose.yaml logs --tail=100 odoo
 docker compose -f docker/compose.yaml restart odoo
-docker compose -f docker/compose.yaml stop
 ```
 
-新模块放入项目根目录，例如 `blue_stock_example/__manifest__.py`。Python 修改后重启 Odoo，模块结构或数据变化时还需执行对应模块升级。
+Python 源码变更后重启加载；字段、数据、视图或迁移变化需要相应模块升级。普通停止／重启保留数据卷，替换代码目录或移动主目录后应重建服务并核对实际挂载。
 
-`blue_dev_environment` 是无业务逻辑的开发标识模块。Odoo 20 要求 addons 目录至少含一个有效模块，否则会忽略空目录；正式模块增加后可以按需移除此标识模块。
+## 备份与模块升级
+
+升级前停止 Odoo 写入，备份同一时点数据库和 filestore，实际检查归档可读及内容。保存客户草稿、正式版本／发布、人工参数与库存／在途任务基线。数据库凭据及备份只留私有目录；备份生成成功不等于完整恢复演练已完成。
 
 ```sh
 docker compose -f docker/compose.yaml stop odoo
-docker compose -f docker/compose.yaml run --rm --no-deps odoo -c /etc/odoo/odoo.conf -d bluewms20 -u 模块名 --stop-after-init --no-http --max-cron-threads=0
-docker compose -f docker/compose.yaml start odoo
+docker compose -f docker/compose.yaml -f docker/compose.test.yaml run --rm --no-deps odoo odoo -c /etc/odoo/odoo.conf -d 本机数据库名 -u 本次需要升级的模块 --stop-after-init --no-http --max-cron-threads=0
+docker compose -f docker/compose.yaml up -d odoo
 ```
 
-执行模块升级前按改动需要安排维护窗口。数据库与 filestore 均需备份；普通停止／重启保留数据卷，删除数据卷会删除持久数据。
+升级后核对服务健康和业务基线。原生 Wiki／WCS 接入涉及的模块和跨机器步骤见[Git 同步](../docs/git-sync.md)；不要自动发布策略、改绑旧作业或恢复已取消的设备任务。
 
-配置文件或凭据修改后，在项目根目录重新运行 `up -d` 或重启对应服务。Compose 使用本机已有镜像；镜像更新应先拉取、核对版本，再重建服务。
+## 隔离验证
 
-可以设置 `BLUEWMS_RUNTIME_DIR` 指向另一台机器上的私有配置目录。代码提交包括 Compose 与说明，不包括运行配置和密码。
+在独立 `*_test` 数据库运行测试，复制其需要的附件，并使 `--db-filter` 与测试库完全匹配，避免 HTTP 测试选到主库。`compose.test.yaml` 只关闭一次性测试容器的健康探测，日常服务保留健康检查。
 
-## 2026-10-12 库存基础首批迁移
+参考示例使用 `scripts/validate_ai_wiki.py`，网关检查使用 `python3 -m unittest discover -s cloud/tests`；业务模块按改动运行对应测试。不要在主库执行库存或真实设备测试夹具。当前已完成的验证与限制见[原生 Wiki 交付](../docs/migrations/native-wiki-runtime-20.md)及[WCS 设计](../docs/design/wcs-v4-orchestration.md)。
 
-`blue_stock_base` 与 `blue_web_theme` 已安装到开发库；库存基础与产品主菜单分离。16 项功能测试、模块升级、界面卸载／重装和独立库页面检查通过。详细范围和边界见 [迁移记录](../docs/migrations/blue-stock-20.md)。一次性测试使用 `compose.test.yaml` 禁用该测试容器的健康探测，日常开发服务沿用原健康检查。
-
-## 2026-10-12 库存规则
-
-`blue_stock_rules` 已安装，默认非负库存保护及库位冻结／禁止入库生效。43 项最终联合测试及规则模块卸载／重装通过。来源、例外、精度和边界见 [库存规则交付](../docs/migrations/stock-rules-20.md)。上架增强随后由独立的 `blue_stock_putaway` 实现，当前原生规则绑定方式见 [上架增强使用说明](../docs/migrations/putaway-rule-binding-20.md)。
-
-## 2026-10-12 项目目录迁移
-
-本机项目主目录为 `/Users/jianglang/odoo`，自定义模块目录为 `/Users/jianglang/odoo/bluewms`。Compose 的相对模块挂载已随容器重建生效。运行数据卷和私有配置目录保留。详情见 [目录迁移记录](../docs/environment-path-relocation-2026-10-12.md)。
+`blue_dev_environment` 仅用于开发目录标识，没有业务逻辑；正式模块存在后按需保留。第三方安装来源与原许可见[MuK 安装记录](../docs/third-party/muk-ai-install-2026-10-12.md)。

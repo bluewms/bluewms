@@ -1,46 +1,51 @@
-# 多台 Mac 的 Git 同步
+# 多台开发机的 Git 同步
 
-同步仓库为 `https://github.com/bluewms/bluewms.git`。本仓库管理 `bluewms` 下的第三方／自研模块、Docker Compose、回归测试、公开工程文档及云端知识来源；官方 Odoo 20 源码目录 `odoo20` 是单独仓库，不在本仓库内。
+源码仓库为 `https://github.com/bluewms/bluewms.git`。模块、Docker 定义、工程文档和知识来源通过 Git 同步；相邻 `odoo20` 官方参考源码属于独立仓库。
 
-## 日常操作
+## 日常开发与合并
 
-在每台 Mac 的 `odoo/bluewms` 中开发。开始前确认工作区状态，拉取当前分支；建议不同任务使用不同分支。
+先检查当前分支和未提交修改，再拉取；不要在另一台机器的未保存改动上强制覆盖。
 
 ```sh
 git status
-git pull --ff-only
+git fetch origin
+git switch main
+git pull --ff-only origin main
 git switch -c feature/本次任务名称
 ```
 
-已有分支使用 `git switch 分支名`，不要再次创建。完成修改与适当验证后，检查差异，提交并推送：
+完成必要验证后只提交本次文件，推送任务分支并发起 PR。`main` 的保护规则已启用，通过 PR 及 squash 合并，不直推或强推 main。已有任务分支继续使用原分支，先确认其他机器是否也在修改它。
 
 ```sh
 git diff
 git add 本次修改的文件或目录
-git commit -m "说明这次具体修改"
+git commit -m "说明具体变化"
 git push -u origin 当前分支名
 ```
 
-分支设置了上游后使用 `git push`。`main` 的“PR合并”规则已启用，修改必须从任务分支发起 PR，并通过 squash 合并进入 main；不直接推送 main，也不强制推送覆盖另一台的提交。下一台继续同一分支时，先检查本机改动，再切换／拉取相同分支。
+收到合并后，在另一台机器检查本地改动、切回 main 并 `git pull --ff-only origin main`。有分歧时先比较、提交或单独备份本地工作，不以重置或删未跟踪文件代替合并。U 盘旧副本若没有本机修改，可在空目录克隆并核对后替换代码目录，原副本保留备份。
 
-## 首次从 U 盘副本接入
+## 拉取源码之后
 
-U 盘复制的项目保留旧 Git 历史，但当时新模块尚未提交。首次拉取新版时，可能因本机同名“未跟踪文件”而被 Git 拒绝覆盖，这不是文件丢失。
+Python 修改需要重新加载服务；模型字段、XML 数据或迁移变化需要升级模块。先按[Docker 说明](../docker/README.md)备份数据库与 filestore，再按实际安装清单升级。
 
-先备份本机副本，执行 `git status` 和 `git fetch origin`，请 Codex对比本机文件与远端版本，并确认新机复制后是否已有修改。不要直接强制覆盖、删除未跟踪文件或重置本机提交。
+原生 Wiki／WCS /4 接入涉及以下模块，已有实例应先在隔离库验证：
 
-如果新机没有新增改动，最直接的接入方式是在另一个空目录克隆远端仓库，核对它包含这次模块和文档后，替换本机的 `odoo/bluewms` 代码目录；原副本保留为备份。替换路径前停止本机 Odoo 容器，替换完成后从目标目录重建 Odoo 服务以确认挂载。运行配置、数据库和附件独立保存，不需要重新初始化数据库。
+```sh
+docker compose -f docker/compose.yaml stop odoo
+docker compose -f docker/compose.yaml -f docker/compose.test.yaml run --rm --no-deps odoo odoo -c /etc/odoo/odoo.conf -d 本机数据库名 -u blue_extension_contract,blue_config_asset,blue_stock_putaway,blue_wcs_base,blue_wcs_extension,blue_wcs_wes,blue_ai_client --stop-after-init --no-http --max-cron-threads=0
+docker compose -f docker/compose.yaml up -d odoo
+```
 
-如果新机已经修改代码，把修改单独纳入分支，再由 Codex比较并合并。不要把私有配置、密码或数据库导出一并提交。
+只选择本实例已安装或本次明确需要的模块。升级后核对人工参数、客户草稿／版本／发布、库存及在途任务；不自动恢复旧绑定或发布策略。旧 AI 代码会话从资产页重新打开，普通聊天仍使用日常任务。各机器使用自己的 `BLUEWMS_RUNTIME_DIR`、登录用户、业务 Key 与 Agent。
 
-## Git 不同步的数据
+## Git 不同步什么
 
-- 数据库中的库存、业务单据、公司设置和已保存／发布的策略代码资产。
-- Docker 数据卷、filestore 附件、数据库密码、Odoo 登录配置。
-- 本机 Codex 项目关联和登录状态、用户目录里的 skills 安装副本。
+- 业务数据库、库存／单据、数据库中编辑及发布的策略资产。
+- Docker 卷、filestore、登录信息、API Key 和私有运行配置。
+- Codex／CodeBuddy 登录及安装到用户目录的 Skill 副本。
+- 云端 Wiki 的实际发布、批准、Task、Agent 或 ACL 变更。
 
-这些内容使用配套数据库／附件备份、明确的配置资产导出或技能安装更新。源码中的策略模板和运行框架可以通过 Git 同步；页面中编辑后保存的策略记录仍属于数据库数据。
+数据与附件使用配套备份，配置资产按已实现的导出／恢复流程处理。**拉取 Git 不会自动更新云端知识**；维护来源与发布流程见[知识维护](architecture/ai-generation-knowledge-maintenance.md)，新用户云端身份见[Tencent 配置](architecture/tencent-memory-configuration.md)。
 
-供 AI 使用的批准示例、业务说明和 Skill 正文由云端发布／检索。Git 保留可审阅的来源和工程文档，拉取 Git 不会自动更新云端资产或每台机器的 Skill 安装。知识升级需独立验证、审批及绑定，见 [现行知识分工](wiki/README.md)。
-
-开发规划以 `docs/planning/` 为版本控制入口；本机 `odoo/bluewms20-doc` 的历史副本不由这个 Git 仓库同步。
+开发规则与计划统一维护在本仓库 `docs/planning/`。仓库外旧 `bluewms20-doc` 不由此仓库同步，也不作为新状态的第二维护来源。

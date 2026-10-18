@@ -34,10 +34,10 @@
 
 原始测试遇到的单位视图和菜单 XML ID／表单锚点差异已修复。早期测试容器健康探测在服务退出时引起游标已关闭日志，已用 `docker/compose.test.yaml` 仅禁用一次性测试容器的健康探测；最终测试日志无此错误。开发服务的健康检查仍保留。
 
-## 边界与后续事项
+## 基础模块边界
 
 - 本次是源模块功能迁入新 20 工程，不是旧 19 客户数据库升级；没有移动或修改旧 19 目录，也没有迁移旧数据库记录或外部 ID。旧项目升级需要另行设计数据和 XML ID 迁移。
-- `is_locking` 本轮控制可用空位统计，不构成完整库存作业锁定；禁止入库／出库的实际约束在后续 `blue_stock_*` 库存约束模块中统一。
+- 基础模块的 `is_locking` 参与可用空位统计；完整冻结／禁止入库由已交付的 [blue_stock_rules](stock-rules-20.md) 提供，不能把单装基础模块的统计当成库存硬保护。
 - 容量位置目前只检查库存／预留占用。WCS 迁移时必须扩展 `_is_in_use()` 检查在途任务；没有设备任务模块时不能声称已验证设备占用保护。
 - `not_all_package`、`is_auto_lot` 保留为后续 ERP/WCS 的配置字段，本轮没有引入这些接口的执行逻辑。
 - 调拨验证按钮沿用原界面“仓库管理员可见”规则，不把按钮隐藏当成服务端授权检查；后续角色治理另立合同。
@@ -52,6 +52,6 @@
 docker compose -f docker/compose.yaml -f docker/compose.test.yaml run --rm --no-deps -T odoo -c /etc/odoo/odoo.conf -d bluewms20_stock_test --db-filter='^bluewms20_stock_test$' -i blue_web_theme -u blue_stock_base,blue_web_theme --without-demo=True --test-enable --test-tags=/blue_stock_base,/blue_web_theme --stop-after-init --no-http --max-cron-threads=0
 ```
 
-私有备份及日志：`~/.config/bluewms20/backups/blue-stock-20261012-105647/`，含安装前数据库、filestore、安装／升级、测试、卸载与库存核对材料，不进入 Git。来源和文件摘要见同目录公开交付文件 `blue-stock-source-lock.json`。本轮未提交或推送 GitHub。
+私有备份及日志：`~/.config/bluewms20/backups/blue-stock-20261012-105647/`，含安装前数据库、filestore、安装／升级、测试、卸载与库存核对材料，不进入 Git。来源和文件摘要见同目录公开交付文件 `blue-stock-source-lock.json`。早期阶段记录通过 Git 历史追溯。
 
 检查规范：模块结构与清单、Python 导入与模型布局、ORM 计算／继承／事务、字段、访问权限、视图继承、批量性能、行为测试及 Odoo 安全规范。

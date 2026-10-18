@@ -1,31 +1,41 @@
-# BlueWMS20 开发文档
+# BlueWMS20 文档
 
-本仓库管理开发模块、Docker Compose、公开工程说明、知识来源、开发规划和交付记录。供 AI 使用的批准通用示例、业务知识与 Skill 正文集中在云端 TencentDB-Agent-Memory 发布／检索；Git 不充当客户本地私有知识库。
+更新：2026-10-18。这里按当前实现维护工程说明和知识来源。旧交付步骤、旧 Skill 发布包及已替代的调查稿已从当前目录移除，可通过 Git 历史追溯。
 
-- [Odoo AI 代码生成知识库：生成规则、五类接口规范与示例](wiki/README.md)
-- [维护者：TencentDB-Agent-Memory 配置](architecture/tencent-memory-configuration.md)
-- [维护者：AI 生成知识的维护与发布](architecture/ai-generation-knowledge-maintenance.md)
-- [维护者：原生 Wiki 检索与五类知识库规划](architecture/native-wiki-retrieval-plan.md)
-- [六库知识发布与真实模型问答验收](wiki-publication/native-wiki-20261018.md)
-- [正式 Odoo 原生 Wiki 与五类 Task 接入](migrations/native-wiki-runtime-20.md)
-- [开发规划](planning/bluewms20-development-plan.md)
-- [模块分类与架构](planning/bluewms20-module-architecture.md)
-- [迁移选择](planning/bluewms20-migration-selection.md)
-- [原生上架规则与增强策略](migrations/putaway-rule-binding-20.md)
-- [上架 AI 云端知识接入与本地接口调整](migrations/putaway-cloud-knowledge-20.md)
-- [上架 AI 聊天浮窗](migrations/putaway-ai-floating-chat-20.md)
-- [WCS 迁移交付](migrations/wcs-20.md)
-- [WCS 迁移规划](planning/bluewms20-wcs-migration.md)
-- [MuK AI 中文翻译](third-party/muk-ai-zh-2026-10-13.md)
-- [Docker 开发环境](../docker/README.md)
-- [多台 Mac 的 Git 同步](git-sync.md)
+## 开发与部署
 
-`docs/planning/` 收录原 `odoo/bluewms20-doc` 的规划文件。以后维护、同步规划时修改这里；仓库外的旧目录作为历史副本，Git 不会同步那个目录。
+| 需要了解什么 | 文档 |
+|---|---|
+| 当前已完成什么、下一步做什么 | [开发计划](planning/bluewms20-development-plan.md) |
+| 模块命名、依赖和已实现模块 | [模块架构](module-architecture.md) |
+| 开发、验证、权限和提交约定 | [开发规则](planning/bluewms-development.md) |
+| 尚未选择／迁移的库存功能 | [迁移候选](planning/bluewms20-migration-selection.md) |
+| 安装、运行、备份与模块升级 | [Docker 说明](../docker/README.md) |
+| 多台电脑同步与 PR 合并 | [Git 协作](git-sync.md) |
 
-`wiki/` 仅维护供 Odoo 内 AI 生成增强代码使用的通用规则、五类接口规范和示例。项目源码开发、Git、服务器配置、知识发布操作和历史记录不放入这个生成知识库。人工维护方法见 [维护约定](architecture/ai-generation-knowledge-maintenance.md)，发布来源见 [映射](architecture/ai-generation-knowledge-publication-map.json)。
+## 当前业务与 AI
 
-第三方模块来源、许可证、版本和验证记录在 `third-party/`；自研模块迁移、测试边界和源码摘要在 `migrations/`。
+| 内容 | 文档 |
+|---|---|
+| 库存基础与界面拆分 | [库存基础](migrations/blue-stock-20.md) |
+| 禁止负库存、冻结与禁止入库 | [库存硬约束](migrations/stock-rules-20.md) |
+| 原生上架规则、托盘和增强策略 | [上架使用说明](migrations/putaway-policy-20.md) |
+| WCS 参数、任务创建、版本与设备边界 | [WCS 使用说明](migrations/wcs-20.md) · [编排设计](design/wcs-v4-orchestration.md) |
+| 原生 Wiki、五类 Task、页面入口及验证 | [AI 接入说明](migrations/native-wiki-runtime-20.md) · [脱敏验收](migrations/native-wiki-runtime-20.validation.json) |
 
-业务数据库、附件、登录密码和私有运行配置放在本机用户目录及 Docker 数据卷中，不能提交到公开 GitHub 仓库。
+上架与 WCS /4 已有可执行 AI 草稿闭环；ERP、设备、条码目前只开放知识沟通，执行合同仍为 planned。已发布业务在本地执行，知识正文和云端服务不能放宽本地合同或库存约束。
 
-- [宝蓝 AI 云端连接交付](third-party/blue-ai-client-install-2026-10-13.md)：Chat Completions、按用户绑定、自动团队/Agent/任务选择与代码草稿闭环。
+## 云端与知识维护
+
+- [AI 工作流与职责](architecture/cloud-knowledge-and-ai-workflow.md)：本地资产、腾讯原生工具、鉴权、版本和 Task 的关系。
+- [Tencent 配置](architecture/tencent-memory-configuration.md)：服务、用户／Agent／Task、共享与记忆质量。
+- [知识维护与发布](architecture/ai-generation-knowledge-maintenance.md)：如何审阅、发布、校验和更新。
+- [六库逻辑清单](architecture/native-wiki-knowledge-registry.json)：维护范围与接口，不包含实例 ID 或凭据。
+- [发布证据](wiki-publication/README.md)：准确来源、正文摘要及真实问答记录。
+- [Odoo AI 代码生成知识库](wiki/README.md)：**唯一维护来源**，只给 Odoo 内助手提供通用规则、五类规范与示例。
+
+`wiki/` 不是项目开发或运维 Wiki。不得把 Git、服务器配置、凭据、调试记录或已过期 Skill 包混入其云端发布。运行时从云端读取批准版本，不扫描本地文档兜底；聊天工具输出按 MuK 机制保留供回放，资产版本保存引用和摘要。
+
+第三方版权、原许可及上游版本锁保留在 `third-party/`；迁移来源锁保留在 `migrations/`。历史测试数字只对应各记录的日期和范围，不累加为当前测试总数。
+
+仓库内的开发计划是版本控制入口。仓库外旧 `bluewms20-doc` 仅作历史参考；密码、数据库、filestore、原始联调记录和部署资源 ID 留在私有运行目录，不进 Git。

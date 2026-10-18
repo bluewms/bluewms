@@ -1,9 +1,13 @@
-# AI 知识离线资料与接入状态
+# 知识发布证据
 
-维护资料，供人工操作使用，不作为 Odoo AI 生成教材。
+本目录只保留实际发布与验收材料，不保存一份 Wiki 或 Skill 正文副本。
 
-2026-10-18 的目标方案为 [原生 Wiki 分库检索](../architecture/native-wiki-retrieval-plan.md)：一个通用规则范围，加上架、ERP、WCS、设备和条码五个业务库。六库现已发布 29 份准确资料并核对原生索引；详见[发布与问答验收](native-wiki-20261018.md)。正式工具接入与五类 Task 路由见[接入记录](../migrations/native-wiki-runtime-20.md)。
+| 文件 | 说明 |
+|---|---|
+| [发布记录](native-wiki-20261018.md) | 六库 29 份资料的发布、准确读回及当时的临时问答范围 |
+| [准确来源清单](native-wiki-20261018.manifest.json) | 来源提交、文件、源摘要和发布正文摘要 |
+| [问答证据](native-wiki-20261018.qa.json) | 八组真实问答及搜索／读页摘要，不能代替真实 Task 路由验收 |
 
-`wcs-v4/` 保留原固定 Skill bridge 方案的候选包及摘要，用于兼容追溯；其候选批准标记和空回执不代表云端已批准。不要只为满足旧链路而把全部规范再复制到 Skill，也不要直接删除当前批准 Skill，切换须先完成接入与回归。
+正式 Odoo 原生接入、五类真实 Task 及代码生成验证以[接入记录](../migrations/native-wiki-runtime-20.md)和[最新验收](../migrations/native-wiki-runtime-20.validation.json)为准。
 
-当前维护来源是 `docs/wiki/` 的规范和独立案例。新方案按通用／业务范围发布到 Wiki，不复制整个 `docs/` 工程目录。旧资料包的校验清单和正文不在本轮重写；实际新的发布版本与批准证据另记。
+维护来源只有 [docs/wiki/](../wiki/README.md)，操作流程见[维护与发布](../architecture/ai-generation-knowledge-maintenance.md)。旧 `wcs-v4` Skill 候选包和重复综合知识稿已从当前工作树移除，历史通过 Git 追溯；云端现存旧 Skill 和业务数据未因文档整理被删除。

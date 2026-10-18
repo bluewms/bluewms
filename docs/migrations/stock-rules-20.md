@@ -47,6 +47,6 @@ blue_stock_rules 20.0.1.0.0, AGPL-3, 依赖 blue_stock_base, 已安装到本机 
 
 私有备份与原始日志: ~/.config/bluewms20/backups/stock-rules-20261012-115657/, 包含 before-rules.dump、filestore、安装、联合测试、卸载重装、实时保护及库存核对材料。备份存在不代表整库恢复演练已完成。
 
-3、4 的上架规则仅保留为候选 AI 配置点, 等用户沟通确认输入、输出、标准能力和验收样例后再执行。其他包裹、自动拆包、盘点及条码候选也没有在本轮迁移。本轮未提交或推送 GitHub。
+上架增强现已独立交付，见[上架说明](putaway-policy-20.md)；没有并入库存基础或本规则模块。其他包裹、自动拆包、盘点及条码迁移按[候选清单](../planning/bluewms20-migration-selection.md)确认范围。
 
 检查依据: Odoo 模块清单、ORM 约束／继承／事务、字段、权限、视图、行为测试与安全规范。

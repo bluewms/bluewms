@@ -1,9 +1,7 @@
-# blue_extension_contract
+# 受限执行合同
 
-Odoo 20 首期可编辑上架策略闭环。使用方法、AI草稿接口、执行合同、权限和范围见 [交付说明](../docs/migrations/putaway-policy-20.md)。
+为纯 JSON 增强策略提供受限 AST 解释器、机器可读字段／语法／输出及资源边界。`_describe(contract)` 返回当前安装版本的准确合同，不提供 ORM、导入、网络、文件或任意 Python 调用。
 
-策略使用受限 AST 解释器执行纯 JSON 数据，不提供 ORM、网络、文件或任意 Python 调用。`_describe(contract)` 为上架 v1/v2 返回机器可读字段、语法、输出和资源限制；由 `blue_ai_client` 返回给模型。正式版本在本地执行，无需云端 API Key 在线。
+上架 v1／v2 保持兼容；WCS 由对应扩展注册合同，新生成使用 /4 的 lines/tasks，旧 /1–/3 历史保留。规范和示例不能给解释器增加能力，正式代码在本地执行。
 
-## 20.0.1.1.0
-
-系统设置优先, 代码只补充。支持整托盘及跨产品同批次号。详见 [托盘增强交付](../docs/migrations/putaway-pallet-enhancement-20.md)。
+业务使用见[上架说明](../docs/migrations/putaway-policy-20.md)和[WCS 设计](../docs/design/wcs-v4-orchestration.md)，知识读取见[原生 Wiki 接入](../docs/migrations/native-wiki-runtime-20.md)。

@@ -34,7 +34,7 @@ Customization covers five business entry points:
 
 - **Putaway policies**: adjust candidate locations, ranking, receipt consolidation and lot consolidation.
 - **ERP interfaces**: adjust business field mappings, data transformations and document handling rules.
-- **WCS generation policies**: adjust task creation conditions, equipment selection, endpoints and task dependencies.
+- **WCS generation policies**: adjust line decisions, quantities, grouping, physical endpoints and dependencies within manually authorized capabilities.
 - **Equipment interfaces**: adjust protocol mappings and business handling within the supplied equipment adapters.
 - **Barcode policies**: adjust scanning sequences, validation requirements and workflow steps.
 
@@ -42,7 +42,7 @@ For example, a user can request “Keep goods from the same receipt together and
 
 The customization workflow is: **describe the requirement → read knowledge and existing configuration → generate or revise a draft → run trials and validation → user review and publication → local business execution**.
 
-The current development version supports the putaway AI draft workflow: read approved cloud examples and the installed local contract, generate a draft, run validation, and let the user publish it. The AI button opens a larger floating chat on the existing business page, with enlarge and restore controls. WCS /4 also has local line enhancement and repeated-task orchestration with draft tools; its dedicated approved cloud knowledge is pending. ERP, equipment and barcode entry points remain under development against their own contracts.
+The current development version supports real AI draft generation for putaway and WCS /4: search native Wikis, read complete approved references, use the installed local contract, save and validate the draft, then let the user publish it. Each of the five entry points uses its corresponding cloud Task; ordinary chat uses the daily Task. AI opens an expandable floating chat on the existing business page. ERP, equipment and barcode support domain knowledge discussions; executable contracts remain planned.
 
 Code and configuration are managed as database assets, with version history, change review, execution tracing and rollback. A change to one entry point preserves other configurations; coordinated changes check their relationships. Generated code operates within exposed interfaces, user permissions and system inventory rules. New models, fields and frontend components are delivered through regular modules.
 
@@ -111,7 +111,8 @@ Production releases are published through [GitHub Releases](https://github.com/b
 
 - [Documentation index](docs/README.md): business guides, architecture and engineering documentation.
 - [Odoo AI code-generation knowledge](docs/wiki/README.md): generation rules, interface specifications and examples for the assistant inside Odoo.
-- [Putaway AI floating chat](docs/migrations/putaway-ai-floating-chat-20.md): usage and validation of the chat that preserves the business page.
+- [Putaway guide](docs/migrations/putaway-policy-20.md): native rules, pallets, enhancement policies and floating chat.
+- [Native Wiki and five business Tasks](docs/migrations/native-wiki-runtime-20.md): current entry points, generation and validation evidence.
 - [Git collaboration guide](docs/git-sync.md): source synchronization and branch workflows.
 - [Issues](https://github.com/bluewms/bluewms/issues): report problems with reproduction steps, expected behavior and sanitized logs.
 - [Pull requests](https://github.com/bluewms/bluewms/pulls): contribute code, integrations, examples and documentation.
