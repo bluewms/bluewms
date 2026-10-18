@@ -9,6 +9,7 @@
 | 需要了解什么 | 文档 |
 |---|---|
 | 当前已完成什么、下一步做什么 | [开发计划](planning/bluewms20-development-plan.md) |
+| 设备接口 AI 的已确认需求与实施顺序 | [设备接口规划](planning/device-protocol-ai-plan.md) |
 | 模块命名、依赖和已实现模块 | [模块架构](module-architecture.md) |
 | 开发、验证、权限和提交约定 | [开发规则](planning/bluewms-development.md) |
 | 尚未选择／迁移的库存功能 | [迁移候选](planning/bluewms20-migration-selection.md) |
