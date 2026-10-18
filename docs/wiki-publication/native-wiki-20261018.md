@@ -34,7 +34,7 @@
 
 ## 上传与索引方式
 
-写前备份云端 Knowledge／Metadata 数据库及六库目录。通过标准 `wiki/page/write` 写入准确正文，带来源提交、路径、合同、状态、摘要和 `locked: true`。同库保存 `source-snapshot.json`，用于逐页追溯与复核。
+写前完成云端 Knowledge／Metadata 数据库在线备份。收尾复核发现目录归档路径多写了一层 `knowledge`，原目录归档为空；已按实际卷根目录补存六库完整发布后快照（142 个归档条目），并在私有回执记录该问题。这份快照是发布后备份，不冒充写前目录备份。通过标准 `wiki/page/write` 写入准确正文，带来源提交、路径、合同、状态、摘要和 `locked: true`。同库保存 `source-snapshot.json`，用于逐页追溯与复核。
 
 使用标准 `wiki/ingest` 建索引。该版必须存在 raw 来源才允许 ingest，且 LLM 抽取只扫描 Markdown；因此保存 JSON 来源快照并索引已经审阅的精确页面，不让模型重写代码与测试。全过程未直接改 Knowledge 数据库或补造 ready／版本状态。
 
