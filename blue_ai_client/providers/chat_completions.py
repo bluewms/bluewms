@@ -11,7 +11,8 @@ from odoo.exceptions import UserError
 from odoo.addons.muk_ai.providers.base import PROVIDER_STATE_KEY, ProviderBase
 from odoo.addons.muk_ai.providers.region import CUSTOM
 
-from ..guard import TASK_NAME, TEAM_NAME
+from ..guard import HOOK_TASKS, TASK_NAME, TEAM_NAME
+from .knowledge import NativeWiki
 
 
 def normalize_url(value):
@@ -73,7 +74,7 @@ class BlueCloudProvider(ProviderBase):
         connection = self._connection()
         values = [str(self.env.uid), self.api_key, connection.agent_name or '',
                   self.env.context.get('blue_ai_task_name') or TASK_NAME,
-                  str(self.env.company.id), self.env.context.get('blue_ai_contract') or '']
+                  str(self.env.company.id), self.env.context.get('blue_ai_contract') or '', 'native-wiki-v1']
         return hashlib.sha256('\0'.join(values).encode()).hexdigest()[:32]
 
     def _post(self, path, body, timeout, stream=False):
@@ -82,7 +83,7 @@ class BlueCloudProvider(ProviderBase):
             raise UserError(self.env._('请先在 MuK AI 设置中启用宝蓝云端服务。'))
         try:
             response = self._http_session().post(
-                f'{self.api_url}{path}', headers=self.headers(), json=body,
+                f'{self.api_url}{path}', headers={**self.headers(), **getattr(self, '_business_headers', {})}, json=body,
                 timeout=(min(timeout, 15), timeout), stream=stream,
                 allow_redirects=False,
             )
@@ -108,7 +109,24 @@ class BlueCloudProvider(ProviderBase):
         self.provider = self.provider.with_context(
             blue_ai_session_uuid=self.env.context.get('blue_ai_session_uuid') or str(uuid.uuid4())
         )
-        maximum = self.env.context.get('blue_ai_test_max_tokens') or self.provider.max_tokens or 8192
+        task_name = self.env.context.get('blue_ai_task_name') or TASK_NAME
+        self._business_headers = {}
+        hook = next((code for code, name in HOOK_TASKS.items() if name == task_name), None)
+        if hook:
+            identity = NativeWiki(self, hook, self.env.context.get('blue_ai_contract') or '').identity()
+            if identity.get('task_name') != task_name or any(
+                    not isinstance(identity.get(key), str) or not identity[key]
+                    for key in ('team_id', 'agent_id', 'task_id')):
+                raise UserError(self.env._('业务 Task 身份解析失败,不使用日常任务兜底.'))
+            self._business_headers = {'x-team-id': identity['team_id'], 'x-agent-id': identity['agent_id'],
+                                      'x-task-id': identity['task_id']}
+            session = self.env['muk_ai.session'].search([
+                ('blue_session_uuid', '=', self.env.context.get('blue_ai_session_uuid')),
+                ('user_id', '=', self.env.uid), ('blue_hook_code', '=', hook),
+            ], limit=1)
+            if session:
+                session._blue_pin_cloud_identity(identity)
+        maximum = self.env.context.get('blue_ai_test_max_tokens') or self.provider.max_tokens or 16384
         body = {
             'model': self.model_for(model), 'messages': self._inputs_to_messages(inputs),
             'stream': True, 'stream_options': {'include_usage': True}, 'max_tokens': maximum,
@@ -233,6 +251,8 @@ class BlueCloudProvider(ProviderBase):
             raise UserError(self.env._('云端模型拒绝了此次请求。'))
         if any(not entry['id'] or not entry['name'] for entry in calls.values()):
             self._raise('invalid tool call')
+        if finished == 'length' and self.env.context.get('blue_ai_contract'):
+            raise UserError(self.env._('代码生成回复达到输出上限,本轮未执行截断的工具调用.请提高模型 Max Tokens 后重试;已有草稿保留.'))
         tool_calls = [] if finished == 'length' else [
             self._tool_call(entry['id'], entry['name'], entry['arguments']) for entry in calls.values()
         ]

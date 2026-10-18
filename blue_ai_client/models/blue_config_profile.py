@@ -27,6 +27,7 @@ class BlueConfigProfile(models.Model):
             'blue_draft_hash': self._draft_hash(),
             'blue_base_release_id': self.active_release_id.id,
             'blue_task_name': HOOK_TASKS[self.hook_code],
+            'blue_hook_code': self.hook_code,
             'blue_contract': self.contract,
             'blue_company_id': self.company_id.id,
             'blue_identity_scope': provider._get_client().identity_scope(),

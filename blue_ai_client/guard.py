@@ -9,3 +9,6 @@ HOOK_TASKS = {
     'device_protocol': '设备连接接口',
     'barcode_policy': '条码扫描策略',
 }
+
+CODE_TOOLS = {'blue_read_code_asset', 'blue_submit_code_draft', 'blue_validate_code_draft'}
+KNOWLEDGE_TOOLS = {'blue_search_code_knowledge', 'blue_read_code_knowledge', 'ask_user'}

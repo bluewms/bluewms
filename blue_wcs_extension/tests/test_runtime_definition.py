@@ -27,10 +27,10 @@ class TestWcsRuntimeDefinition(TransactionCase):
 class TestWcsOfflineExecution(TestWcs):
     def test_basic_and_published_execution_need_no_cloud(self):
         picking, line, operation = self._loose_incoming()
-        with patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge', side_effect=UserError('cloud unavailable')):
+        with patch('odoo.addons.blue_ai_client.providers.knowledge.NativeWiki._post', side_effect=UserError('cloud unavailable')):
             picking.action_create_wcs_request_from_button()
         self.assertEqual(len(picking.wcs_request_ids), 1)
         other, line, operation = self._picking()
-        with patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge', side_effect=UserError('cloud unavailable')):
+        with patch('odoo.addons.blue_ai_client.providers.knowledge.NativeWiki._post', side_effect=UserError('cloud unavailable')):
             other.action_create_wcs_request_from_button()
         self.assertEqual(len(other.wcs_request_ids), 2)

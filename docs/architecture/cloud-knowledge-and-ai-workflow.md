@@ -1,32 +1,46 @@
-# Odoo AI 生成知识与维护资料入口
+# AI 工作流与知识职责
 
-更新：2026-10-18。原综合文档按读者拆开：`docs/wiki/` 专供 Odoo 内的 AI 助手生成增强代码；工程维护和服务器资料留在 Wiki 之外。本页保留两类入口导航。
+更新：2026-10-18。当前正式接入见[使用与验收](../migrations/native-wiki-runtime-20.md)，云端部署见[配置](tencent-memory-configuration.md)及[只读通道](../../cloud/README.md)。
 
-## Odoo AI 代码生成知识
+## 当前分工
 
-| 内容 | 新位置 |
+| 层 | 负责什么 |
 |---|---|
-| 生成任务、真实输入、输出和能力边界 | [AI 生成通用规则](../wiki/basics/overview.md) |
-| AI 读取、提交、验证草稿的步骤 | [工具规则](../wiki/basics/ai-generation-workflow.md) |
-| 上架规范和三个已验证示例 | [上架规范](../wiki/domains/putaway/specification.md) · [示例目录](../wiki/domains/putaway/examples/README.md) |
-| ERP、WCS、设备和条码 AI 规范／需求示例 | [五类入口目录](../wiki/README.md#五类-ai-入口) |
-## 维护者工程资料
+| Odoo 固定业务模块 | 系统准入、库存／公司权限、数量／设备状态、真实合同和确定性执行 |
+| Odoo 资产 | 当前代码、本次测试、不可变版本、正式发布／回滚和执行追溯 |
+| MuK 与 `blue_ai_client` | 浮窗、专用工具循环、绑定资产、并发检查、知识引用和实际云端身份 |
+| Tencent Wiki | 通用规则与五类知识的索引、标准搜索和完整读页 |
+| 云端只读通道 | 当前业务 Key、Agent／Task／团队、Core ACL、固定绑定、批准页和版本摘要校验 |
+| Git | 模块源码、知识维护来源、公开说明、来源锁和脱敏验收证据 |
 
-以下内容不作为 AI 生成知识发布：
+Odoo 不扫描全部安装源码给模型；资产工具只返回本会话绑定资产的准确代码及真实合同。知识不能定义不存在的字段、增加 ORM／网络权限或放宽库存保护。
 
-- [TencentDB-Agent-Memory 配置](tencent-memory-configuration.md)：服务、团队／Agent／Task、共享配置。
-- [知识维护与发布](ai-generation-knowledge-maintenance.md)：人工新增、审阅、发布及失效流程。
-- [发布映射](ai-generation-knowledge-publication-map.json)：生成来源与兼容云端资源的对应。
-- [2026-10-16 历史记录](../third-party/tencent-memory-configuration-2026-10-16.md)：配置纠正、会话证据与历史决策。
+## 生成与执行
 
-远端2026-10-17基线只有上架具备AI草稿闭环; 本地2026-10-18的WCS增量见下节, ERP/设备/条码仍为planned.文件整理没有自动替换云端正文，也未改变现有 Odoo 工具读取路径。
+`blue_read_code_asset` 取得本地资产与合同及知识范围；`blue_search_code_knowledge` 查询通用＋当前业务库；`blue_read_code_knowledge` 读取本会话搜索命中的审阅页全文。生成前完整读取通用规则、本领域规范及匹配案例，目录和摘要不能替代正文。
 
-## 2026-10-18 本地WCS /4整合增量
+提交和验证工具复核用户、公司、hook、合同、草稿／正式基础版本及已读知识来源。正文或批准版本漂移时要求重开，不悄悄换成其他资料。模型只保存和验证草稿，发布由用户完成；正式执行按本地固定版本，不逐次请求模型。
 
-远端PR #4的上架云端知识、Task身份路由、草稿参考版本记录与聊天浮窗保留。WCS /4已完成全部行增强、同数据双／多程序及库存一次记账；与上架共用浮窗和会话绑定保护，使用“WCS生成策略”Task。工具返回完整contract_schema及兼容别名，按hook实际读取批准云端正文，WCS固定01/06/07与真实Wiki ID、版本，上架保持01/03/04。成功读取前不修改AI草稿，无本地示例或跨hook回退。
+资产和正式版本保存引用、版本及摘要，不另建本地示例库；MuK 聊天按原机制保存实际工具输出供回放，不能把聊天副本当成权威知识或断网兜底。旧不可变版本的来源和已固定单据不追溯改写。
 
-生产WCS只保留无示例正文的基础接口定义；原18个出厂定义归档并按摘要清理原始正文，客户修改与策略历史保留。例子与配置说明按主题存入[Wiki源文件](../wiki/domains/wcs/specification.md)，[离线发布包](../wiki-publication/wcs-v4/README-用户最后写入.md)供用户最后写入既有Wiki/Skill，包含原上架资源及WCS新增资源。当前仅实际只读验证了上架Skill v4，WCS云端发布待用户完成；本轮未写云端。
+## 五类 Task 与能力
 
-/1-/3历史、人工权限边界、固定计划与报文继续保留，不自动改绑或发布。其他ERP／设备／条码入口仍planned。
+上架、WCS、ERP、设备、条码分别使用同名业务 Task。通道先验证当前用户拥有的 Agent 及运行中的关联 Task，再把真实 ID 放入代理预选身份头；会话保存并固定实际绑定。缺失、重复或变化时拒绝继续，不回落到日常任务。
 
-后续架构意图：用户拟在另一台电脑用Memory Hub原生Wiki检索替代额外Skill副本。本次仅交付现有代码，尚未实现或验证Odoo会话的原生Wiki自动检索／注入。当前上架与WCS仍强制Skill bridge，详见[跨电脑交接](../migrations/wcs-v4-handoff.md)。
+普通聊天使用日常任务。五类共用项目团队和按用户划分的身份，不为每个入口复制团队或人格；Task 分类不代替真正的跨客户 ACL 隔离。
+
+上架与 WCS /4 已开放可执行草稿。ERP、设备、条码可以通过自己的 Wiki 沟通需求，但没有执行合同／提交工具。后续增加能力须先完成固定模块、合同、测试与审核。
+
+## 六库与原生方法
+
+一个通用规则库加五个业务库，实例 ID 留在云端私有配置；维护范围见[逻辑清单](native-wiki-knowledge-registry.json)。`docs/wiki/` 是唯一知识维护来源，来源提交与准确发布页摘要见[发布证据](../wiki-publication/README.md)。
+
+腾讯的原生知识注入会提供资源目录和工具说明，不代表自动完成全文检索。当前由模型通过 Odoo 专用工具请求腾讯标准 `tools/list`／`tools/call` 的 search／read_page；检索为已验证的 BM25，不能承诺已有向量语义召回。
+
+只读通道与模型同 HTTPS 域，管理服务凭据只留在云端。它不读 Skill 文件、不重做检索，也不接受模型自选地址、身份或 Wiki ID。新会话来源为 `tencent_wiki`；旧 Skill 及历史资料保留给旧客户端过渡，新链路失败不回退它们。
+
+## 维护边界
+
+Wiki ready、平台批准、草稿验证和策略发布是四个状态。规划页可检索不意味着能生成代码，参考代码通过不意味着本次新代码通过。标准 read_page 没有已验证的历史版本读取参数；真实内容摘要及准确发布包承担追溯。
+
+知识变更遵循[维护与发布](ai-generation-knowledge-maintenance.md)。Git 合并只更新来源，不自动发布 Wiki；工程、运维和历史记录不能上传到生成知识库。

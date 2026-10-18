@@ -1,6 +1,6 @@
 # MuK AI／Skills／MCP 20.0 安装与验证记录
 
-> **2026-10-17 维护入口**：本文保留原日期的调查或交付记录；当前基础说明、五类 AI 规范与示例统一维护在 [Odoo AI 代码生成知识库](../wiki/README.md)。上架 AI 已读取云端批准示例，准确代码、本次测试与验证发布仍在本地；其他四类 AI 入口分别按合同验收。
+> 本文保留第三方安装时的来源与验证范围；当前业务 AI 已通过原生 Wiki 接入，上架／WCS 及五类 Task 状态见[当前交付](../migrations/native-wiki-runtime-20.md)。
 
 日期：2026-10-12。范围：用户指定的 `muk_ai`、`muk_ai_skills`、`muk_mcp`。
 
@@ -39,7 +39,7 @@ Docker 镜像无 Chromium，故排除 HOOT 和 MCP Playground 浏览器 tour；A
 
 仓库外备份／日志目录：`~/.config/bluewms20/backups/muk-ai-20261012-095839/`，含 `bluewms20.dump`、`filestore.tar.gz`、`install.log`、`tests.log`、`assets.log`。没有执行整库恢复演练。测试数据库保留用于后续验证，与开发库分开。
 
-本地源码、版本锁和报告已准备好；本次未提交或推送 GitHub。旧 19 模块与数据库未修改。
+来源锁及安装记录现随仓库维护；记录中的测试只对应安装时范围。旧 19 模块与数据库未修改。
 
 ## 2026-10-13 中文补充
 

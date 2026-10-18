@@ -12,7 +12,7 @@
 | 如何读取当前资产、追问业务需求、提交并验证草稿 | [生成步骤与工具规则](basics/ai-generation-workflow.md) |
 | 一个完整参考案例应包含什么 | [案例格式](templates/example-template.md) |
 
-知识正文供云端批准后读取；当前 Odoo 读取批准 Skill 的指定资源，不会扫描这个本地文件夹。知识只能解释已有能力，实际生成以当前会话返回的本地接口合同为准。
+知识按“通用规则＋五类业务”分别维护在云端 Wiki；Odoo 不扫描本地文件夹充当示例兜底。读取方式以当前会话实际提供的工具为准，只有取得对应规范和案例正文后才能参考生成。知识只能解释已有能力，实际生成以当前会话返回的本地接口合同为准。
 
 ## 五类 AI 入口
 
@@ -22,7 +22,7 @@
 |---|---|---|---|---|
 | 上架策略 | `putaway_policy` | [上架生成规范](domains/putaway/specification.md) | [三个已验证案例](domains/putaway/examples/README.md) | 可读取、提交并验证草稿；人工发布 |
 | ERP 接口 | `erp_mapping` | [ERP 规范草案](domains/erp/specification.md) | [需求案例](domains/erp/examples/README.md) | planned；当前不能生成可执行草稿 |
-| WCS 生成策略 | `wcs_creation` | [WCS /4规范](domains/wcs/specification.md) | [已验证案例](domains/wcs/examples/README.md) | /4只读桥接与草稿工具就绪, 云端正文待用户最后写入/批准 |
+| WCS 生成策略 | `wcs_creation` | [WCS /4规范](domains/wcs/specification.md) | [已验证案例](domains/wcs/examples/README.md) | /4 合同及草稿工具已实现；生成前必须实际取得本领域批准正文 |
 | 设备连接接口 | `device_protocol` | [设备规范草案](domains/equipment/specification.md) | [需求案例](domains/equipment/examples/README.md) | planned；当前不能生成可执行草稿 |
 | 条码扫描策略 | `barcode_policy` | [条码规范草案](domains/barcode/specification.md) | [需求案例](domains/barcode/examples/README.md) | planned；当前不能生成可执行草稿 |
 

@@ -1,6 +1,6 @@
 # AI按单据库区点位搬运
 
-知识ID: wcs.scope; hook: wcs_creation; contract: wcs_creation/4。状态: verified, 云端尚未发布。声明用例均已通过实际解释器; 新草稿仍需本次验证和人工发布。
+知识ID: wcs.scope; hook: wcs_creation; contract: wcs_creation/4。状态: verified；云端批准状态以发布清单与平台资产元数据为准。声明用例均已通过实际解释器; 新草稿仍需本次验证和人工发布。
 
 ## 准确代码
 

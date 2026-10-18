@@ -1,0 +1,277 @@
+{
+  "schema_version": 2,
+  "document_kind": "engineering_registry_reference_not_instance_configuration",
+  "date": "2026-10-18",
+  "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+  "source_root": "../wiki",
+  "audience": "odoo_runtime_code_generation_assistant",
+  "actual_ids_in_private_deployment_receipt": true,
+  "runtime_activated": true,
+  "standard_tools_observed": [
+    "get_info",
+    "search",
+    "read_page",
+    "list_pages",
+    "get_graph",
+    "list_raw",
+    "read_raw"
+  ],
+  "search_engine_observed": "BM25",
+  "native_version_type_observed": "string",
+  "historical_version_read_supported": false,
+  "books": [
+    {
+      "scope": "common",
+      "display_name": "bluewms-odoo",
+      "hook_code": null,
+      "sources": [
+        "README.md",
+        "basics/ai-generation-workflow.md",
+        "basics/overview.md",
+        "templates/example-template.md"
+      ],
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": true,
+      "approved_for_native_generation": true,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 4,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "approved"
+      },
+      "contracts": []
+    },
+    {
+      "scope": "putaway",
+      "display_name": "Odoo-AI-上架策略",
+      "hook_code": "putaway_policy",
+      "sources": [
+        "domains/putaway/examples/README.md",
+        "domains/putaway/examples/same-batch-name.md",
+        "domains/putaway/examples/same-lot.md",
+        "domains/putaway/examples/same-picking.md",
+        "domains/putaway/specification.md"
+      ],
+      "local_contract_implemented": true,
+      "native_retrieval_enabled": true,
+      "approved_for_native_generation": true,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 5,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "approved"
+      },
+      "contracts": [
+        "putaway_policy/1",
+        "putaway_policy/2"
+      ]
+    },
+    {
+      "scope": "erp",
+      "display_name": "Odoo-AI-ERP接口",
+      "hook_code": "erp_mapping",
+      "sources": [
+        "domains/erp/examples/README.md",
+        "domains/erp/specification.md"
+      ],
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": true,
+      "approved_for_native_generation": false,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 2,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "candidate"
+      },
+      "contracts": []
+    },
+    {
+      "scope": "wcs",
+      "display_name": "Odoo-AI-WCS任务生成",
+      "hook_code": "wcs_creation",
+      "sources": [
+        "domains/wcs/configuration-guide.md",
+        "domains/wcs/examples/README.md",
+        "domains/wcs/examples/all_picked.md",
+        "domains/wcs/examples/container.md",
+        "domains/wcs/examples/empty.md",
+        "domains/wcs/examples/filter.md",
+        "domains/wcs/examples/ready.md",
+        "domains/wcs/examples/relay.md",
+        "domains/wcs/examples/repeat.md",
+        "domains/wcs/examples/scope.md",
+        "domains/wcs/examples/triple.md",
+        "domains/wcs/examples/weight.md",
+        "domains/wcs/specification.md",
+        "domains/wcs/wcs-creation-v4-contract.json"
+      ],
+      "local_contract_implemented": true,
+      "native_retrieval_enabled": true,
+      "approved_for_native_generation": true,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 14,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "approved"
+      },
+      "contracts": [
+        "wcs_creation/4"
+      ]
+    },
+    {
+      "scope": "equipment",
+      "display_name": "Odoo-AI-设备接口",
+      "hook_code": "device_protocol",
+      "sources": [
+        "domains/equipment/examples/README.md",
+        "domains/equipment/specification.md"
+      ],
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": true,
+      "approved_for_native_generation": false,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 2,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "candidate"
+      },
+      "contracts": []
+    },
+    {
+      "scope": "barcode",
+      "display_name": "Odoo-AI-条码策略",
+      "hook_code": "barcode_policy",
+      "sources": [
+        "domains/barcode/examples/README.md",
+        "domains/barcode/specification.md"
+      ],
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": true,
+      "approved_for_native_generation": false,
+      "cloud_publication": {
+        "status": "ready",
+        "version": "2",
+        "source_pages": 2,
+        "content_uploaded": true,
+        "agent_bound": true,
+        "asset_status": "candidate"
+      },
+      "contracts": []
+    }
+  ],
+  "routes": {
+    "putaway_policy": {
+      "scopes": [
+        "common",
+        "putaway"
+      ],
+      "contracts": [
+        "putaway_policy/1",
+        "putaway_policy/2"
+      ],
+      "knowledge_discussion_enabled": true,
+      "code_generation_enabled": true
+    },
+    "erp_mapping": {
+      "scopes": [
+        "common",
+        "erp"
+      ],
+      "contracts": [],
+      "knowledge_discussion_enabled": true,
+      "code_generation_enabled": false
+    },
+    "wcs_creation": {
+      "scopes": [
+        "common",
+        "wcs"
+      ],
+      "contracts": [
+        "wcs_creation/4"
+      ],
+      "knowledge_discussion_enabled": true,
+      "code_generation_enabled": true
+    },
+    "device_protocol": {
+      "scopes": [
+        "common",
+        "equipment"
+      ],
+      "contracts": [],
+      "knowledge_discussion_enabled": true,
+      "code_generation_enabled": false
+    },
+    "barcode_policy": {
+      "scopes": [
+        "common",
+        "barcode"
+      ],
+      "contracts": [],
+      "knowledge_discussion_enabled": true,
+      "code_generation_enabled": false
+    }
+  },
+  "skill_transition": {
+    "current_mode": "native_wiki",
+    "legacy_skill_role": "compatibility_only_no_new_runtime_dependency",
+    "remove_legacy_resources_only_after_old_clients_migrate": true
+  },
+  "excluded_repository_directories": [
+    "docs/architecture",
+    "docs/design",
+    "docs/migrations",
+    "docs/third-party",
+    "docs/wiki-publication",
+    "docs/planning"
+  ],
+  "knowledge_source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+  "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json",
+  "runtime_implementation": "../migrations/native-wiki-runtime-20.md",
+  "private_instance_configuration": "/etc/bluewms-native-wiki/config.json",
+  "validated_runtime_limits": {
+    "response_bytes": 262144,
+    "read_pages_per_session": 12,
+    "cumulative_body_bytes": 196608,
+    "request_timeout_seconds": 30
+  },
+  "wrapper_tools": [
+    {
+      "name": "blue_search_code_knowledge",
+      "model_parameters": [
+        "query"
+      ],
+      "identity_and_scope": "server_bound_session"
+    },
+    {
+      "name": "blue_read_code_knowledge",
+      "model_parameters": [
+        "page_ref"
+      ],
+      "identity_and_scope": "opaque_reference_from_authorized_search"
+    }
+  ],
+  "runtime_checks": [
+    "business_user_and_agent_acl",
+    "bound_hook_contract_company",
+    "wiki_ready_and_asset_approved",
+    "approved_release_page_allowlist",
+    "source_version_before_and_after_read",
+    "exact_content_sha256",
+    "no_arbitrary_endpoint_or_identity",
+    "no_cross_hook_or_skill_fallback",
+    "explicit_owned_agent_task_preset",
+    "fixed_business_provider"
+  ],
+  "module_versions_source": "addon manifests; installation state is per deployment",
+  "deployment_evidence": "../migrations/native-wiki-runtime-20.validation.json"
+}

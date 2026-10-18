@@ -1,5 +1,7 @@
-# blue_config_asset
+# 代码与配置资产
 
-Odoo 20 首期可编辑上架策略闭环。使用方法、AI草稿接口、执行合同、权限和范围见 [交付说明](../docs/migrations/putaway-policy-20.md)。
+管理当前需求、代码、本次测试、不可变版本、正式发布／回滚与执行记录。保存和验证不等于发布；合同及业务模块负责运行约束，已有正式版本不需要云端在线。
 
-当前代码与本次测试可编辑；保存草稿不会自动发布。策略接口保存本地运行定义，上架通用示例由云端维护。AI 生成时的知识来源、版本和摘要随不可变代码版本保存；正式运行不需要云端 API Key。见 [云端知识改造](../docs/migrations/putaway-cloud-knowledge-20.md)。
+AI 会话固定资产、用户／公司、合同、草稿摘要及正式基础版本。新生成使用原生 Wiki，引用、批准版本及摘要随准确代码版本保存；不能用聊天摘要重建代码或覆盖并发修改。
+
+使用见[上架说明](../docs/migrations/putaway-policy-20.md)、[WCS 说明](../docs/migrations/wcs-20.md)和[原生 Wiki 接入](../docs/migrations/native-wiki-runtime-20.md)。
