@@ -14,6 +14,11 @@ class FakeGateway(module.NativeWikiGateway):
         self.allowed = True
         self.task_present = True
         self.valid_key = True
+        self.user_id = 'owner'
+        self.agent_id = 'agent'
+        self.task_overrides = {}
+        self.duplicate_task = False
+        self.task_link_active = True
         self.assets = {}
         self.pages = {}
         self.versions = {}
@@ -28,9 +33,9 @@ class FakeGateway(module.NativeWikiGateway):
 
     def _core(self, path, body, key, deadline):
         if path == 'auth/verify':
-            return {'valid': self.valid_key, 'user': {'user_id': 'owner'} if self.valid_key else None}
+            return {'valid': self.valid_key, 'user': {'user_id': self.user_id} if self.valid_key else None}
         if path == 'agent/list':
-            return {'items': [{'agent_id': 'agent', 'owner_user_id': 'owner', 'team_id': 'team', 'name': 'personal', 'status': 'active'}]}
+            return {'items': [{'agent_id': self.agent_id, 'owner_user_id': self.user_id, 'team_id': 'team', 'name': 'personal', 'status': 'active'}]}
         if path == 'agent-fixed-asset/list-with-detail':
             return {'items': [{'asset_id': s, 'status': a['status']} for s, a in self.assets.items()]}
         if path == 'acl/check':
@@ -38,9 +43,17 @@ class FakeGateway(module.NativeWikiGateway):
         if path == 'asset/get':
             return self.assets[body['asset_id']]
         if path == 'task/list':
-            return {'items': [{'task_id': 'specific-task', 'team_id': 'team', 'title': body['title'], 'creator_user_id': 'owner', 'status': 'running'}] if self.task_present else []}
+            hook = next(h for h, title in module.TASK_NAMES.items() if title == body['title'])
+            task = {'task_id': 'shared-' + hook, 'team_id': 'team', 'title': body['title'],
+                    'creator_user_id': 'team-admin', 'status': 'running', **self.task_overrides}
+            tasks = [task] if self.task_present else []
+            if self.duplicate_task:
+                tasks.append({**task, 'task_id': 'duplicate'})
+            if body.get('creator_user_id'):
+                tasks = [t for t in tasks if t['creator_user_id'] == body['creator_user_id']]
+            return {'items': tasks}
         if path == 'task-agent/list':
-            return {'items': [{'agent_id': 'agent'}]}
+            return {'items': [{'agent_id': self.agent_id, 'status': 'active' if self.task_link_active else 'inactive'}]}
         raise AssertionError(path)
 
     def _native(self, operation, wiki_id, params, key, deadline):
@@ -88,7 +101,7 @@ class TestNativeGateway(unittest.TestCase):
             self.request('context')
 
     def test_model_cannot_choose_identity_endpoint_or_other_domain(self):
-        for extra in [{'user_id': 'someone'}, {'endpoint': 'http://other'}, {'knowledge_id': 'other'}]:
+        for extra in [{'user_id': 'someone'}, {'endpoint': 'http://other'}, {'knowledge_id': 'other'}, {'task_id': 'other'}]:
             with self.subTest(extra=extra), self.assertRaises(module.Rejected):
                 self.request('context', **extra)
         with self.assertRaises(module.Rejected):
@@ -138,6 +151,36 @@ class TestNativeGateway(unittest.TestCase):
             self.payload.update(hook_code=hook, contract='')
             self.assertEqual(self.request('identity')['task_name'], task)
         self.gateway.task_present = False
+        with self.assertRaises(module.Rejected):
+            self.request('identity')
+
+    def test_all_users_share_business_tasks_and_keep_their_own_agents(self):
+        shared = {}
+        agents = set()
+        for user in ['first', 'second', 'third']:
+            self.gateway.user_id = user
+            self.gateway.agent_id = 'agent-' + user
+            for hook in module.TASK_NAMES:
+                self.payload.update(hook_code=hook, contract='')
+                identity = self.request('identity')
+                self.assertEqual(identity['agent_id'], self.gateway.agent_id)
+                self.assertEqual(identity['task_id'], shared.setdefault(hook, identity['task_id']))
+                agents.add(identity['agent_id'])
+        self.assertEqual(len(set(shared.values())), 5)
+        self.assertEqual(len(agents), 3)
+
+    def test_shared_task_rejects_duplicates_other_teams_and_stopped_tasks(self):
+        self.gateway.duplicate_task = True
+        with self.assertRaises(module.Rejected):
+            self.request('identity')
+        self.gateway.duplicate_task = False
+        for overrides in [{'team_id': 'other'}, {'status': 'completed'}, {'title': '日常任务'}]:
+            self.gateway.task_overrides = overrides
+            with self.subTest(overrides=overrides), self.assertRaises(module.Rejected):
+                self.request('identity')
+
+    def test_shared_task_rejects_revoked_agent_link(self):
+        self.gateway.task_link_active = False
         with self.assertRaises(module.Rejected):
             self.request('identity')
 

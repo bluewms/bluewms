@@ -206,5 +206,27 @@
   "private_evidence_kept_outside_git": true,
   "main_warehouse_jobs_created": false,
   "main_business_strategies_published": false,
-  "business_provider_switch_rejected": true
+  "business_provider_switch_rejected": true,
+  "shared_task_cleanup": {
+    "date": "2026-10-18",
+    "tasks_before": 16,
+    "duplicate_tasks_deleted": 10,
+    "tasks_after": 6,
+    "shared_business_tasks": 5,
+    "daily_tasks": 1,
+    "users_verified": 3,
+    "https_identity_checks_passed": 15,
+    "main_five_entry_smoke_passed": true,
+    "main_smoke_transaction_rolled_back": true,
+    "gateway_tests_passed": 14,
+    "gateway_source_sha256": "cb4f2f1d7bd8eaef5930e99c1474a085aa38d018cb4c9fa6c82948483fc62b8b",
+    "original_six_tasks_unchanged": true,
+    "original_agent_links_preserved": true,
+    "runtime_task_creation_supported": false,
+    "gateway_service_active": true,
+    "metadata_backup_integrity_check": "ok",
+    "private_deletion_receipts_and_backup_retained": true,
+    "odoo_module_tests_rerun": false,
+    "old_duplicate_task_sessions_require_reopen": true
+  }
 }

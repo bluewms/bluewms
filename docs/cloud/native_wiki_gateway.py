@@ -177,17 +177,17 @@ class NativeWikiGateway:
         if not isinstance(contract, str) or (contract and contract not in contracts):
             raise Rejected('此业务合同尚未开放.')
         deadline = time.monotonic() + 25
-        agent_id, user_id, bindings = self._identity(key, payload.get('agent_name'), deadline)
+        agent_id, _, bindings = self._identity(key, payload.get('agent_name'), deadline)
         if operation == 'identity':
-            tasks = self._core('task/list', {'team_id': self.config['team_id'], 'creator_user_id': user_id,
+            tasks = self._core('task/list', {'team_id': self.config['team_id'], 'status': 'running',
                                              'title': TASK_NAMES[hook], 'limit': 100}, key, deadline)
             matches = [t for t in tasks['items'] if t['title'] == TASK_NAMES[hook]
-                       and t['creator_user_id'] == user_id and t['status'] == 'running'
+                       and t['status'] == 'running'
                        and t.get('team_id') == self.config['team_id']]
             if len(matches) != 1:
-                raise Rejected('当前用户缺少唯一对应的业务 Task,请先配置云端任务.')
+                raise Rejected('项目团队缺少唯一对应的共享业务 Task,请核对既有云端任务.')
             links = self._core('task-agent/list', {'task_id': matches[0]['task_id'], 'limit': 100}, key, deadline)
-            if not any(link['agent_id'] == agent_id for link in links['items']):
+            if not any(link['agent_id'] == agent_id and link.get('status') == 'active' for link in links['items']):
                 raise Rejected('业务 Task 尚未关联当前 Agent.', 403)
             return {'team_id': self.config['team_id'], 'agent_id': agent_id,
                     'task_id': matches[0]['task_id'], 'task_name': TASK_NAMES[hook]}
