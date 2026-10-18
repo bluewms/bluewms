@@ -2,6 +2,8 @@
 
 更新：2026-10-18。这里按当前实现维护工程说明和知识来源。旧交付步骤、旧 Skill 发布包及已替代的调查稿已从当前目录移除，可通过 Git 历史追溯。
 
+本目录保留在开发 Git 仓库中，正式 Odoo 发行包排除整个 `docs/`。云端配套服务源码与部署材料统一放在 `cloud/`，由云服务器独立部署。
+
 ## 开发与部署
 
 | 需要了解什么 | 文档 |
@@ -29,6 +31,7 @@
 
 - [AI 工作流与职责](architecture/cloud-knowledge-and-ai-workflow.md)：本地资产、腾讯原生工具、鉴权、版本和 Task 的关系。
 - [Tencent 配置](architecture/tencent-memory-configuration.md)：服务、用户／Agent／Task、共享与记忆质量。
+- [云端配套服务](cloud/README.md)：原生 Wiki 接入服务源码、部署模板与测试，不随 Odoo 发行包交付。
 - [知识维护与发布](architecture/ai-generation-knowledge-maintenance.md)：如何审阅、发布、校验和更新。
 - [六库逻辑清单](architecture/native-wiki-knowledge-registry.json)：维护范围与接口，不包含实例 ID 或凭据。
 - [发布证据](wiki-publication/README.md)：准确来源、正文摘要及真实问答记录。

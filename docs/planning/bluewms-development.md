@@ -37,3 +37,5 @@ AI 会话绑定用户、公司、hook、合同、资产摘要及正式基础版�
 ## 文档维护
 
 开发与运维资料留在本目录体系；AI 知识仅维护 `docs/wiki/`。修改知识后通过[独立发布流程](../architecture/ai-generation-knowledge-maintenance.md)更新云端，Git 合并不会自动发布。历史过程从 Git 查阅，不再整库复制一份到 archive 或离线 Skill 包。
+
+云端配套服务源码和部署材料统一维护在 `docs/cloud/`，不放仓库根目录。正式 Odoo 发行包排除整个 `docs/`；开发仓库继续跟踪文档与云端源码。使用 `git archive` 生成发行包时由根目录 `.gitattributes` 执行排除；其他打包方式同样遵守此规则，并保留各模块的许可及来源声明。

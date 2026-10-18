@@ -1,6 +1,6 @@
 # TencentDB-Agent-Memory 配置
 
-更新：2026-10-18。本文供管理员维护，不发布到 Odoo AI Wiki。业务流程见[AI 架构](cloud-knowledge-and-ai-workflow.md)，部署只读通道见[cloud/README](../../cloud/README.md)。
+更新：2026-10-18。本文供管理员维护，不发布到 Odoo AI Wiki。业务流程见[AI 架构](cloud-knowledge-and-ai-workflow.md)，部署只读通道见[cloud/README](../cloud/README.md)。
 
 ## 服务与凭据
 

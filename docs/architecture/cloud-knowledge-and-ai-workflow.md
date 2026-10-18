@@ -1,6 +1,6 @@
 # AI 工作流与知识职责
 
-更新：2026-10-18。当前正式接入见[使用与验收](../migrations/native-wiki-runtime-20.md)，云端部署见[配置](tencent-memory-configuration.md)及[只读通道](../../cloud/README.md)。
+更新：2026-10-18。当前正式接入见[使用与验收](../migrations/native-wiki-runtime-20.md)，云端部署见[配置](tencent-memory-configuration.md)及[只读通道](../cloud/README.md)。
 
 ## 当前分工
 
