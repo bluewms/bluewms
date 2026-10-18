@@ -1,0 +1,178 @@
+{
+  "date": "2026-10-18",
+  "module_versions": {
+    "blue_wcs_protocol": "20.0.1.0.0",
+    "blue_wcs_base": "20.0.1.4.0",
+    "blue_wcs_extension": "20.0.1.5.0",
+    "blue_ai_client": "20.0.1.5.0"
+  },
+  "regression": {
+    "isolated_odoo_tests_passed": 300,
+    "device_protocol_test_methods": 37,
+    "gateway_tests_passed": 15,
+    "canonical_wiki_examples": 15,
+    "canonical_wiki_cases": 42
+  },
+  "cloud_publication": {
+    "source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
+    "books": [
+      {
+        "scope": "common",
+        "version": "4",
+        "status": "ready",
+        "pages": 4,
+        "before_version": "2",
+        "exact_body_verified": true,
+        "contracts": [],
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      },
+      {
+        "scope": "equipment",
+        "version": "4",
+        "status": "ready",
+        "pages": 11,
+        "before_version": "2",
+        "exact_body_verified": true,
+        "contracts": [
+          "device_protocol/1"
+        ],
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      }
+    ],
+    "pages_read_back_exactly": 15,
+    "project_users_verified": 3,
+    "shared_cloud_tasks_total": 6,
+    "new_tasks_created": 0,
+    "legacy_skill_bridge_used": false
+  },
+  "real_ai_generation": {
+    "state": "done",
+    "validated": true,
+    "published_in_main": false,
+    "original_generation_published": false,
+    "cases": 5,
+    "code_sha256": "fc296b23cd05cbee4440b22c5c267eaf8c5413a59c781d3a4c5da8a50aa719e0",
+    "tests_sha256": "c665bb3560552cefae98600402f525602865c1d8d295fe3a5974056357bf4f87",
+    "tools_used": [
+      "blue_read_code_asset",
+      "blue_search_code_knowledge",
+      "blue_search_code_knowledge",
+      "blue_search_code_knowledge",
+      "blue_read_code_knowledge",
+      "blue_read_code_knowledge",
+      "blue_read_code_knowledge",
+      "blue_read_code_knowledge",
+      "blue_read_code_knowledge",
+      "blue_read_code_knowledge",
+      "blue_submit_code_draft",
+      "blue_validate_code_draft"
+    ],
+    "references": [
+      {
+        "scope": "common",
+        "ref": "basics/overview.md",
+        "sha256": "ec31f12e3adce93f06f354168a479052cad96afe55d2de9ffe608bd7cbbf6537",
+        "role": "guidance",
+        "wiki_version": "4",
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      },
+      {
+        "scope": "common",
+        "ref": "basics/ai-generation-workflow.md",
+        "sha256": "7dfd0fce7650c2d48aba24bb4c8d83b26d2e6a6d8aa38c631f30a257b886e798",
+        "role": "guidance",
+        "wiki_version": "4",
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      },
+      {
+        "scope": "equipment",
+        "ref": "domains/equipment/specification.md",
+        "sha256": "0c2dbbf19a6aa5366d274874a990048b2573d8c83362fe53a36d839e06231e8f",
+        "role": "specification",
+        "wiki_version": "4",
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      },
+      {
+        "scope": "equipment",
+        "ref": "domains/equipment/reference/legacy-tusk.md",
+        "sha256": "e5a4d1cb5a07f4afbec34efe59d73b1d9b0aa6323a5bb7f1fc53b26ca40a1fee",
+        "role": "reference",
+        "wiki_version": "4",
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      },
+      {
+        "scope": "equipment",
+        "ref": "domains/equipment/examples/tusk-subposition.md",
+        "sha256": "51f0b3b61ea31d2bb574ecceae73cff5721666f92e97c010c657fbaedb93ee37",
+        "role": "example",
+        "wiki_version": "4",
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      },
+      {
+        "scope": "equipment",
+        "ref": "domains/equipment/examples/README.md",
+        "sha256": "1236d1a5866761172569b6d93c30cbbfa167f8c9157f47a8d695753f316b35d6",
+        "role": "reference",
+        "wiki_version": "4",
+        "source_commit": "ecba9607eedc398819013062c9e447249f3c481b"
+      }
+    ],
+    "exact_proxy_registered_identity_verified": true,
+    "knowledge_references_persisted_in_validated_version": true,
+    "strict_runtime_schema_cases_rechecked": true
+  },
+  "real_ai_code_isolated_execution": {
+    "http_stub_only": true,
+    "physical_device_requests": 0,
+    "real_scheduler_requests": 1,
+    "completion_events": 1,
+    "stock_quantity": 10.0,
+    "subposition_preserved": true,
+    "duplicate_dispatch_prevented": true,
+    "real_ai_code_executed": true,
+    "rollback_preserves_task_version": true
+  },
+  "main_instance": {
+    "installed_versions": {
+      "blue_wcs_protocol": "20.0.1.0.0",
+      "blue_wcs_base": "20.0.1.4.0",
+      "blue_wcs_extension": "20.0.1.5.0",
+      "blue_ai_client": "20.0.1.5.0"
+    },
+    "manual_fields_preserved": true,
+    "inline_equipment_creation_removed": true,
+    "empty_asset_no_local_examples": true,
+    "ai_floating_action": true,
+    "device_contract_read": true,
+    "no_credentials_in_ai_asset": true,
+    "cloud_task": "设备连接接口",
+    "cloud_read_verified": true,
+    "transaction_rolled_back": true
+  },
+  "data_protection": {
+    "business_tables_fingerprinted": 14,
+    "original_business_values_unchanged": true,
+    "database_backup_restored_and_matched": true,
+    "filestore_archive_readable": true,
+    "full_filestore_restore_drill_performed": false,
+    "main_business_strategies_published": false,
+    "main_device_commands_sent_by_this_validation": 0
+  },
+  "runtime_files_sha256": {
+    "blue_wcs_protocol/tools/protocol.py": "ef318bceb85201233f236fb3886881c32c5e618542d9cc0e6e8b0fe27640671c",
+    "blue_wcs_protocol/models/wcs_request.py": "800a44a1f68a3d872af914aa785924d616ea2d0f23cba45905cd496e028926f0",
+    "blue_wcs_protocol/controllers/device_callback.py": "962361919ac274ac6ff66ac71127477334cf7edd0eebd63e0968903f4256ce52",
+    "docs/cloud/native_wiki_gateway.py": "5d30f6f85a7a6f03c04440addd7d0d855ef40f6122d30c107908f47dc4c3f6bf"
+  },
+  "real_hardware_acceptance_performed": false,
+  "browser_visual_interaction_test_performed": false,
+  "limits": [
+    "HTTP/JSON POST and one final-completion callback object",
+    "M4/Mita/Modula reference material is not full executable vendor support",
+    "partial quantities, shared lines or redirect with fixed successor programs require reconciliation"
+  ],
+  "private_credentials_traces_and_backups_excluded_from_git": true,
+  "isolated_test_database_and_filestore_removed": true,
+  "documentation_links_validated": 235,
+  "changed_files_business_key_scan_passed": true
+}

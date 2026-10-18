@@ -86,3 +86,11 @@ class WcsEquipment(models.Model):
                           endpoint=(category.ip_post or '').rstrip('/') + (category.submit_path or '') if category.ip_post else device.endpoint,
                           api_key=category.app_key or device.api_key, api_secret=category.app_secret or device.api_secret)
         return result
+
+    def _supports_wcs_loose_goods(self):
+        self.ensure_one()
+        return self.adapter_code == 'simulation' or (self.adapter_code == 'json' and self.supports_loose_goods)
+
+    def _supports_wcs_location_scope(self):
+        self.ensure_one()
+        return self.adapter_code in ('simulation', 'hik') or (self.adapter_code == 'json' and self.supports_location_scope)

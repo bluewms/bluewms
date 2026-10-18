@@ -21,6 +21,7 @@
 | `blue_wcs_base` | 设备、计划／任务、持久发送队列与认证回调 | AGPL-3 |
 | `blue_wcs_extension` | 库存作业接入、/4 行决定与任务编排 | AGPL-3 |
 | `blue_wcs_wes` | WES 认证、报文和逐明细完成处理 | AGPL-3 |
+| `blue_wcs_protocol` | 类别级可编辑 HTTP 协议、AI 草稿、固定版本及受控位置回写 | AGPL-3 |
 | `blue_web_theme` | 品牌主菜单和产品界面，与库存基础分开 | LGPL-3 |
 | `blue_dev_environment` | 开发环境标识，无业务逻辑 | AGPL-3 |
 | `muk_*` 等第三方模块 | Web／主题、AI、Skills、MCP 底座，保留上游名称 | 以各模块清单与[第三方记录](third-party/muk-ai-install-2026-10-12.md)为准 |
@@ -29,7 +30,7 @@
 
 ## 后续分类
 
-`blue_barcode_base`／`blue_barcode_inventory`／`blue_barcode_extension`、`blue_erp_base`／`blue_erp_<系统>`、库存包裹／盘点、设备厂商模块和交付资产均按需求推进，不能因为名称出现在规划中就视为已经创建。
+`blue_barcode_base`／`blue_barcode_inventory`／`blue_barcode_extension`、`blue_erp_base`／`blue_erp_<系统>`、库存包裹／盘点和交付资产按需求推进，不能因名称出现在规划中就视为已创建。常规 HTTP 厂家优先使用设备类别协议资产；新增传输形式或系统没有的认证算法再补通用能力。
 
 界面扩展采用 `blue_web_*`；报表、培训、公共调度采用 `blue_report_*`、`blue_training_*`、`blue_system_*`。客户专属 ERP、设备或扫描动作放 `blue_project_*`，共性修复回到标准模块。
 

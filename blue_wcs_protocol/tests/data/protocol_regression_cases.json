@@ -1,0 +1,318 @@
+{
+  "tusk-subposition": {
+    "code": "if request[\"phase\"] == \"request\":\n    result = {\"body\": {\"taskId\": request[\"task\"][\"task_id\"], \"targets\": [request[\"task\"][\"source\"], request[\"task\"][\"destination\"]], \"configId\": request[\"task\"][\"template\"]}}\nelif request[\"phase\"] == \"response\":\n    result = {\"state\": \"accepted\" if request[\"message\"].get(\"msg\", \"\") == \"success\" else \"unknown\", \"reason\": \"按厂商响应确认接受状态\"}\nelse:\n    result = {\"task_id\": request[\"message\"][\"taskId\"], \"event\": \"end\", \"point\": request[\"message\"][\"targetPoint\"], \"subposition\": request[\"message\"][\"targetPoint\"], \"destination_code\": \"\", \"response\": {\"code\": 200, \"msg\": \"success\"}}\n",
+    "cases": [
+      {
+        "name": "request",
+        "input": {
+          "request": {
+            "phase": "request",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {},
+            "http_status": 0,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "body": {
+            "taskId": "WCS-example-1",
+            "targets": [
+              "A",
+              "B"
+            ],
+            "configId": "TRANSFER"
+          }
+        }
+      },
+      {
+        "name": "response",
+        "input": {
+          "request": {
+            "phase": "response",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {
+              "msg": "success"
+            },
+            "http_status": 200,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "state": "accepted",
+          "reason": "按厂商响应确认接受状态"
+        }
+      },
+      {
+        "name": "response",
+        "input": {
+          "request": {
+            "phase": "response",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {
+              "msg": "unknown"
+            },
+            "http_status": 200,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "state": "unknown",
+          "reason": "按厂商响应确认接受状态"
+        }
+      },
+      {
+        "name": "callback",
+        "input": {
+          "request": {
+            "phase": "callback",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {
+              "taskId": "WCS-example-1",
+              "deviceId": "ROBOT-1",
+              "targetPoint": "B-03"
+            },
+            "http_status": 0,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "task_id": "WCS-example-1",
+          "event": "end",
+          "point": "B-03",
+          "subposition": "B-03",
+          "destination_code": "",
+          "response": {
+            "code": 200,
+            "msg": "success"
+          }
+        }
+      }
+    ]
+  },
+  "tusk-destination": {
+    "code": "if request[\"phase\"] == \"request\":\n    result = {\"body\": {\"taskId\": request[\"task\"][\"task_id\"], \"targets\": [request[\"task\"][\"source\"], request[\"task\"][\"destination\"]], \"configId\": request[\"task\"][\"template\"]}}\nelif request[\"phase\"] == \"response\":\n    result = {\"state\": \"accepted\" if request[\"message\"].get(\"msg\", \"\") == \"success\" else \"unknown\", \"reason\": \"按厂商响应确认接受状态\"}\nelse:\n    result = {\"task_id\": request[\"message\"][\"taskId\"], \"event\": \"end\", \"point\": request[\"message\"][\"targetPoint\"], \"subposition\": \"\", \"destination_code\": request[\"message\"][\"targetPoint\"], \"response\": {\"code\": 200, \"msg\": \"success\"}}\n",
+    "cases": [
+      {
+        "name": "request",
+        "input": {
+          "request": {
+            "phase": "request",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {},
+            "http_status": 0,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "body": {
+            "taskId": "WCS-example-1",
+            "targets": [
+              "A",
+              "B"
+            ],
+            "configId": "TRANSFER"
+          }
+        }
+      },
+      {
+        "name": "response",
+        "input": {
+          "request": {
+            "phase": "response",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {
+              "msg": "success"
+            },
+            "http_status": 200,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "state": "accepted",
+          "reason": "按厂商响应确认接受状态"
+        }
+      },
+      {
+        "name": "response",
+        "input": {
+          "request": {
+            "phase": "response",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {
+              "msg": "unknown"
+            },
+            "http_status": 200,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "state": "unknown",
+          "reason": "按厂商响应确认接受状态"
+        }
+      },
+      {
+        "name": "callback",
+        "input": {
+          "request": {
+            "phase": "callback",
+            "task": {
+              "task_id": "WCS-example-1",
+              "source": "A",
+              "destination": "B",
+              "template": "TRANSFER",
+              "carrier": "PALLET-1",
+              "device_code": "",
+              "role": "goods",
+              "operation": "incoming"
+            },
+            "message": {
+              "taskId": "WCS-example-1",
+              "deviceId": "ROBOT-1",
+              "targetPoint": "BIN-C"
+            },
+            "http_status": 0,
+            "parameters": {}
+          },
+          "candidates": [
+            {
+              "product_code": "SKU-1",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": ""
+            }
+          ]
+        },
+        "expected_result": {
+          "task_id": "WCS-example-1",
+          "event": "end",
+          "point": "BIN-C",
+          "subposition": "",
+          "destination_code": "BIN-C",
+          "response": {
+            "code": 200,
+            "msg": "success"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -177,8 +177,8 @@ class StockPicking(models.Model):
                            for ref, location_id in positions.items() if location_id},
                        equipment={str(item.id): {'name': item.name, 'task_type': operation.task_type if item == device else operation.wcs_secondary_task_type,
                                                 'adapter': item.adapter_code,
-                                                'supports_loose_goods': item.adapter_code == 'simulation' or (item.adapter_code == 'json' and item.supports_loose_goods),
-                                                'supports_location_scope': item.adapter_code in ('simulation', 'hik') or (item.adapter_code == 'json' and item.supports_location_scope),
+                                                'supports_loose_goods': item._supports_wcs_loose_goods(),
+                                                'supports_location_scope': item._supports_wcs_location_scope(),
                                                 'supports_repeated_goods': item.adapter_code == 'simulation' or item.supports_repeated_goods} for item in devices},
                        lines={str(item['line_id']): item for item in payload['candidates'] if item['line_id'] in lines.ids},
                        decisions={str(line.id): decisions[line.id] for line in lines})
@@ -206,7 +206,7 @@ class StockPicking(models.Model):
                 ref = step[side + '_ref']
                 actual = lines.location_id if ref in ('picking_source', 'source_parent') else lines.location_dest_id
                 step[side + '_scope'] = ref in ('picking_source', 'picking_destination', 'source_parent', 'destination_parent') and any(item != location for item in actual)
-            if (step['source_scope'] or step['destination_scope']) and not (device.adapter_code in ('simulation', 'hik') or (device.adapter_code == 'json' and device.supports_location_scope)):
+            if (step['source_scope'] or step['destination_scope']) and not device._supports_wcs_location_scope():
                 raise UserError(self.env._('This adapter needs explicit support for area/zone position mappings.'))
             if device.adapter_code == 'wes' and (source != lines.location_id or destination != lines.location_dest_id):
                 raise UserError(self.env._('WES mapping currently supports the planned inventory endpoints only.'))

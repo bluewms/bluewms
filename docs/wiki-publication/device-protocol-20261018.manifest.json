@@ -1,0 +1,115 @@
+{
+  "source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
+  "source_root": "docs/wiki",
+  "publication_mode": "exact_locked_pages",
+  "books": [
+    {
+      "scope": "common",
+      "name": "bluewms-odoo",
+      "contracts": [],
+      "generation_ready": true,
+      "files": [
+        {
+          "source": "docs/wiki/README.md",
+          "ref": "README.md",
+          "source_sha256": "94a702dda0d5afb010a8f65d2d15d3da01563d815755c60a53d8e84f708da500",
+          "page_sha256": "bfc515504fc6ea03e1684f1fe2709adaca1bc5b0214f6f166a1dc5db66ba7c54"
+        },
+        {
+          "source": "docs/wiki/basics/ai-generation-workflow.md",
+          "ref": "basics/ai-generation-workflow.md",
+          "source_sha256": "4026dde4a17c4ddded3ecc502ccccc29a5b785773f6a63121958abb9270cd2fa",
+          "page_sha256": "7dfd0fce7650c2d48aba24bb4c8d83b26d2e6a6d8aa38c631f30a257b886e798"
+        },
+        {
+          "source": "docs/wiki/basics/overview.md",
+          "ref": "basics/overview.md",
+          "source_sha256": "7bff4f24af300d8f79ec373084af883cdc801aec6b09a8f0632e3810a0cc94ce",
+          "page_sha256": "ec31f12e3adce93f06f354168a479052cad96afe55d2de9ffe608bd7cbbf6537"
+        },
+        {
+          "source": "docs/wiki/templates/example-template.md",
+          "ref": "templates/example-template.md",
+          "source_sha256": "5a61bb13ea4d44453b424ba4462b1925dca9f70012c7a6c9b07448f3f36ced95",
+          "page_sha256": "f3e17fead9c2aaf77ed0e5d87ca5a0be9c1e2b2a5714b8b02eda28411509ebda"
+        }
+      ]
+    },
+    {
+      "scope": "equipment",
+      "name": "Odoo-AI-设备接口",
+      "contracts": [
+        "device_protocol/1"
+      ],
+      "generation_ready": true,
+      "files": [
+        {
+          "source": "docs/wiki/domains/equipment/configuration-guide.md",
+          "ref": "domains/equipment/configuration-guide.md",
+          "source_sha256": "5cd09c81a2484a739b34aa275d51cf6460facc08a93981977902a8ed3f0db022",
+          "page_sha256": "952f9a5f7bc4f10b701dfa03c31e1a45d40ebb1faccbcba6b16508c5b087116e"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/device-protocol-v1-contract.json",
+          "ref": "domains/equipment/device-protocol-v1-contract.json.md",
+          "source_sha256": "3107c3b1fd6bd8dc398688cf8f84dc22168f875a42f35345647d35e1ab02ea20",
+          "page_sha256": "a4d1e34c1fb179a9273b9302f202a7021c70c64128e2dbc6aa87c95d8c6aa4af"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/examples/README.md",
+          "ref": "domains/equipment/examples/README.md",
+          "source_sha256": "0cf943f9ec2d6ada4cc0c990fcc3bd22f92f8ed01e054ca6395b385c651eff9c",
+          "page_sha256": "1236d1a5866761172569b6d93c30cbbfa167f8c9157f47a8d695753f316b35d6"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/examples/tusk-destination.md",
+          "ref": "domains/equipment/examples/tusk-destination.md",
+          "source_sha256": "87c53b7cd7cc51e0eeaf9e9c2b99dd75641524788dbd7905eca08b48a04a9bd8",
+          "page_sha256": "effb135d481db97ebfd447f01d0487a9b23aa710d9ba72e0cadc5ac4729f5a4e"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/examples/tusk-subposition.md",
+          "ref": "domains/equipment/examples/tusk-subposition.md",
+          "source_sha256": "7e829e31b7f8f5d7c542d3b95746e62db60dd4091029afe3a2eb3064c9571f86",
+          "page_sha256": "51f0b3b61ea31d2bb574ecceae73cff5721666f92e97c010c657fbaedb93ee37"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-interfaces.md",
+          "ref": "domains/equipment/reference/legacy-interfaces.md",
+          "source_sha256": "350f67199925a01734acddcfd1cb714f706c701cbe56d5dacf93cfd79e748007",
+          "page_sha256": "b65aceb43ddea57d30539f1a58dea8d7f7a4741e94c23d3ae6f33c77ee74106c"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-m4.md",
+          "ref": "domains/equipment/reference/legacy-m4.md",
+          "source_sha256": "33ede5d4d9e5f27397ee45f19e8c7c6c4c4c84cbab3c5234fe7bb8a93236c05d",
+          "page_sha256": "19cfccb9ff6213bbd93382d13306e5954d1605a99233b3a83fcafe62daef2f96"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-mita.md",
+          "ref": "domains/equipment/reference/legacy-mita.md",
+          "source_sha256": "9eaf7d7a62bc4777a1a1da36e93b1d7961ad16aa5861fd0f2d6b12292215a3ea",
+          "page_sha256": "22148f9e41cbe61496f141753cbd6fe5109a5922c8fba485b3d56017b4944bd9"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-modula.md",
+          "ref": "domains/equipment/reference/legacy-modula.md",
+          "source_sha256": "3720c492b8d14c42eced54064d15727c4621039e456d7c419f05b6303d733b8c",
+          "page_sha256": "6f689f2f91700a659fb5f4b4bd8052dccaeb1911b649352498ad8fa8bdcdf5cb"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-tusk.md",
+          "ref": "domains/equipment/reference/legacy-tusk.md",
+          "source_sha256": "b2bf7a28e89c4ff8abb0f5d974ade47f19165a76d6d42038f33fc316a2a17da9",
+          "page_sha256": "e5a4d1cb5a07f4afbec34efe59d73b1d9b0aa6323a5bb7f1fc53b26ca40a1fee"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/specification.md",
+          "ref": "domains/equipment/specification.md",
+          "source_sha256": "a789f5232d7feb7d1e4a9981e995418f616ccc5db05f7fbed9bc64092c4880ac",
+          "page_sha256": "0c2dbbf19a6aa5366d274874a990048b2573d8c83362fe53a36d839e06231e8f"
+        }
+      ]
+    }
+  ]
+}

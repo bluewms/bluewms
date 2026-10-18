@@ -253,7 +253,7 @@ class StockPicking(models.Model):
             destination = self.env['stock.location'].browse(task['location_dest_id'])
             device = self.env['wcs.equipment'].browse(task['equipment_id'])
             if lines is not None and not self._wcs_carrier(lines) and task['role'] == 'goods':
-                if not (device.adapter_code == 'simulation' or (device.adapter_code == 'json' and device.supports_loose_goods)):
+                if not device._supports_wcs_loose_goods():
                     raise UserError(self.env._('所选设备未支持无容器货物搬运. 请确认JSON网关散件能力或为明细指定实际载具.'))
             if source._blue_stock_blocking_location() or destination._blue_stock_blocking_location(receiving=True):
                 raise UserError(self.env._('创建配置不能使用冻结的起点、交接位置或目的位置.'))

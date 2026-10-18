@@ -20,7 +20,7 @@ HOOKS = {
     'putaway_policy': ('putaway', ['putaway_policy/1', 'putaway_policy/2']),
     'wcs_creation': ('wcs', ['wcs_creation/4']),
     'erp_mapping': ('erp', []),
-    'device_protocol': ('equipment', []),
+    'device_protocol': ('equipment', ['device_protocol/1']),
     'barcode_policy': ('barcode', []),
 }
 TASK_NAMES = {'putaway_policy': '上架策略', 'wcs_creation': 'WCS生成策略', 'erp_mapping': 'ERP接口',

@@ -39,6 +39,8 @@ docker compose -f docker/compose.yaml up -d odoo
 
 只选择本实例已安装或本次明确需要的模块。升级后核对人工参数、客户草稿／版本／发布、库存及在途任务；不自动恢复旧绑定或发布策略。旧 AI 代码会话从资产页重新打开，普通聊天仍使用日常任务。各机器使用自己的 `BLUEWMS_RUNTIME_DIR`、登录用户、业务 Key 与 Agent。
 
+设备协议 /1 还需首次显式安装 `blue_wcs_protocol`，并升级已安装的 `blue_ai_client`、`blue_wcs_base` 及 `blue_wcs_extension`；仅拉源码不会创建字段或开放类别接口。完整命令、人工参数与限制见[设备接口交付](migrations/device-protocol-20.md)。通用／设备 Wiki 更新后，从业务页面新开 AI 会话取得当前知识版本。
+
 ## Git 不同步什么
 
 - 业务数据库、库存／单据、数据库中编辑及发布的策略资产。
