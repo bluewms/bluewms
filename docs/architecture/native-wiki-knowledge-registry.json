@@ -1,8 +1,7 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "document_kind": "engineering_registry_reference_not_instance_configuration",
   "date": "2026-10-18",
-  "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
   "source_root": "../wiki",
   "audience": "odoo_runtime_code_generation_assistant",
   "actual_ids_in_private_deployment_receipt": true,
@@ -35,13 +34,15 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "2",
+        "version": "4",
         "source_pages": 4,
         "content_uploaded": true,
         "agent_bound": true,
         "asset_status": "approved"
       },
-      "contracts": []
+      "contracts": [],
+      "source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
+      "publication_manifest": "../wiki-publication/device-protocol-20261018.manifest.json"
     },
     {
       "scope": "putaway",
@@ -68,7 +69,9 @@
       "contracts": [
         "putaway_policy/1",
         "putaway_policy/2"
-      ]
+      ],
+      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
     },
     {
       "scope": "erp",
@@ -89,7 +92,9 @@
         "agent_bound": true,
         "asset_status": "candidate"
       },
-      "contracts": []
+      "contracts": [],
+      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
     },
     {
       "scope": "wcs",
@@ -124,28 +129,43 @@
       },
       "contracts": [
         "wcs_creation/4"
-      ]
+      ],
+      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
     },
     {
       "scope": "equipment",
       "display_name": "Odoo-AI-设备接口",
       "hook_code": "device_protocol",
       "sources": [
+        "domains/equipment/configuration-guide.md",
+        "domains/equipment/device-protocol-v1-contract.json",
         "domains/equipment/examples/README.md",
+        "domains/equipment/examples/tusk-destination.md",
+        "domains/equipment/examples/tusk-subposition.md",
+        "domains/equipment/reference/legacy-interfaces.md",
+        "domains/equipment/reference/legacy-m4.md",
+        "domains/equipment/reference/legacy-mita.md",
+        "domains/equipment/reference/legacy-modula.md",
+        "domains/equipment/reference/legacy-tusk.md",
         "domains/equipment/specification.md"
       ],
-      "local_contract_implemented": false,
+      "local_contract_implemented": true,
       "native_retrieval_enabled": true,
-      "approved_for_native_generation": false,
+      "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "2",
-        "source_pages": 2,
+        "version": "4",
+        "source_pages": 11,
         "content_uploaded": true,
         "agent_bound": true,
-        "asset_status": "candidate"
+        "asset_status": "approved"
       },
-      "contracts": []
+      "contracts": [
+        "device_protocol/1"
+      ],
+      "source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
+      "publication_manifest": "../wiki-publication/device-protocol-20261018.manifest.json"
     },
     {
       "scope": "barcode",
@@ -166,7 +186,9 @@
         "agent_bound": true,
         "asset_status": "candidate"
       },
-      "contracts": []
+      "contracts": [],
+      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
     }
   ],
   "routes": {
@@ -207,9 +229,11 @@
         "common",
         "equipment"
       ],
-      "contracts": [],
+      "contracts": [
+        "device_protocol/1"
+      ],
       "knowledge_discussion_enabled": true,
-      "code_generation_enabled": false
+      "code_generation_enabled": true
     },
     "barcode_policy": {
       "scopes": [
@@ -232,10 +256,9 @@
     "docs/migrations",
     "docs/third-party",
     "docs/wiki-publication",
-    "docs/planning"
+    "docs/planning",
+    "docs/cloud"
   ],
-  "knowledge_source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-  "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json",
   "runtime_implementation": "../migrations/native-wiki-runtime-20.md",
   "private_instance_configuration": "/etc/bluewms-native-wiki/config.json",
   "validated_runtime_limits": {
@@ -269,9 +292,21 @@
     "exact_content_sha256",
     "no_arbitrary_endpoint_or_identity",
     "no_cross_hook_or_skill_fallback",
-    "explicit_owned_agent_task_preset",
+    "explicit_shared_team_task_and_owned_agent_preset",
     "fixed_business_provider"
   ],
   "module_versions_source": "addon manifests; installation state is per deployment",
-  "deployment_evidence": "../migrations/native-wiki-runtime-20.validation.json"
+  "deployment_evidence": "../migrations/native-wiki-runtime-20.validation.json",
+  "baseline_knowledge_source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
+  "latest_knowledge_source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
+  "publication_manifests": [
+    "../wiki-publication/native-wiki-20261018.manifest.json",
+    "../wiki-publication/device-protocol-20261018.manifest.json"
+  ],
+  "additional_runtime_implementation": [
+    "../migrations/device-protocol-20.md"
+  ],
+  "additional_deployment_evidence": [
+    "../migrations/device-protocol-20.validation.json"
+  ]
 }

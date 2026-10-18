@@ -249,6 +249,18 @@ def run_protocol(code, payload):
         if (type(request['task']) is not dict or type(request['message']) is not dict
                 or type(request['parameters']) is not dict or type(request['http_status']) is not int):
             raise ProtocolError('Task and message must be objects; HTTP status must be an integer.')
+        task = request['task']
+        task_keys = {'task_id', 'source', 'destination', 'template', 'carrier', 'device_code', 'role', 'operation'}
+        if set(task) != task_keys or any(type(value) is not str or len(value) > 256 for value in task.values()):
+            raise ProtocolError('Task fields must match the installed contract exactly.')
+        if (not task['task_id'] or task['role'] not in ('goods', 'empty_supply', 'empty_return')
+                or task['operation'] not in ('incoming', 'outgoing', 'internal')):
+            raise ProtocolError('Invalid task identity, role or operation.')
+        for item in payload['candidates']:
+            if (type(item) is not dict or set(item) != {'product_code', 'quantity', 'uom', 'lot'}
+                    or any(type(item[key]) is not str or len(item[key]) > 256 for key in ('product_code', 'uom', 'lot'))
+                    or type(item['quantity']) not in (int, float) or item['quantity'] < 0):
+                raise ProtocolError('Goods fields must match the installed contract exactly.')
         engine = ProtocolInterpreter(payload)
         engine.statements(tree.body)
         result = engine.values.get('result')

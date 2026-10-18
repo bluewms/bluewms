@@ -132,6 +132,10 @@ class WcsRequest(models.Model):
 
     def _protocol_apply_location(self, location):
         self._protocol_check_final_goods()
+        if location != self.protocol_planned_location_id and self.search_count([
+                ('plan_id', '=', self.plan_id.id), ('step', '>', self.step),
+                ('state', '!=', 'cancelled')], limit=1):
+            raise ValidationError(self.env._('计划还有后续固定设备程序,请先核对新落点与后续路线,不能自动改派.'))
         rows = self.plan_id.line_ids
         lines = rows.move_line_id
         if len(lines) != len(rows) or any(line.state in ('done', 'cancel') for line in lines):

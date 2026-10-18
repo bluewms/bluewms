@@ -300,3 +300,17 @@ class TestDeviceProtocol(BaseCommon):
         with self.assertRaises(ValidationError), self.cr.savepoint():
             self._callback(task, self.actual.barcode)
         self.assertEqual(line.location_dest_id, self.destination)
+
+    def test_actual_redirect_does_not_release_a_successor_with_the_old_route(self):
+        category, task, line, package = self._task('tusk-destination')
+        follower = self.env['wcs.request'].with_context(blue_wcs_token=WCS_TOKEN).create({
+            'company_id': task.company_id.id, 'plan_id': task.plan_id.id, 'equipment_id': task.equipment_id.id,
+            'step': 2, 'role': 'empty_return', 'source_point': 'B', 'destination_point': 'A',
+            'location_res_id': self.destination.id, 'location_dest_id': self.root.id,
+            'task_type': 'TRANSFER', 'predecessor_id': task.id, 'state': 'waiting'})
+        self._accept(task)
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            self._callback(task, self.actual.barcode)
+        self.assertEqual(task.state, 'accepted')
+        self.assertEqual(follower.state, 'waiting')
+        self.assertEqual(line.location_dest_id, self.destination)

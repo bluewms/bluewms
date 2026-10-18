@@ -55,7 +55,13 @@ class TestProtocolEngine(BaseCommon):
 
     def test_repeated_local_list_copy_cannot_amplify_memory(self):
         data = copy.deepcopy(fixture()['cases'][0]['input'])
-        data['candidates'] = [{}] * 200
+        data['candidates'] = [copy.deepcopy(data['candidates'][0]) for unused in range(200)]
         code = 'items = []\nfor candidate in candidates:\n    items.append(items)\nresult = {"body": {"items": items}}'
-        with self.assertRaises(ProtocolError):
+        with self.assertRaisesRegex(ProtocolError, 'budget|nesting'):
             run_protocol(code, data)
+
+    def test_trial_fields_cannot_invent_inputs_absent_from_runtime(self):
+        data = copy.deepcopy(fixture()['cases'][0]['input'])
+        data['request']['task']['invented_field'] = 'not supplied by the real task'
+        with self.assertRaises(ProtocolError):
+            run_protocol('result = {"body": {}}', data)
