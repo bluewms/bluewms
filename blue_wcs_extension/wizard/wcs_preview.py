@@ -8,7 +8,7 @@ class WcsPreview(models.TransientModel):
     _name = 'wcs.preview'
     _description = 'Read-only WCS operation trial'
 
-    profile_id = fields.Many2one('blue.config.profile', '创建配置', required=True)
+    profile_id = fields.Many2one('blue.config.profile', 'AI创建配置')
     picking_id = fields.Many2one('stock.picking', '库存作业', required=True)
     result = fields.Text('试算结果', readonly=True)
     technical_result = fields.Text('技术数据', readonly=True)
@@ -18,14 +18,19 @@ class WcsPreview(models.TransientModel):
         self.check_access('write')
         if not self.env.user.has_group('stock.group_stock_manager'):
             raise AccessError(self.env._('Only managers can preview draft strategies.'))
-        self.profile_id._check_manager()
-        if self.profile_id.company_id != self.picking_id.company_id:
+        if self.profile_id:
+            self.profile_id._check_manager()
+        if self.profile_id and self.profile_id.company_id != self.picking_id.company_id:
             raise ValidationError(self.env._('Choose a picking in the strategy company.'))
         trials = self.picking_id._wcs_preview(self.profile_id)
         lines = []
         for trial in trials:
+            for decision in trial.get('line_decisions', []):
+                stock_line = self.env['stock.move.line'].browse(decision['line_id'])
+                lines.append('行 %s (%s): %s; 数量: %s; 原因: %s' % (stock_line.id, stock_line.product_id.display_name,
+                    {'create': '创建', 'wait': '等待', 'exclude': '无需WCS'}[decision['action']], decision['quantity'], decision['reason']))
             if trial.get('waiting'):
-                lines.append('等待: ' + trial['waiting'])
+                lines.append(('无需WCS: ' if trial.get('excluded') else '等待: ') + trial['waiting'])
                 continue
             lines.append('将创建 %s 张WCS作业' % len(trial['tasks']))
             for line in self.picking_id.move_line_ids:

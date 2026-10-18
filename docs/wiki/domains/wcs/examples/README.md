@@ -1,11 +1,14 @@
-# WCS 生成需求示例
+# WCS /4 示例目录
 
-知识状态：`planned`（AI 接入）。更新：2026-10-17。下列需求用于接入设计；WCS 已有业务测试不等于这些案例已通过 AI 生成。
+本地声明用例已验证, 云端未写入。生成规范见[配置说明](../configuration-guide.md)。运行时只读云端批准正文, 不读取这些本地文件作为兜底。
 
-| 候选知识 ID | 需求 | 业务输入与预期 |
-|---|---|---|
-| `wcs.wait_confirmation` | 确认货物后再创建 | 未达到本地确认条件时不创建；满足条件后按同一业务键只创建一次 |
-| `wcs.two_stage_transfer` | 同货两段搬运 | 从来源经批准交接点到目的地，第二段在前置依赖满足后释放，货物数量不重复计算 |
-| `wcs.failure_compensation` | 设备失败后补偿 | 保留已经执行的事实，未执行部分按明确规则取消／重建，不重复下发已完成任务 |
-
-待 AI 合同、专用工具和业务验证完成后，按 [模板](../../../templates/example-template.md) 为每项增加独立可执行案例；引用实际合同，不把上架示例改字段名后直接套用。规范见 [WCS 规范草案](../specification.md)。
+- [AI全部基础行直达](ready.md): wcs.ready
+- [AI同数据双作业](repeat.md): wcs.repeat
+- [AI同数据三作业](triple.md): wcs.triple
+- [AI逐行排除和等待](filter.md): wcs.filter
+- [AI整单全部拣选后搬运](all_picked.md): wcs.all_picked
+- [AI容器货物组合](container.md): wcs.container
+- [AI容器达到显式8重量单位阈值](weight.md): wcs.weight
+- [AI按单据库区点位搬运](scope.md): wcs.scope
+- [AI同货接力](relay.md): wcs.relay
+- [AI货物和空载具配合](empty.md): wcs.empty

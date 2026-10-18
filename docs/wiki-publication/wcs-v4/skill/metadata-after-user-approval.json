@@ -1,0 +1,17 @@
+{
+  "purpose": "odoo_runtime_policy",
+  "approved": true,
+  "approved_contracts": {
+    "putaway_policy": [
+      "putaway_policy/1",
+      "putaway_policy/2"
+    ],
+    "wcs_creation": [
+      "wcs_creation/4"
+    ]
+  },
+  "wiki_source": {
+    "wiki_id": null,
+    "version": null
+  }
+}

@@ -45,6 +45,7 @@ class TestWesTransport(TransactionCase):
     def test_multi_item_completion_does_not_finish_after_first_item(self):
         from odoo.addons.blue_wcs_base.models.guard import WCS_TOKEN
         warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+        warehouse.int_type_id.wcs_type = 'in'
         destination = self.env.ref('stock.stock_location_customers')
         device = self.env['wcs.equipment'].create({'name': 'WES multi-item simulation', 'adapter_code': 'wes',
             'wes_warehouse_code': 'TEST', 'wes_room_code': 'ROOM', 'wes_owner_code': 'OWNER', 'company_id': self.env.company.id})

@@ -1,7 +1,7 @@
 {
     'name': '宝蓝 AI 云端连接',
     'summary': 'Chat Completions、用户云端身份与代码资产草稿工具',
-    'version': '20.0.1.2.0',
+    'version': '20.0.1.3.0',
     'author': '宁波宝蓝物流科技有限公司',
     'website': 'https://www.bluewms.com',
     'license': 'LGPL-3',

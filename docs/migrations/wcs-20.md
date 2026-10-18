@@ -1,5 +1,7 @@
 # WCS 20 迁移交付
 
+> 2026-10-18增量已部署: 无AI基础逐行和/4全部行增强、同数据多任务、物理位置映射已完成。本文下列原交付快照保留, 当前以[新设计](../design/wcs-v4-orchestration.md)、[验证记录](../design/wcs-v4-validation.md)及[用户最后写入的Wiki包](../wiki-publication/wcs-v4/README-用户最后写入.md)为准。
+
 日期: 2026-10-13. 源参考: bluewms19 远端 ZF, 提交 622afc8. 目标为当前 BlueWMS20 开发库, 不转换旧19客户数据库或在途设备任务.
 
 ## 按原 WCS 整理后的结构

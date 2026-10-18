@@ -1,0 +1,135 @@
+<odoo>
+  <record id="template_ready" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/2 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/2</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_all_confirmed" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/2 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/2</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_relay" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/2 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/2</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_ready_v3" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/3 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/3</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_all_confirmed_v3" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/3 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/3</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_relay_v3" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/3 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/3</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_container_v3" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/3 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/3</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_empty_return_v3" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/3 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/3</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_ready_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_repeat_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_triple_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_filter_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_all_picked_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_container_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_weight_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_scope_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_relay_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="template_empty_v4" model="blue.scene.template">
+    <field name="name">旧WCS接口 wcs_creation/4 (历史兼容)</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="False" />
+  </record>
+  <record id="blue_scene_template_wcs" model="blue.scene.template">
+    <field name="name">WCS增强接口 /4</field>
+    <field name="hook_code">wcs_creation</field>
+    <field name="contract">wcs_creation/4</field>
+    <field name="cloud_managed" eval="True" />
+    <field name="active" eval="True" />
+  </record>
+</odoo>

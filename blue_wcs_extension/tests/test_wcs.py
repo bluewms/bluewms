@@ -8,21 +8,44 @@ from odoo.addons.blue_wcs_base.models.guard import WCS_TOKEN
 from odoo.addons.blue_wcs_base.models.transport import send
 
 
+from .fixtures import load_legacy_examples
+
+
 class TestWcs(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        load_legacy_examples(cls.env)
         cls.warehouse = cls.env['stock.warehouse'].create({'name': 'WCS test', 'code': 'WCST'})
         cls.source = cls.warehouse.lot_stock_id
         cls.destination = cls.env['stock.location'].create({'name': 'WCS target', 'usage': 'internal', 'location_id': cls.source.id, 'company_id': cls.env.company.id})
         cls.product = cls.env['product.product'].create({'name': 'WCS goods', 'is_storable': True, 'tracking': False})
-        cls.device = cls.env['wcs.equipment'].create({'name': 'WCS simulated', 'company_id': cls.env.company.id})
+        cls.category = cls.env['wcs.equipment.category'].create({'name': 'WCS simulated category', 'company_id': cls.env.company.id})
+        cls.device = cls.env['wcs.equipment'].create({'name': 'WCS simulated', 'company_id': cls.env.company.id, 'category_id': cls.category.id})
         cls.device2 = cls.env['wcs.equipment'].create({'name': 'WCS simulated leg 2', 'company_id': cls.env.company.id})
-        cls.profile = cls.env['blue.config.profile'].create({'name': 'WCS strategy', 'template_id': cls.env.ref('blue_wcs_extension.template_ready').id})
+        cls.profile = cls.env['blue.config.profile'].create({'name': 'WCS strategy', 'template_id': cls.env.ref('blue_wcs_extension.template_relay_v3').id})
         cls.profile.action_load_example()
         cls.profile.action_validate()
         cls.profile.action_publish()
         cls.worker = new_test_user(cls.env, login='wcs_worker', groups='stock.group_stock_user')
+
+    def _policy_code(self, mode, group=True, condition='ready', basis=None):
+        basis_code = repr(basis) if basis else '"confirmed" if request["operation"] == "incoming" else "reserved"'
+        return ('if request["phase"] == "configure":\n'
+                '    result = {"condition": "%s", "mode": "%s", "quantity_basis": %s, "group_by_container": %s}\n'
+                'else:\n    result = []\n    for candidate in candidates:\n'
+                '        if request["ready"] and request["default_condition_met"]:\n'
+                '            result.append(candidate)\n') % (condition, mode, basis_code, group)
+
+    def _publish_mode(self, mode, group=True, condition='ready', basis=None):
+        self.profile.action_new_draft()
+        self.profile.draft_code = self._policy_code(mode, group, condition, basis)
+        settings = {'condition': condition, 'mode': mode, 'quantity_basis': basis or 'reserved', 'group_by_container': group}
+        self.profile.draft_tests = json.dumps([
+            {'name': 'configure', 'input': {'request': {'phase': 'configure', 'operation': 'internal'}, 'candidates': []}, 'expected_result': settings},
+            {'name': 'wait', 'input': {'request': {'phase': 'tasks'}, 'candidates': []}, 'expected_result': []}])
+        self.profile.action_validate()
+        self.profile.action_publish()
 
     def _picking(self, incoming=False, confirmed=True, qty=10):
         operation = self.warehouse.in_type_id if incoming else self.warehouse.int_type_id
@@ -48,7 +71,7 @@ class TestWcs(TransactionCase):
         self.destination.agv_map_point = 'B'
         intermediate = self.env['stock.location'].create({'name': 'WCS handoff', 'location_id': self.source.id,
             'usage': 'internal', 'company_id': self.env.company.id, 'agv_map_point': 'HANDOFF'})
-        operation.write({'equipment_id': self.device.id, 'task_type': 'TRANSFER', 'is_create_wcs_by_container': True,
+        operation.write({'wcs_type': 'in' if incoming else 'out', 'equipment_category_id': self.category.id, 'wcs_secondary_task_type': 'TRANSFER', 'equipment_id': self.device.id, 'task_type': 'TRANSFER', 'is_create_wcs_by_container': True,
                          'wcs_request_mode': 'relay', 'wcs_secondary_equipment_id': self.device2.id,
                          'wcs_intermediate_location_id': intermediate.id})
         return picking, line, operation
@@ -102,7 +125,7 @@ class TestWcs(TransactionCase):
 
     def test_early_release_checks_approved_point(self):
         picking, line, route = self._picking(incoming=True)
-        route.wcs_request_mode = 'double_in'
+        self._publish_mode('double_in')
         line.location_id.agv_map_point = 'SAFE'
         picking.action_create_wcs_request_from_button()
         first, second = picking.wcs_request_ids.sorted('step')
@@ -154,8 +177,9 @@ class TestWcs(TransactionCase):
         picking.action_create_wcs_request_from_button()
         fixed = picking.blue_wcs_release_id
         self.profile.action_new_draft()
-        self.profile.draft_code = 'result = []'
-        self.profile.draft_tests = json.dumps([{'name': 'none', 'input': {'request': {}, 'candidates': []}, 'expected_tasks': []}])
+        self._publish_mode('single')
+        self.profile.action_new_draft()
+        self.profile.action_load_example()
         self.profile.action_validate()
         self.profile.action_publish()
         self.assertNotEqual(fixed, self.profile.active_release_id)
@@ -207,7 +231,7 @@ class TestWcs(TransactionCase):
         picking, line, operation = self._picking(incoming=True)
         second = line.copy({'quantity': 3})
         self.assertEqual(len(picking._wcs_units()), 1)
-        operation.is_create_wcs_by_container = False
+        self._publish_mode('single', group=False)
         units = picking._wcs_units()
         self.assertEqual(len(units), 2)
         self.assertEqual(sorted(lines.id for key, lines in units), sorted([line.id, second.id]))
@@ -307,7 +331,7 @@ class TestWcs(TransactionCase):
         picking, line, route = self._picking()
         other_company = self.env['res.company'].create({'name': 'WCS other tenant'})
         other_profile = self.env['blue.config.profile'].create({'name': 'Other WCS scene', 'company_id': other_company.id,
-            'template_id': self.env.ref('blue_wcs_extension.template_ready').id})
+            'template_id': self.env.ref('blue_wcs_extension.template_relay_v3').id})
         with self.assertRaises(ValidationError):
             picking._wcs_preview(other_profile)
 
@@ -348,7 +372,7 @@ class TestWcs(TransactionCase):
 
     def test_goods_after_empty_supply_rechecks_reservation(self):
         picking, line, route = self._picking()
-        route.wcs_request_mode = 'double_out'
+        self._publish_mode('double_out')
         picking.action_create_wcs_request_from_button()
         first, second = picking.wcs_request_ids.sorted('step')
         self.assertEqual(first.role, 'empty_supply')
@@ -378,7 +402,7 @@ class TestWcs(TransactionCase):
 
     def test_no_route_records_needed_for_creation(self):
         picking, line, operation = self._picking()
-        self.assertFalse(self.env['wcs.route'].search([]))
+        self.assertFalse(self.env['wcs.route'].search([('picking_type_id', '=', operation.id)]))
         picking.action_create_wcs_request_from_button()
         self.assertEqual(len(picking.wcs_request_ids), 2)
         self.assertFalse(picking.wcs_plan_ids.route_id)
@@ -386,13 +410,7 @@ class TestWcs(TransactionCase):
 
     def test_creation_configuration_changes_task_count_and_endpoints(self):
         picking, line, operation = self._picking()
-        self.profile.action_new_draft()
-        self.profile.draft_code = 'result = []\nfor candidate in candidates:\n    if candidate["dependency_step"] == 0:\n        result.append({"equipment_id": request["equipment_id"], "location_res_id": request["source_id"], "location_dest_id": request["destination_id"], "role": "goods", "task_type": "TRANSFER", "dependency_step": 0, "dependency_event": "end", "dependency_point": "", "reason": "配置修改成一张直达作业"})'
-        payload = picking._wcs_payload(picking.move_line_ids, {line.id: line.quantity})
-        expected = self.env['blue.extension.contract']._run(self.profile.draft_code, payload, 'wcs_creation/2')
-        self.profile.draft_tests = json.dumps([{'name': 'one direct task', 'input': payload, 'expected_tasks': expected}])
-        self.profile.action_validate()
-        self.profile.action_publish()
+        self._publish_mode('single')
         picking.action_create_wcs_request_from_button()
         self.assertEqual(len(picking.wcs_request_ids), 1)
         self.assertEqual(picking.wcs_request_ids.location_dest_id, line.location_dest_id)
@@ -406,7 +424,7 @@ class TestWcs(TransactionCase):
 
     def test_original_default_all_picked_waits_and_does_not_pin_version(self):
         picking, line, operation = self._picking(confirmed=False)
-        operation.wcs_generate_condition = 'all_picked'
+        self._publish_mode('relay', condition='all_confirmed')
         picking.action_create_wcs_request_from_button()
         self.assertFalse(picking.wcs_request_ids)
         self.assertFalse(picking.blue_wcs_policy_fixed)
@@ -421,6 +439,275 @@ class TestWcs(TransactionCase):
         operation_view = self.env['stock.picking.type'].get_view(view_type='form')['arch']
         self.assertIn('name="wcs_app"', operation_view)
         self.assertIn('name="equipment_category_id"', operation_view)
-        self.assertIn('name="wcs_request_mode"', operation_view)
-        self.assertEqual(self.env.ref('blue_wcs_extension.wcs_policy_menu').name, '创建配置')
+        self.assertNotIn('name="wcs_request_mode"', operation_view)
+        self.assertEqual(self.env.ref('blue_wcs_extension.wcs_policy_menu').name, 'AI创建配置')
         self.assertFalse(self.env.ref('blue_wcs_base.route_menu').active)
+
+    def _loose_incoming(self, confirmed=True):
+        picking, line, operation = self._picking(incoming=True, confirmed=confirmed)
+        operation.blue_wcs_profile_id = False
+        line.result_package_id = False
+        return picking, line, operation
+
+    def test_basic_loose_lines_ignore_all_legacy_policy_fields(self):
+        picking, line, operation = self._loose_incoming()
+        second_destination = self.env['stock.location'].create({'name': 'Other end', 'location_id': self.source.id, 'usage': 'internal', 'company_id': self.env.company.id})
+        second = line.copy({'quantity': 3, 'location_dest_id': second_destination.id})
+        operation.write({'wcs_request_mode': 'relay', 'wcs_generate_condition': 'all_picked', 'is_create_wcs_by_container': True,
+                         'wcs_secondary_equipment_id': False, 'wcs_secondary_task_type': False, 'wcs_intermediate_location_id': False})
+        picking.with_user(self.worker).action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_plan_ids), 2)
+        self.assertEqual(len(picking.wcs_request_ids), 2)
+        for row in picking.wcs_plan_ids.line_ids:
+            task = row.plan_id.request_ids
+            self.assertEqual(task.location_res_id, row.move_line_id.location_id)
+            self.assertEqual(task.location_dest_id, row.move_line_id.location_dest_id)
+            self.assertEqual(task.equipment_id, self.device)
+            self.assertEqual(task.task_type, operation.task_type)
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 2)
+        self.assertEqual(set(picking.wcs_plan_ids.line_ids.move_line_id.ids), {line.id, second.id})
+
+    def test_basic_adds_uncovered_line_while_other_line_in_flight(self):
+        picking, line, operation = self._loose_incoming()
+        picking.action_create_wcs_request_from_button()
+        first = picking.wcs_request_ids
+        first.action_simulate_accept()
+        second = line.copy({'quantity': 4})
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_plan_ids), 2)
+        self.assertEqual(sum(picking.wcs_plan_ids.line_ids.mapped('quantity')), 14)
+        self.assertEqual(len(picking.wcs_plan_ids.filtered(lambda plan: second in plan.line_ids.move_line_id)), 1)
+
+    def test_basic_new_carrier_not_skipped_by_existing_plan(self):
+        picking, line, operation = self._picking(incoming=True)
+        operation.blue_wcs_profile_id = False
+        picking.action_create_wcs_request_from_button()
+        package = self.env['stock.package'].create({'name': 'Extra actual carrier'})
+        second = line.copy({'quantity': 4, 'result_package_id': package.id})
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 2)
+        self.assertEqual(set(picking.wcs_plan_ids.line_ids.move_line_id.ids), {line.id, second.id})
+
+    def test_basic_automatic_creation_requires_manual_switch(self):
+        picking, line, operation = self._loose_incoming()
+        operation.auto_create_wcs_request_execute = False
+        self.env['stock.picking']._cron_create_wcs()
+        self.assertFalse(picking.wcs_request_ids)
+        operation.auto_create_wcs_request_execute = True
+        self.env['stock.picking']._cron_create_wcs()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+        self.assertFalse(operation.is_auto_validate)
+        self.assertNotEqual(picking.state, 'done')
+
+    def test_basic_inbound_confirm_and_legacy_all_picked_ignored(self):
+        picking, line, operation = self._loose_incoming(confirmed=False)
+        operation.wcs_generate_condition = 'all_picked'
+        picking.action_create_wcs_request_from_button()
+        self.assertFalse(picking.wcs_request_ids)
+        picking.with_user(self.worker).action_confirm_wcs_quantities()
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+
+    def test_basic_outbound_uses_reservation_even_with_legacy_confirmed_setting(self):
+        picking, line, operation = self._picking(confirmed=False)
+        operation.write({'blue_wcs_profile_id': False, 'blue_wcs_ready_mode': 'confirmed', 'wcs_generate_condition': 'all_picked'})
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+
+    def test_ai_quantity_basis_runs_before_readiness(self):
+        picking, line, operation = self._picking(confirmed=False)
+        self._publish_mode('single', basis='confirmed')
+        operation.blue_wcs_ready_mode = 'reserved'
+        self.assertEqual(picking._wcs_preview()[0]['waiting'], '等待实际数量确认')
+        self._publish_mode('single', basis='reserved')
+        operation.blue_wcs_ready_mode = 'confirmed'
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+
+    def test_ai_container_grouping_precedes_old_line_switch_and_preserves_multigoods(self):
+        picking, line, operation = self._picking(incoming=True)
+        product2 = self.env['product.product'].create({'name': 'Second goods', 'is_storable': True})
+        second = line.copy({'product_id': product2.id, 'quantity': 3})
+        operation.is_create_wcs_by_container = False
+        self._publish_mode('single', group=True)
+        preview = picking._wcs_preview(self.profile)
+        self.assertEqual(len(preview), 1)
+        self.assertFalse(picking.wcs_plan_ids)
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+        self.assertEqual(set(picking.wcs_plan_ids.line_ids.product_id.ids), {self.product.id, product2.id})
+        self.assertEqual(sum(picking.wcs_plan_ids.line_ids.mapped('quantity')), 13)
+
+    def test_basic_multiline_whole_carrier_reports_conflict(self):
+        picking, line, operation = self._picking(incoming=True)
+        operation.blue_wcs_profile_id = False
+        line.copy({'quantity': 2})
+        with self.assertRaisesRegex(UserError, 'One carrier contains several product lines'):
+            picking.action_create_wcs_request_from_button()
+        self.assertFalse(picking.wcs_request_ids)
+
+    def test_unplanned_carrier_contents_rejected(self):
+        picking, line, operation = self._picking()
+        other_product = self.env['product.product'].create({'name': 'Unplanned carrier goods', 'is_storable': True})
+        self.env['stock.quant']._update_available_quantity(other_product, line.location_id, 1, package_id=line.package_id)
+        with self.assertRaisesRegex(UserError, 'Plan all contents'):
+            picking.action_create_wcs_request_from_button()
+
+    def test_ai_cannot_use_unselected_same_company_device_or_change_task_type(self):
+        picking, line, operation = self._picking()
+        unauthorized = self.env['wcs.equipment'].create({'name': 'Not authorized', 'company_id': self.env.company.id})
+        payload = picking._wcs_payload(line, {line.id: 10})
+        self.assertNotIn(unauthorized.id, payload['request']['allowed_equipment_ids'])
+        task = dict(payload['candidates'][0], equipment_id=unauthorized.id)
+        engine = self.env['blue.extension.contract']
+        with self.assertRaises(ValidationError):
+            engine._run('result = ' + repr([task]), payload, 'wcs_creation/3')
+        task = dict(payload['candidates'][0], task_type='AI_CHANGED')
+        with self.assertRaises(ValidationError):
+            engine._run('result = ' + repr([task]), payload, 'wcs_creation/3')
+        task = dict(payload['candidates'][0], equipment_id=self.device2.id, location_dest_id=line.location_dest_id.id)
+        with self.assertRaises(ValidationError):
+            engine._run('result = ' + repr([task]), payload, 'wcs_creation/3')
+        self.assertEqual(operation.equipment_id, self.device)
+
+    def test_missing_manual_device_does_not_autoselect_single_category_device(self):
+        picking, line, operation = self._loose_incoming()
+        operation.equipment_id = False
+        with self.assertRaises(UserError):
+            picking.action_create_wcs_request_from_button()
+
+    def test_loose_goods_adapter_capability_is_explicit(self):
+        picking, line, operation = self._loose_incoming()
+        self.device.adapter_code = 'hik'
+        with self.assertRaisesRegex(UserError, '未支持无容器'):
+            picking._wcs_preview()
+        self.device.adapter_code = 'json'
+        with self.assertRaisesRegex(UserError, '未支持无容器'):
+            picking._wcs_preview()
+        self.device.supports_loose_goods = True
+        picking.with_user(self.worker).action_create_wcs_request_from_button()
+        self.assertFalse(picking.wcs_plan_ids.carrier_id)
+        self.assertEqual(len(json.loads(picking.wcs_request_ids.payload)['items']), 1)
+
+    def test_ai_cannot_select_reserved_for_incoming_or_add_switches(self):
+        engine = self.env['blue.extension.contract']
+        settings = {'condition': 'ready', 'mode': 'single', 'quantity_basis': 'reserved', 'group_by_container': False}
+        payload = {'request': {'phase': 'configure', 'operation': 'incoming'}, 'candidates': []}
+        with self.assertRaises(ValidationError):
+            engine._run('result = ' + repr(settings), payload, 'wcs_creation/3')
+        settings.update(quantity_basis='confirmed', is_auto_validate=True)
+        with self.assertRaises(ValidationError):
+            engine._run('result = ' + repr(settings), payload, 'wcs_creation/3')
+
+    def test_old_released_strategy_keeps_compatible_manual_orchestration(self):
+        picking, line, operation = self._picking()
+        old = self.env['blue.config.profile'].create({'name': 'Old release', 'template_id': self.env.ref('blue_wcs_extension.template_ready').id})
+        old.action_load_example()
+        old.action_validate()
+        old.action_publish()
+        code = old.active_release_id.version_id.code_text
+        operation.blue_wcs_profile_id = old
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 2)
+        self.assertEqual(old.active_release_id.version_id.code_text, code)
+        self.assertEqual(old.contract, 'wcs_creation/2')
+        operation.blue_wcs_profile_id = False
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 2)
+
+    def test_unpublished_binding_can_be_removed_for_basic_creation(self):
+        picking, line, operation = self._loose_incoming()
+        draft = self.env['blue.config.profile'].create({'name': 'Not released', 'template_id': self.env.ref('blue_wcs_extension.template_ready_v3').id})
+        operation.blue_wcs_profile_id = draft
+        with self.assertRaisesRegex(UserError, '尚未发布'):
+            picking.action_create_wcs_request_from_button()
+        operation.blue_wcs_profile_id = False
+        picking.action_create_wcs_request_from_button()
+        self.assertFalse(picking.blue_wcs_release_id)
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+
+    def test_every_v3_template_trials_pass_and_contract_is_available(self):
+        for key in ('ready', 'all_confirmed', 'relay', 'container', 'empty_return'):
+            profile = self.env['blue.config.profile'].create({'name': key, 'template_id': self.env.ref('blue_wcs_extension.template_' + key + '_v3').id})
+            profile.action_load_example()
+            profile.action_validate()
+            self.assertFalse(profile.active_release_id)
+            self.assertTrue(profile.validated_version_id)
+        schema = self.env['blue.extension.contract']._describe('wcs_creation/3')
+        self.assertEqual(schema['tasks_output']['maxItems'], 4)
+        self.assertEqual(schema['contract'], 'wcs_creation/3')
+
+    def test_completed_operations_cannot_be_reissued_and_loose_completion_validates(self):
+        picking, line, operation = self._loose_incoming()
+        picking.action_create_wcs_request_from_button()
+        picking.wcs_request_ids.action_simulate_accept()
+        picking.wcs_request_ids.action_simulate_end()
+        picking.button_validate()
+        self.assertEqual(picking.state, 'done')
+        with self.assertRaises(UserError):
+            picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+
+    def test_completed_carrier_does_not_silently_move_added_contents_again(self):
+        picking, line, operation = self._picking(incoming=True)
+        self._publish_mode('single')
+        picking.action_create_wcs_request_from_button()
+        picking.wcs_request_ids.action_simulate_accept()
+        picking.wcs_request_ids.action_simulate_end()
+        line.copy({'quantity': 1})
+        with self.assertRaisesRegex(UserError, 'already moved'):
+            picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+
+    def test_preflight_rechecks_actual_confirmation_and_handoff_freeze(self):
+        picking, line, operation = self._picking(incoming=True)
+        picking.action_create_wcs_request_from_button()
+        task = picking.wcs_request_ids.sorted('step')[0]
+        line.picked = False
+        with self.assertRaisesRegex(UserError, 'no longer confirmed'):
+            task.action_simulate_accept()
+        line.picked = True
+        operation.wcs_intermediate_location_id.block_stock_entrance = True
+        with self.assertRaisesRegex(UserError, 'task locations are blocked'):
+            task.action_simulate_accept()
+
+    def test_legacy_inbound_quantity_field_does_not_gate_basic_creation(self):
+        picking, line, operation = self._loose_incoming()
+        operation.blue_wcs_ready_mode = 'reserved'
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+
+    def test_basic_real_preview_wizard_without_ai_is_read_only(self):
+        picking, line, operation = self._loose_incoming()
+        wizard = self.env['wcs.preview'].create({'picking_id': picking.id})
+        wizard.action_preview()
+        self.assertIn('1 张WCS作业', wizard.result)
+        self.assertFalse(picking.wcs_request_ids)
+        self.assertFalse(picking.blue_wcs_policy_fixed)
+
+    def test_loose_partial_historical_coverage_creates_only_remaining_quantity(self):
+        picking, line, operation = self._loose_incoming()
+        picking.action_create_wcs_request_from_button()
+        # Trusted upstream quantity change represents a pre-existing partial plan.
+        # Normal users still cannot mutate fixed goods through RPC.
+        line.with_context(blue_wcs_token=WCS_TOKEN).quantity = 14
+        picking.action_create_wcs_request_from_button()
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(sorted(picking.wcs_plan_ids.line_ids.mapped('quantity')), [4, 10])
+        self.assertEqual(len(picking.wcs_request_ids), 2)
+
+    def test_busy_carrier_waits_without_skipping_other_uncovered_carrier(self):
+        first, first_line, operation = self._picking(incoming=True)
+        operation.blue_wcs_profile_id = False
+        first.action_create_wcs_request_from_button()
+        picking, line, operation = self._picking(incoming=True)
+        operation.blue_wcs_profile_id = False
+        busy_line = line.copy({'quantity': 2, 'result_package_id': first_line.result_package_id.id})
+        preview = picking._wcs_preview()
+        self.assertTrue(any('在途' in row.get('waiting', '') for row in preview))
+        picking.action_create_wcs_request_from_button()
+        self.assertEqual(len(picking.wcs_request_ids), 1)
+        self.assertEqual(picking.wcs_plan_ids.line_ids.move_line_id, line)
+        self.assertNotIn(busy_line, picking.wcs_plan_ids.line_ids.move_line_id)
+        self.assertFalse(picking.picking_type_id.is_auto_validate)
