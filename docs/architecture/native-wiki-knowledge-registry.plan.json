@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "document_kind": "engineering_plan_not_runtime_configuration",
+  "date": "2026-10-18",
+  "source_commit": "3b7a801",
+  "source_root": "../wiki",
+  "audience": "odoo_runtime_code_generation_assistant",
+  "actual_ids_in_private_deployment_receipt": true,
+  "runtime_activated": false,
+  "standard_tools_observed": [
+    "get_info",
+    "search",
+    "read_page",
+    "list_pages",
+    "get_graph",
+    "list_raw",
+    "read_raw"
+  ],
+  "planned_model_tool_allowlist": [
+    "search",
+    "read_page",
+    "get_info"
+  ],
+  "search_engine_observed": "BM25",
+  "native_version_type_observed": "string",
+  "historical_version_read_supported": false,
+  "books": [
+    {
+      "scope": "common",
+      "display_name": "bluewms-odoo",
+      "hook_code": null,
+      "candidate_contracts": [],
+      "sources": [
+        "basics/overview.md",
+        "basics/ai-generation-workflow.md"
+      ],
+      "cloud_skeleton": {
+        "created_this_round": false,
+        "status": "draft",
+        "version": "0",
+        "content_uploaded": false,
+        "agent_bound_this_round": false
+      },
+      "instance_wiki_id": null,
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": false,
+      "approved_for_native_generation": false,
+      "role_assignment": "proposed_common_rules_role_existing_resource_unchanged"
+    },
+    {
+      "scope": "putaway",
+      "display_name": "Odoo-AI-上架策略",
+      "hook_code": "putaway_policy",
+      "candidate_contracts": [
+        "putaway_policy/1",
+        "putaway_policy/2"
+      ],
+      "sources": [
+        "domains/putaway/specification.md",
+        "domains/putaway/examples/same-lot.md",
+        "domains/putaway/examples/same-picking.md",
+        "domains/putaway/examples/same-batch-name.md"
+      ],
+      "cloud_skeleton": {
+        "created_this_round": true,
+        "status": "draft",
+        "version": "0",
+        "content_uploaded": false,
+        "agent_bound_this_round": false
+      },
+      "instance_wiki_id": null,
+      "local_contract_implemented": true,
+      "native_retrieval_enabled": false,
+      "approved_for_native_generation": false
+    },
+    {
+      "scope": "erp",
+      "display_name": "Odoo-AI-ERP接口",
+      "hook_code": "erp_mapping",
+      "candidate_contracts": [],
+      "sources": [
+        "domains/erp/specification.md",
+        "domains/erp/examples/README.md"
+      ],
+      "cloud_skeleton": {
+        "created_this_round": true,
+        "status": "draft",
+        "version": "0",
+        "content_uploaded": false,
+        "agent_bound_this_round": false
+      },
+      "instance_wiki_id": null,
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": false,
+      "approved_for_native_generation": false
+    },
+    {
+      "scope": "wcs",
+      "display_name": "Odoo-AI-WCS任务生成",
+      "hook_code": "wcs_creation",
+      "candidate_contracts": [
+        "wcs_creation/4"
+      ],
+      "sources": [
+        "domains/wcs/specification.md",
+        "domains/wcs/configuration-guide.md",
+        "domains/wcs/wcs-creation-v4-contract.json",
+        "domains/wcs/examples/README.md",
+        "domains/wcs/examples/all_picked.md",
+        "domains/wcs/examples/container.md",
+        "domains/wcs/examples/empty.md",
+        "domains/wcs/examples/filter.md",
+        "domains/wcs/examples/ready.md",
+        "domains/wcs/examples/relay.md",
+        "domains/wcs/examples/repeat.md",
+        "domains/wcs/examples/scope.md",
+        "domains/wcs/examples/triple.md",
+        "domains/wcs/examples/weight.md"
+      ],
+      "cloud_skeleton": {
+        "created_this_round": true,
+        "status": "draft",
+        "version": "0",
+        "content_uploaded": false,
+        "agent_bound_this_round": false
+      },
+      "instance_wiki_id": null,
+      "local_contract_implemented": true,
+      "native_retrieval_enabled": false,
+      "approved_for_native_generation": false
+    },
+    {
+      "scope": "device",
+      "display_name": "Odoo-AI-设备接口",
+      "hook_code": "device_protocol",
+      "candidate_contracts": [],
+      "sources": [
+        "domains/equipment/specification.md",
+        "domains/equipment/examples/README.md"
+      ],
+      "cloud_skeleton": {
+        "created_this_round": true,
+        "status": "draft",
+        "version": "0",
+        "content_uploaded": false,
+        "agent_bound_this_round": false
+      },
+      "instance_wiki_id": null,
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": false,
+      "approved_for_native_generation": false
+    },
+    {
+      "scope": "barcode",
+      "display_name": "Odoo-AI-条码策略",
+      "hook_code": "barcode_policy",
+      "candidate_contracts": [],
+      "sources": [
+        "domains/barcode/specification.md",
+        "domains/barcode/examples/README.md"
+      ],
+      "cloud_skeleton": {
+        "created_this_round": true,
+        "status": "draft",
+        "version": "0",
+        "content_uploaded": false,
+        "agent_bound_this_round": false
+      },
+      "instance_wiki_id": null,
+      "local_contract_implemented": false,
+      "native_retrieval_enabled": false,
+      "approved_for_native_generation": false
+    }
+  ],
+  "routes": {
+    "putaway_policy": {
+      "scopes": [
+        "common",
+        "putaway"
+      ],
+      "contracts": [
+        "putaway_policy/1",
+        "putaway_policy/2"
+      ],
+      "activate_after_integration": true
+    },
+    "erp_mapping": {
+      "scopes": [
+        "common",
+        "erp"
+      ],
+      "contracts": [],
+      "activate_after_integration": false
+    },
+    "wcs_creation": {
+      "scopes": [
+        "common",
+        "wcs"
+      ],
+      "contracts": [
+        "wcs_creation/4"
+      ],
+      "activate_after_integration": true
+    },
+    "device_protocol": {
+      "scopes": [
+        "common",
+        "device"
+      ],
+      "contracts": [],
+      "activate_after_integration": false
+    },
+    "barcode_policy": {
+      "scopes": [
+        "common",
+        "barcode"
+      ],
+      "contracts": [],
+      "activate_after_integration": false
+    }
+  },
+  "planned_wrapper_tools": [
+    {
+      "name": "blue_search_code_knowledge",
+      "model_parameters": [
+        "query"
+      ],
+      "identity_and_scope": "server_bound_session"
+    },
+    {
+      "name": "blue_read_code_knowledge",
+      "model_parameters": [
+        "page_ref"
+      ],
+      "identity_and_scope": "opaque_reference_from_authorized_search"
+    }
+  ],
+  "planned_checks": [
+    "business_user_and_agent_acl",
+    "bound_hook_contract_company",
+    "wiki_ready_and_asset_approved",
+    "approved_release_page_allowlist",
+    "source_version_before_and_after_read",
+    "exact_content_sha256",
+    "no_arbitrary_endpoint_or_identity",
+    "no_cross_hook_or_skill_fallback"
+  ],
+  "planned_limits_to_validate": {
+    "search_limit_per_wiki": 5,
+    "pages_per_read": 3,
+    "knowledge_bundle_bytes": 32768,
+    "request_budget_seconds": 30
+  },
+  "skill_transition": {
+    "current_mode": "fixed_skill_bridge",
+    "current_approved_skill_version": 4,
+    "current_skill_preserved": true,
+    "target_skill_role": "thin_workflow_no_example_copies",
+    "native_wiki_migration_implemented": false
+  },
+  "deployment": {
+    "git_fast_forward_completed": true,
+    "local_database_upgrade_completed_this_round": false,
+    "local_docker_connection_available_at_audit": false
+  },
+  "excluded_repository_directories": [
+    "docs/architecture",
+    "docs/design",
+    "docs/knowledge",
+    "docs/migrations",
+    "docs/third-party",
+    "docs/wiki-publication"
+  ]
+}

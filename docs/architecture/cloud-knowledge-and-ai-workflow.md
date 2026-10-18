@@ -14,6 +14,8 @@
 
 以下内容不作为 AI 生成知识发布：
 
+- [原生 Wiki 检索与五类知识库规划](native-wiki-retrieval-plan.md)：最新 WCS /4 基线、标准工具、分库路由、批准与切换次序。
+
 - [TencentDB-Agent-Memory 配置](tencent-memory-configuration.md)：服务、团队／Agent／Task、共享配置。
 - [知识维护与发布](ai-generation-knowledge-maintenance.md)：人工新增、审阅、发布及失效流程。
 - [发布映射](ai-generation-knowledge-publication-map.json)：生成来源与兼容云端资源的对应。
