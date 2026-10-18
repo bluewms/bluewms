@@ -1,0 +1,54 @@
+<odoo>
+    <menuitem id="blue_ai_business_menu" name="宝蓝业务知识" parent="muk_ai.menu_ai_root" sequence="15"/>
+    <record id="blue_ai_chat_putaway_policy" model="ir.actions.server">
+        <field name="name">上架策略</field>
+        <field name="model_id" ref="muk_ai.model_muk_ai_session"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_blue_business_chat('putaway_policy')</field>
+    </record>
+    <menuitem id="blue_ai_menu_putaway_policy" name="上架策略" parent="blue_ai_business_menu"
+              action="blue_ai_chat_putaway_policy" sequence="1"/>
+    <record id="blue_ai_chat_erp_mapping" model="ir.actions.server">
+        <field name="name">ERP接口</field>
+        <field name="model_id" ref="muk_ai.model_muk_ai_session"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_blue_business_chat('erp_mapping')</field>
+    </record>
+    <menuitem id="blue_ai_menu_erp_mapping" name="ERP接口" parent="blue_ai_business_menu"
+              action="blue_ai_chat_erp_mapping" sequence="2"/>
+    <record id="blue_ai_chat_wcs_creation" model="ir.actions.server">
+        <field name="name">WCS生成策略</field>
+        <field name="model_id" ref="muk_ai.model_muk_ai_session"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_blue_business_chat('wcs_creation')</field>
+    </record>
+    <menuitem id="blue_ai_menu_wcs_creation" name="WCS生成策略" parent="blue_ai_business_menu"
+              action="blue_ai_chat_wcs_creation" sequence="3"/>
+    <record id="blue_ai_chat_device_protocol" model="ir.actions.server">
+        <field name="name">设备连接接口</field>
+        <field name="model_id" ref="muk_ai.model_muk_ai_session"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_blue_business_chat('device_protocol')</field>
+    </record>
+    <menuitem id="blue_ai_menu_device_protocol" name="设备连接接口" parent="blue_ai_business_menu"
+              action="blue_ai_chat_device_protocol" sequence="4"/>
+    <record id="blue_ai_chat_barcode_policy" model="ir.actions.server">
+        <field name="name">条码扫描策略</field>
+        <field name="model_id" ref="muk_ai.model_muk_ai_session"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_blue_business_chat('barcode_policy')</field>
+    </record>
+    <menuitem id="blue_ai_menu_barcode_policy" name="条码扫描策略" parent="blue_ai_business_menu"
+              action="blue_ai_chat_barcode_policy" sequence="5"/>
+    <record id="blue_ai_session_business_form" model="ir.ui.view">
+        <field name="name">muk_ai.session.form.blue.business</field>
+        <field name="model">muk_ai.session</field>
+        <field name="inherit_id" ref="muk_ai.view_ai_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='agent_id']" position="after">
+                <field name="blue_hook_code"/><field name="blue_task_name"/>
+                <field name="blue_contract"/><field name="blue_profile_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

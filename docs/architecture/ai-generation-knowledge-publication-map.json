@@ -118,7 +118,7 @@
       "domains/wcs/examples/relay.md",
       "domains/wcs/examples/empty.md"
     ],
-    "note": "原生六库已发布，实际范围以独立发布清单为准。旧 Skill 未改，Odoo 页面正式读取路径尚未切换。"
+    "note": "原生六库已发布，新 Odoo 业务入口已接入标准 Wiki。旧 Skill 仅供旧客户端过渡；本表不是新发布器。"
   },
   "planned_domain_sources": [
     "domains/erp/specification.md",

@@ -2,7 +2,7 @@
 
 维护资料，供人工操作使用，不作为 Odoo AI 生成教材。
 
-2026-10-18 的目标方案为 [原生 Wiki 分库检索](../architecture/native-wiki-retrieval-plan.md)：一个通用规则范围，加上架、ERP、WCS、设备和条码五个业务库。六库现已发布 29 份准确资料并核对原生索引；详见[发布与问答验收](native-wiki-20261018.md)。Odoo 页面内正式新链路尚未切换。
+2026-10-18 的目标方案为 [原生 Wiki 分库检索](../architecture/native-wiki-retrieval-plan.md)：一个通用规则范围，加上架、ERP、WCS、设备和条码五个业务库。六库现已发布 29 份准确资料并核对原生索引；详见[发布与问答验收](native-wiki-20261018.md)。正式工具接入与五类 Task 路由见[接入记录](../migrations/native-wiki-runtime-20.md)。
 
 `wcs-v4/` 保留原固定 Skill bridge 方案的候选包及摘要，用于兼容追溯；其候选批准标记和空回执不代表云端已批准。不要只为满足旧链路而把全部规范再复制到 Skill，也不要直接删除当前批准 Skill，切换须先完成接入与回归。
 

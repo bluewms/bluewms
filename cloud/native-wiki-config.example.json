@@ -1,0 +1,15 @@
+{
+  "service_id": "YOUR_TENANT",
+  "team_id": "YOUR_TEAM_ID",
+  "service_token_file": "/etc/bluewms-native-wiki/service-token",
+  "core_url": "http://127.0.0.1:8420",
+  "knowledge_url": "http://127.0.0.1:8424",
+  "wikis": {
+    "common": "YOUR_COMMON_WIKI_ID",
+    "putaway": "YOUR_PUTAWAY_WIKI_ID",
+    "wcs": "YOUR_WCS_WIKI_ID",
+    "erp": "YOUR_ERP_WIKI_ID",
+    "equipment": "YOUR_DEVICE_WIKI_ID",
+    "barcode": "YOUR_BARCODE_WIKI_ID"
+  }
+}

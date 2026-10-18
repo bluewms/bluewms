@@ -7,7 +7,7 @@
             <xpath expr="//app[@name='muk_ai']/block[@name='muk_ai_settings_defaults']" position="before">
                 <block title="宝蓝云端服务" name="blue_ai_cloud_settings" groups="base.group_system">
                     <field name="blue_provider_id" invisible="1"/><field name="blue_connection_id" invisible="1"/>
-                    <setting string="启用宝蓝云端" help="使用 Chat Completions 连接；核心知识和技能由云端维护。">
+                    <setting string="启用宝蓝云端" help="使用当前用户的云端连接,从原生 Wiki 读取规范和案例.">
                         <field name="blue_cloud_enabled"/>
                     </setting>
                     <setting string="连接与模型">
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </setting>
-                    <setting string="当前用户的云端身份" help="团队固定；上架会话使用上架策略任务，其他聊天兼容日常任务。Agent 与 Key 按用户配置。">
+                    <setting string="当前用户的云端身份" help="五类业务各自绑定对应 Task；日常任务只用于普通聊天。Agent 与 Key 按用户配置。">
                         <div class="content-group" invisible="not blue_connection_id">
                             <div class="row mb-2"><label for="blue_team_name" class="col-4 col-form-label"/>
                                 <div class="col-8"><field name="blue_team_name" class="w-100"/></div>
@@ -28,7 +28,7 @@
                             <div class="row mb-2"><label for="blue_agent_name" class="col-4 col-form-label"/>
                                 <div class="col-8"><field name="blue_agent_name" placeholder="default-agent-Lang" class="w-100"/></div>
                             </div>
-                            <div class="row mb-2"><label for="blue_task_name" class="col-4 col-form-label"/>
+                            <div class="row mb-2"><label for="blue_task_name" string="普通聊天任务" class="col-4 col-form-label"/>
                                 <div class="col-8"><field name="blue_task_name" class="w-100"/></div>
                             </div>
                             <div class="row mb-2"><label for="blue_user_key" string="业务用户 API Key" class="col-4 col-form-label"/>
@@ -39,6 +39,11 @@
                         </div>
                         <div invisible="blue_connection_id">请先在用户连接中为当前用户新建配置。</div>
                         <button name="action_blue_manage_connections" type="object" string="管理各用户连接" class="btn-link"/>
+                    </setting>
+                    <setting string="业务入口与云端 Task" help="从对应入口创建新会话，旧会话保留历史任务。代码生成从绑定资产页进入。">
+                        <div>上架策略 → 上架策略；WCS生成策略 → WCS生成策略</div>
+                        <div>ERP接口 → ERP接口；设备连接接口 → 设备连接接口；条码扫描策略 → 条码扫描策略</div>
+                        <div>五类知识入口位于 MuK AI → 宝蓝业务知识；ERP、设备、条码目前仅知识沟通。</div>
                     </setting>
                 </block>
             </xpath>

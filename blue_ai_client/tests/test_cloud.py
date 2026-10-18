@@ -9,7 +9,8 @@ from odoo.tools import file_open
 from odoo.addons.base.tests.common import BaseCommon
 from odoo.addons.muk_ai.providers.base import PROVIDER_STATE_KEY
 
-from ..guard import BINDING_TOKEN
+from ..guard import BINDING_TOKEN, HOOK_TASKS
+from .wiki_fixtures import FakeNativeWiki
 from ..providers.chat_completions import BlueCloudProvider, normalize_url
 
 
@@ -47,11 +48,17 @@ class TestBlueCloud(BaseCommon):
 
     def setUp(self):
         super().setUp()
-        self.reference = {'skill_id': 'approved-test-skill', 'name': 'bluewms-policy-authoring', 'version': 4}
-        self.knowledge = patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge',
-                               return_value=({'approved': True, 'resources': []}, self.reference))
+        self.knowledge = patch('odoo.addons.blue_ai_client.mcp.code_asset.NativeWiki', FakeNativeWiki)
         self.knowledge.start()
         self.addCleanup(self.knowledge.stop)
+        identity = patch('odoo.addons.blue_ai_client.providers.chat_completions.NativeWiki', FakeNativeWiki)
+        identity.start()
+        self.addCleanup(identity.stop)
+
+    def _read_standard_knowledge(self, tools):
+        found = tools._mcp_blue_search_code_knowledge('policy')
+        for hit in found['results']:
+            tools._mcp_blue_read_code_knowledge(hit['page_ref'])
 
     def _client(self):
         return self.provider.with_user(self.manager).with_context(blue_ai_session_uuid='stable-test-id')._get_client()
@@ -128,10 +135,18 @@ class TestBlueCloud(BaseCommon):
             with self.assertRaises(UserError):
                 self._client().request([{'role': 'user', 'content': 'hi'}])
 
+    def test_code_generation_truncation_is_an_error_without_partial_tool_writes(self):
+        client = self.provider.with_user(self.manager).with_context(blue_ai_contract='wcs_creation/4')._get_client()
+        events = [chunk({'reasoning_content': 'large output'}), chunk(finish='length')]
+        with patch.object(BlueCloudProvider, '_post_stream', return_value=iter(events)):
+            with self.assertRaises(UserError):
+                client.request([{'role': 'user', 'content': 'generate'}])
+
     def test_asset_tools_save_validate_without_publish(self):
         session = self._session()
         tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
         asset = tools._mcp_blue_read_code_asset()
+        self._read_standard_knowledge(tools)
         saved = tools._mcp_blue_submit_code_draft(self.code, self.tests, 'generated', asset['draft_hash'])
         result = tools._mcp_blue_validate_code_draft(saved['draft_hash'])
         self.assertTrue(result['valid'])
@@ -163,6 +178,7 @@ class TestBlueCloud(BaseCommon):
         session = self._session()
         tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
         tools._mcp_blue_read_code_asset()
+        self._read_standard_knowledge(tools)
         with self.assertRaises(ValidationError):
             tools._mcp_blue_submit_code_draft('import os', self.tests, 'unsafe', session.blue_draft_hash)
         self.assertEqual(self.profile.with_user(self.manager).draft_code, self.code)
@@ -217,7 +233,9 @@ class TestBlueCloud(BaseCommon):
         result = tools._mcp_blue_read_code_asset()
         self.assertNotIn('example_code', result)
         self.assertNotIn('example_tests', result)
-        self.assertTrue(result['cloud_knowledge']['approved'])
+        self.assertEqual(result['cloud_knowledge']['source'], 'tencent_wiki')
+        self.assertFalse(result['cloud_knowledge']['pages'])
+        self._read_standard_knowledge(tools)
         self.assertEqual(result['contract_schema']['contract'], self.profile.contract)
         self.assertIn('package_capacity', result['contract_schema']['input']['runtime_candidate_fields'])
         self.assertIn('If', result['contract_schema']['syntax']['ast_nodes'])
@@ -225,7 +243,7 @@ class TestBlueCloud(BaseCommon):
         saved = tools._mcp_blue_submit_code_draft(self.code, self.tests, 'generated', result['draft_hash'])
         tools._mcp_blue_validate_code_draft(saved['draft_hash'])
         version = self.profile.with_user(self.manager).validated_version_id
-        self.assertEqual(json.loads(version.knowledge_references), self.reference)
+        self.assertEqual(json.loads(version.knowledge_references), session.blue_knowledge_reference)
 
     def test_submit_requires_real_knowledge_read(self):
         session = self._session()
@@ -249,20 +267,20 @@ class TestBlueCloud(BaseCommon):
             tools._mcp_blue_read_code_asset()
         self.assertFalse(session.blue_knowledge_reference)
 
-    def test_legacy_session_keeps_daily_task_without_rebinding_the_asset(self):
+    def test_legacy_code_session_requires_reopen_instead_of_daily_task(self):
         session = self._session()
         session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({
-            'blue_task_name': False, 'blue_contract': False, 'blue_company_id': False, 'blue_identity_scope': False,
+            'blue_task_name': False, 'blue_hook_code': False, 'blue_contract': False,
+            'blue_company_id': False, 'blue_identity_scope': False,
         })
-        self.assertEqual(session._resolve_provider().env.context['blue_ai_task_name'], '日常任务')
-        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
-        self.assertEqual(tools._mcp_blue_read_code_asset()['profile_id'], self.profile.id)
+        with self.assertRaises(UserError):
+            session._resolve_provider()
 
     def test_cloud_failure_preserves_draft_and_cannot_fake_a_read(self):
         session = self._session()
         tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
         before = self.profile.with_user(self.manager)._draft_hash()
-        with patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge', side_effect=UserError('unavailable')):
+        with patch.object(FakeNativeWiki, 'context', side_effect=UserError('unavailable')):
             with self.assertRaises(UserError):
                 tools._mcp_blue_read_code_asset()
         self.assertFalse(session.blue_knowledge_reference)
@@ -303,20 +321,25 @@ class TestBlueCloud(BaseCommon):
         with self.assertRaises(AccessError):
             tools._mcp_blue_read_code_asset()
 
-    def test_muk_runtime_completes_read_submit_validate_loop(self):
+    def test_muk_runtime_completes_native_search_read_submit_validate_loop(self):
         session = self._session()
         rounds = []
         def stream(client, path, body):
             rounds.append(copy.deepcopy(body))
             number = len(rounds)
             profile = self.profile.with_user(self.manager)
+            known = list((session.blue_knowledge_search_results or {}).keys())
             calls = {
                 1: ('blue_read_code_asset', {}),
-                2: ('blue_submit_code_draft', {'code': self.code, 'tests': self.tests,
+                2: ('blue_search_code_knowledge', {'query': 'policy'}),
+                3: ('blue_read_code_knowledge', {'page_ref': known[0] if known else ''}),
+                4: ('blue_read_code_knowledge', {'page_ref': known[1] if known else ''}),
+                5: ('blue_read_code_knowledge', {'page_ref': known[2] if known else ''}),
+                6: ('blue_submit_code_draft', {'code': self.code, 'tests': self.tests,
                     'requirements': 'cloud generated', 'expected_hash': profile._draft_hash()}),
-                3: ('blue_validate_code_draft', {'expected_hash': profile._draft_hash()}),
+                7: ('blue_validate_code_draft', {'expected_hash': profile._draft_hash()}),
             }
-            if number == 4:
+            if number == 8:
                 return iter([chunk({'content': '草稿已验证，请审阅后发布。'}), chunk(finish='stop')])
             name, arguments = calls[number]
             return iter([chunk({'tool_calls': [{'index': 0, 'id': f'call{number}', 'function': {
@@ -325,7 +348,7 @@ class TestBlueCloud(BaseCommon):
         with patch.object(BlueCloudProvider, '_post_stream', stream):
             session.start('生成代码并验证')
         self.assertEqual(session.state, 'done', session.error_message)
-        self.assertEqual(len(rounds), 4)
+        self.assertEqual(len(rounds), 8)
         profile = self.profile.with_user(self.manager)
         self.assertTrue(profile.validated_version_id)
         self.assertFalse(profile.active_release_id)
@@ -347,12 +370,10 @@ class TestBlueCloud(BaseCommon):
         action = profile.with_user(self.manager).action_blue_ai_chat()
         tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=action['params']['session_id'])
         plans_before = self.env['wcs.plan'].with_user(self.manager).search_count([])
-        wcs_reference = dict(self.reference, source='tencent_skill_bridge', hook_code='wcs_creation', contract='wcs_creation/4')
-        with patch('odoo.addons.blue_ai_client.mcp.code_asset.read_policy_knowledge', return_value=({'approved': True, 'hook_code': 'wcs_creation', 'resources': []}, wcs_reference)) as reader:
-            asset = tools._mcp_blue_read_code_asset()
-        self.assertEqual(reader.call_args.kwargs['hook_code'], 'wcs_creation')
-        self.assertEqual(reader.call_args.kwargs['contract'], 'wcs_creation/4')
-        self.assertTrue(asset['cloud_knowledge']['approved'])
+        asset = tools._mcp_blue_read_code_asset()
+        self.assertEqual(asset['cloud_knowledge']['hook_code'], 'wcs_creation')
+        self.assertEqual(asset['cloud_knowledge']['source'], 'tencent_wiki')
+        self._read_standard_knowledge(tools)
         self.assertNotIn('example_code', asset)
         self.assertNotIn('example_tests', asset)
         self.assertEqual(asset['contract_schema'], asset['contract_specification'])
@@ -367,7 +388,7 @@ class TestBlueCloud(BaseCommon):
         self.assertTrue(result['valid'])
         self.assertFalse(result['published'])
         self.assertFalse(profile.active_release_id)
-        self.assertEqual(json.loads(profile.with_user(self.manager).validated_version_id.knowledge_references)['source'], 'tencent_skill_bridge')
+        self.assertEqual(json.loads(profile.with_user(self.manager).validated_version_id.knowledge_references)['source'], 'tencent_wiki')
         self.assertEqual(self.env['wcs.plan'].with_user(self.manager).search_count([]), plans_before)
 
     def test_wcs_unread_context_and_unsupported_other_hooks_stay_blocked(self):
@@ -409,3 +430,51 @@ class TestBlueCloud(BaseCommon):
         self.assertEqual(profile._draft_hash(), before)
         self.assertFalse(profile.validated_version_id)
         self.assertFalse(profile.active_release_id)
+
+    def test_all_five_business_entries_bind_exact_tasks_and_read_only_catalogs(self):
+        identities = set()
+        for hook, task in HOOK_TASKS.items():
+            action = self.env['muk_ai.session'].with_user(self.manager).action_blue_business_chat(hook)
+            session = self.env['muk_ai.session'].with_user(self.manager).browse(action['params']['session_id'])
+            self.assertEqual(session.blue_task_name, task)
+            self.assertEqual(session._resolve_provider().env.context['blue_ai_task_name'], task)
+            identities.add(session._resolve_provider()._get_client().identity_scope())
+            allowed = {entry['name'] for entry in session._get_filtered_catalog()}
+            self.assertIn('blue_search_code_knowledge', allowed)
+            self.assertIn('blue_read_code_knowledge', allowed)
+            self.assertNotIn('blue_submit_code_draft', allowed)
+            self.assertNotIn('call_method', allowed)
+        self.assertEqual(len(identities), 5)
+
+    def test_asset_read_and_search_summary_do_not_authorize_submission(self):
+        session = self._session()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        tools._mcp_blue_read_code_asset()
+        tools._mcp_blue_search_code_knowledge('policy')
+        with self.assertRaises(UserError):
+            tools._mcp_blue_submit_code_draft(self.code, self.tests, 'unread', session.blue_draft_hash)
+        with self.assertRaises(UserError):
+            tools._mcp_blue_read_code_knowledge('forged-page-ref')
+
+    def test_business_requests_send_explicit_validated_task_headers(self):
+        headers = []
+        def post(client, path, body, timeout, stream=False):
+            headers.append(client._business_headers)
+            raise UserError('stop before HTTP')
+        for hook, task in HOOK_TASKS.items():
+            client = self.provider.with_user(self.manager).with_context(blue_ai_task_name=task)._get_client()
+            with patch.object(BlueCloudProvider, '_post', post), self.assertRaises(UserError):
+                client.request([{'role': 'user', 'content': 'hi'}])
+        self.assertEqual(len({h['x-task-id'] for h in headers}), 5)
+
+    def test_business_session_cannot_send_history_to_another_provider(self):
+        administrator = self.env.ref('base.user_admin')
+        other = self.env['muk_ai.provider'].with_user(administrator).create({'name': 'openai', 'code': 'native_test_other'})
+        model = self.env.ref('blue_ai_client.model_blue_glm').with_user(administrator).copy({
+            'name': 'Other chat', 'technical_name': 'native-test-model', 'provider_id': other.id,
+        })
+        agent = self.env['muk_ai.agent'].with_user(administrator).create({'name': 'Other agent', 'provider_id': other.id, 'model_id': model.id})
+        session = self._session()
+        session.agent_id = agent
+        with self.assertRaisesRegex(UserError, '业务会话必须使用宝蓝云端'):
+            session._resolve_provider()

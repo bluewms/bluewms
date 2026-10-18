@@ -1,10 +1,4 @@
-"""Read approved project references through the proxy's session-scoped bridge.
-
-The model cannot supply an endpoint, identity, skill ID, file path or command.
-Search performs the proxy's current ACL check before each bundle is read.
-Only references and digests are persisted locally, never a second example library.
-"""
-
+"""Read native Tencent Wiki tools using the current business user's identity."""
 import hashlib
 import json
 import time
@@ -15,134 +9,97 @@ import requests
 from odoo.exceptions import UserError
 
 
-SKILL_NAME = 'bluewms-policy-authoring'
-RESOURCE_PATHS = (
-    '01-project-and-governance.md',
-    '03-policy-contract.md',
-    '04-approved-putaway-examples.md',
-)
-WCS_RESOURCE_PATHS = ('01-project-and-governance.md', '06-wcs-creation-contract.md', '07-approved-wcs-examples.md')
-SUPPORTED_CONTRACTS = {'putaway_policy': ('putaway_policy/1', 'putaway_policy/2'), 'wcs_creation': ('wcs_creation/4',)}
-
-MAX_RESPONSE = 131072
-MAX_BUNDLE = 32768
+MAX_RESPONSE = 262144
+MAX_PAGES = 12
+MAX_TOTAL = 196608
 
 
-def read_policy_knowledge(client, pinned=None, hook_code="putaway_policy", contract=None):
-    """Return a bounded approved Skill bundle and its reproducible references."""
-    if hook_code not in SUPPORTED_CONTRACTS or (contract and contract not in SUPPORTED_CONTRACTS[hook_code]):
-        raise UserError(client.env._('此业务合同尚未接入批准云端知识.'))
-    contract = contract or SUPPORTED_CONTRACTS[hook_code][-1]
-    resource_paths = WCS_RESOURCE_PATHS if hook_code == 'wcs_creation' else RESOURCE_PATHS
-    if pinned and pinned.get('source') != 'tencent_skill_bridge':
-        raise UserError(client.env._('知识引用方式已升级, 请从资产页面重新打开AI会话.'))
-    deadline = time.monotonic() + 30
-    parts = urlsplit(client.api_url)
-    # This deployment exposes the bridge on the same configured HTTPS origin.
-    base = urlunsplit((parts.scheme, parts.netloc, '/skill-bridge/v3/skill', '', ''))
+class NativeWiki:
+    def __init__(self, client, hook_code, contract='', pinned=None):
+        self.client = client
+        self.hook_code = hook_code
+        self.contract = contract or ''
+        self.pinned = pinned
+        if pinned and (pinned.get('source') != 'tencent_wiki'
+                       or pinned.get('hook_code') != hook_code or pinned.get('contract') != self.contract):
+            raise UserError(client.env._('知识引用方式已升级,请从业务页面重新打开 AI 会话.'))
 
-    def fail():
-        return UserError(client.env._('云端批准知识读取失败，请检查知识权限、版本及服务。当前草稿未修改。'))
-
-    def post(operation, body):
-        remaining = deadline - time.monotonic()
-        if remaining <= 0:
-            raise fail()
+    def _post(self, operation, **values):
+        parts = urlsplit(self.client.api_url)
+        endpoint = urlunsplit((parts.scheme, parts.netloc, '/odoo-wiki/v1/' + operation, '', ''))
+        body = {'hook_code': self.hook_code, 'contract': self.contract,
+                'agent_name': self.client._connection().agent_name, **values}
         response = None
+        deadline = time.monotonic() + 30
         try:
-            response = client._http_session().post(
-                base + '/' + operation, headers=client.headers(), json=body,
-                timeout=(min(5, remaining), min(10, remaining)), stream=True, allow_redirects=False,
+            response = self.client._http_session().post(
+                endpoint, headers=self.client.headers(), json=body, timeout=(5, 28),
+                stream=True, allow_redirects=False,
             )
             if not 200 <= response.status_code < 300:
-                raise fail()
+                if operation == 'identity':
+                    raise UserError(self.client.env._('无法确认当前业务 Task,请检查云端用户,Agent 和同名任务关联;不使用日常任务兜底.'))
+                raise UserError(self.client.env._('Wiki 读取被拒绝,请检查用户权限,合同和知识批准版本;草稿未修改.'))
             chunks, size = [], 0
             for chunk in response.iter_content(8192):
                 size += len(chunk)
                 if size > MAX_RESPONSE or time.monotonic() > deadline:
-                    raise fail()
+                    raise UserError(self.client.env._('Wiki 响应过大或超时,请缩小检索范围.'))
                 chunks.append(chunk)
-            envelope = json.loads(b''.join(chunks))
-            if type(envelope) is not dict or envelope.get('code') != 0 or type(envelope.get('data')) is not dict:
-                raise fail()
-            return envelope['data']
-        except (requests.RequestException, ValueError, RecursionError) as error:
-            # Do not echo credential-bearing vendor errors or response bodies.
-            raise fail() from error
+            result = json.loads(b''.join(chunks))
+            if type(result) is not dict or result.get('code') != 0 or type(result.get('data')) is not dict:
+                raise ValueError('Invalid Wiki response')
+            data = result['data']
+            if operation == 'identity':
+                return data
+            catalog = data.get('catalog')
+            if not isinstance(catalog, list) or len(catalog) != 2:
+                raise ValueError('Invalid Wiki catalog')
+            if self.pinned and catalog != self.pinned.get('catalog'):
+                raise UserError(self.client.env._('云端知识版本或批准状态已改变,请重新打开 AI 会话.'))
+            return data
+        except (requests.RequestException, ValueError, KeyError, RecursionError) as error:
+            raise UserError(self.client.env._('原生 Wiki 连接或正文校验失败,请检查知识服务.')) from error
         finally:
             if response is not None:
                 response.close()
 
-    found = post('search', {'query': SKILL_NAME})
-    items = found.get('items')
-    if type(items) is not list:
-        raise fail()
-    matches = [item for item in items if type(item) is dict and item.get('name') == SKILL_NAME]
-    if len(matches) != 1 or not isinstance(matches[0].get('skill_id'), str):
-        raise fail()
-    skill_id = matches[0]['skill_id']
-    version = pinned.get('version') if pinned else None
-    if pinned and (pinned.get('skill_id') != skill_id or type(version) is not int):
-        raise fail()
-    body = {'skill_id': skill_id, 'include_content': True, 'include_manifest': True}
-    if version:
-        body['version'] = version
-    skill = post('get', body)
-    metadata = skill.get('metadata')
-    if (skill.get('skill_id') != skill_id or skill.get('name') != SKILL_NAME
-            or skill.get('status') != 'active' or type(metadata) is not dict
-            or metadata.get('approved') is not True or metadata.get('purpose') != 'odoo_runtime_policy'
-            or type(skill.get('version')) is not int or skill['version'] < 1
-            or (version and skill['version'] != version)):
-        raise fail()
-    if hook_code == 'wcs_creation':
-        approved = metadata.get('approved_contracts', {})
-        allowed = approved.get(hook_code) if type(approved) is dict else None
-        if type(allowed) is not list or contract not in allowed:
-            raise UserError(client.env._('云端尚无当前WCS合同的批准知识. 请先完成既有Wiki/Skill发布, 当前草稿未修改.'))
-        wiki_source = metadata.get('wiki_source')
-        if (type(wiki_source) is not dict or type(wiki_source.get('wiki_id')) is not str or not wiki_source['wiki_id']
-                or type(wiki_source.get('version')) is not int or wiki_source['version'] < 1):
-            raise UserError(client.env._('云端WCS知识缺少有效Wiki来源ID或版本, 当前草稿未修改.'))
-        if pinned and (pinned.get('hook_code') != hook_code or pinned.get('contract') != contract):
-            raise fail()
-    manifest = skill.get('manifest')
-    if type(manifest) is not list:
-        raise fail()
-    paths = {entry.get('path') for entry in manifest if type(entry) is dict and not entry.get('is_executable')}
-    if not set(resource_paths).issubset(paths) or type(skill.get('content')) is not str:
-        raise fail()
-    resources = []
-    for path in resource_paths:
-        data = post('files/read', {'skill_id': skill_id, 'version': skill['version'], 'path': path, 'encoding': 'utf-8'})
-        if (data.get('path') != path or data.get('version') != skill['version']
-                or data.get('encoding') != 'utf-8' or type(data.get('content')) is not str):
-            raise fail()
-        if hook_code == 'wcs_creation' and path != RESOURCE_PATHS[0]:
-            marker = '<!-- bluewms-knowledge '
-            first_line = data['content'].split('\n', 1)[0]
-            try:
-                header = json.loads(first_line[len(marker):-4]) if first_line.startswith(marker) and first_line.endswith(' -->') else {}
-            except (ValueError, TypeError):
-                raise fail()
-            if (type(header) is not dict or type(header.get('contracts')) is not list
-                    or header.get('hook_code') != hook_code or contract not in header['contracts'] or header.get('approved') is not True):
-                raise fail()
-        resources.append({'path': path, 'content': data['content'],
-                          'sha256': hashlib.sha256(data['content'].encode()).hexdigest()})
-    bundle = {'name': SKILL_NAME, 'skill_id': skill_id, 'version': skill['version'],
-              'approved': True, 'content': skill['content'], 'resources': resources}
-    if len(json.dumps(bundle, ensure_ascii=False).encode()) > MAX_BUNDLE:
-        raise fail()
-    references = {'name': SKILL_NAME, 'skill_id': skill_id, 'version': skill['version'],
-                  'approved': True, 'source': 'tencent_skill_bridge',
-                  'sha256': hashlib.sha256(skill['content'].encode()).hexdigest(),
-                  'resources': [{k: v for k, v in item.items() if k != 'content'} for item in resources]}
-    if hook_code == 'wcs_creation':
-        references.update(hook_code=hook_code, contract=contract, wiki_source=wiki_source)
-        bundle.update(hook_code=hook_code, contract=contract, wiki_source=wiki_source)
-    if len(json.dumps(bundle, ensure_ascii=False).encode()) > MAX_BUNDLE:
-        raise fail()
-    if pinned and pinned != references:
-        raise fail()
-    return bundle, references
+    def identity(self):
+        return self._post('identity')
+
+    def context(self):
+        data = self._post('context')
+        if (data.get('source') != 'tencent_wiki' or data.get('hook_code') != self.hook_code
+                or data.get('contract') != self.contract):
+            raise UserError(self.client.env._('知识范围与当前入口不一致.'))
+        return self.pinned or {**data, 'pages': []}
+
+    def search(self, query):
+        if not isinstance(query, str) or not 1 <= len(query.strip()) <= 256:
+            raise UserError(self.client.env._('请输入 1-256 字符的知识检索词.'))
+        data = self._post('search', query=query)
+        if not isinstance(data.get('results'), list) or len(data['results']) > 16:
+            raise UserError(self.client.env._('Wiki 搜索结果格式无效.'))
+        return data['results']
+
+    def read(self, page):
+        data = self._post('read', page=page)
+        body, reference = data.get('content'), data.get('reference')
+        if (not isinstance(body, str) or type(reference) is not dict
+                or reference.get('scope') != page['scope'] or reference.get('ref') != page['ref']
+                or reference.get('sha256') != hashlib.sha256(body.encode()).hexdigest()):
+            raise UserError(self.client.env._('Wiki 完整正文或来源摘要校验失败.'))
+        return body, reference
+
+    def verify(self):
+        pages = (self.pinned or {}).get('pages')
+        if not isinstance(pages, list) or not 1 <= len(pages) <= MAX_PAGES:
+            raise UserError(self.client.env._('请先搜索并完整读取通用规则,本领域规范及匹配案例.'))
+        domains = [book['scope'] for book in self.pinned['catalog'] if book['scope'] != 'common']
+        roles = {(page.get('scope'), page.get('role')) for page in pages}
+        if len(domains) != 1 or not {('common', 'guidance'), (domains[0], 'specification'),
+                                    (domains[0], 'example')}.issubset(roles):
+            raise UserError(self.client.env._('请完整读取通用生成规则,本领域规范及至少一个匹配案例,再提交草稿.'))
+        references = [{k: v for k, v in page.items() if k != 'bytes'} for page in pages]
+        if self._post('verify', references=references).get('valid') is not True:
+            raise UserError(self.client.env._('知识来源复核失败,草稿未修改.'))
