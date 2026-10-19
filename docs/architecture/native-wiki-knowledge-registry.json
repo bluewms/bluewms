@@ -121,7 +121,7 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "2",
+        "version": "4",
         "source_pages": 14,
         "content_uploaded": true,
         "agent_bound": true,
@@ -130,8 +130,8 @@
       "contracts": [
         "wcs_creation/4"
       ],
-      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
+      "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
+      "publication_manifest": "../wiki-publication/wes-retirement-20261019.manifest.json"
     },
     {
       "scope": "equipment",
@@ -148,6 +148,7 @@
         "domains/equipment/reference/legacy-mita.md",
         "domains/equipment/reference/legacy-modula.md",
         "domains/equipment/reference/legacy-tusk.md",
+        "domains/equipment/reference/wes-vzf.md",
         "domains/equipment/specification.md"
       ],
       "local_contract_implemented": true,
@@ -155,8 +156,8 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "6",
-        "source_pages": 11,
+        "version": "8",
+        "source_pages": 12,
         "content_uploaded": true,
         "agent_bound": true,
         "asset_status": "approved"
@@ -164,8 +165,8 @@
       "contracts": [
         "device_protocol/1"
       ],
-      "source_commit": "399a4d2c15a1bef03093b6485212a21c650cc571",
-      "publication_manifest": "../wiki-publication/device-interface-20261019.manifest.json"
+      "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
+      "publication_manifest": "../wiki-publication/wes-retirement-20261019.manifest.json"
     },
     {
       "scope": "barcode",
@@ -298,11 +299,12 @@
   "module_versions_source": "addon manifests; installation state is per deployment",
   "deployment_evidence": "../migrations/native-wiki-runtime-20.validation.json",
   "baseline_knowledge_source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-  "latest_knowledge_source_commit": "399a4d2c15a1bef03093b6485212a21c650cc571",
+  "latest_knowledge_source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
   "publication_manifests": [
     "../wiki-publication/native-wiki-20261018.manifest.json",
     "../wiki-publication/device-protocol-20261018.manifest.json",
-    "../wiki-publication/device-interface-20261019.manifest.json"
+    "../wiki-publication/device-interface-20261019.manifest.json",
+    "../wiki-publication/wes-retirement-20261019.manifest.json"
   ],
   "additional_runtime_implementation": [
     "../migrations/device-protocol-20.md"

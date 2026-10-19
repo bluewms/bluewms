@@ -8,6 +8,8 @@
 | [准确来源清单](native-wiki-20261018.manifest.json) | 来源提交、文件、源摘要和发布正文摘要 |
 | [问答证据](native-wiki-20261018.qa.json) | 八组真实问答及搜索／读页摘要，不能代替真实 Task 路由验收 |
 | [设备协议发布](device-protocol-20261018.md) | 通用／设备 Wiki 版本 4、TUSK 真实生成及隔离执行范围 |
+| [WES 退役知识发布](wes-retirement-20261019.md) | 设备版本 8、WCS 版本 4，26 页准确读回及本地 Task 检索 |
+| [WES 退役准确来源](wes-retirement-20261019.manifest.json) | 新增 WES 参考及设备／WCS 文稿来源摘要 |
 | [统一设备接口发布](device-interface-20261019.md) | 设备 Wiki 版本 6、统一页面与代码决定回写规则 |
 | [统一设备接口来源](device-interface-20261019.manifest.json) | 设备 11 页准确来源及摘要 |
 | [设备协议准确来源](device-protocol-20261018.manifest.json) | 本轮 15 页的来源提交及摘要，不覆盖其他四库历史来源 |

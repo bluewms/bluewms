@@ -20,4 +20,4 @@
 
 隔离库验证：WCS 基础与设备协议 48 项测试、WCS 扩展 92 项测试均为 0 失败、0 错误；Wiki 15 个案例共 42 条试算通过，合同附件与内部链接一致。主库升级后核对库存明细及代码资产摘要；旧专用字段和视图已清理，两个旧回调 POST 返回 404。模拟与 HTTP 回归不等于真实 WES 现场验收。
 
-本地 Wiki 修改需要按[知识发布流程](../architecture/ai-generation-knowledge-maintenance.md)另行发布，删除源码或升级 Odoo 不会自动更新云端知识。
+本轮设备 Wiki 12 页已发布为版本 8，WCS Wiki 14 页为版本 4，26 页均精确读回；本地 Odoo 已通过两个业务 Task 搜索并读取新版正文。WES 参考保持 planned，不作为可执行案例，Task 仍为 6。来源及范围见[发布记录](../wiki-publication/wes-retirement-20261019.md)。后续文稿变更仍须按[知识发布流程](../architecture/ai-generation-knowledge-maintenance.md)单独发布，删除源码或升级 Odoo 不会自动更新云端知识。
