@@ -1,0 +1,83 @@
+{
+  "source_commit": "399a4d2c15a1bef03093b6485212a21c650cc571",
+  "source_root": "docs/wiki",
+  "publication_mode": "exact_locked_pages",
+  "books": [
+    {
+      "scope": "equipment",
+      "name": "Odoo-AI-设备接口",
+      "contracts": [
+        "device_protocol/1"
+      ],
+      "generation_ready": true,
+      "files": [
+        {
+          "source": "docs/wiki/domains/equipment/configuration-guide.md",
+          "ref": "domains/equipment/configuration-guide.md",
+          "source_sha256": "c30e304d1164adfa66d500494f44521cd0b9ba2db5d46cb1de03efb39493c649",
+          "page_sha256": "c3632ca1e5280355a545a58713919aa18b230c35f656bcf43c992a4063c910ed"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/device-protocol-v1-contract.json",
+          "ref": "domains/equipment/device-protocol-v1-contract.json.md",
+          "source_sha256": "fbecdcf24153607fc5fdda52dc00debd41c157119dcd9ca5b5ab5d47096735c1",
+          "page_sha256": "bfeb5b02797a813e8865f0105ec9ff3fdf030779c31d64d402e9208c9697a09d"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/examples/README.md",
+          "ref": "domains/equipment/examples/README.md",
+          "source_sha256": "2d7286b14db6eb8c6b717b1c99f0dd5f2e19c01f4fc927e5f02adca91653f0ef",
+          "page_sha256": "6d9daa48aba27a1599e95c284b9e4bf0292d14a33a00fb211ed78c6e5c66c708"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/examples/tusk-destination.md",
+          "ref": "domains/equipment/examples/tusk-destination.md",
+          "source_sha256": "898b1972c0cb93bb2bdbb2325636886f5eede926464d4a37b9ae7a42c98f0d52",
+          "page_sha256": "e1c776686037c249081bd321108282ecbe500ccfc228d1ae96fc8d60383ac712"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/examples/tusk-subposition.md",
+          "ref": "domains/equipment/examples/tusk-subposition.md",
+          "source_sha256": "a3f5341548c0927fa5d98fcb5df601c036e58128519d81fd90e7c63a4d50ba02",
+          "page_sha256": "bf07bc0058d082636af7c8e127ac23bbc7cc0daf546fa94c27739b72c4fdaa07"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-interfaces.md",
+          "ref": "domains/equipment/reference/legacy-interfaces.md",
+          "source_sha256": "350f67199925a01734acddcfd1cb714f706c701cbe56d5dacf93cfd79e748007",
+          "page_sha256": "ca58b9ee2ce265a65d25ee35c2f98821db0b928347ff6ba1c910ebc05dd27309"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-m4.md",
+          "ref": "domains/equipment/reference/legacy-m4.md",
+          "source_sha256": "33ede5d4d9e5f27397ee45f19e8c7c6c4c4c84cbab3c5234fe7bb8a93236c05d",
+          "page_sha256": "a154ac7ba0950f5d2ee3d423df67b40ed635a1bd051094af816494513d4013e2"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-mita.md",
+          "ref": "domains/equipment/reference/legacy-mita.md",
+          "source_sha256": "9eaf7d7a62bc4777a1a1da36e93b1d7961ad16aa5861fd0f2d6b12292215a3ea",
+          "page_sha256": "9257f386aeae7b0c4d1620904471851cf3550d60abc3d3463f958017e46bff29"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-modula.md",
+          "ref": "domains/equipment/reference/legacy-modula.md",
+          "source_sha256": "3720c492b8d14c42eced54064d15727c4621039e456d7c419f05b6303d733b8c",
+          "page_sha256": "e8e6d6b55e84a23558026df984436d2361d63c8dcc67394651f57f236fa8c600"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/reference/legacy-tusk.md",
+          "ref": "domains/equipment/reference/legacy-tusk.md",
+          "source_sha256": "c7d8790dade0724ef1d73a515c0550d2040c59fb841b00aaf6a607b3cb7cbd9a",
+          "page_sha256": "4cb17a9abb8f13339cb8837baf451f14bd380a22c345eaf366dd923e35a5402a"
+        },
+        {
+          "source": "docs/wiki/domains/equipment/specification.md",
+          "ref": "domains/equipment/specification.md",
+          "source_sha256": "5e1d570b7092bbc3ef7e5f4cf4a42905392be23a75c15832082193a14468c361",
+          "page_sha256": "1705f727cfdf1689ace2568d44f03274b897dd4ccb00549fbaf312b865dd2522"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "document_kind": "engineering_registry_reference_not_instance_configuration",
-  "date": "2026-10-18",
+  "date": "2026-10-19",
   "source_root": "../wiki",
   "audience": "odoo_runtime_code_generation_assistant",
   "actual_ids_in_private_deployment_receipt": true,
@@ -155,7 +155,7 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "4",
+        "version": "6",
         "source_pages": 11,
         "content_uploaded": true,
         "agent_bound": true,
@@ -164,8 +164,8 @@
       "contracts": [
         "device_protocol/1"
       ],
-      "source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
-      "publication_manifest": "../wiki-publication/device-protocol-20261018.manifest.json"
+      "source_commit": "399a4d2c15a1bef03093b6485212a21c650cc571",
+      "publication_manifest": "../wiki-publication/device-interface-20261019.manifest.json"
     },
     {
       "scope": "barcode",
@@ -298,10 +298,11 @@
   "module_versions_source": "addon manifests; installation state is per deployment",
   "deployment_evidence": "../migrations/native-wiki-runtime-20.validation.json",
   "baseline_knowledge_source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-  "latest_knowledge_source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
+  "latest_knowledge_source_commit": "399a4d2c15a1bef03093b6485212a21c650cc571",
   "publication_manifests": [
     "../wiki-publication/native-wiki-20261018.manifest.json",
-    "../wiki-publication/device-protocol-20261018.manifest.json"
+    "../wiki-publication/device-protocol-20261018.manifest.json",
+    "../wiki-publication/device-interface-20261019.manifest.json"
   ],
   "additional_runtime_implementation": [
     "../migrations/device-protocol-20.md"

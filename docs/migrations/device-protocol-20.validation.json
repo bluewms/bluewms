@@ -174,5 +174,48 @@
   "private_credentials_traces_and_backups_excluded_from_git": true,
   "isolated_test_database_and_filestore_removed": true,
   "documentation_links_validated": 235,
-  "changed_files_business_key_scan_passed": true
+  "changed_files_business_key_scan_passed": true,
+  "revisions": [
+    {
+      "date": "2026-10-19",
+      "source_commit": "399a4d2c15a1bef03093b6485212a21c650cc571",
+      "installed_module_version": "20.0.1.1.0",
+      "contract": "device_protocol/1",
+      "schema_version": 2,
+      "regression": {
+        "six_module_suite": 187,
+        "failed": 0,
+        "errors": 0,
+        "subsequent_final_protocol_suite": 44,
+        "wiki_examples": 15,
+        "wiki_cases": 42
+      },
+      "cloud_publication": {
+        "scope": "equipment",
+        "version": "6",
+        "pages": 11,
+        "exact_readback_verified": true,
+        "tasks": 6,
+        "new_tasks_created": 0
+      },
+      "main_upgrade": {
+        "database_and_filestore_backed_up": true,
+        "backup_archive_contents_checked": true,
+        "business_tables_unchanged": 14,
+        "drafts_and_category_connections_preserved": true,
+        "native_device_task_search_read_verified": true,
+        "no_credentials_in_ai_asset": true,
+        "smoke_transaction_rolled_back": true
+      },
+      "browser": {
+        "six_tabs_clicked": true,
+        "removed_controls_absent": true,
+        "console_errors": 0
+      },
+      "legacy_release_scope_preserved": true,
+      "real_model_generation_rerun": false,
+      "real_hardware_acceptance_performed": false,
+      "isolated_test_database_and_filestore_removed": true
+    }
+  ]
 }

@@ -62,3 +62,5 @@ docker compose -f docker/compose.yaml up -d odoo
 统一模式由代码输出 subposition、destination_code 决定位置处理。目的库位在当前公司、作业仓库内唯一匹配，容量、托盘、冻结、混放、数量和库存一次记账校验保留。旧发布及任务快照不重写，仍保留历史批准范围；重发新版代码后新任务采用统一模式。旧内置适配器仅用于历史运行兼容，不出现在新类别选择中。
 
 更新已安装实例只需备份后升级 blue_wcs_protocol；已有草稿、版本、连接及 Task 不自动重建。新的 Wiki 页以本地 contract_schema 为准，可选 headers 需 schema_version=2。发布 Wiki 后应重开旧 AI 会话以取得新知识版本。
+
+本轮 187 项六模块回归、最终 44 项设备专项及 42 条 Wiki 试算通过。浏览器实际点击六个页签且无页面错误，红圈控件均不显示。设备 Wiki 11 页已发布为版本 6 并精确读回，本地实际连接可检索读取新内容，Task 仍为 6。主库已升级 20.0.1.1.0，14 张业务表的原有数据保持一致。本轮未重新运行模型生成或真实硬件验收；详见[本轮发布](../wiki-publication/device-interface-20261019.md)及验收 JSON 的 revisions。
