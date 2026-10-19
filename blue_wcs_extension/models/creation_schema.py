@@ -55,7 +55,7 @@ def creation_schema():
                        'goods relay continuous with end dependency; explicit earlier dependency steps only',
                        'equipment restricted to primary/secondary; task_type equals manual authorization',
                        'no AI control of WCS/automatic creation/automatic validation/required-task switches',
-                       'no package: simulation or explicitly capable JSON gateway only; HIK/WES require carrier'],
+                       'no package: simulation or explicitly capable JSON gateway only; HIK requires carrier'],
         'trials': {'schema': '{name:string,input:{request:object,candidates:array},expected_result:object|array}',
                    'count': '2..20; include configure and tasks phases'},
     }

@@ -65,3 +65,12 @@ class TestProtocolEngine(BaseCommon):
         data['request']['task']['invented_field'] = 'not supplied by the real task'
         with self.assertRaises(ProtocolError):
             run_protocol('result = {"body": {}}', data)
+
+    def test_optional_headers_are_credential_references_and_reject_transport_overrides(self):
+        data = fixture()['cases'][0]['input']
+        result = run_protocol('result = {"body": {}, "headers": {"X-Key": "$app_key"}}', data)
+        self.assertEqual(result['headers'], {'X-Key': '$app_key'})
+        for headers in [{'Host': 'evil'}, {'Content-Type': 'text/plain'}, {'X-Key': 'bad\r\nInjected: header'},
+                        {'Authorization': 'one', 'authorization': 'two'}]:
+            with self.subTest(headers=headers), self.assertRaises(ProtocolError):
+                run_protocol('result = ' + repr({'body': {}, 'headers': headers}), data)

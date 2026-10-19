@@ -6,7 +6,7 @@ Odoo 20 的设备类别、设备、作业团队、作业阶段、固定计划、
 
 原作业类型默认支持单作业、入库双作业、出库双作业, 增加同货两段接力. 创建配置直接生成任务起终点和依赖, 不再使用独立线路配置; 旧线路模型仅保留历史数据. 接力必须等待前段完成; 空载具配合保留原take/point触发及完成事件兜底. 空载具任务不携带商品数量, 载具身份需由对应设备任务模板/站点能力确定.
 
-海康国标任务可配置完整下发 URL、App Key/Secret，默认验证 TLS，不复制旧默认凭据。JSON 网关响应合同为 `{"accepted": true}`。独立 WES 模块提供 VZF 报文和鉴权。
+海康国标任务可配置完整下发 URL、App Key/Secret，默认验证 TLS，不复制旧默认凭据。JSON 网关响应合同为 `{"accepted": true}`。厂家接口统一通过 blue_wcs_protocol 配置；WES VZF 协议见[Wiki 参考](../docs/wiki/domains/equipment/reference/wes-vzf.md)。
 
 标准回执：POST `/blue_wcs/v1/devices/<device_id>/events`，请求头 `Authorization: Bearer <callback_token>`。正文包含 `task_id`、`event_id`、`event`，可选 `point` 和 `actual_destination`。支持 start/take/point/end/outbin/notifyPodArr，任务必须已发送；重复事件幂等，错用事件号或实际落点不一致拒绝。
 

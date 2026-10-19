@@ -1170,8 +1170,8 @@
     "unknown/failed tasks keep quantity coverage; concurrent/repeated planning cannot recreate the same quantities"
   ],
   "capabilities": {
-    "loose_goods": "simulation or manually enabled JSON only; HIK/WES require carrier",
-    "area_mapping": "simulation, HIK ZONE or explicitly enabled JSON; WES only planned endpoints",
+    "loose_goods": "simulation or manually enabled JSON only; HIK requires carrier",
+    "area_mapping": "simulation, HIK ZONE or explicitly enabled JSON",
     "repeat_goods": "simulation or manually confirmed real equipment support; no claim of real-device acceptance",
     "actual_bin_callback": "accept declared area or single already-planned exact bin; other actual bins require reconciliation, never auto-write inventory"
   },

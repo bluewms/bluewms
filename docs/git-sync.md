@@ -31,9 +31,11 @@ Python 修改需要重新加载服务；模型字段、XML 数据或迁移变化
 
 原生 Wiki／WCS /4 接入涉及以下模块，已有实例应先在隔离库验证：
 
+本次已移除 WES 专用模块。已安装 `blue_wcs_wes` 的机器先按[退役步骤](migrations/wes-retirement-20.md)在旧源码上完成核对和卸载，再切换新提交及升级；有 WES 数据的实例须先制定专门迁移方案。
+
 ```sh
 docker compose -f docker/compose.yaml stop odoo
-docker compose -f docker/compose.yaml -f docker/compose.test.yaml run --rm --no-deps odoo odoo -c /etc/odoo/odoo.conf -d 本机数据库名 -u blue_extension_contract,blue_config_asset,blue_stock_putaway,blue_wcs_base,blue_wcs_extension,blue_wcs_wes,blue_ai_client --stop-after-init --no-http --max-cron-threads=0
+docker compose -f docker/compose.yaml -f docker/compose.test.yaml run --rm --no-deps odoo odoo -c /etc/odoo/odoo.conf -d 本机数据库名 -u blue_extension_contract,blue_config_asset,blue_stock_putaway,blue_wcs_base,blue_wcs_extension,blue_ai_client --stop-after-init --no-http --max-cron-threads=0
 docker compose -f docker/compose.yaml up -d odoo
 ```
 

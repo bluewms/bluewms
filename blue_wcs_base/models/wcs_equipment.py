@@ -19,7 +19,7 @@ class WcsEquipment(models.Model):
     api_secret = fields.Char('海康 App Secret', groups='base.group_system', copy=False)
     callback_token = fields.Char('回调凭据', groups='base.group_system', copy=False)
     supports_loose_goods = fields.Boolean('JSON网关支持无容器货物',
-        help='仅标准JSON网关经现场确认支持按货物明细搬运后启用. 模拟设备始终支持; 海康/WES仍需要载具.')
+        help='仅标准JSON网关经现场确认支持按货物明细搬运后启用. 模拟设备始终支持; 海康仍需要载具.')
     supports_location_scope = fields.Boolean('JSON网关支持库区位置映射')
     supports_repeated_goods = fields.Boolean('真实设备支持同数据多任务', help='现场确认设备任务程序可重复处理相同货物数据后启用, 不增加库存记账次数.')
     task_type = fields.Char('设备任务模板', default='TRANSFER', required=True)

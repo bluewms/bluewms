@@ -208,8 +208,6 @@ class StockPicking(models.Model):
                 step[side + '_scope'] = ref in ('picking_source', 'picking_destination', 'source_parent', 'destination_parent') and any(item != location for item in actual)
             if (step['source_scope'] or step['destination_scope']) and not device._supports_wcs_location_scope():
                 raise UserError(self.env._('This adapter needs explicit support for area/zone position mappings.'))
-            if device.adapter_code == 'wes' and (source != lines.location_id or destination != lines.location_dest_id):
-                raise UserError(self.env._('WES mapping currently supports the planned inventory endpoints only.'))
             if step['movement'] == 'repeat' and device.adapter_code != 'simulation' and not device.supports_repeated_goods:
                 raise UserError(self.env._('Confirm the real device supports repeated same-data goods programs before using this orchestration.'))
         return steps

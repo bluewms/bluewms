@@ -1,6 +1,6 @@
 # WCS 使用与迁移边界
 
-更新：2026-10-18。当前由 `blue_wcs_base`、`blue_wcs_extension`、`blue_wcs_wes` 与合同／资产模块组成。AI 新生成仅使用 `wcs_creation/4`；旧 /1–/3 的合同、固定计划和历史版本保留。
+更新：2026-10-19。当前由 `blue_wcs_base`、`blue_wcs_extension`、`blue_wcs_protocol` 与合同／资产模块组成。WES 专用模块已退役，现有实例按[卸载说明](wes-retirement-20.md)处理。AI 新生成仅使用 `wcs_creation/4`；旧 /1–/3 的合同、固定计划和历史版本保留。
 
 ## 配置与操作
 
@@ -32,7 +32,7 @@
 
 ## 设备与未迁移范围
 
-simulation 支持散件和库区模拟；JSON 的散件、库区及真实设备同数据多程序须人工确认能力。HIK／WES 当前仍需载具，WES 仅支持既定库存端点。模拟和 HTTP 桩不等于真实设备联网验收。
+simulation 支持散件和库区模拟；JSON 的散件、库区及真实设备同数据多程序须人工确认能力。HIK 当前仍需载具；WES 历史协议边界见[Wiki 参考](../wiki/domains/equipment/reference/wes-vzf.md)，不作为当前已支持能力。模拟和 HTTP 桩不等于真实设备联网验收。
 
 统一装箱完成标记、空载具库存池自动搜索、任意新细点回报自动回写、多个物理载具合为一计划，以及旧 ZF 的 MES/E10、CTU、厂商盘点／物料同步等客户动作不属于已迁完的通用能力。
 

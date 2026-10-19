@@ -4,18 +4,26 @@ import requests
 
 from odoo.addons.blue_wcs_base.models.transport import TRANSPORTS
 
-from ..tools.protocol import ProtocolError, run_protocol
+from ..tools.protocol import ProtocolError, run_protocol, validate_headers
 
 
 def send_protocol(connection, payload):
     headers = {'Content-Type': 'application/json'}
-    if connection['auth_mode'] == 'bearer':
-        headers['Authorization'] = 'Bearer ' + connection['api_key']
-    elif connection['auth_mode'] == 'headers':
-        headers[connection['key_header']] = connection['api_key']
+    templates = connection.get('protocol_headers', {})
+    key_used = any('$app_key' in value for value in templates.values())
+    if connection['auth_mode'] == 'headers':
+        if connection['api_key']:
+            headers[connection['key_header']] = connection['api_key']
         if connection['api_secret']:
             headers[connection['secret_header']] = connection['api_secret']
+    elif connection['api_key'] and not key_used:
+        headers['Authorization'] = 'Bearer ' + connection['api_key']
+    for name, template in templates.items():
+        if ('$app_key' in template and not connection['api_key']) or ('$app_secret' in template and not connection['api_secret']):
+            continue
+        headers[name] = template.replace('$app_key', connection['api_key']).replace('$app_secret', connection['api_secret'])
     try:
+        validate_headers({key: value for key, value in headers.items() if key != 'Content-Type'})
         response = requests.post(connection['endpoint'], json=payload, headers=headers,
                                  timeout=(5, 20), allow_redirects=False, stream=True)
         try:

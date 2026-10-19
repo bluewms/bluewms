@@ -31,6 +31,6 @@
 - 人工参数与自动开关不变，数量仅覆盖／记账一次；公司、权限、冻结和旧合同兼容。
 - 本地试算只读、草稿保存与正式发布分开、云端故障不影响已发布业务。
 
-回归在 `blue_wcs_extension/tests`、`blue_wcs_base/tests` 和 `blue_wcs_wes/tests`；并发／持久调度使用 `scripts/test_wcs_v4_concurrency.py` 与 `scripts/test_wcs_v4_dispatch.py`，仅允许隔离 `*_test` 库。知识统一用 `scripts/validate_ai_wiki.py` 校验，不再读取旧综合稿或 Skill 离线包。
+回归在 `blue_wcs_extension/tests`、`blue_wcs_base/tests` 和 `blue_wcs_protocol/tests`；并发／持久调度使用 `scripts/test_wcs_v4_concurrency.py` 与 `scripts/test_wcs_v4_dispatch.py`，仅允许隔离 `*_test` 库。知识统一用 `scripts/validate_ai_wiki.py` 校验，不再读取旧综合稿或 Skill 离线包。
 
 最新真实模型与主库升级证据见[验收摘要](../migrations/native-wiki-runtime-20.validation.json)。早期迁移、237／253 等不同范围的历史结果保留在 Git 历史，不与最新 222 项模块回归或 11 项网关检查累加。真实设备联网验收仍须在现场单独完成。

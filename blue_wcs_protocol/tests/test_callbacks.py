@@ -1,3 +1,5 @@
+import json
+
 from odoo.tests import HttpCase, tagged
 
 from odoo.addons.blue_wcs_base.models.guard import WCS_TOKEN
@@ -51,7 +53,7 @@ class TestProtocolCallbacks(HttpCase):
         self.assertFalse(self.task.event_ids)
 
     def test_bearer_mode_keeps_authentication_for_configured_categories(self):
-        category = make_category(self.env, self.root, protocol_callback_mode='bearer', callback_token='protocol-callback-secret')
+        category = make_category(self.env, self.root, callback_token='protocol-callback-secret')
         task, line, package = make_task(self.env, category, self.warehouse, self.destination, self.product)
         task.with_context(blue_wcs_token=WCS_TOKEN).state = 'accepted'
         path = '/blue_wcs/v1/categories/%s/callback' % category.id
@@ -63,3 +65,32 @@ class TestProtocolCallbacks(HttpCase):
             headers={'Authorization': 'Bearer protocol-callback-secret'}).status_code, 200)
         task.invalidate_recordset()
         self.assertEqual(task.state, 'completed')
+
+    def test_nested_vendor_task_field_is_located_then_checked_by_pinned_code(self):
+        code = self.category.protocol_code.replace('request["message"]["taskId"]', 'request["message"]["data"]["orderId"]')
+        cases = json.loads(self.category.protocol_tests)
+        for case in cases:
+            if case['input']['request']['phase'] == 'callback':
+                message = case['input']['request']['message']
+                message['data'] = {'orderId': message.pop('taskId')}
+        # Use a separate category because an existing task pins the original parser.
+        category = self.env['wcs.equipment.category'].create({'name': 'Nested vendor',
+            'ip_post': 'http://127.0.0.1:9', 'submit_path': '/submit'})
+        category.protocol_profile_id.write({'draft_code': code, 'draft_tests': json.dumps(cases)})
+        category.action_protocol_validate()
+        category.action_protocol_publish()
+        task, line, package = make_task(self.env, category, self.warehouse, self.destination, self.product)
+        task.with_context(blue_wcs_token=WCS_TOKEN).state = 'accepted'
+        path = '/blue_wcs/v1/categories/%s/callback' % category.id
+        response = self.url_open(path, json={'data': {'orderId': task.name}, 'targetPoint': 'B-03'}, method='POST')
+        self.assertEqual(response.status_code, 200)
+        task.invalidate_recordset()
+        self.assertEqual(task.state, 'completed')
+
+    def test_two_existing_task_identifiers_are_ambiguous_and_do_not_write(self):
+        other, line, package = make_task(self.env, self.category, self.warehouse, self.destination, self.product)
+        body = {'taskId': self.task.name, 'other': other.name, 'targetPoint': 'B-03'}
+        response = self.url_open('/blue_wcs/v1/categories/%s/callback' % self.category.id, json=body, method='POST')
+        self.assertEqual(response.status_code, 404)
+        self.task.invalidate_recordset()
+        self.assertEqual(self.task.state, 'accepted')

@@ -1,6 +1,6 @@
 # 模块分类与依赖
 
-更新：2026-10-18。所有 addon 直接位于仓库一级目录，按技术名前缀区分领域，不再套 `muk/`、`stock/` 或 `wcs/` 分类目录。
+更新：2026-10-19。所有 addon 直接位于仓库一级目录，按技术名前缀区分领域，不再套 `muk/`、`stock/` 或 `wcs/` 分类目录。
 
 ## 命名与维护归属
 
@@ -20,10 +20,8 @@
 | `blue_ai_client` | MuK 云端连接、原生 Wiki、五类 Task 与专用草稿工具 | LGPL-3 |
 | `blue_wcs_base` | 设备、计划／任务、持久发送队列与认证回调 | AGPL-3 |
 | `blue_wcs_extension` | 库存作业接入、/4 行决定与任务编排 | AGPL-3 |
-| `blue_wcs_wes` | WES 认证、报文和逐明细完成处理 | AGPL-3 |
 | `blue_wcs_protocol` | 类别级可编辑 HTTP 协议、AI 草稿、固定版本及受控位置回写 | AGPL-3 |
 | `blue_web_theme` | 品牌主菜单和产品界面，与库存基础分开 | LGPL-3 |
-| `blue_dev_environment` | 开发环境标识，无业务逻辑 | AGPL-3 |
 | `muk_*` 等第三方模块 | Web／主题、AI、Skills、MCP 底座，保留上游名称 | 以各模块清单与[第三方记录](third-party/muk-ai-install-2026-10-12.md)为准 |
 
 版本以各 `__manifest__.py` 及部署实例为准，来源与许可细节保留在模块 LICENSE／NOTICE、`third-party/` 和 `migrations/*source-lock.json` 中。

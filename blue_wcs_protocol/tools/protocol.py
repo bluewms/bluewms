@@ -4,6 +4,7 @@ import copy
 import json
 import math
 import operator
+import re
 
 
 CONTRACT = 'device_protocol/1'
@@ -54,6 +55,21 @@ def bounded(value, depth=0, budget=None):
     if budget[0] < 0:
         raise ProtocolError('JSON data exceeds the protocol resource budget.')
     return value
+
+
+def validate_headers(headers):
+    if type(headers) is not dict or len(headers) > 20:
+        raise ProtocolError('Headers must be an object with at most 20 entries.')
+    names = set()
+    for name, value in headers.items():
+        if (not re.fullmatch(r'[A-Za-z][A-Za-z0-9-]{0,63}', name)
+                or name.lower() in names
+                or name.lower() in ('host', 'content-length', 'connection', 'transfer-encoding', 'content-type', 'cookie')
+                or type(value) is not str or len(value) > 1024
+                or any(ord(char) < 32 or ord(char) == 127 for char in value)):
+            raise ProtocolError('Invalid HTTP header name or value.')
+        names.add(name.lower())
+    return headers
 
 
 def validate_protocol(code):
@@ -268,8 +284,9 @@ def run_protocol(code, payload):
             raise ProtocolError('Produce a result JSON object.')
         phase = request['phase']
         if phase == 'request':
-            if set(result) != {'body'} or type(result['body']) is not dict:
-                raise ProtocolError('Request result requires only a JSON body object; connection settings are manual.')
+            if set(result) not in ({'body'}, {'body', 'headers'}) or type(result['body']) is not dict:
+                raise ProtocolError('Request result requires body and optional credential-reference headers.')
+            validate_headers(result.get('headers', {}))
         elif phase == 'response':
             if set(result) != {'state', 'reason'} or result['state'] not in ('accepted', 'rejected', 'unknown'):
                 raise ProtocolError('Response result needs state and reason.')
@@ -294,22 +311,24 @@ def run_protocol(code, payload):
 
 def protocol_schema():
     return {
-        'contract': CONTRACT, 'hook_code': 'device_protocol', 'schema_version': 1,
+        'contract': CONTRACT, 'hook_code': 'device_protocol', 'schema_version': 2,
         'phases': ['request', 'response', 'callback'],
         'input': {'request': {'phase': 'request|response|callback',
             'task': {'task_id': 'text', 'source': 'text', 'destination': 'text', 'template': 'text',
                      'carrier': 'text', 'device_code': 'text', 'role': 'goods|empty_supply|empty_return',
                      'operation': 'incoming|outgoing|internal'},
             'message': 'JSON response or one callback object; empty for request', 'http_status': 'integer',
-            'parameters': 'administrator-approved non-secret vendor parameters'},
+            'parameters': 'non-secret legacy parameters; new vendor constants belong in code'},
             'candidates': 'up to 200 goods objects: product_code, quantity, uom, lot'},
-        'output': {'request': {'body': 'JSON object'},
+        'output': {'request': {'body': 'JSON object',
+                'headers?': 'optional text map; $app_key / $app_secret are resolved locally, omitted when blank; default Bearer uses the category Token'},
             'response': {'state': 'accepted|rejected|unknown', 'reason': 'text <=512'},
             'callback': {'task_id': 'same task_id', 'event': 'end', 'point': 'reported point',
-                'subposition': 'package subposition, or empty', 'destination_code': 'exact approved location code, or empty',
+                'subposition': 'package subposition, or empty', 'destination_code': 'exact same-company, current-warehouse internal location barcode or AGV code, or empty',
                 'response': 'bounded vendor acknowledgement object'}},
         'syntax': 'JSON literals, local assignments, if/else, for candidate in candidates, .get, local .append, slices, str/int/float/len; no imports, eval, ORM, attributes or networking',
-        'manual_settings': ['adapter_code', 'company', 'technician', 'IP', 'submit_path', 'credentials',
-                            'callback_mode', 'allowed_destination_root', 'allowed_writebacks'],
+        'manual_settings': ['company', 'technician', 'IP', 'submit_path', 'credentials'],
+        'callback_lookup': 'one exact existing task ID in the JSON values; pinned code maps task_id and completion',
+        'writebacks': 'published code chooses subposition and/or destination_code; fixed service validates final step, warehouse, company, stock and capacity',
         'limits': {'code_characters': 32768, 'input_bytes': MAX_BYTES, 'items': MAX_ITEMS, 'steps': MAX_STEPS},
     }

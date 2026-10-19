@@ -16,8 +16,10 @@ class WcsEquipmentCategory(models.Model):
     adapter_code = fields.Selection([('simulation', '模拟设备'), ('hik', 'HikRobot'), ('json', 'JSON接口')], required=True, default='simulation')
     ip_post = fields.Char('IP地址', groups='base.group_system')
     submit_path = fields.Char('任务接口路径', groups='base.group_system', default='/rcs/rtas/api/robot/controller/task/submit')
-    app_key = fields.Char('App Key / Token', groups='base.group_system', copy=False)
-    app_secret = fields.Char('App Secret', groups='base.group_system', copy=False)
+    app_key = fields.Char('App Key / Token (appId)', groups='base.group_system', copy=False,
+                          help='厂商 App Key、appId 或已取得的 Token. 填写 appId 不会自动执行获取 Token 请求.')
+    app_secret = fields.Char('App Secret (appSecret)', groups='base.group_system', copy=False,
+                             help='厂商 App Secret 或 appSecret, 与 App Key / appId 配套填写.')
     callback_token = fields.Char('回调凭据', groups='base.group_system', copy=False)
     equipment_ids = fields.One2many('wcs.equipment', 'category_id', '设备')
     equipment_count = fields.Integer('设备数量', compute='_compute_counts')
