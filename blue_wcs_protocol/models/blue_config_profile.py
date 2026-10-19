@@ -82,6 +82,6 @@ class BlueConfigProfile(models.Model):
     def action_rollback(self):
         if self.hook_code == 'device_protocol':
             previous = self.active_release_id.previous_release_id
-            if previous and json.loads(previous.snapshot)['scope'] != self._scope_snapshot():
+            if previous and not self.device_category_id._protocol_release_scope_matches(json.loads(previous.snapshot)['scope']):
                 raise UserError(self.env._('历史版本的人工配置不同,请先核对类别设置再回滚.'))
         return super().action_rollback()

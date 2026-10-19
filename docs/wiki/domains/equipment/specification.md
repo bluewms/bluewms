@@ -1,12 +1,14 @@
 # 设备连接接口 AI 生成规范
 
-hook：device_protocol。合同：device_protocol/1。复核：2026-10-18。适用安装本合同的实例；云端批准与本地安装状态分别确认。
+hook：device_protocol。合同：device_protocol/1。复核：2026-10-19。适用安装本合同的实例；云端批准与本地安装状态分别确认。
 
 ## 人工设置与类别资产
 
-设备类别维护一份协议资产，所属设备共用类别连接。人工创建类别并填写适配方式、公司、负责人、地址、任务路径、App Key／Token、App Secret、回调凭据、认证方式及允许回写范围。设备从设备页面创建，维护实例编码和任务模板。
+设备类别维护一份协议资产，所属设备共用类别连接。新类别统一采用 HTTP／JSON；人工只填写公司、负责人、地址、任务路径、App Key／Token、App Secret 和回调凭据，不再选择接口方式或另外配置认证、任务号字段及位置回写开关。设备从设备页面创建，维护实例编码和任务模板。
 
-AI 只修改绑定资产的代码、需求和试算，不创建类别、设备、Task 或模块，不改地址、路径、认证、密钥、自动开关、公司及允许库区。真实密钥不在生成输入内。非秘密厂商参数通过人工配置的 parameters 传入；认证值只放专用凭据字段。
+AI 只修改绑定资产的代码、需求和试算，不创建类别、设备、Task 或模块，不改地址、路径、密钥、自动开关及公司。真实密钥不在生成输入内。厂家固定业务常量写在代码中，parameters 仅保留历史非秘密参数兼容。厂家文档和版本在 Wiki 维护；未明确版本时只按唯一默认版本 1 处理。
+
+统一页面与可选 headers 对应 blue_wcs_protocol 20.0.1.1.0、schema_version=2；旧 /1 实例以本地 contract_schema 为准，未声明 headers 时请求只输出 body。六个页签与上架、WCS 一致：需求、可编辑代码、试算、代码版本、发布历史、审计记录。
 
 ## 三个阶段及准确结构
 
@@ -18,14 +20,14 @@ AI 只修改绑定资产的代码、需求和试算，不创建类别、设备�
 | task | task_id、source、destination、template、carrier、device_code、role、operation |
 | message | 厂商响应或单条回调 JSON 对象；下发阶段为空对象 |
 | http_status | 响应状态整数，其他阶段为 0 |
-| parameters | 人工批准的非秘密参数对象 |
+| parameters | 历史非秘密参数对象；新固定业务常量放代码 |
 | candidates | 至多 200 条货物；product_code、quantity、uom、lot，实际字段以本地合同为准 |
 
 role 为 goods／empty_supply／empty_return，operation 为 incoming／outgoing／internal。不存在 ORM 对象，不能假定未返回字段。
 
 | 阶段 | result 准确结构 |
 |---|---|
-| request | body 一个键，值为厂商 JSON 请求对象；地址、POST 路径和请求头由固定服务注入 |
+| request | body 必填，值为厂商 JSON 请求对象；headers 可选，为请求头名到文本模板的对象，最多 20 项。地址和 POST 路径仍由人工设置 |
 | response | state 和 reason；state 为 accepted／rejected／unknown，reason 为至多 512 字符说明 |
 | callback | task_id、event、point、subposition、destination_code、response 六个键；前五个为至多 256 字符文本，response 为有界厂商应答对象 |
 
@@ -33,8 +35,8 @@ callback.task_id 必须等于当前任务号，event 只能为 end。没有子�
 
 ## 完成位置回写
 
-- subposition：提取／转换细点，固定服务更新当前任务关联包裹或载具，不因此改变库存库位。类别必须人工允许该能力。
-- destination_code：提取／转换既有库位编码。类别须人工允许并指定目的库区；固定服务在同公司、批准库区内按条码或 AGV 编码唯一匹配，核对原生容量、托盘、重量、混放和冻结，随后同步 WCS 实际目的位置及对应未完成库存明细。
+- subposition：提取／转换细点，固定服务更新当前任务关联包裹或载具，不因此改变库存库位。无需另开类别选项，人工发布的代码决定是否输出该字段。
+- destination_code：提取／转换既有库位编码。无需另开类别选项；固定服务从当前作业类型确定仓库，在同公司、该仓库内按条码或 AGV 编码唯一匹配，核对原生容量、托盘、重量、混放和冻结，随后同步 WCS 实际目的位置及对应未完成库存明细。
 
 保留原计划位置与原始回报。不得模糊取第一条、自动创建库位或改已完成库存历史。部分数量、多计划共用库存行、未知／多个位置匹配、原生约束不满足时待核对；中间接力不能提前写最终位置。位置更新与完成事件在同一受控事务内执行，重复回报不重复写入或记账。
 
@@ -50,8 +52,12 @@ callback.task_id 必须等于当前任务号，event 只能为 end。没有子�
 
 ## 回调与版本
 
-首例 TUSK 沿用 /api/blue_wcs_tusk/feedbackTask，无附加 Token，用户已确认只在最终完成回调；类别须人工启用此兼容地址。其他类别可人工配置 Bearer，AI 不修改认证。任务号检查不是来源身份认证。
+统一回调为 /blue_wcs/v1/categories/<类别编号>/callback；旧 /api/blue_wcs_tusk/feedbackTask 保留兼容，无需启用开关。TUSK 用户已确认只在最终完成回调。固定服务从报文值中查找唯一既有 WCS 任务号，最多 200 个不同短文本值；匹配不到或出现多个任务号拒绝，随后固定版本代码必须返回同一 task_id。不再手填任务号字段，支持嵌套字段，仍只处理单条任务，不支持以容器代替任务号。任务号检查不是来源身份认证。
 
-每张任务固定协议发布版本和准确输入；新发布不替换在途任务。有未结束任务时不能更换连接、类别、任务定位字段或允许范围。普通回调不能绕过协议解析，错误完成回报进入待核对。
+App Key／Token 留空不附加默认认证，填写则默认下发 Authorization: Bearer <Token>。特殊厂商头写在代码的可选 headers 中，例如 {"xyy-app-id": "$app_key", "xyy-app-key": "$app_secret"}，本地固定服务代入类别密钥；AI 只看到占位符。引用的凭据留空时不发送该头；显式使用 $app_key 时不自动重复附加 Bearer。不能输出 Host、Cookie、Content-Type、Content-Length 等传输控制头或换行。不要在代码／试算中硬编码真实密钥。动态取 Token、签名等未开放的认证算法需要补通用能力，不能假定已支持。
+
+回调凭据留空不要求附加 Token；填写则必须用 Authorization: Bearer <回调凭据>，代码不能关闭校验。现有固定适配器的历史配置与路由保留兼容，不再作为新类别选择入口。
+
+每张任务固定协议发布版本和准确输入；新发布不替换在途任务。有未结束任务时不能更换连接或类别。旧发布快照仍按原批准范围执行，重新验证发布后的统一模式按当前作业仓库限制回写。普通回调不能绕过协议解析，错误完成回报进入待核对。
 
 案例见 [准确案例](examples/README.md)，使用见 [配置说明](configuration-guide.md)，厂商差异见 [旧协议参考](reference/legacy-interfaces.md)。取消、关闭、解绑、位置查询、盘点和旧模块直接改库存等，不因上传了参考就成为本合同能力。

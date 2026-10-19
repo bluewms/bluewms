@@ -19,16 +19,17 @@ class WcsEquipmentCategory(models.Model):
     _inherit = 'wcs.equipment.category'
 
     adapter_code = fields.Selection(string='接口执行方式', selection_add=[('protocol', '可编辑 HTTP 接口')],
-                                     ondelete={'protocol': 'set default'})
+                                     ondelete={'protocol': 'set default'}, default='protocol')
+    submit_path = fields.Char(default=False)
     protocol_profile_id = fields.Many2one('blue.config.profile', '接口代码资产', readonly=True,
                                           copy=False, check_company=True, ondelete='restrict')
-    protocol_auth_mode = fields.Selection([('none', '不附加认证'), ('bearer', 'Bearer Token'),
-                                           ('headers', '厂商认证请求头')], string='下发认证', default='none', required=True,
+    protocol_auth_mode = fields.Selection([('auto', '根据连接凭据自动选择'), ('none', '不附加认证'), ('bearer', 'Bearer Token'),
+                                           ('headers', '厂商认证请求头')], string='下发认证', default='auto', required=True,
                                            groups='base.group_system')
     protocol_key_header = fields.Char('App Key 请求头名称', default='X-App-Key', groups='base.group_system')
     protocol_secret_header = fields.Char('App Secret 请求头名称', default='X-App-Secret', groups='base.group_system')
-    protocol_callback_mode = fields.Selection([('legacy', '旧版兼容,不附加 Token'), ('bearer', 'Bearer Token')],
-        string='回调接入方式', default='legacy', required=True, groups='base.group_system')
+    protocol_callback_mode = fields.Selection([('auto', '根据回调凭据自动选择'), ('legacy', '旧版兼容,不附加 Token'), ('bearer', 'Bearer Token')],
+        string='回调接入方式', default='auto', required=True, groups='base.group_system')
     protocol_task_key = fields.Char('回调任务号字段', default='taskId', required=True, groups='base.group_system')
     protocol_tusk_compat = fields.Boolean('启用旧 TUSK 回调地址', groups='base.group_system')
     protocol_parameters = fields.Json('厂商业务参数(非密钥)', default=dict, groups='base.group_system',
@@ -43,6 +44,13 @@ class WcsEquipmentCategory(models.Model):
     protocol_state = fields.Selection(related='protocol_profile_id.state', related_sudo=False)
     protocol_result = fields.Text(related='protocol_profile_id.simulation_result', related_sudo=False)
     protocol_release_id = fields.Many2one(related='protocol_profile_id.active_release_id', related_sudo=False)
+
+    protocol_draft_source = fields.Selection(related='protocol_profile_id.draft_source', readonly=False, related_sudo=False)
+    protocol_conversation_ref = fields.Char(related='protocol_profile_id.conversation_ref', readonly=False, related_sudo=False)
+    protocol_knowledge_references = fields.Text(related='protocol_profile_id.knowledge_references', related_sudo=False)
+    protocol_version_ids = fields.One2many(related='protocol_profile_id.version_ids', related_sudo=False)
+    protocol_release_ids = fields.One2many(related='protocol_profile_id.release_ids', related_sudo=False)
+    protocol_event_ids = fields.One2many(related='protocol_profile_id.event_ids', related_sudo=False)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -84,16 +92,27 @@ class WcsEquipmentCategory(models.Model):
         profiles.unlink()
         return super().unlink()
 
-    def _protocol_scope(self):
+    def _protocol_scope(self, legacy=False):
         self.ensure_one()
-        # Administrator-maintained non-secret scope, safe for the bound AI asset.
         category = self.sudo()
+        if legacy:
+            # Historical releases retain their original manually approved boundary.
+            return {'category_id': category.id, 'submit_path': category.submit_path or '',
+                    'callback_task_key': category.protocol_task_key, 'legacy_tusk_callback': category.protocol_tusk_compat,
+                    'allow_subposition': category.protocol_allow_subposition,
+                    'allow_destination': category.protocol_allow_destination,
+                    'destination_root_id': category.protocol_destination_root_id.id or False,
+                    'callback_mode': category.protocol_callback_mode, 'parameters': category.protocol_parameters or {}}
         return {'category_id': category.id, 'submit_path': category.submit_path or '',
-                'callback_task_key': category.protocol_task_key, 'legacy_tusk_callback': category.protocol_tusk_compat,
-                'allow_subposition': category.protocol_allow_subposition,
-                'allow_destination': category.protocol_allow_destination,
-                'destination_root_id': category.protocol_destination_root_id.id or False,
-                'callback_mode': category.protocol_callback_mode, 'parameters': category.protocol_parameters or {}}
+                'interface_mode': 'http_json', 'parameters': category.protocol_parameters or {}}
+
+    def _protocol_scope_matches(self, scope):
+        return scope == self._protocol_scope(legacy=scope.get('interface_mode') != 'http_json')
+
+    def _protocol_release_scope_matches(self, scope):
+        expected = self.protocol_profile_id._scope_snapshot()
+        expected['device_scope'] = self._protocol_scope(legacy=scope['device_scope'].get('interface_mode') != 'http_json')
+        return scope == expected
 
     @api.constrains('adapter_code', 'ip_post', 'protocol_task_key', 'protocol_key_header',
                     'protocol_secret_header', 'protocol_tusk_compat', 'protocol_allow_destination',
@@ -119,8 +138,6 @@ class WcsEquipmentCategory(models.Model):
                 if header and (not re.fullmatch(r'[A-Za-z][A-Za-z0-9-]{0,63}', header)
                                or header.lower() in ('host', 'content-length', 'connection', 'transfer-encoding')):
                     raise ValidationError(self.env._('厂商认证请求头名称无效.'))
-            if config.protocol_tusk_compat and config.protocol_task_key != 'taskId':
-                raise ValidationError(self.env._('旧 TUSK 回调使用 taskId 定位任务.'))
             if config.protocol_destination_root_id and config.protocol_destination_root_id.company_id != category.company_id:
                 raise ValidationError(self.env._('目的库区必须属于当前公司.'))
 
@@ -129,22 +146,14 @@ class WcsEquipmentCategory(models.Model):
         self.check_access('read')
         config = self.sudo()  # Only fixed connection fields, never returned to the AI.
         if config.adapter_code != 'protocol' or not config.ip_post or not config.submit_path:
-            raise UserError(self.env._('请选择可编辑 HTTP 接口并人工填写设备地址及任务接口路径.'))
-        if config.protocol_auth_mode != 'none' and not config.app_key:
-            raise UserError(self.env._('请填写下发认证所需的 App Key / Token.'))
-        if config.protocol_auth_mode == 'headers' and (not config.protocol_key_header or (config.app_secret and not config.protocol_secret_header)):
-            raise UserError(self.env._('请填写厂商认证请求头名称.'))
-        if config.protocol_callback_mode == 'bearer' and not config.callback_token:
-            raise UserError(self.env._('请填写回调凭据.'))
-        if config.protocol_allow_destination and not config.protocol_destination_root_id:
-            raise UserError(self.env._('允许变更实际库存库位时,必须人工指定允许目的库区.'))
+            raise UserError(self.env._('请人工填写 HTTP(S) 设备地址及任务接口路径.'))
 
     def _protocol_release(self):
         self.ensure_one()
         self._protocol_check_configuration()
         profile = self.protocol_profile_id
         release = profile.active_release_id
-        if not profile.active or not release or json.loads(release.snapshot)['scope'] != profile._scope_snapshot():
+        if not profile.active or not release or not self._protocol_release_scope_matches(json.loads(release.snapshot)['scope']):
             raise UserError(self.env._('请先验证并发布与当前类别设置一致的设备协议.'))
         return release
 
@@ -177,16 +186,3 @@ class WcsEquipmentCategory(models.Model):
         self.ensure_one()
         self.check_access('write')
         return self.protocol_profile_id.action_blue_ai_chat()
-
-    def action_protocol_versions(self):
-        self.ensure_one()
-        self.check_access('read')
-        return {'type': 'ir.actions.act_window', 'name': self.env._('接口代码与版本'),
-                'res_model': 'blue.config.profile', 'res_id': self.protocol_profile_id.id, 'view_mode': 'form'}
-
-    def action_view_equipment(self):
-        self.ensure_one()
-        self.check_access('read')
-        return {'type': 'ir.actions.act_window', 'name': self.env._('设备'), 'res_model': 'wcs.equipment',
-                'view_mode': 'kanban,list,form', 'domain': [('category_id', '=', self.id)],
-                'context': {'default_category_id': self.id, 'default_company_id': self.company_id.id}}

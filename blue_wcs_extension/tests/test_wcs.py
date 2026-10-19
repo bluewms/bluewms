@@ -20,7 +20,7 @@ class TestWcs(TransactionCase):
         cls.source = cls.warehouse.lot_stock_id
         cls.destination = cls.env['stock.location'].create({'name': 'WCS target', 'usage': 'internal', 'location_id': cls.source.id, 'company_id': cls.env.company.id})
         cls.product = cls.env['product.product'].create({'name': 'WCS goods', 'is_storable': True, 'tracking': False})
-        cls.category = cls.env['wcs.equipment.category'].create({'name': 'WCS simulated category', 'company_id': cls.env.company.id})
+        cls.category = cls.env['wcs.equipment.category'].create({'name': 'WCS simulated category', 'adapter_code': 'simulation', 'company_id': cls.env.company.id})
         cls.device = cls.env['wcs.equipment'].create({'name': 'WCS simulated', 'company_id': cls.env.company.id, 'category_id': cls.category.id})
         cls.device2 = cls.env['wcs.equipment'].create({'name': 'WCS simulated leg 2', 'company_id': cls.env.company.id})
         cls.profile = cls.env['blue.config.profile'].create({'name': 'WCS strategy', 'template_id': cls.env.ref('blue_wcs_extension.template_relay_v3').id})

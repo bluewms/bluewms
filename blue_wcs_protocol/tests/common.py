@@ -13,8 +13,7 @@ def fixture(name='tusk-subposition'):
 def make_category(env, root, name='tusk-subposition', **settings):
     category = env['wcs.equipment.category'].create({
         'name': 'Protocol regression ' + name, 'company_id': env.company.id, 'adapter_code': 'protocol',
-        'ip_post': 'http://127.0.0.1:9', 'submit_path': '/rpc/createTask', 'protocol_tusk_compat': True,
-        'protocol_allow_destination': name == 'tusk-destination', 'protocol_destination_root_id': root.id,
+        'ip_post': 'http://127.0.0.1:9', 'submit_path': '/rpc/createTask',
         **settings})
     example = fixture(name)
     category.protocol_profile_id.write({'draft_code': example['code'], 'draft_tests': json.dumps(example['cases'])})

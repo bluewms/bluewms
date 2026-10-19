@@ -1,7 +1,7 @@
 {
   "contract": "device_protocol/1",
   "hook_code": "device_protocol",
-  "schema_version": 1,
+  "schema_version": 2,
   "phases": [
     "request",
     "response",
@@ -22,13 +22,14 @@
       },
       "message": "JSON response or one callback object; empty for request",
       "http_status": "integer",
-      "parameters": "administrator-approved non-secret vendor parameters"
+      "parameters": "non-secret legacy parameters; new vendor constants belong in code"
     },
     "candidates": "up to 200 goods objects: product_code, quantity, uom, lot"
   },
   "output": {
     "request": {
-      "body": "JSON object"
+      "body": "JSON object",
+      "headers?": "optional text map; $app_key / $app_secret are resolved locally, omitted when blank; default Bearer uses the category Token"
     },
     "response": {
       "state": "accepted|rejected|unknown",
@@ -39,22 +40,20 @@
       "event": "end",
       "point": "reported point",
       "subposition": "package subposition, or empty",
-      "destination_code": "exact approved location code, or empty",
+      "destination_code": "exact same-company, current-warehouse internal location barcode or AGV code, or empty",
       "response": "bounded vendor acknowledgement object"
     }
   },
   "syntax": "JSON literals, local assignments, if/else, for candidate in candidates, .get, local .append, slices, str/int/float/len; no imports, eval, ORM, attributes or networking",
   "manual_settings": [
-    "adapter_code",
     "company",
     "technician",
     "IP",
     "submit_path",
-    "credentials",
-    "callback_mode",
-    "allowed_destination_root",
-    "allowed_writebacks"
+    "credentials"
   ],
+  "callback_lookup": "one exact existing task ID in the JSON values; pinned code maps task_id and completion",
+  "writebacks": "published code chooses subposition and/or destination_code; fixed service validates final step, warehouse, company, stock and capacity",
   "limits": {
     "code_characters": 32768,
     "input_bytes": 262144,

@@ -33,5 +33,6 @@ class WcsEquipment(models.Model):
             raise UserError(self.env._('可编辑接口必须关联同公司设备类别.'))
         return {'adapter_code': 'protocol', 'endpoint': (category.ip_post or '').rstrip('/') + (category.submit_path or ''),
                 'api_key': category.app_key or '', 'api_secret': category.app_secret or '',
-                'auth_mode': category.protocol_auth_mode, 'key_header': category.protocol_key_header,
+                'auth_mode': ('headers' if category.protocol_auth_mode == 'headers' and category.app_key
+                              else 'bearer' if category.app_key else 'none'), 'key_header': category.protocol_key_header,
                 'secret_header': category.protocol_secret_header}

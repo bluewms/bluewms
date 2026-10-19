@@ -39,7 +39,9 @@ class TestDeviceProtocol(BaseCommon):
         return task._protocol_receive({'taskId': task.name, 'targetPoint': point, **values})
 
     def test_empty_category_has_asset_without_local_example(self):
-        category = self.env['wcs.equipment.category'].create({'name': 'Manual new vendor', 'adapter_code': 'protocol'})
+        category = self.env['wcs.equipment.category'].create({'name': 'Manual new vendor'})
+        self.assertEqual(category.adapter_code, 'protocol')
+        self.assertFalse(category.submit_path)
         self.assertTrue(category.protocol_profile_id)
         self.assertFalse(category.protocol_code)
         self.assertFalse(category.protocol_tests)
@@ -189,7 +191,7 @@ class TestDeviceProtocol(BaseCommon):
         category, task, line, package = self._task('tusk-destination')
         self._accept(task)
         outside = self.env['stock.location'].create({'name': 'Outside root', 'usage': 'internal',
-            'location_id': self.warehouse.view_location_id.id, 'company_id': self.env.company.id,
+            'location_id': self.env['stock.warehouse'].create({'name': 'Other warehouse', 'code': 'PWX'}).view_location_id.id, 'company_id': self.env.company.id,
             'barcode': 'PROTOCOL-OUTSIDE'})
         with self.assertRaises(ValidationError), self.cr.savepoint():
             self._callback(task, outside.barcode)
@@ -205,7 +207,7 @@ class TestDeviceProtocol(BaseCommon):
         with self.assertRaises(AccessError):
             category.with_user(worker).action_protocol_publish()
 
-    def test_valid_location_rolls_back_if_subposition_permission_fails(self):
+    def test_valid_location_rolls_back_if_subposition_coordinate_fails(self):
         example = fixture('tusk-destination')
         code = example['code'].replace('"subposition": ""', '"subposition": "C-03"')
         category = self.env['wcs.equipment.category'].create({'name': 'Atomic callback category',
@@ -218,6 +220,7 @@ class TestDeviceProtocol(BaseCommon):
         category.action_protocol_validate()
         category.action_protocol_publish()
         task, line, package = make_task(self.env, category, self.warehouse, self.destination, self.product)
+        self.env['stock.location.coordinate'].create({'name': '1', 'location_code': 'C-01', 'location_id': self.actual.id})
         self._accept(task)
         with self.assertRaises(ValidationError), self.cr.savepoint():
             self._callback(task, self.actual.barcode)
@@ -314,3 +317,60 @@ class TestDeviceProtocol(BaseCommon):
         self.assertEqual(task.state, 'accepted')
         self.assertEqual(follower.state, 'waiting')
         self.assertEqual(line.location_dest_id, self.destination)
+
+    def test_token_presence_drives_auth_without_an_extra_switch(self):
+        category = self.env['wcs.equipment.category'].create({'name': 'Token vendor', 'app_key': 'local-token'})
+        device = self.env['wcs.equipment'].create({'name': 'Token device', 'category_id': category.id})
+        self.assertEqual(device._connection_snapshot()['auth_mode'], 'bearer')
+        category.app_key = False
+        self.assertEqual(device._connection_snapshot()['auth_mode'], 'none')
+
+    def test_code_header_placeholders_use_local_credentials_and_omit_blank_values(self):
+        category, task, line, package = self._task()
+        connection = task._dispatch_connection()
+        connection.update(api_key='local-key', api_secret='local-secret', protocol_headers={
+            'X-Vendor-Key': '$app_key', 'X-Vendor-Secret': '$app_secret'})
+        for secret, expected in [('local-secret', True), ('', False)]:
+            connection['api_secret'] = secret
+            response = Mock(status_code=200)
+            response.iter_content.return_value = [b'{"msg":"success"}']
+            with patch('odoo.addons.blue_wcs_protocol.models.transport.requests.post', return_value=response) as post:
+                self.assertEqual(send_protocol(connection, task._payload())[0], 'accepted')
+            headers = post.call_args.kwargs['headers']
+            self.assertEqual(headers['X-Vendor-Key'], 'local-key')
+            self.assertEqual('X-Vendor-Secret' in headers, expected)
+            self.assertNotIn('Authorization', headers)
+
+    def test_protocol_category_has_the_common_six_asset_tabs_and_no_duplicate_settings(self):
+        from lxml import etree
+        view = self.env['wcs.equipment.category'].get_view(view_id=self.env.ref('blue_wcs_base.category_form').id)
+        arch = etree.fromstring(view['arch'])
+        pages = arch.xpath('//notebook[@name="protocol_notebook"]/page')
+        self.assertEqual([page.get('string') for page in pages], ['需求', '可编辑代码', '试算', '代码版本', '发布历史', '审计记录'])
+        self.assertEqual(arch.xpath('//field[@name="adapter_code"]')[0].get('invisible'), '1')
+        for name in ['equipment_ids', 'equipment_count', 'protocol_auth_mode', 'protocol_callback_mode',
+                     'protocol_task_key', 'protocol_allow_subposition', 'protocol_allow_destination', 'protocol_parameters']:
+            self.assertFalse(arch.xpath('//field[@name="%s"]' % name), name)
+        self.assertFalse(arch.xpath('//button[@name="action_view_equipment"]'))
+
+    def test_legacy_release_keeps_its_scope_until_a_new_release_is_published(self):
+        Category = type(self.env['wcs.equipment.category'])
+        original = Category._protocol_scope
+        def old_scope(record, legacy=False):
+            return original(record, legacy=True)
+        with patch.object(Category, '_protocol_scope', old_scope):
+            category, task, line, package = self._task(protocol_allow_subposition=False,
+                protocol_callback_mode='legacy')
+        old_release = task.protocol_release_id
+        self.assertEqual(category._protocol_release(), old_release)
+        self._accept(task)
+        with self.assertRaises(ValidationError), self.cr.savepoint():
+            self._callback(task)
+        profile = category.protocol_profile_id
+        profile.action_new_draft()
+        profile.action_validate()
+        profile.action_publish()
+        self.assertEqual(task.protocol_release_id, old_release)
+        self.assertEqual(profile._scope_snapshot()['device_scope']['interface_mode'], 'http_json')
+        profile.action_rollback()
+        self.assertEqual(profile.active_release_id, old_release)

@@ -31,23 +31,38 @@ class DeviceCallback(http.Controller):
             if type(message) is not dict:
                 raise ValueError('Expected an object')
             category = request.env['wcs.equipment.category'].sudo().browse(category_id).exists() if category_id else None
-            key = 'taskId' if legacy else (category.protocol_task_key if category else '')
-            name = message.get(key)
-            if type(name) is not str or not 1 <= len(name) <= 128:
-                raise ValueError('Missing bounded task identifier')
-            tasks = request.env['wcs.request'].sudo().search([
-                ('name', '=', name), ('protocol_release_id', '!=', False)], limit=2)
-            if len(tasks) != 1:
-                return request.make_json_response({'error': 'unknown_task'}, status=404)
-            task = tasks.with_company(tasks.company_id)
-            pinned = task.protocol_category_id
-            if (not pinned or pinned.company_id != task.company_id or pinned.adapter_code != 'protocol'
-                    or (legacy and not pinned.protocol_tusk_compat) or (category_id and pinned.id != category_id)):
+            if category_id and (not category or category.adapter_code != 'protocol'):
                 return request.make_json_response({'error': 'wrong_category'}, status=403)
-            if pinned.protocol_callback_mode == 'bearer':
+            # Locate only exact existing opaque task IDs, independent of vendor JSON keys.
+            # The pinned parser must then confirm that same ID and completion meaning.
+            values, pending = set(), [message]
+            while pending:
+                value = pending.pop()
+                if type(value) is dict:
+                    pending.extend(value.values())
+                elif type(value) is list:
+                    pending.extend(value)
+                elif type(value) is str and 1 <= len(value) <= 128:
+                    values.add(value)
+                    if len(values) > 200:
+                        raise ValueError('Too many callback values')
+            domain = [('name', 'in', sorted(values)), ('protocol_release_id', '!=', False)]
+            if category_id:
+                domain.append(('protocol_category_id', '=', category_id))
+            tasks = request.env['wcs.request'].sudo().search(domain, limit=2)
+            if len(tasks) != 1:
+                return request.make_json_response({'error': 'unknown_or_ambiguous_task'}, status=404)
+            candidate = tasks.with_company(tasks.company_id)
+            pinned = candidate.protocol_category_id
+            if (not pinned or pinned.company_id != candidate.company_id or pinned.adapter_code != 'protocol'
+                    or (category_id and pinned.id != category_id)):
+                return request.make_json_response({'error': 'wrong_category'}, status=403)
+            if pinned.callback_token:
                 token = request.httprequest.headers.get('Authorization', '').removeprefix('Bearer ')
-                if not pinned.callback_token or not consteq(token, pinned.callback_token):
+                if not consteq(token, pinned.callback_token):
                     return request.make_json_response({'error': 'unauthorized'}, status=401)
+            # Do not alter an existing task when callback credentials failed.
+            task = candidate
             with request.env.cr.savepoint():
                 response = task._protocol_receive(message)
             return request.make_json_response(response)

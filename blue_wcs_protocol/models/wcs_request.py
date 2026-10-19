@@ -53,7 +53,7 @@ class WcsRequest(models.Model):
 
     def _requires_callback_auth(self):
         if self.protocol_release_id:
-            return self.protocol_category_id.sudo().protocol_callback_mode != 'legacy'
+            return bool(self.protocol_category_id.sudo().callback_token)
         return super()._requires_callback_auth()
 
     def _protocol_scope(self):
@@ -89,14 +89,15 @@ class WcsRequest(models.Model):
             if self.protocol_category_id != self.equipment_id.category_id or self.equipment_id.adapter_code != 'protocol':
                 raise UserError(self.env._('设备类别或协议已改变,请先核对固定任务.'))
             self.protocol_category_id._protocol_check_configuration()
-            if self.protocol_category_id._protocol_scope() != self._protocol_scope():
+            if not self.protocol_category_id._protocol_scope_matches(self._protocol_scope()):
                 raise UserError(self.env._('人工接口配置已改变,请先核对固定任务.'))
         return super()._preflight()
 
     def _dispatch_connection(self):
         data = super()._dispatch_connection()
         if self.protocol_release_id:
-            data.update(protocol_code=self.protocol_release_id.version_id.code_text,
+            data.update(protocol_headers=self._protocol_run('request').get('headers', {}),
+                        protocol_code=self.protocol_release_id.version_id.code_text,
                         protocol_input=self._protocol_input())
         return data
 
@@ -107,9 +108,15 @@ class WcsRequest(models.Model):
 
     def _protocol_location(self, code):
         scope = self._protocol_scope()
-        root_id = scope['destination_root_id']
-        if not scope['allow_destination'] or not root_id:
-            raise ValidationError(self.env._('当前类别未人工允许库存目的库位回写.'))
+        if scope.get('interface_mode') == 'http_json':
+            warehouse = self.picking_type_id.warehouse_id
+            if not warehouse or warehouse.company_id != self.company_id:
+                raise ValidationError(self.env._('无法确定当前作业仓库,不能回写库存目的库位.'))
+            root_id = warehouse.view_location_id.id
+        else:
+            root_id = scope['destination_root_id']
+            if not scope['allow_destination'] or not root_id:
+                raise ValidationError(self.env._('历史协议未允许库存目的库位回写.'))
         base = fields.Domain('company_id', '=', self.company_id.id) & fields.Domain('usage', '=', 'internal')
         base &= fields.Domain('id', 'child_of', root_id)
         base &= fields.Domain('barcode', '=', code) | fields.Domain('agv_map_point', '=', code)
@@ -233,7 +240,7 @@ class WcsRequest(models.Model):
             raise ValidationError(self.env._('回报点与计划终点不同,请在协议中明确子位置或库存库位映射.'))
         if result['subposition']:
             self._protocol_check_final_goods()
-            if not scope['allow_subposition'] or not self._protocol_packages():
+            if (scope.get('interface_mode') != 'http_json' and not scope['allow_subposition']) or not self._protocol_packages():
                 raise ValidationError(self.env._('此任务或类别未允许包裹子位置回写.'))
             self._protocol_write_subposition(result['subposition'])
         controlled = self.with_context(blue_wcs_token=WCS_TOKEN, blue_protocol_token=PROTOCOL_TOKEN,
