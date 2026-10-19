@@ -10,7 +10,7 @@ WCS → 设备类别，人工新增类别，自动采用统一 HTTP／JSON。公
 
 ## TUSK 与其他接口
 
-人工填写 TUSK 的 `/rpc/createTask`，下发报文为 taskId／targets／configId，HTTP 200 且 msg=success 确认接受。用户确认最终完成回调 taskId／deviceId／targetPoint 保留旧 `/api/blue_wcs_tusk/feedbackTask` 路径、不要求新增 Token，无需在类别额外启用。已有 HIK／WES 回调认证不变。
+人工填写 TUSK 的 `/rpc/createTask`，下发报文为 taskId／targets／configId，HTTP 200 且 msg=success 确认接受。用户确认最终完成回调 taskId／deviceId／targetPoint 保留旧 `/api/blue_wcs_tusk/feedbackTask` 路径、不要求新增 Token，无需在类别额外启用。已有 HIK 回调认证不变；WES 专用模块及回调已退役，见[卸载说明](wes-retirement-20.md)。
 
 通用类别还可使用 `/blue_wcs/v1/categories/<类别编号>/callback`，系统从 JSON 值中查找唯一真实任务号，再由固定代码解析并核对；不再手工设置任务号字段。回调凭据空则不要求认证，填写则必须 Bearer。首期仅单条 JSON 最终完成回调；旧 M4、Mita、Modula 资料按厂家分开存入设备 Wiki 参考目录，批量关联／应答、关闭、取消、解绑、盘点等未因此自动实现。
 

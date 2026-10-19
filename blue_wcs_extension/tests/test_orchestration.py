@@ -375,26 +375,6 @@ class TestWcsOrchestration(TestWcs):
         picking.button_validate()
         self.assertEqual(picking.state, 'done')
 
-    def test_wes_repeated_programs_keep_separate_item_completion(self):
-        picking, line, operation, profile = self._v4_picking('repeat', incoming=True)
-        self.product.default_code = 'WES-TEST'
-        self.device.write({'adapter_code': 'wes', 'supports_repeated_goods': True, 'wes_warehouse_code': 'TEST',
-            'wes_room_code': 'ROOM', 'wes_owner_code': 'OWNER'})
-        picking.action_create_wcs_request_from_button()
-        first, second = picking.wcs_request_ids.sorted('step')
-        self.assertNotEqual(first._payload()['carBillCode'], second._payload()['carBillCode'])
-        item_id = str(picking.wcs_plan_ids.line_ids.id)
-        first.with_context(blue_wcs_token=WCS_TOKEN).state = 'accepted'
-        first._receive_wes_item_completion('first-item', item_id, first.destination_point)
-        self.assertEqual(first.state, 'completed')
-        self.assertEqual(second.state, 'pending_send')
-        self.assertFalse(second.event_ids)
-        second.with_context(blue_wcs_token=WCS_TOKEN).state = 'accepted'
-        second._receive_wes_item_completion('second-item', item_id, second.destination_point)
-        picking.button_validate()
-        self.assertEqual(picking.state, 'done')
-        self.assertEqual(sum(picking.wcs_plan_ids.line_ids.mapped('quantity')), 10)
-
     def test_same_carrier_keeps_distinct_lots_in_one_physical_plan(self):
         picking, line, operation, profile = self._v4_picking('container', incoming=True)
         self.product.tracking = 'lot'

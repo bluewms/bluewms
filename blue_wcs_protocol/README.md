@@ -7,7 +7,7 @@ Odoo 20 设备类别级 HTTP／JSON 协议资产。新增厂家接口通过类�
 - `device_protocol/1` 只转换下发报文、响应与单条最终完成回调，固定服务执行网络、状态和受限位置回写。
 - 任务固定协议发布版本与输入；存在未结束任务时冻结连接和关键范围，重复回报幂等。
 - 包裹子位置和当前作业仓库内的实际库存库位分别处理。实际库位通过原生容量、托盘、重量、混放、冻结检查后同步库存明细；原计划位置和回报保留。
-- 按用户确认保留旧 TUSK 无附加 Token 回调；填写回调凭据则验证 Bearer。原有 HIK／WES 认证不变。
+- 按用户确认保留旧 TUSK 无附加 Token 回调；填写回调凭据则验证 Bearer。原有 HIK 认证不变；WES 专用模块已退役，协议见[Wiki 参考](../docs/wiki/domains/equipment/reference/wes-vzf.md)。
 
 启用后先人工填写设备地址及相对任务路径。TUSK 下发路径 `/rpc/createTask`，兼容回调 `/api/blue_wcs_tusk/feedbackTask`；普通类别回调 `/blue_wcs/v1/categories/<category_id>/callback`。不再设置接口方式、认证模式、任务号字段或位置开关。Token 留空不附加默认认证，填写则默认 Bearer；特殊请求头由代码使用 $app_key／$app_secret 占位符，本地代入凭据，密钥不传给 AI。
 

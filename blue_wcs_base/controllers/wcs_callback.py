@@ -55,27 +55,3 @@ class WcsCallback(http.Controller):
         except (ValueError, KeyError, TypeError, UserError, ValidationError):
             return request.make_json_response({'error': 'invalid_event'}, status=400)
         return request.make_json_response({'code': 'SUCCESS', 'message': 'success', 'data': {'robotTaskCode': task_code}})
-
-    @http.route(['/api/into-container/back', '/api/out-container/back'], type='http', auth='public', methods=['POST'], csrf=False)
-    def wes_event(self):
-        import hashlib
-        if len(request.httprequest.data) > 65536:
-            return request.make_json_response({'error': 'too_large'}, status=413)
-        try:
-            data = json.loads(request.httprequest.data)
-            task_code = data.get('carBillCode') or data['SAPOrderCode']
-            if type(task_code) is not str or len(task_code) > 128:
-                raise ValueError('Invalid task ID')
-            task = request.env['wcs.request'].sudo().search([('name', '=', task_code)], limit=1)
-            device = task.equipment_id
-            token = request.httprequest.headers.get('Authorization', '').removeprefix('Bearer ')
-            if not task or device.adapter_code != 'wes' or not device.active or not (device.callback_token or device.category_id.callback_token) or not consteq(token, device.callback_token or device.category_id.callback_token):
-                return request.make_json_response({'error': 'unauthorized'}, status=401)
-            if request.httprequest.path.endswith('/out-container/back') and data.get('outContainerStatus') != 'END_PICK':
-                raise ValueError('Only confirmed completion is supported; other statuses need reconciliation')
-            event_id = hashlib.sha256(json.dumps(data, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
-            with request.env.cr.savepoint():
-                task._receive_wes_item_completion(event_id, str(data['SAPOrderItem']), str(data.get('binCode', '')))
-        except (ValueError, KeyError, TypeError, UserError, ValidationError):
-            return request.make_json_response({'error': 'invalid_event'}, status=400)
-        return request.make_json_response({'code': 200, 'msg': 'success', 'success': True})

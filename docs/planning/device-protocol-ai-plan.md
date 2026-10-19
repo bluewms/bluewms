@@ -16,7 +16,7 @@
 
 ## 现有代码的核对结果
 
-Odoo 20 的 `blue_wcs_base` 已有类别、设备、持久发送队列、HTTP 发送和认证回调；`blue_wcs_wes` 提供 WES 扩展。当前适配方式是代码内固定的 simulation／HIK／JSON／WES。类别中的连接参数优先，设备还保留历史连接字段，因此新接口需要明确只使用类别参数。
+Odoo 20 的 `blue_wcs_base` 已有类别、设备、持久发送队列、HTTP 发送和认证回调；原 `blue_wcs_wes` 曾提供 WES 扩展，2026-10-19 已退役，协议转入设备 Wiki。本计划起草时适配方式是代码内固定的 simulation／HIK／JSON／WES；当前统一接口与退役操作见[卸载说明](../migrations/wes-retirement-20.md)。类别中的连接参数优先，设备还保留历史连接字段，因此新接口需要明确只使用类别参数。
 
 原设备入口曾仅支持知识聊天；本轮新增 device_protocol/1 及对应资产、固定服务和准确示例，实际安装／批准与验收以交付记录为准。
 
@@ -41,7 +41,7 @@ Odoo 20 的 `blue_wcs_base` 已有类别、设备、持久发送队列、HTTP �
 | Mita | details 数组逐条按 taskNo 定位，taskStatus=FINISHED 后完成；另有包裹位置回报 | 无 |
 | Modula | DATA.EXP_ORDINI_RIGHE_STO 数组逐条按 STO_HOSTINF 定位后完成 | 无 |
 
-第一阶段按用户要求保留 TUSK 的旧回调路径 `/api/blue_wcs_tusk/feedbackTask`、JSON 报文、无附加 Token 及 `{code: 200, msg: success}` 成功应答。仍由固定服务检查任务所属类别／设备／公司、已下发状态、回报点位和重复事件，生成代码不能扩大查询或写入范围。任务及报文校验不等于来源身份认证。现有 HIK／WES 等路由的 Token 校验不全局关闭。
+第一阶段按用户要求保留 TUSK 的旧回调路径 `/api/blue_wcs_tusk/feedbackTask`、JSON 报文、无附加 Token 及 `{code: 200, msg: success}` 成功应答。仍由固定服务检查任务所属类别／设备／公司、已下发状态、回报点位和重复事件，生成代码不能扩大查询或写入范围。任务及报文校验不等于来源身份认证。现有 HIK 路由的 Token 校验不关闭；WES 专用路由已退役。
 
 M4 的容器定位与库存位置回写、Mita 的批量反馈、Modula 的逐行完成含义在各自落地时再核实，不把 TUSK 的最终完成语义套给所有设备。
 
@@ -49,7 +49,7 @@ M4 的容器定位与库存位置回写、Mita 的批量反馈、Modula 的逐�
 
 已新增通用模块 `blue_wcs_protocol`，负责协议合同、类别绑定、报文试算和发送／回调接入。沿用 `blue_config_asset` 的草稿、验证、不可变版本、发布及回滚，扩展已有 `blue_ai_client` 入口。后续常规 HTTP 厂家以类别和发布资产交付，不再增加厂家模块或固定厂家枚举。
 
-现有 HIK／WES 等适配保持兼容，新类别自动采用统一 HTTP／JSON，表单不再显示适配方式。需要新增传输形式或现有执行器没有的认证算法时，再补通用能力；不把任意网络调用、模块安装或新增数据库字段交给生成代码。
+现有 HIK 等适配保持兼容，WES 专用适配已退役，新类别自动采用统一 HTTP／JSON，表单不再显示适配方式。需要新增传输形式或现有执行器没有的认证算法时，再补通用能力；不把任意网络调用、模块安装或新增数据库字段交给生成代码。
 
 类别页建议包含：
 
