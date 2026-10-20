@@ -1,0 +1,135 @@
+<templates xml:space="preserve">
+    <t t-name="blue_barcode_base.Workspace">
+        <div class="o_blue_barcode_workspace d-flex flex-column h-100 bg-view">
+            <header class="o_blue_barcode_header border-bottom p-3">
+                <div class="d-flex gap-2 align-items-center mb-2">
+                    <button class="btn btn-secondary" t-on-click="this.home" t-att-disabled="this.state.busy">首页 / 释放</button>
+                    <h4 class="m-0 text-truncate"><t t-out="this.state.session?.name || '条码'"/></h4>
+                    <span t-if="this.state.session" class="badge text-bg-secondary ms-auto"><t t-out="this.state.session.state === 'closed' ? '已结束' : '作业中'"/></span>
+                </div>
+                <div class="input-group">
+                    <input t-ref="this.scanInput" class="form-control o_blue_barcode_scan_input" type="text" autocomplete="off"
+                        placeholder="扫描条码 / 完整二维码，回车确认" t-model.proxy="this.state.raw" t-on-keydown="this.onInputKey"
+                        t-att-disabled="this.state.editing || this.state.session?.state === 'closed'"/>
+                    <button class="btn btn-primary" t-on-click="this.submitInput">确认</button>
+                    <button class="btn btn-secondary" t-on-click="this.camera" aria-label="相机扫描">相机</button>
+                </div>
+                <div t-if="this.state.error" class="alert alert-danger mt-2 mb-0" role="alert">
+                    <t t-out="this.state.error"/>
+                    <div t-if="this.state.pending" class="d-flex gap-2 mt-2 flex-wrap">
+                        <button class="btn btn-outline-danger" t-on-click="this.retry" t-att-disabled="this.state.busy">按原事件重试</button>
+                        <button class="btn btn-secondary" t-on-click="this.discardRejected" t-att-disabled="this.state.busy">核对结果 / 取消未保存输入</button>
+                    </div>
+                    <button t-elif="this.takeoverRecord" class="btn btn-outline-danger ms-2" t-on-click="this.takeover">明确接管</button>
+                </div>
+                <div t-if="this.state.storageError" class="alert alert-danger mt-2 mb-0" role="alert">
+                    <t t-out="this.state.storageError"/><button class="btn btn-secondary ms-2" t-on-click="this.persist">重试保存恢复信息</button>
+                </div>
+                <div t-elif="this.state.message" class="text-success mt-2" role="status"><t t-out="this.state.message"/></div>
+                <div t-if="this.state.session?.context.pending" class="alert alert-info mb-0 mt-2">
+                    已选择产品，等待补扫批次 / 序列号，尚未计数。
+                    <button class="btn btn-sm btn-secondary ms-2" t-on-click="this.cancelPendingProduct">取消待补扫</button>
+                </div>
+                <div t-if="this.state.busy || this.state.pending || this.state.queued" class="text-warning mt-2">
+                    <span t-if="this.state.pending">等待确认当前事件。</span> 后续待处理：<t t-out="this.state.queued"/>
+                    <t t-if="!this.state.busy &amp;&amp; !this.state.pending &amp;&amp; this.state.queued">
+                        <button class="btn btn-sm btn-secondary ms-2" t-on-click="this.continueQueue">核对后继续队列</button>
+                        <button class="btn btn-sm btn-secondary ms-2" t-on-click="this.cancelQueue">取消后续输入</button>
+                    </t>
+                </div>
+            </header>
+            <main class="o_blue_barcode_content flex-grow-1 overflow-auto p-3">
+                <div t-if="this.state.page === 'home'" class="o_blue_barcode_home">
+                    <button t-foreach="this.state.entries" t-as="entry" t-key="entry.kind"
+                        class="btn border bg-body text-body o_blue_barcode_entry" t-on-click="() => this.list(entry.kind)">
+                        <i t-att-class="'fa fa-' + entry.icon + ' fa-2x mb-3 text-primary'"/><span class="fs-4" t-out="entry.name"/>
+                    </button>
+                </div>
+                <t t-elif="this.state.page === 'list'">
+                    <div t-if="this.state.listKind !== 'lookup'" class="d-flex gap-2 mb-3">
+                        <input class="form-control" placeholder="搜索名称" t-model.proxy="this.state.search"/>
+                        <button class="btn btn-primary" t-on-click="() => this.list(this.state.listKind)">搜索</button>
+                        <button t-if="['operations','batch'].includes(this.state.listKind)" class="btn btn-secondary"
+                            t-on-click="() => this.list(this.state.listKind === 'batch' ? 'operations' : 'batch')">单据 / 批次</button>
+                    </div>
+                    <div class="list-group">
+                        <button t-foreach="this.state.items" t-as="item" t-key="item.kind + ':' + item.id"
+                            class="list-group-item list-group-item-action py-3" t-on-click="() => this.openRecord(item)">
+                            <span t-out="item.name"/><i class="fa fa-angle-right float-end"/>
+                        </button>
+                    </div>
+                    <p t-if="!this.state.items.length" class="text-muted mt-3">当前没有可选记录。</p>
+                    <button t-if="this.state.more" class="btn btn-secondary mt-3" t-on-click="this.more">加载更多</button>
+                </t>
+                <t t-elif="this.state.page === 'details'">
+                    <h3 t-out="this.state.details.name"/><p class="text-muted" t-out="this.state.details.barcode"/>
+                    <div class="list-group">
+                        <div t-foreach="this.state.details.rows" t-as="row" t-key="row.id" class="list-group-item">
+                            <strong t-out="row.product"/><div t-out="row.location"/>
+                            <span>在库 <t t-out="row.quantity"/> / 可用 <t t-out="row.available"/> <t t-out="row.uom"/></span>
+                            <div class="text-muted"><t t-out="row.lot"/> <t t-out="row.package"/> <t t-out="row.owner"/></div>
+                        </div>
+                    </div>
+                    <p t-if="this.state.details.more" class="text-warning mt-3">仅显示前 200 条库存明细，请在库存中进一步筛选。</p>
+                </t>
+                <t t-elif="this.state.page === 'work'">
+                    <t t-set="group" t-value="this.currentGroup()"/>
+                    <div t-if="group" class="o_blue_barcode_group border rounded p-3 mb-3">
+                        <strong t-out="group.picking"/>
+                        <div class="d-flex gap-2 flex-wrap align-items-center mt-1">
+                            <span t-out="group.source"/>
+                            <t t-if="group.destination"><i class="fa fa-long-arrow-right"/><span t-out="group.destination"/></t>
+                        </div>
+                        <div t-if="group.package || group.destinationPackage" class="text-muted">包裹：<t t-out="group.package || '无'"/> → <t t-out="group.destinationPackage || '无'"/></div>
+                    </div>
+                    <div t-if="this.state.editing" class="border rounded p-3 mb-3">
+                        <label class="form-label">设置本行实盘 / 已扫总数</label>
+                        <input class="form-control mb-2" type="text" inputmode="decimal" t-model.proxy="this.state.total"/>
+                        <button class="btn btn-primary me-2" t-on-click="this.saveTotal">确认总数</button>
+                        <button class="btn btn-secondary" t-on-click="() => this.state.editing = false">取消</button>
+                    </div>
+                    <div t-if="group" class="d-flex flex-column gap-2">
+                        <div t-foreach="group.rows" t-as="row" t-key="row.key"
+                            t-att-class="'o_blue_barcode_row border rounded p-3 ' + (this.state.selected === row.key ? 'border-primary' : '')"
+                            t-on-click="() => this.state.selected = row.key">
+                            <div class="d-flex justify-content-between gap-2">
+                                <div><strong t-out="row.product"/><div class="text-muted" t-out="row.barcode"/></div>
+                                <div class="text-end">
+                                    <div class="text-muted" t-out="this.state.session.kind === 'inventory' ? '实盘 / 账面' : '已扫 / 应作业'"/>
+                                    <strong class="o_blue_barcode_quantity" t-out="row.quantity"/><span class="text-muted"> / <t t-out="row.expected"/></span><div t-out="row.uom"/>
+                                    <div t-if="this.state.session.kind === 'inventory' &amp;&amp; row.counted" class="text-muted">差异 <t t-out="row.quantity - row.expected"/></div>
+                                </div>
+                            </div>
+                            <div class="text-muted"><t t-out="row.lot"/> <t t-out="row.package"/></div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span t-att-class="row.applied ? 'text-success' : row.counted ? 'text-primary' : 'text-muted'"
+                                    t-out="row.applied ? '已记账' : this.state.session.kind === 'inventory' ? (row.counted ? '已盘' : '未盘') : row.counted ? '已确认' : '未确认'"/>
+                                <button class="btn btn-sm btn-outline-secondary" t-on-click.stop="() => this.editTotal(row)"
+                                    t-att-disabled="row.applied || this.state.busy || !!this.state.pending || this.state.session.state === 'closed'">输入总数</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p t-if="!group" class="text-muted">本单暂无可扫描明细，请先在单据中建立明细。</p>
+                </t>
+            </main>
+            <footer t-if="this.state.page === 'work'" class="o_blue_barcode_footer border-top p-3">
+                <div class="d-flex gap-2 justify-content-between align-items-center">
+                    <button class="btn btn-secondary" t-on-click="() => this.changeGroup(-1)" t-att-disabled="this.currentIndex() &lt;= 0 || this.state.editing">上一组</button>
+                    <select class="form-select w-auto" t-model.proxy="this.state.group" t-on-change="() => this.state.selected = ''" t-att-disabled="this.state.editing">
+                        <option t-foreach="this.groups()" t-as="group" t-key="group.key" t-att-value="group.key"><t t-out="group_index + 1"/> / <t t-out="this.groups().length"/> · <t t-out="group.source"/><t t-if="group.destination"> → <t t-out="group.destination"/></t><t t-if="group.package"> · <t t-out="group.package"/></t><t t-if="group.destinationPackage"> · <t t-out="group.destinationPackage"/></t></option>
+                    </select>
+                    <button class="btn btn-secondary" t-on-click="() => this.changeGroup(1)" t-att-disabled="this.currentIndex() >= this.groups().length - 1 || this.state.editing">下一组</button>
+                </div>
+                <div class="d-flex gap-2 mt-2" t-if="this.state.session.state !== 'closed'">
+                    <button t-if="this.state.session.actions.includes('pack')" class="btn btn-secondary" t-on-click="() => this.execute('pack')"
+                        t-att-disabled="this.state.busy || !!this.state.pending || this.state.editing || !!this.state.queued">本组装箱</button>
+                    <button t-if="this.state.session.actions.includes('wcs')" class="btn btn-primary flex-grow-1" t-on-click="() => this.execute('wcs')"
+                        t-att-disabled="this.state.busy || !!this.state.pending || this.state.editing || !!this.state.queued">申请执行 WCS</button>
+                    <button t-if="this.state.session.actions.includes('validate')" class="btn btn-primary flex-grow-1" t-on-click="() => this.execute('validate')"
+                        t-att-disabled="this.state.busy || !!this.state.pending || this.state.editing || !!this.state.queued">整单提交验证</button>
+                    <span t-if="this.state.session.kind === 'inventory'" class="text-muted">扫码只录入实盘；管理员在盘库单完成记账。</span>
+                </div>
+            </footer>
+        </div>
+    </t>
+</templates>

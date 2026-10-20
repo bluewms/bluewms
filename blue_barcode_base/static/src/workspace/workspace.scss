@@ -1,0 +1,49 @@
+.o_blue_barcode_workspace {
+    min-height: 0;
+
+    .o_blue_barcode_header,
+    .o_blue_barcode_footer {
+        flex-shrink: 0;
+        background: var(--body-bg, var(--bs-body-bg));
+    }
+
+    .o_blue_barcode_content {
+        min-height: 0;
+    }
+
+    .o_blue_barcode_home {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        max-width: 48rem;
+        margin: 1rem auto;
+    }
+
+    .o_blue_barcode_entry {
+        display: flex;
+        min-height: 9rem;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .o_blue_barcode_row {
+        background: var(--body-bg, var(--bs-body-bg));
+    }
+
+    .o_blue_barcode_quantity {
+        font-size: 1.8rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    @media (max-width: 575px) {
+        .o_blue_barcode_header,
+        .o_blue_barcode_footer {
+            padding: 0.75rem !important;
+        }
+
+        .o_blue_barcode_footer .btn {
+            min-height: 2.75rem;
+        }
+    }
+}

@@ -1,0 +1,62 @@
+{
+  "code": "if request['phase'] == 'parse':\n    raw = request['raw']\n    result = {'kind': 'product', 'code': between(raw, '#', 2, 3), 'quantity': float(between(raw, '#', 4, 5)), 'lot': '', 'location': '', 'package': '', 'uom': '', 'reason': ''}\nelse:\n    result = {'action': 'prompt', 'keys': [], 'reason': 'Select a row'}\n    if len(candidates) == 1:\n        result = {'action': 'count', 'keys': [candidates[0]['key']], 'reason': ''}\n",
+  "cases": [
+    {
+      "name": "商品与数量一次提取",
+      "input": {
+        "request": {
+          "phase": "parse",
+          "raw": "HDR#VENDOR#QRPRODUCT#LOT88#12#END",
+          "context": {},
+          "parsed": {}
+        },
+        "candidates": []
+      },
+      "expected_result": {
+        "kind": "product",
+        "code": "QRPRODUCT",
+        "quantity": 12.0,
+        "lot": "",
+        "location": "",
+        "package": "",
+        "uom": "",
+        "reason": ""
+      }
+    },
+    {
+      "name": "选择唯一允许明细",
+      "input": {
+        "request": {
+          "phase": "decide",
+          "raw": "HDR#VENDOR#QRPRODUCT#LOT88#12#END",
+          "context": {},
+          "parsed": {
+            "kind": "product",
+            "code": "QRPRODUCT",
+            "quantity": 12.0,
+            "lot": "",
+            "location": "",
+            "package": "",
+            "uom": "",
+            "reason": ""
+          }
+        },
+        "candidates": [
+          {
+            "key": "line:1",
+            "product_id": 1,
+            "quantity": 0,
+            "expected": 20
+          }
+        ]
+      },
+      "expected_result": {
+        "action": "count",
+        "keys": [
+          "line:1"
+        ],
+        "reason": ""
+      }
+    }
+  ]
+}

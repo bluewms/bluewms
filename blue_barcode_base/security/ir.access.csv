@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+barcode_session_user,Barcode session user,blue.barcode.session,stock.group_stock_user,cru,
+barcode_event_user,Barcode event user,blue.barcode.event,stock.group_stock_user,cr,
+barcode_session_scope,Barcode session scope,blue.barcode.session,,crud,"[('company_id','in',company_ids),('user_id','=',user.id)]"
+barcode_event_scope,Barcode event scope,blue.barcode.event,,crud,"[('company_id','in',company_ids),('user_id','=',user.id)]"

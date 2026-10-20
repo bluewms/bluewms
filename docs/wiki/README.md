@@ -24,6 +24,6 @@
 | ERP 接口 | `erp_mapping` | [ERP /1 规范](domains/erp/specification.md) | [两个准确案例](domains/erp/examples/README.md) | 安装 blue_erp_interface 后可生成与验证草稿；云端新知识和网关须独立发布后启用真实联网生成 |
 | WCS 生成策略 | `wcs_creation` | [WCS /4规范](domains/wcs/specification.md) | [已验证案例](domains/wcs/examples/README.md) | /4 合同及草稿工具已实现；生成前必须实际取得本领域批准正文 |
 | 设备连接接口 | `device_protocol` | [设备协议规范](domains/equipment/specification.md) | [TUSK 准确案例](domains/equipment/examples/README.md) | 安装 device_protocol/1 后可生成、试算和验证草稿；人工发布；其他厂家见协议参考 |
-| 条码扫描策略 | `barcode_policy` | [条码规范草案](domains/barcode/specification.md) | [需求案例](domains/barcode/examples/README.md) | planned；当前不能生成可执行草稿 |
+| 条码扫描策略 | `barcode_policy` | [条码 /1 规范](domains/barcode/specification.md) | [准确案例及后续需求](domains/barcode/examples/README.md) | 安装 blue_barcode_extension 后可本地试算、验证与人工发布；真实联网生成须独立发布云端条码知识 |
 
 只有当前入口已开放且合同匹配的规范／案例可用于生成。planned 文稿只帮助沟通业务需求，不能据此发明工具、接口字段或执行代码。每份新草稿都必须重新验证，参考案例的验证结果不能替代新代码的验证。
