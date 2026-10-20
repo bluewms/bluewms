@@ -1,0 +1,16 @@
+id,name,model_id,group_id/id,operation,domain
+connection_user,ERP connection user,blue.erp.connection,stock.group_stock_user,r,
+connection_admin,ERP connection admin,blue.erp.connection,base.group_system,crud,
+interface_user,ERP interface user,blue.erp.interface,stock.group_stock_user,r,
+interface_manager,ERP interface manager,blue.erp.interface,stock.group_stock_manager,crud,
+operation_user,ERP operation user,blue.erp.operation,stock.group_stock_user,r,
+operation_manager,ERP operation manager,blue.erp.operation,stock.group_stock_manager,crud,
+document_user,ERP document user,blue.erp.document,stock.group_stock_user,cr,
+event_user,ERP event user,blue.erp.event,stock.group_stock_user,cru,
+delivery_user,ERP delivery user,blue.erp.delivery,stock.group_stock_user,cru,
+connection_company,ERP connection company,blue.erp.connection,,crud,"[('company_id','in',company_ids)]"
+interface_company,ERP interface company,blue.erp.interface,,crud,"[('company_id','in',company_ids)]"
+operation_company,ERP operation company,blue.erp.operation,,crud,"[('company_id','in',company_ids)]"
+document_company,ERP document company,blue.erp.document,,crud,"[('company_id','in',company_ids)]"
+event_company,ERP event company,blue.erp.event,,crud,"[('company_id','in',company_ids)]"
+delivery_company,ERP delivery company,blue.erp.delivery,,crud,"[('company_id','in',company_ids)]"

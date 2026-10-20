@@ -1,0 +1,84 @@
+<odoo>
+  <record id="blue_erp_connection_view_list" model="ir.ui.view">
+    <field name="name">blue.erp.connection.list</field><field name="model">blue.erp.connection</field>
+    <field name="arch" type="xml"><list><field name="name"/><field name="company_id"/><field name="active"/></list></field>
+  </record>
+  <record id="blue_erp_connection_view_form" model="ir.ui.view">
+    <field name="name">blue.erp.connection.form</field><field name="model">blue.erp.connection</field>
+    <field name="arch" type="xml"><form><sheet><group><field name="name"/><field name="active"/><field name="company_id"/></group>
+      <group string="连接与权限" groups="base.group_system"><field name="base_url" placeholder="https://erp.example.com"/>
+        <field name="app_key" password="True"/><field name="app_secret" password="True"/><field name="auth_mode"/>
+        <field name="service_user_id"/></group></sheet></form></field>
+  </record>
+  <record id="blue_erp_interface_view_list" model="ir.ui.view">
+    <field name="name">blue.erp.interface.list</field><field name="model">blue.erp.interface</field>
+    <field name="arch" type="xml"><list><field name="name"/><field name="kind"/><field name="connection_id"/><field name="picking_type_id"/>
+      <field name="policy_state"/><field name="company_id"/><field name="active"/></list></field>
+  </record>
+  <record id="blue_erp_interface_view_form" model="ir.ui.view">
+    <field name="name">blue.erp.interface.form</field><field name="model">blue.erp.interface</field>
+    <field name="arch" type="xml"><form>
+      <header>
+        <button name="action_ai" type="object" string="AI 生成 / 修改" class="oe_highlight" groups="stock.group_stock_manager" invisible="not profile_id"/>
+        <button name="action_validate" type="object" string="试算与验证" groups="stock.group_stock_manager" invisible="not profile_id"/>
+        <button name="action_publish" type="object" string="发布生效" groups="stock.group_stock_manager" invisible="policy_state != 'validated'" confirm="发布后新单据使用本版代码,已有单据和事件保持原版本."/>
+        <button name="action_new_draft" type="object" string="从正式版本新建草稿" groups="stock.group_stock_manager" invisible="not profile_id"/>
+        <button name="action_rollback" type="object" string="回滚上一版" groups="stock.group_stock_manager" invisible="not profile_id" confirm="恢复上一正式版本,不撤销已完成的库存或 ERP 操作."/>
+        <field name="policy_state" widget="statusbar"/>
+      </header><sheet>
+      <group><group><field name="name"/><field name="kind"/><field name="connection_id"/><field name="company_id"/><field name="active"/></group>
+        <group string="业务范围"><field name="picking_type_id" invisible="kind == 'inventory'" required="kind != 'inventory'"/>
+          <field name="location_src_id" invisible="kind == 'inventory'" required="kind != 'inventory'"/>
+          <field name="location_dest_id" invisible="kind == 'inventory'" required="kind != 'inventory'"/>
+          <field name="inventory_location_ids" widget="many2many_tags" invisible="kind != 'inventory'"/>
+          <field name="inbound_lines_key" invisible="kind == 'inventory'"/>
+          <field name="inbound_token" password="True" groups="base.group_system" invisible="kind == 'inventory'"/>
+        </group></group>
+      <field name="profile_id" invisible="1"/>
+      <notebook>
+        <page name="requirements" string="需求"><field name="requirements" placeholder="说明 ERP 报文字段、单据生成方式、部分完成反馈及成功判断规则"/></page>
+        <page name="code" string="可编辑代码"><p>保存后先试算,人工发布生效. 库存单验证完成后按实际数量反馈;外部操作由同步队列处理.</p><field name="code" widget="ace" options="{'mode': 'python'}"/></page>
+        <page name="trials" string="试算"><field name="tests" widget="ace" options="{'mode': 'json'}"/><field name="test_result"/></page>
+        <page name="versions" string="代码版本"><field name="version_ids" readonly="1"><list create="0" delete="0"><field name="name"/><field name="create_date"/><field name="source"/><field name="content_hash"/></list></field></page>
+        <page name="releases" string="发布历史"><field name="release_ids" readonly="1"><list create="0" delete="0"><field name="name"/><field name="version_id"/><field name="create_date"/></list></field></page>
+        <page name="audit" string="审计记录"><field name="audit_ids" readonly="1"><list create="0" delete="0"><field name="event_type"/><field name="create_date"/><field name="details"/></list></field></page>
+        <page name="operations" string="ERP 操作"><field name="operation_ids"><list editable="bottom"><field name="name"/><field name="code"/><field name="path"/></list></field></page>
+        <page name="documents" string="关联单据"><field name="document_ids" readonly="1"><list create="0" delete="0"><field name="number"/><field name="external_id"/><field name="picking_ids" widget="many2many_tags"/></list></field></page>
+        <page name="events" string="同步记录"><field name="event_ids" readonly="1"><list create="0" delete="0"><field name="event_key"/><field name="picking_id"/><field name="state"/><field name="result"/></list></field></page>
+      </notebook></sheet></form></field>
+  </record>
+  <record id="blue_erp_document_view_list" model="ir.ui.view"><field name="name">blue.erp.document.list</field><field name="model">blue.erp.document</field>
+    <field name="arch" type="xml"><list create="0" delete="0"><field name="number"/><field name="external_id"/><field name="interface_id"/><field name="picking_ids" widget="many2many_tags"/><field name="company_id"/></list></field></record>
+  <record id="blue_erp_document_view_form" model="ir.ui.view"><field name="name">blue.erp.document.form</field><field name="model">blue.erp.document</field>
+    <field name="arch" type="xml"><form create="0" edit="0" delete="0"><sheet><group><field name="number"/><field name="external_id"/><field name="interface_id"/><field name="release_id"/></group><field name="normalized"/>
+      <field name="picking_ids"><list><field name="name"/><field name="state"/><field name="date_done"/></list></field></sheet></form></field></record>
+  <record id="blue_erp_event_view_list" model="ir.ui.view"><field name="name">blue.erp.event.list</field><field name="model">blue.erp.event</field>
+    <field name="arch" type="xml"><list create="0" delete="0" decoration-danger="state == 'unknown'" decoration-success="state == 'done'"><field name="create_date"/><field name="event_key"/><field name="interface_id"/><field name="picking_id"/><field name="state"/><field name="result"/></list></field></record>
+  <record id="blue_erp_event_view_form" model="ir.ui.view"><field name="name">blue.erp.event.form</field><field name="model">blue.erp.event</field>
+    <field name="arch" type="xml"><form create="0" delete="0"><header><button name="action_retry" type="object" string="重新准备" invisible="state != 'failed'" groups="stock.group_stock_manager"/><field name="state" widget="statusbar"/></header><sheet>
+      <group><field name="event_key"/><field name="interface_id"/><field name="document_id"/><field name="picking_id"/><field name="release_id"/><field name="result"/></group><field name="input_snapshot"/>
+      <field name="delivery_ids" readonly="1"><list create="0" delete="0"><field name="sequence"/><field name="operation"/><field name="state"/><field name="external_number"/><field name="result"/></list></field></sheet></form></field></record>
+  <record id="blue_erp_delivery_view_list" model="ir.ui.view"><field name="name">blue.erp.delivery.list</field><field name="model">blue.erp.delivery</field>
+    <field name="arch" type="xml"><list create="0" delete="0"><field name="event_id"/><field name="sequence"/><field name="operation"/><field name="state"/><field name="sent_at"/><field name="external_number"/></list></field></record>
+  <record id="blue_erp_delivery_view_form" model="ir.ui.view"><field name="name">blue.erp.delivery.form</field><field name="model">blue.erp.delivery</field>
+    <field name="arch" type="xml"><form create="0" delete="0"><header>
+      <button name="action_confirm_done" type="object" string="已核实 ERP 处理成功" groups="stock.group_stock_manager" invisible="state != 'unknown'" confirm="确认已向 ERP 核实成功,本步骤将不再发送."/>
+      <button name="action_confirm_not_sent" type="object" string="已核实未处理,重新排队" groups="stock.group_stock_manager" invisible="state not in ('unknown','failed')" confirm="确认 ERP 未处理此请求后重新排队,保留相同幂等键."/>
+      <field name="state" widget="statusbar"/></header><sheet><group><field name="event_id"/><field name="sequence"/><field name="operation"/><field name="path"/><field name="external_number"/><field name="result"/><field name="reconciliation_note"/></group>
+      <notebook><page name="request" string="发送报文"><field name="body"/><field name="headers"/></page><page name="history" string="处理历史"><field name="history"/></page></notebook></sheet></form></field></record>
+  <record id="stock_picking_view_form" model="ir.ui.view"><field name="name">stock.picking.form.inherit.erp</field><field name="model">stock.picking</field><field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml"><field name="origin" position="after"><field name="blue_erp_document_id" invisible="not blue_erp_document_id"/></field>
+      <xpath expr="//notebook" position="inside"><page name="blue_erp_sync" string="ERP 同步" invisible="not blue_erp_document_id"><field name="blue_erp_event_ids" readonly="1"><list create="0" delete="0"><field name="event_key"/><field name="state"/><field name="result"/></list></field></page></xpath>
+    </field></record>
+  <record id="action_erp_connections" model="ir.actions.act_window"><field name="name">ERP 连接</field><field name="res_model">blue.erp.connection</field><field name="view_mode">list,form</field></record>
+  <record id="action_erp_interfaces" model="ir.actions.act_window"><field name="name">业务接口</field><field name="res_model">blue.erp.interface</field><field name="view_mode">list,form</field></record>
+  <record id="action_erp_documents" model="ir.actions.act_window"><field name="name">关联单据</field><field name="res_model">blue.erp.document</field><field name="view_mode">list,form</field></record>
+  <record id="action_erp_events" model="ir.actions.act_window"><field name="name">同步记录</field><field name="res_model">blue.erp.event</field><field name="view_mode">list,form</field></record>
+  <record id="action_erp_deliveries" model="ir.actions.act_window"><field name="name">外部操作</field><field name="res_model">blue.erp.delivery</field><field name="view_mode">list,form</field></record>
+  <menuitem id="menu_erp_root" name="ERP 接口管理" sequence="135" groups="stock.group_stock_user"/>
+  <menuitem id="menu_erp_interfaces" name="业务接口" parent="menu_erp_root" action="action_erp_interfaces" sequence="1"/>
+  <menuitem id="menu_erp_connections" name="ERP 连接" parent="menu_erp_root" action="action_erp_connections" sequence="2" groups="base.group_system"/>
+  <menuitem id="menu_erp_documents" name="关联单据" parent="menu_erp_root" action="action_erp_documents" sequence="3"/>
+  <menuitem id="menu_erp_events" name="同步记录" parent="menu_erp_root" action="action_erp_events" sequence="4"/>
+  <menuitem id="menu_erp_deliveries" name="外部操作" parent="menu_erp_root" action="action_erp_deliveries" sequence="5"/>
+</odoo>

@@ -21,7 +21,7 @@
 | 生成入口 | hook | 规范 | 示例 | 当前可用性 |
 |---|---|---|---|---|
 | 上架策略 | `putaway_policy` | [上架生成规范](domains/putaway/specification.md) | [三个已验证案例](domains/putaway/examples/README.md) | 可读取、提交并验证草稿；人工发布 |
-| ERP 接口 | `erp_mapping` | [ERP 规范草案](domains/erp/specification.md) | [需求案例](domains/erp/examples/README.md) | planned；当前不能生成可执行草稿 |
+| ERP 接口 | `erp_mapping` | [ERP /1 规范](domains/erp/specification.md) | [两个准确案例](domains/erp/examples/README.md) | 安装 blue_erp_interface 后可生成与验证草稿；云端新知识和网关须独立发布后启用真实联网生成 |
 | WCS 生成策略 | `wcs_creation` | [WCS /4规范](domains/wcs/specification.md) | [已验证案例](domains/wcs/examples/README.md) | /4 合同及草稿工具已实现；生成前必须实际取得本领域批准正文 |
 | 设备连接接口 | `device_protocol` | [设备协议规范](domains/equipment/specification.md) | [TUSK 准确案例](domains/equipment/examples/README.md) | 安装 device_protocol/1 后可生成、试算和验证草稿；人工发布；其他厂家见协议参考 |
 | 条码扫描策略 | `barcode_policy` | [条码规范草案](domains/barcode/specification.md) | [需求案例](domains/barcode/examples/README.md) | planned；当前不能生成可执行草稿 |

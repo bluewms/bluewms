@@ -1,0 +1,307 @@
+{
+  "code": "if request[\"phase\"] == \"receive\":\n    lines = []\n    for candidate in candidates:\n        lines.append({\"external_line_id\": str(candidate[\"id\"]), \"product_code\": candidate[\"product\"], \"quantity\": candidate[\"qty\"], \"uom\": candidate[\"unit\"], \"lot\": candidate.get(\"lot\", \"\"), \"source_code\": candidate.get(\"source\", \"\"), \"destination_code\": candidate.get(\"destination\", \"\"), \"group\": candidate.get(\"group\", \"\")})\n    result = {\"documents\": [{\"external_id\": str(request[\"message\"][\"id\"]), \"number\": request[\"message\"][\"number\"], \"partner_code\": \"\", \"lines\": lines}]}\nelif request[\"phase\"] == \"complete\":\n    result = {\"actions\": [{\"operation\": \"complete\", \"body\": {\"event_id\": request[\"event_key\"], \"id\": request[\"external_id\"], \"lines\": candidates}}]}\nelif request[\"phase\"] == \"inventory\":\n    gains = []\n    losses = []\n    for candidate in candidates:\n        if candidate[\"difference_quantity\"] > 0:\n            gains.append(candidate)\n        else:\n            losses.append(candidate)\n    actions = []\n    if len(gains) > 0:\n        actions.append({\"operation\": \"count_gain\", \"body\": {\"event_id\": request[\"event_key\"], \"lines\": gains}})\n    if len(losses) > 0:\n        actions.append({\"operation\": \"count_loss\", \"body\": {\"event_id\": request[\"event_key\"], \"lines\": losses}})\n    result = {\"actions\": actions}\nelse:\n    result = {\"state\": \"unknown\", \"external_number\": \"\"}\n    if request[\"http_status\"] == 200:\n        if request[\"message\"].get(\"success\") == True:\n            result = {\"state\": \"accepted\", \"external_number\": request[\"message\"].get(\"number\", \"\")}\n        elif request[\"message\"].get(\"rejected\") == True:\n            result = {\"state\": \"rejected\", \"external_number\": \"\"}\n",
+  "cases": [
+    {
+      "name": "receive",
+      "input": {
+        "request": {
+          "phase": "receive",
+          "kind": "incoming",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {
+            "id": "ERP-1",
+            "number": "PO-1",
+            "lines": [
+              {
+                "id": "10",
+                "product": "ERP-PRODUCT",
+                "qty": 10,
+                "unit": "Units"
+              }
+            ]
+          },
+          "http_status": 0,
+          "operation": ""
+        },
+        "candidates": [
+          {
+            "id": "10",
+            "product": "ERP-PRODUCT",
+            "qty": 10,
+            "unit": "Units"
+          }
+        ]
+      },
+      "expected_result": {
+        "documents": [
+          {
+            "external_id": "ERP-1",
+            "number": "PO-1",
+            "partner_code": "",
+            "lines": [
+              {
+                "external_line_id": "10",
+                "product_code": "ERP-PRODUCT",
+                "quantity": 10,
+                "uom": "Units",
+                "lot": "",
+                "source_code": "",
+                "destination_code": "",
+                "group": ""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "partial-completion",
+      "input": {
+        "request": {
+          "phase": "complete",
+          "kind": "incoming",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {},
+          "http_status": 0,
+          "operation": ""
+        },
+        "candidates": [
+          {
+            "external_line_id": "10",
+            "product_code": "ERP-PRODUCT",
+            "quantity": 6,
+            "cumulative_quantity": 6,
+            "acknowledged_quantity": 0,
+            "planned_quantity": 10,
+            "uom": "Units",
+            "lot": "",
+            "source_code": "",
+            "destination_code": "",
+            "package": ""
+          }
+        ]
+      },
+      "expected_result": {
+        "actions": [
+          {
+            "operation": "complete",
+            "body": {
+              "event_id": "event-example",
+              "id": "ERP-1",
+              "lines": [
+                {
+                  "external_line_id": "10",
+                  "product_code": "ERP-PRODUCT",
+                  "quantity": 6,
+                  "cumulative_quantity": 6,
+                  "acknowledged_quantity": 0,
+                  "planned_quantity": 10,
+                  "uom": "Units",
+                  "lot": "",
+                  "source_code": "",
+                  "destination_code": "",
+                  "package": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "accepted",
+      "input": {
+        "request": {
+          "phase": "response",
+          "kind": "incoming",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {
+            "success": true,
+            "number": "ERP-DONE"
+          },
+          "http_status": 200,
+          "operation": "complete"
+        },
+        "candidates": []
+      },
+      "expected_result": {
+        "state": "accepted",
+        "external_number": "ERP-DONE"
+      }
+    },
+    {
+      "name": "timeout-ambiguous",
+      "input": {
+        "request": {
+          "phase": "response",
+          "kind": "incoming",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {},
+          "http_status": 502,
+          "operation": "complete"
+        },
+        "candidates": []
+      },
+      "expected_result": {
+        "state": "unknown",
+        "external_number": ""
+      }
+    },
+    {
+      "name": "rejected",
+      "input": {
+        "request": {
+          "phase": "response",
+          "kind": "incoming",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {
+            "rejected": true
+          },
+          "http_status": 200,
+          "operation": "complete"
+        },
+        "candidates": []
+      },
+      "expected_result": {
+        "state": "rejected",
+        "external_number": ""
+      }
+    }
+  ],
+  "inventory_cases": [
+    {
+      "name": "count-gain",
+      "input": {
+        "request": {
+          "phase": "inventory",
+          "kind": "inventory",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {},
+          "http_status": 0,
+          "operation": ""
+        },
+        "candidates": [
+          {
+            "product_code": "ERP-PRODUCT",
+            "uom": "Units",
+            "lot": "",
+            "location_code": "STOCK",
+            "package": "",
+            "owner_code": "",
+            "book_quantity": 10,
+            "counted_quantity": 12,
+            "difference_quantity": 2
+          }
+        ]
+      },
+      "expected_result": {
+        "actions": [
+          {
+            "operation": "count_gain",
+            "body": {
+              "event_id": "event-example",
+              "lines": [
+                {
+                  "product_code": "ERP-PRODUCT",
+                  "uom": "Units",
+                  "lot": "",
+                  "location_code": "STOCK",
+                  "package": "",
+                  "owner_code": "",
+                  "book_quantity": 10,
+                  "counted_quantity": 12,
+                  "difference_quantity": 2
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "count-loss",
+      "input": {
+        "request": {
+          "phase": "inventory",
+          "kind": "inventory",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {},
+          "http_status": 0,
+          "operation": ""
+        },
+        "candidates": [
+          {
+            "product_code": "ERP-PRODUCT",
+            "uom": "Units",
+            "lot": "",
+            "location_code": "STOCK",
+            "package": "",
+            "owner_code": "",
+            "book_quantity": 10,
+            "counted_quantity": 7,
+            "difference_quantity": -3
+          }
+        ]
+      },
+      "expected_result": {
+        "actions": [
+          {
+            "operation": "count_loss",
+            "body": {
+              "event_id": "event-example",
+              "lines": [
+                {
+                  "product_code": "ERP-PRODUCT",
+                  "uom": "Units",
+                  "lot": "",
+                  "location_code": "STOCK",
+                  "package": "",
+                  "owner_code": "",
+                  "book_quantity": 10,
+                  "counted_quantity": 7,
+                  "difference_quantity": -3
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "accepted",
+      "input": {
+        "request": {
+          "phase": "response",
+          "kind": "inventory",
+          "event_key": "event-example",
+          "external_id": "ERP-1",
+          "number": "PO-1",
+          "message": {
+            "success": true
+          },
+          "http_status": 200,
+          "operation": "count_gain"
+        },
+        "candidates": []
+      },
+      "expected_result": {
+        "state": "accepted",
+        "external_number": ""
+      }
+    }
+  ]
+}

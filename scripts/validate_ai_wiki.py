@@ -59,6 +59,20 @@ for name, fixture in fixtures.items():
     results.append({'page': str(path.relative_to(wiki)), 'contract': 'device_protocol/1',
                     'code_sha256': hashlib.sha256(code.encode()).hexdigest(), 'cases': len(cases)})
 
+if 'blue.erp.interface' in env:
+    assert json.loads((wiki / 'domains/erp/erp-mapping-v1-contract.json').read_text()) == engine._describe('erp_mapping/1')
+    erp = json.loads((root / 'blue_erp_interface/tests/data/mapping.json').read_text())
+    for name, key in [('inbound-completion', 'cases'), ('inventory-difference', 'inventory_cases')]:
+        path = wiki / 'domains/erp/examples' / (name + '.md')
+        body = path.read_text()
+        code = re.search(r'```python\n(.*?)```', body, re.S).group(1)
+        cases = json.loads(re.search(r'```json\n(.*?)\n```', body, re.S).group(1))
+        assert code == erp['code'] and cases == erp[key], path
+        for case in cases:
+            assert engine._run(code, case['input'], 'erp_mapping/1') == case['expected_result'], (path, case['name'])
+        results.append({'page': str(path.relative_to(wiki)), 'contract': 'erp_mapping/1',
+                        'code_sha256': hashlib.sha256(code.encode()).hexdigest(), 'cases': len(cases)})
+
 for path in wiki.rglob('*.md'):
     for target in re.findall(r'\]\(([^)]+)\)', path.read_text()):
         target = target.split('#', 1)[0]

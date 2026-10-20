@@ -1,6 +1,6 @@
 # 模块分类与依赖
 
-更新：2026-10-19。所有 addon 直接位于仓库一级目录，按技术名前缀区分领域，不再套 `muk/`、`stock/` 或 `wcs/` 分类目录。
+更新：2026-10-20。所有 addon 直接位于仓库一级目录，按技术名前缀区分领域，不再套 `muk/`、`stock/` 或 `wcs/` 分类目录。
 
 ## 命名与维护归属
 
@@ -15,8 +15,9 @@
 | `blue_stock_base` | 库存、库位、包裹及汇总基础 | LGPL-3 |
 | `blue_stock_rules` | 非负库存、冻结／禁止入库及授权例外 | AGPL-3 |
 | `blue_stock_putaway` | 原生上架规则之后的受限增强 | AGPL-3 |
-| `blue_extension_contract` | 纯数据合同、受限解释器与资源边界 | LGPL-3 |
+| `blue_extension_contract` | 纯数据合同、共享 JSON 受限解释器与资源边界 | LGPL-3 |
 | `blue_config_asset` | 草稿、验证、不可变版本、发布／回滚与执行记录 | LGPL-3 |
+| `blue_erp_interface` | ERP /1 映射、库存单与欠单、盘点差异、完成事件及持久发送／核对 | AGPL-3 |
 | `blue_ai_client` | MuK 云端连接、原生 Wiki、五类 Task 与专用草稿工具 | LGPL-3 |
 | `blue_wcs_base` | 设备、计划／任务、持久发送队列与认证回调 | AGPL-3 |
 | `blue_wcs_extension` | 库存作业接入、/4 行决定与任务编排 | AGPL-3 |

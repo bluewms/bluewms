@@ -1,0 +1,85 @@
+{
+  "contract": "erp_mapping/1",
+  "hook_code": "erp_mapping",
+  "schema_version": 1,
+  "phases": [
+    "receive",
+    "complete",
+    "inventory",
+    "response"
+  ],
+  "input": {
+    "request": {
+      "phase": "receive|complete|inventory|response",
+      "kind": "incoming|outgoing|internal|inventory",
+      "event_key": "stable WMS completion/count event ID; empty on receive",
+      "external_id": "ERP document ID or empty",
+      "number": "external document number or count event number",
+      "message": "raw ERP object on receive/response, empty otherwise",
+      "http_status": "integer; 0 outside response",
+      "operation": "configured operation code on response, empty otherwise"
+    },
+    "candidates": {
+      "receive": "raw rows from the configured top-level ERP array; single-level for candidate in candidates",
+      "complete": "actual completed rows: external_line_id, product_code, quantity, cumulative_quantity, acknowledged_quantity, planned_quantity, uom, lot, source_code, destination_code, package",
+      "inventory": "difference rows: product_code, uom, lot, location_code, package, owner_code, book_quantity, counted_quantity, difference_quantity",
+      "response": "same frozen rows as the outgoing event"
+    }
+  },
+  "receive_candidates": "Fixed adapter exposes message.lines as candidates; vendor arrays may be configured using inbound_lines_key (one top-level key).",
+  "output": {
+    "receive": {
+      "documents": [
+        {
+          "external_id": "stable text",
+          "number": "text",
+          "partner_code": "existing ref or empty",
+          "lines": [
+            {
+              "external_line_id": "stable text",
+              "product_code": "existing unique default_code",
+              "quantity": "positive number",
+              "uom": "exact product stock unit name with lang=None (canonical, not translated)",
+              "lot": "existing lot name or empty",
+              "source_code": "allowed location barcode or empty",
+              "destination_code": "allowed location barcode or empty",
+              "group": "local picking group or empty"
+            }
+          ]
+        }
+      ]
+    },
+    "complete|inventory": {
+      "actions": [
+        {
+          "operation": "manually configured code",
+          "body": "JSON object",
+          "headers?": "optional map; $app_key / $app_secret placeholders, no literal credentials"
+        }
+      ]
+    },
+    "response": {
+      "state": "accepted|rejected|unknown",
+      "external_number": "ERP returned number or empty"
+    }
+  },
+  "syntax": "bounded JSON assignments, if/else, for candidate in candidates, .get, .append, str/int/float/len; no ORM/import/network",
+  "fixed_rules": [
+    "company and warehouse scope",
+    "existing product and stock unit only",
+    "same external ID + same normalized content returns existing document",
+    "changed external content is rejected for manual review",
+    "stock validation creates durable events without HTTP",
+    "each partial picking reports only its actual quantity",
+    "unknown HTTP outcomes require reconciliation",
+    "ordered steps, completed steps never resent"
+  ],
+  "limits": {
+    "code_characters": 32768,
+    "input_bytes": 262144,
+    "documents": 20,
+    "lines": 200,
+    "actions": 10,
+    "steps": 30000
+  }
+}
