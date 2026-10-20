@@ -1,0 +1,13 @@
+<odoo>
+    <record id="wcs_type_form" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.inherit.blue.barcode.order</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='wcs_app']" position="after">
+                <xpath expr="//page[@name='blue_barcode']" position="move"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

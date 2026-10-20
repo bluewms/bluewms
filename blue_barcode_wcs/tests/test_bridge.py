@@ -1,4 +1,5 @@
 from unittest.mock import patch
+from lxml import etree
 
 from odoo.exceptions import UserError
 from odoo.tests import tagged
@@ -39,3 +40,13 @@ class TestBarcodeWcs(BaseCommon):
                 session.action_execute(client, session.revision, 'wcs')
         self.assertEqual(picking.move_line_ids.quantity, 1)
         self.assertEqual(len(session.event_ids), 1)
+
+    def test_barcode_settings_follow_wcs_in_one_notebook(self):
+        view = self.env['stock.picking.type'].get_view(
+            view_id=self.env.ref('stock.view_picking_type_form').id, view_type='form')
+        arch = etree.fromstring(view['arch'])
+        pages = arch.xpath('//notebook/page')
+        names = [page.get('name') for page in pages]
+        self.assertEqual(len(arch.xpath('//sheet/notebook')), 1)
+        self.assertEqual(names.count('blue_barcode'), 1)
+        self.assertEqual(names.index('blue_barcode'), names.index('wcs_app') + 1)

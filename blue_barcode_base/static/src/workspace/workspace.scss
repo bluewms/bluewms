@@ -11,6 +11,26 @@
         min-height: 0;
     }
 
+    .o_blue_barcode_scan_status {
+        background: var(--bs-tertiary-bg, var(--bs-light));
+    }
+
+    .o_blue_barcode_product_image {
+        width: 8rem;
+        height: 8rem;
+        object-fit: contain;
+    }
+
+    .o_blue_barcode_properties {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 0.4rem 1.2rem;
+    }
+
+    .o_blue_barcode_description {
+        white-space: pre-line;
+    }
+
     .o_blue_barcode_home {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));

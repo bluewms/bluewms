@@ -24,14 +24,18 @@ class BlueBarcodeService(models.AbstractModel):
                 'code': release.version_id.code_text, 'hash': release.content_hash}
 
     @api.model
-    def lookup(self, raw):
+    def lookup(self, raw, kind=False):
         self._authorize()
         scan_text(raw)
         profile = self.env.company.blue_barcode_profile_id
+        matches = super().lookup(raw, kind)
         if not profile:
-            return super().lookup(raw)
+            return matches
+        # Document routing is a fixed service, outside the product parse contract.
+        if not kind and any(item['kind'] in ('picking', 'batch') for item in matches):
+            return matches
         snapshot = self._policy_snapshot(self.env.company, 'home')
         parsed = self.env['blue.extension.contract']._run(snapshot['code'], {
             'request': {'phase': 'parse', 'raw': raw, 'context': {'kind': 'home'}, 'parsed': {}},
             'candidates': []}, 'barcode_policy/1')
-        return [item for item in super().lookup(parsed['code']) if item['kind'] == parsed['kind']]
+        return [item for item in super().lookup(parsed['code'], kind) if item['kind'] == parsed['kind']]

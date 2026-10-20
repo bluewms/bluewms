@@ -3,16 +3,20 @@
         <div class="o_blue_barcode_workspace d-flex flex-column h-100 bg-view">
             <header class="o_blue_barcode_header border-bottom p-3">
                 <div class="d-flex gap-2 align-items-center mb-2">
-                    <button class="btn btn-secondary" t-on-click="this.home" t-att-disabled="this.state.busy">首页 / 释放</button>
-                    <h4 class="m-0 text-truncate"><t t-out="this.state.session?.name || '条码'"/></h4>
-                    <span t-if="this.state.session" class="badge text-bg-secondary ms-auto"><t t-out="this.state.session.state === 'closed' ? '已结束' : '作业中'"/></span>
+                    <button t-if="this.state.canBack" class="btn btn-secondary" t-on-click="this.back" t-att-disabled="this.state.busy">返回</button>
+                    <button class="btn btn-secondary" t-on-click="this.home" t-att-disabled="this.state.busy">首页</button>
+                    <h4 class="m-0 text-truncate"><t t-out="this.state.page === 'work' ? this.state.session.name : this.state.details &amp;&amp; this.state.page === 'details' ? this.state.details.name : this.state.lookupKind === 'product' ? '产品查询' : this.state.lookupKind === 'location' ? '位置查询' : '条码'"/></h4>
+                    <span t-if="this.state.page === 'work'" class="badge text-bg-secondary ms-auto"><t t-out="this.state.session.state === 'closed' ? '已结束' : '作业中'"/></span>
                 </div>
-                <div class="input-group">
-                    <input t-ref="this.scanInput" class="form-control o_blue_barcode_scan_input" type="text" autocomplete="off"
-                        placeholder="扫描条码 / 完整二维码，回车确认" t-model.proxy="this.state.raw" t-on-keydown="this.onInputKey"
-                        t-att-disabled="this.state.editing || this.state.session?.state === 'closed'"/>
-                    <button class="btn btn-primary" t-on-click="this.submitInput">确认</button>
-                    <button class="btn btn-secondary" t-on-click="this.camera" aria-label="相机扫描">相机</button>
+                <div class="o_blue_barcode_scan_status d-flex gap-2 align-items-center rounded px-3 py-2">
+                    <div class="flex-grow-1">
+                        <strong t-if="this.state.page === 'work' &amp;&amp; this.state.session.context.pending">请扫描批次 / 序列号</strong>
+                        <strong t-elif="this.state.lookupKind === 'product'">请直接扫描产品条码</strong>
+                        <strong t-elif="this.state.lookupKind === 'location'">请直接扫描位置条码</strong>
+                        <strong t-else="">请直接使用 PDA / 扫码枪扫描</strong>
+                        <div t-if="this.state.lastScan" class="text-muted small text-break">最近扫描：<t t-out="this.state.lastScan"/></div>
+                    </div>
+                    <button class="btn btn-secondary" t-on-click="this.camera" aria-label="相机扫描" t-att-disabled="this.state.editing || (this.state.page === 'work' &amp;&amp; this.state.session.state === 'closed')">相机</button>
                 </div>
                 <div t-if="this.state.error" class="alert alert-danger mt-2 mb-0" role="alert">
                     <t t-out="this.state.error"/>
@@ -41,9 +45,14 @@
             <main class="o_blue_barcode_content flex-grow-1 overflow-auto p-3">
                 <div t-if="this.state.page === 'home'" class="o_blue_barcode_home">
                     <button t-foreach="this.state.entries" t-as="entry" t-key="entry.kind"
-                        class="btn border bg-body text-body o_blue_barcode_entry" t-on-click="() => this.list(entry.kind)">
+                        class="btn border bg-body text-body o_blue_barcode_entry" t-on-click="() => ['product','location'].includes(entry.kind) ? this.openLookup(entry.kind) : this.list(entry.kind)">
                         <i t-att-class="'fa fa-' + entry.icon + ' fa-2x mb-3 text-primary'"/><span class="fs-4" t-out="entry.name"/>
                     </button>
+                </div>
+                <div t-elif="this.state.page === 'query'" class="o_blue_barcode_query text-center p-4">
+                    <h3 t-out="this.state.lookupKind === 'product' ? '扫描产品，查看产品资料及库存分布' : '扫描位置，查看位置资料、子位置及库存'"/>
+                    <p class="text-muted">直接扫描即可进入详情，也可以从列表选择。</p>
+                    <button class="btn btn-primary btn-lg mt-3" t-on-click="() => this.list(this.state.lookupKind)" t-out="this.state.lookupKind === 'product' ? '选择产品' : '选择位置'"/>
                 </div>
                 <t t-elif="this.state.page === 'list'">
                     <div t-if="this.state.listKind !== 'lookup'" class="d-flex gap-2 mb-3">
@@ -62,15 +71,51 @@
                     <button t-if="this.state.more" class="btn btn-secondary mt-3" t-on-click="this.more">加载更多</button>
                 </t>
                 <t t-elif="this.state.page === 'details'">
-                    <h3 t-out="this.state.details.name"/><p class="text-muted" t-out="this.state.details.barcode"/>
+                    <div class="border rounded p-3 mb-3 bg-body">
+                        <div class="d-flex gap-3 flex-wrap align-items-start">
+                            <img t-if="this.state.details.kind === 'product'" t-att-src="this.state.details.image_url" class="o_blue_barcode_product_image rounded" alt="产品图片"/>
+                            <div class="flex-grow-1">
+                                <h3 t-out="this.state.details.name"/>
+                                <div class="text-muted text-break">条码：<t t-out="this.state.details.barcode || '未设置'"/></div>
+                                <dl t-if="this.state.details.kind === 'product'" class="o_blue_barcode_properties mt-3 mb-0">
+                                    <dt>产品编号</dt><dd t-out="this.state.details.reference || '未设置'"/>
+                                    <dt>产品类别</dt><dd t-out="this.state.details.category"/>
+                                    <dt>库存单位</dt><dd t-out="this.state.details.uom"/>
+                                    <dt>追踪方式</dt><dd t-out="this.state.details.tracking"/>
+                                    <dt>重量</dt><dd><t t-out="this.state.details.weight"/> <t t-out="this.state.details.weight_uom"/></dd>
+                                    <dt>体积</dt><dd><t t-out="this.state.details.volume"/> <t t-out="this.state.details.volume_uom"/></dd>
+                                </dl>
+                                <dl t-else="" class="o_blue_barcode_properties mt-3 mb-0">
+                                    <dt>位置类型</dt><dd t-out="this.state.details.usage"/>
+                                    <dt>上级位置</dt><dd><button t-if="this.state.details.parent_id" class="btn btn-link p-0 text-start" t-on-click="() => this.openRecord({kind:'location', id:this.state.details.parent_id})" t-out="this.state.details.parent"/></dd>
+                                    <dt>库存范围</dt><dd>本位置及其子位置</dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div t-if="this.state.details.kind === 'product'" class="o_blue_barcode_stock_summary d-flex gap-4 flex-wrap border-top pt-3 mt-3">
+                            <div>在库 <strong t-out="this.state.details.quantity"/> <t t-out="this.state.details.uom"/></div>
+                            <div>已预留 <strong t-out="this.state.details.reserved"/> <t t-out="this.state.details.uom"/></div>
+                            <div>可用 <strong t-out="this.state.details.available"/> <t t-out="this.state.details.uom"/></div>
+                        </div>
+                        <p t-if="this.state.details.description" class="o_blue_barcode_description mt-3 mb-0" t-out="this.state.details.description"/>
+                    </div>
+                    <div t-if="this.state.details.kind === 'location' &amp;&amp; this.state.details.children.length" class="mb-3">
+                        <h5>子位置</h5><div class="d-flex gap-2 flex-wrap">
+                            <button t-foreach="this.state.details.children" t-as="child" t-key="child.id" class="btn btn-outline-secondary" t-on-click="() => this.openRecord(child)" t-out="child.name"/>
+                        </div>
+                        <p t-if="this.state.details.more_children" class="text-muted mt-2">子位置较多，当前显示前 50 个，其余可在位置列表搜索。</p>
+                    </div>
+                    <h5>库存明细 <span class="text-muted small" t-out="this.state.details.count"/></h5>
                     <div class="list-group">
                         <div t-foreach="this.state.details.rows" t-as="row" t-key="row.id" class="list-group-item">
-                            <strong t-out="row.product"/><div t-out="row.location"/>
+                            <button class="btn btn-link p-0 fw-bold text-start d-block" t-on-click="() => this.openRecord({kind:'product',id:row.product_id})" t-out="row.product"/>
+                            <button class="btn btn-link p-0 text-start d-block" t-on-click="() => this.openRecord({kind:'location',id:row.location_id})" t-out="row.location"/>
                             <span>在库 <t t-out="row.quantity"/> / 可用 <t t-out="row.available"/> <t t-out="row.uom"/></span>
                             <div class="text-muted"><t t-out="row.lot"/> <t t-out="row.package"/> <t t-out="row.owner"/></div>
                         </div>
                     </div>
-                    <p t-if="this.state.details.more" class="text-warning mt-3">仅显示前 200 条库存明细，请在库存中进一步筛选。</p>
+                    <p t-if="!this.state.details.rows.length" class="text-muted">当前范围暂无库存，基本资料仍可查看。</p>
+                    <button t-if="this.state.details.more" class="btn btn-secondary mt-3" t-on-click="this.moreDetails">加载更多库存明细</button>
                 </t>
                 <t t-elif="this.state.page === 'work'">
                     <t t-set="group" t-value="this.currentGroup()"/>
@@ -93,7 +138,7 @@
                             t-att-class="'o_blue_barcode_row border rounded p-3 ' + (this.state.selected === row.key ? 'border-primary' : '')"
                             t-on-click="() => this.state.selected = row.key">
                             <div class="d-flex justify-content-between gap-2">
-                                <div><strong t-out="row.product"/><div class="text-muted" t-out="row.barcode"/></div>
+                                <div><button class="btn btn-link p-0 fw-bold text-start" t-on-click.stop="() => this.openRecord({kind:'product',id:row.product_id})" t-out="row.product"/><div class="text-muted" t-out="row.barcode"/></div>
                                 <div class="text-end">
                                     <div class="text-muted" t-out="this.state.session.kind === 'inventory' ? '实盘 / 账面' : '已扫 / 应作业'"/>
                                     <strong class="o_blue_barcode_quantity" t-out="row.quantity"/><span class="text-muted"> / <t t-out="row.expected"/></span><div t-out="row.uom"/>

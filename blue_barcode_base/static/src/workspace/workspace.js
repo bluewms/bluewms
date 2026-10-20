@@ -1,11 +1,14 @@
 import {
-    Component, onMounted, onWillDestroy, onWillStart, proxy, signal, useListener, useProps,
+    Component, onMounted, onWillStart, onWillUnmount, proxy, useProps,
 } from '@odoo/owl';
 import { registry } from '@web/core/registry';
-import { useService } from '@web/core/utils/hooks';
+import { useBus, useService } from '@web/core/utils/hooks';
 import { standardActionServiceProps } from '@web/webclient/actions/action_plugin';
 import { scanBarcode } from '@web/core/barcode/barcode_dialog';
 import { user } from '@web/core/user';
+import { session } from '@web/session';
+import { Mutex } from '@web/core/utils/concurrency';
+import { PdaCapture } from '../scanning/pda_capture';
 
 function identity() {
     const bytes = new Uint8Array(16);
@@ -16,15 +19,16 @@ function identity() {
 export class BarcodeWorkspace extends Component {
     static template = 'blue_barcode_base.Workspace';
     props = useProps({ ...standardActionServiceProps });
-    scanInput = signal.ref();
 
     setup() {
         this.orm = useService('orm');
         this.action = useService('action');
         this.notification = useService('notification');
+        this.barcode = useService('barcode');
+        this.lookupMutex = new Mutex();
         this.state = proxy({
             entries: [], page: 'home', listKind: '', items: [], more: false, offset: 0,
-            search: '', raw: '', session: null, details: null, group: '', selected: '',
+            search: '', session: null, details: null, group: '', selected: '', lookupKind: '', canBack: false, lastScan: '',
             editing: false, total: '', error: '', storageError: '', busy: false, pending: null, queued: 0, message: '',
         });
         this.companyId = user.activeCompanies[0].id;
@@ -37,9 +41,19 @@ export class BarcodeWorkspace extends Component {
             this.state.storageError = '终端无法保存恢复信息，扫码已暂停。请恢复浏览器存储后重试。';
         }
         this.queue = [];
-        this.buffer = '';
-        useListener(document, 'keydown', (event) => this.onScannerKey(event));
-        onWillDestroy(() => clearTimeout(this.bufferTimer));
+        this.history = [];
+        this.capture = new PdaCapture({
+            emit: (barcode) => this.barcode.bus.trigger('barcode_scanned', {barcode}),
+            isActive: () => this.scanActive(), input: this.barcode.barcodeInput,
+            delay: session.max_time_between_keys_in_ms || 150,
+        });
+        useBus(this.barcode.bus, 'barcode_scanned', (event) => {
+            if (this.scanActive()) {
+                this.submitRaw(event.detail.barcode);
+            }
+        });
+        onMounted(() => this.capture.attach());
+        onWillUnmount(() => this.capture.destroy());
         onWillStart(async () => {
             this.state.entries = await this.orm.call('blue.barcode.service', 'menu_entries', []);
             const params = this.props.action.params || {};
@@ -80,13 +94,68 @@ export class BarcodeWorkspace extends Component {
     }
 
     focusScan() {
-        if (!this.state.editing) {
-            requestAnimationFrame(() => this.scanInput()?.focus());
+        const input = this.barcode.barcodeInput;
+        if (input && !this.state.editing && this.scanActive()) {
+            input.setAttribute('inputmode', 'none');
+            requestAnimationFrame(() => input.focus({preventScroll: true}));
         }
+    }
+
+    scanActive() {
+        return !this.state.editing && !document.hidden && !document.querySelector('.o_dialog [role="dialog"], .modal.show')
+            && !(this.state.page === 'work' && this.state.session?.state === 'closed');
+    }
+
+    saveNavigation() {
+        if (this.history.length >= 20) {
+            this.history.shift();
+        }
+        this.history.push({page: this.state.page, listKind: this.state.listKind,
+            items: this.state.items, more: this.state.more, offset: this.state.offset,
+            search: this.state.search, details: this.state.details, lookupKind: this.state.lookupKind});
+        this.state.canBack = true;
+    }
+
+    async back() {
+        if (this.state.busy || this.state.editing) {
+            return;
+        }
+        if (this.state.page === 'work' && (this.state.pending || this.queue.length)) {
+            this.state.error = '请先核对尚未确认的扫描，再退出作业。';
+            return;
+        }
+        if (this.state.page === 'work' && this.state.session) {
+            try {
+                await this.orm.call('blue.barcode.session', 'action_release', [[this.state.session.id], this.client]);
+                this.state.session = null;
+                sessionStorage.removeItem(this.storageKey);
+            } catch (error) {
+                this.error(error);
+                return;
+            }
+        }
+        const previous = this.history.pop();
+        if (previous) {
+            Object.assign(this.state, previous, {canBack: !!this.history.length, error: '', message: ''});
+        } else {
+            this.home();
+        }
+        this.focusScan();
+    }
+
+    openLookup(kind) {
+        this.saveNavigation();
+        this.state.page = 'query';
+        this.state.lookupKind = kind;
+        this.state.details = null;
+        this.state.error = '';
+        this.state.message = '';
+        this.focusScan();
     }
 
     error(error) {
         this.state.error = error.data?.message || error.message || '处理失败，请核对后重试。';
+        navigator.vibrate?.([100, 50, 100]);
     }
 
     persist() {
@@ -162,6 +231,7 @@ export class BarcodeWorkspace extends Component {
         }
         try {
             if (reset) {
+                this.saveNavigation();
                 this.state.offset = 0;
             }
             const result = await this.orm.call('blue.barcode.service', 'list_records', [
@@ -169,6 +239,7 @@ export class BarcodeWorkspace extends Component {
             ]);
             this.state.page = 'list';
             this.state.listKind = kind;
+            this.state.lookupKind = ['product', 'location'].includes(kind) ? kind : '';
             this.state.items = reset ? result.items : [...this.state.items, ...result.items];
             this.state.more = result.more;
             this.state.message = result.message || '';
@@ -184,10 +255,18 @@ export class BarcodeWorkspace extends Component {
     }
 
     async openRecord(record, takeover = false) {
+        this.takeoverRecord = null;
         try {
+            if (this.state.page === 'work' && (this.state.busy || this.state.pending || this.state.editing)) {
+                throw new Error('请先完成当前扫描或数量编辑，再查看详情。');
+            }
             if (['product', 'location'].includes(record.kind)) {
-                this.state.details = await this.orm.call('blue.barcode.service', 'details', [record.kind, record.id]);
+                const details = await this.orm.call('blue.barcode.service', 'details', [record.kind, record.id]);
+                this.saveNavigation();
+                this.state.details = details;
+                this.state.lookupKind = record.kind;
                 this.state.page = 'details';
+                this.state.message = '';
             } else {
                 if (this.state.pending || this.queue.length) {
                     throw new Error('请先核对尚未确认的扫描。');
@@ -195,13 +274,18 @@ export class BarcodeWorkspace extends Component {
                 const view = await this.orm.call('blue.barcode.service', 'open_session', [
                     record.kind, record.id, this.client, takeover,
                 ]);
+                if (this.state.page !== 'work') {
+                    this.saveNavigation();
+                }
                 this.acceptView(view);
             }
             this.state.error = '';
             this.focusScan();
         } catch (error) {
             this.error(error);
-            this.takeoverRecord = record;
+            if (!['product', 'location'].includes(record.kind)) {
+                this.takeoverRecord = record;
+            }
         }
     }
 
@@ -209,39 +293,6 @@ export class BarcodeWorkspace extends Component {
         if (this.takeoverRecord && window.confirm('确认接管此作业？原终端将不能继续写入。')) {
             await this.openRecord(this.takeoverRecord, true);
         }
-    }
-
-    onScannerKey(event) {
-        if (event.target.closest('input, textarea, select, [contenteditable]')
-            || document.querySelector('.modal.show') || this.state.editing || document.hidden) {
-            return;
-        }
-        if (event.key === 'Enter' || event.key === 'Tab') {
-            if (this.buffer) {
-                event.preventDefault();
-                const raw = this.buffer;
-                this.buffer = '';
-                clearTimeout(this.bufferTimer);
-                this.submitRaw(raw);
-            }
-        } else if (event.key.length === 1 && !event.metaKey && !event.ctrlKey) {
-            this.buffer += event.key;
-            clearTimeout(this.bufferTimer);
-            this.bufferTimer = setTimeout(() => { this.buffer = ''; }, 250);
-        }
-    }
-
-    onInputKey(event) {
-        if (['Enter', 'Tab'].includes(event.key)) {
-            event.preventDefault();
-            this.submitInput();
-        }
-    }
-
-    submitInput() {
-        const raw = this.state.raw;
-        this.state.raw = '';
-        this.submitRaw(raw);
     }
 
     async submitRaw(raw) {
@@ -252,27 +303,37 @@ export class BarcodeWorkspace extends Component {
             this.state.error = '输入过长或待处理队列已满，当前这次尚未计数。请先核对队列后重新扫描。';
             return;
         }
+        this.state.lastScan = raw.length > 64 ? `${raw.slice(0,64)}…` : raw;
         if (this.state.page !== 'work') {
-            try {
-                const matches = await this.orm.call('blue.barcode.service', 'lookup', [raw]);
-                if (matches.length === 1) {
-                    await this.openRecord(matches[0]);
-                } else {
-                    this.state.page = 'list';
-                    this.state.listKind = 'lookup';
-                    this.state.items = matches;
-                    this.state.more = false;
-                    this.state.error = matches.length ? '编码有多个匹配，请选择。' : '未找到对应单据、产品或位置。';
+            return this.lookupMutex.exec(async () => {
+                if (this.state.page === 'work') {
+                    return this.submitRaw(raw);
                 }
-            } catch (error) {
-                this.error(error);
-            }
-            return;
+                try {
+                    const matches = await this.orm.call('blue.barcode.service', 'lookup', [raw, this.state.lookupKind || false]);
+                    if (matches.length === 1) {
+                        await this.openRecord(matches[0]);
+                    } else {
+                        this.state.page = 'list';
+                        this.state.listKind = 'lookup';
+                        this.state.items = matches;
+                        this.state.more = false;
+                        this.state.error = matches.length ? '编码有多个匹配，请选择。' : '未找到对应单据、产品或位置。';
+                    }
+                } catch (error) {
+                    this.error(error);
+                }
+            });
         }
         if (this.state.pending && !this.state.busy) {
             this.state.error = '有待核对事件，请先重试或核对它。';
             return;
         }
+        if (this.state.error && this.queue.length) {
+            this.notification.add('后续扫描已暂停，请先核对队列。当前这次未计数。', {type: 'warning'});
+            return;
+        }
+        this.state.error = '';
         this.queue.push({ key: identity(), payload: {
             raw, row_key: this.state.selected, group: this.state.group,
         } });
@@ -297,6 +358,10 @@ export class BarcodeWorkspace extends Component {
                 await this.sendEvent(event);
             }
         } catch (error) {
+            if (['odoo.exceptions.UserError', 'odoo.exceptions.ValidationError', 'odoo.exceptions.AccessError'].includes(error.data?.name)) {
+                this.state.pending = null;
+                this.notification.add(error.data.message, {type: 'danger'});
+            }
             this.error(error);
             this.persist();
         } finally {
@@ -333,6 +398,9 @@ export class BarcodeWorkspace extends Component {
             this.state.message += '（已定位到匹配的业务组）';
         }
         this.persist();
+        if (!response.replayed && 'vibrate' in navigator) {
+            navigator.vibrate(50);
+        }
     }
 
     async cancelPendingProduct() {
@@ -415,6 +483,16 @@ export class BarcodeWorkspace extends Component {
         }
     }
 
+    async moreDetails() {
+        try {
+            const current = this.state.details;
+            const next = await this.orm.call('blue.barcode.service', 'details', [current.kind, current.id, current.offset + 200]);
+            this.state.details = {...next, rows: [...current.rows, ...next.rows]};
+        } catch (error) {
+            this.error(error);
+        }
+    }
+
     editTotal(row) {
         if (this.state.pending || this.state.busy) {
             return;
@@ -486,6 +564,10 @@ export class BarcodeWorkspace extends Component {
             this.state.error = '';
             this.state.message = '';
             this.state.search = '';
+            this.state.lookupKind = '';
+            this.state.details = null;
+            this.history = [];
+            this.state.canBack = false;
             sessionStorage.removeItem(this.storageKey);
         } catch (error) {
             this.error(error);

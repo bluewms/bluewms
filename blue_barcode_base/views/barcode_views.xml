@@ -20,15 +20,15 @@
     <record id="view_picking_type_form" model="ir.ui.view">
         <field name="name">stock.picking.type.form.inherit.blue.barcode</field>
         <field name="model">stock.picking.type</field><field name="inherit_id" ref="stock.view_picking_type_form"/>
-        <field name="arch" type="xml"><xpath expr="//sheet" position="inside">
-            <notebook><page name="blue_barcode" string="条码">
+        <field name="arch" type="xml"><xpath expr="//page[@name='hardware']" position="after">
+            <page name="blue_barcode" string="条码">
                 <group name="blue_barcode_basic" string="基本配置">
                     <field name="blue_barcode_grouping"/>
                     <field name="blue_barcode_allow_overquantity" groups="stock.group_stock_manager"/>
                     <field name="blue_barcode_allow_new_lot" groups="stock.group_stock_manager"/>
                     <field name="blue_barcode_allow_pack" groups="stock.group_stock_manager"/>
                 </group>
-            </page></notebook>
+            </page>
         </xpath></field>
     </record>
 </odoo>

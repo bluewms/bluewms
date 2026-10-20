@@ -89,7 +89,7 @@ class BlueBarcodeSession(models.Model):
                     package = line.package_id if line else self.env['stock.package']
                     result_package = line.result_package_id if line else self.env['stock.package']
                     done = line.quantity_product_uom if line and line.picked else 0
-                    expected = (self.expected or {}).get(key, line.quantity_product_uom if line else demand)
+                    expected = demand if len(lines) <= 1 else (self.expected or {}).get(key, line.quantity_product_uom)
                     grouping = picking.picking_type_id.blue_barcode_grouping
                     part = (['source_package', package.id] if grouping == 'source_package'
                         else ['destination_package', result_package.id] if grouping == 'destination_package'
@@ -240,8 +240,12 @@ class BlueBarcodeSession(models.Model):
         if parsed.get('package'):
             candidates = [r for r in candidates if r['package'] == parsed['package']]
         if row_key:
-            candidates = [r for r in candidates if r['key'] == row_key]
-        elif group_key:
+            selected = [r for r in rows if r['key'] == row_key]
+            if not selected:
+                raise UserError(self.env._('所选明细已变化,请重新选择.'))
+            if selected[0]['product_id'] == products.id:
+                candidates = [r for r in candidates if r['key'] == row_key]
+        if group_key and not (row_key and selected[0]['product_id'] == products.id):
             current = [r for r in candidates if r['group'] == group_key]
             if current:
                 candidates = current
@@ -347,6 +351,8 @@ class BlueBarcodeSession(models.Model):
 
     def _consume_scan(self, raw, row_key, group_key):
         parsed = self._decode(raw)
+        if (self.scan_context or {}).get('pending') and parsed['kind'] != 'lot':
+            raise UserError(self.env._('请先补扫当前产品的批次/序列号,或明确取消待补扫产品.'))
         if parsed['kind'] == 'product':
             if (self.scan_context or {}).get('pending'):
                 raise UserError(self.env._('上一产品尚缺批次/序列号,请先补扫或取消待补扫产品.'))

@@ -92,3 +92,11 @@ class TestBarcodeContract(BaseCommon):
         session.action_event('qr_client_00000001', 'qr_event_00000001', 0, {'raw': payload()['request']['raw']})
         self.assertEqual(picking.move_line_ids.quantity, 12)
         self.assertEqual(session.policy_snapshot['release_id'], frozen)
+
+    def test_company_product_parser_does_not_hide_document_barcode_routing(self):
+        warehouse = self.env['stock.warehouse'].create({'name': 'Home barcode warehouse', 'code': 'HBAR'})
+        picking = self.env['stock.picking'].create({'picking_type_id': warehouse.in_type_id.id,
+            'location_id': warehouse.in_type_id.default_location_src_id.id, 'location_dest_id': warehouse.lot_stock_id.id})
+        self.env.company.blue_barcode_profile_id = self._profile()
+        matches = self.env['blue.barcode.service'].lookup(picking.name)
+        self.assertIn({'kind': 'picking', 'id': picking.id, 'name': picking.display_name}, matches)

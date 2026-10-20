@@ -258,3 +258,59 @@ class TestBarcodeScanning(BaseCommon):
         with self.assertRaises(UserError):
             self._scan(session, event='barcode_event_000002', payload={'raw': self.product.barcode, 'group': group})
         self.assertFalse(picking.move_line_ids.filtered('picked'))
+
+    def test_product_details_include_metadata_and_stock_distribution(self):
+        self.product.write({'default_code': 'DETAIL-REF', 'description_sale': 'Details description'})
+        self.env['stock.quant']._update_available_quantity(self.product, self.warehouse.lot_stock_id, 7)
+        details = self.service.details('product', self.product.id)
+        self.assertEqual(details['reference'], 'DETAIL-REF')
+        self.assertEqual(details['description'], 'Details description')
+        self.assertEqual(details['quantity'], 7)
+        self.assertEqual(details['available'], 7)
+        self.assertEqual(details['rows'][0]['location_id'], self.warehouse.lot_stock_id.id)
+        self.assertEqual(details['rows'][0]['product_id'], self.product.id)
+
+    def test_parent_location_details_include_children_and_descendant_stock(self):
+        child = self.env['stock.location'].create({'name': 'Details child', 'location_id': self.warehouse.lot_stock_id.id,
+                                                   'company_id': self.env.company.id})
+        self.env['stock.quant']._update_available_quantity(self.product, child, 4)
+        details = self.service.details('location', self.warehouse.lot_stock_id.id)
+        self.assertIn(child.id, [item['id'] for item in details['children']])
+        self.assertEqual(details['rows'][0]['location_id'], child.id)
+        self.assertEqual(details['rows'][0]['quantity'], 4)
+
+    def test_product_query_does_not_navigate_to_location_or_picking(self):
+        self.warehouse.lot_stock_id.barcode = 'SCOPED_LOCATION'
+        self.assertFalse(self.service.lookup('SCOPED_LOCATION', 'product'))
+        self.assertEqual(self.service.lookup('SCOPED_LOCATION', 'location')[0]['kind'], 'location')
+        self.assertEqual(self.service.lookup(self.product.barcode, 'product')[0]['kind'], 'product')
+
+    def test_selected_other_product_does_not_block_next_scan(self):
+        picking = self._picking()
+        other = self.env['product.product'].create({'name': 'Scan other', 'barcode': 'SCAN-OTHER', 'is_storable': True})
+        move = self.env['stock.move'].create({'picking_id': picking.id, 'product_id': other.id, 'product_uom_qty': 10,
+            'uom_id': other.uom_id.id, 'location_id': picking.location_id.id, 'location_dest_id': picking.location_dest_id.id})
+        move._action_confirm()
+        session = self._session(picking)
+        first = next(row for row in session._rows() if row['product_id'] == self.product.id)
+        self._scan(session, payload={'raw': other.barcode, 'row_key': first['key'], 'group': first['group']})
+        self.assertEqual(move.move_line_ids.quantity, 1)
+        self.assertFalse(picking.move_line_ids.filtered(lambda line: line.product_id == self.product and line.picked))
+
+    def test_location_scan_cannot_silently_cancel_pending_tracking(self):
+        self.product.tracking = 'lot'
+        self.warehouse.lot_stock_id.barcode = 'TRACKING_DEST'
+        session = self._session()
+        self._scan(session)
+        with self.assertRaises(UserError):
+            self._scan(session, event='barcode_event_000002', payload={'raw': 'TRACKING_DEST'})
+        self.assertTrue(session.scan_context['pending'])
+        self.assertFalse(session.picking_id.move_line_ids.filtered('picked'))
+
+    def test_reopen_keeps_document_demand_separate_from_scanned_quantity(self):
+        session = self._session(self._picking(20))
+        self._scan(session)
+        session.action_release(self.client)
+        view = self.service.open_session('picking', session.picking_id.id, self.client)
+        self.assertEqual(view['rows'][0]['quantity'], 1)
+        self.assertEqual(view['rows'][0]['expected'], 20)
