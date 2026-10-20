@@ -1,0 +1,6 @@
+<odoo noupdate="1">
+  <record id="sequence_inventory" model="ir.sequence">
+    <field name="name">盘点单</field><field name="code">blue.stock.inventory</field>
+    <field name="prefix">INV</field><field name="padding">6</field><field name="company_id" eval="False"/>
+  </record>
+</odoo>

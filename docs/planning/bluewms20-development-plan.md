@@ -17,6 +17,7 @@
 | 平台与界面 | MuK Web、AI／MCP 及主题依赖已锁定；库存与品牌界面分离 |
 | 库存基础 | 库位、容量、包裹与汇总迁入 `blue_stock_base`，见[库存基础](../migrations/blue-stock-20.md) |
 | 库存硬约束 | 独立 `blue_stock_rules`，非负库存、冻结和禁止入库，见[规则说明](../migrations/stock-rules-20.md) |
+| 人工盘点 | 独立盘点单、范围与实盘、原生调整和不可变历史；独立 ERP 关联桥接，见[盘点迁移](../migrations/stock-inventory-20.md) |
 | 上架增强 | 原生规则选择增强场景，系统设置优先、整托不拆、同单／批次偏好或限制，见[上架说明](../migrations/putaway-policy-20.md) |
 | 合同与资产 | 受限解释器、草稿／试算／不可变版本／发布／回滚，代码和准确测试保存在数据库 |
 | WCS | 基础逐行创建、/4 两阶段增强、repeat/relay、数量覆盖、持久发送和认证回调，见[WCS 说明](../migrations/wcs-20.md) |

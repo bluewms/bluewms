@@ -14,6 +14,8 @@
 |---|---|---|
 | `blue_stock_base` | 库存、库位、包裹及汇总基础 | LGPL-3 |
 | `blue_stock_rules` | 非负库存、冻结／禁止入库及授权例外 | AGPL-3 |
+| `blue_stock_inventory` | 人工盘点单、完整库存维度、账存核对与原生库存调整 | LGPL-3 |
+| `blue_erp_inventory` | 盘点核心与 ERP 同时安装时的差异事件关联 | LGPL-3 |
 | `blue_stock_putaway` | 原生上架规则之后的受限增强 | AGPL-3 |
 | `blue_extension_contract` | 纯数据合同、共享 JSON 受限解释器与资源边界 | LGPL-3 |
 | `blue_config_asset` | 草稿、验证、不可变版本、发布／回滚与执行记录 | LGPL-3 |

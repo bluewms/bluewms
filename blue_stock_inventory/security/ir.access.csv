@@ -1,0 +1,7 @@
+id,name,model_id,group_id/id,operation,domain
+inventory_user,Inventory user,stock.inventory,stock.group_stock_user,cru,
+inventory_manager,Inventory manager,stock.inventory,stock.group_stock_manager,crud,
+inventory_line_user,Inventory line user,stock.inventory.line,stock.group_stock_user,ru,
+inventory_line_manager,Inventory line manager,stock.inventory.line,stock.group_stock_manager,crud,
+inventory_company,Inventory company,stock.inventory,,crud,"[('company_id','in',company_ids)]"
+inventory_line_company,Inventory line company,stock.inventory.line,,crud,"[('company_id','in',company_ids)]"

@@ -1,0 +1,16 @@
+<odoo>
+  <record id="stock_inventory_view_form" model="ir.ui.view">
+    <field name="name">stock.inventory.form.inherit.erp</field><field name="model">stock.inventory</field>
+    <field name="inherit_id" ref="blue_stock_inventory.stock_inventory_view_form"/>
+    <field name="arch" type="xml"><xpath expr="//page[@name='notes']" position="before">
+      <page name="erp_events" string="ERP 同步"><field name="erp_event_ids" readonly="1">
+        <list create="0" delete="0"><field name="event_key"/><field name="interface_id"/><field name="state"/><field name="result"/></list>
+      </field></page>
+    </xpath></field>
+  </record>
+  <record id="blue_erp_event_view_form" model="ir.ui.view">
+    <field name="name">blue.erp.event.form.inherit.inventory</field><field name="model">blue.erp.event</field>
+    <field name="inherit_id" ref="blue_erp_interface.blue_erp_event_view_form"/>
+    <field name="arch" type="xml"><field name="picking_id" position="after"><field name="inventory_id" readonly="1" invisible="not inventory_id"/></field></field>
+  </record>
+</odoo>

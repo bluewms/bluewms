@@ -1,0 +1,83 @@
+<odoo>
+  <record id="stock_inventory_view_list" model="ir.ui.view">
+    <field name="name">stock.inventory.list</field><field name="model">stock.inventory</field>
+    <field name="arch" type="xml"><list decoration-success="state == 'done'">
+      <field name="name"/><field name="date"/><field name="location_ids" widget="many2many_tags"/>
+      <field name="responsible_id"/><field name="line_count"/><field name="counted_count"/><field name="applied_count"/>
+      <field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/>
+    </list></field>
+  </record>
+  <record id="stock_inventory_view_form" model="ir.ui.view">
+    <field name="name">stock.inventory.form</field><field name="model">stock.inventory</field>
+    <field name="arch" type="xml"><form>
+      <header>
+        <button name="action_start" type="object" string="开始盘点" class="oe_highlight" invisible="state != 'draft'" groups="stock.group_stock_manager"/>
+        <button name="action_mark_counted" type="object" string="确认全部实盘" invisible="state != 'in_progress'" confirm="确认本单全部未记账明细的实盘数量已逐项核实?"/>
+        <button name="action_state_to_done" type="object" string="完成盘点并记账" class="oe_highlight" invisible="state != 'in_progress'" groups="stock.group_stock_manager" confirm="确认全部实盘数量,并通过库存调整记录差异?"/>
+        <button name="action_state_to_draft" type="object" string="退回草稿" invisible="state != 'in_progress' or applied_count != 0" groups="stock.group_stock_manager"/>
+        <button name="action_state_to_cancel" type="object" string="取消" invisible="state not in ('draft','in_progress') or applied_count != 0" groups="stock.group_stock_manager"/>
+        <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+      </header>
+      <sheet>
+        <div class="oe_button_box" name="button_box">
+          <button name="action_view_stock_moves" type="object" class="oe_stat_button" icon="fa-exchange" string="调整流水"/>
+        </div>
+        <div class="oe_title"><h1><field name="name"/></h1></div>
+        <group>
+          <group string="盘点范围">
+            <field name="location_ids" widget="many2many_tags" readonly="state != 'draft'" required="1" domain="[('company_id','=',company_id),('usage','=','internal')]"/>
+            <field name="exclude_sublocation" readonly="state != 'draft'"/>
+            <field name="product_selection" readonly="state != 'draft'"/>
+            <field name="product_ids" widget="many2many_tags" readonly="state != 'draft'" invisible="product_selection not in ('manual','one','lot')" required="product_selection in ('manual','one','lot')" domain="[('is_storable','=',True),('company_id','in',[False,company_id])]"/>
+            <field name="category_id" readonly="state != 'draft'" invisible="product_selection != 'category'" required="product_selection == 'category'"/>
+            <field name="lot_ids" widget="many2many_tags" readonly="state != 'draft'" invisible="product_selection != 'lot'" required="product_selection == 'lot'" domain="[('company_id','=',company_id),('product_id','in',product_ids)]"/>
+          </group>
+          <group string="执行设置">
+            <field name="company_id" readonly="state != 'draft'"/>
+            <field name="date" readonly="state != 'draft'"/><field name="completed_at" invisible="not completed_at"/>
+            <field name="responsible_id" readonly="state != 'draft'"/>
+            <field name="owner_id" readonly="state != 'draft'"/><field name="package_id" readonly="state != 'draft'"/>
+            <field name="start_empty" readonly="state != 'draft'"/><field name="prefill_counted_quantity" readonly="state != 'draft'"/>
+          </group>
+        </group>
+        <notebook>
+          <page name="count_lines" string="实盘明细">
+            <p>录入实盘数量后视为已确认. 预填数量需要明确确认;账存变化时先刷新并重新盘点. 应用前不会改变实际库存.</p>
+            <field name="line_ids" readonly="state in ('done','cancel')" context="{'default_inventory_id': id}">
+              <list editable="bottom" decoration-success="applied">
+                <field name="product_id" readonly="id" domain="[('is_storable','=',True)]"/>
+                <field name="location_id" readonly="id" domain="[('company_id','=',parent.company_id),('usage','=','internal')]"/>
+                <field name="prod_lot_id" readonly="id" domain="[('product_id','=',product_id),('company_id','=',parent.company_id)]"/>
+                <field name="package_id" readonly="id"/><field name="partner_id" readonly="id"/>
+                <field name="product_uom_id"/><field name="theoretical_qty"/><field name="product_qty" readonly="applied"/>
+                <field name="difference_qty"/><field name="counted" readonly="applied"/><field name="applied"/>
+                <field name="snapshot_at" optional="hide"/><field name="applied_at" optional="hide"/>
+                <button name="action_refresh_book" type="object" string="刷新账存" invisible="applied or parent.state != 'in_progress'"/>
+                <button name="action_apply" type="object" string="应用本行" invisible="applied or not counted or parent.state != 'in_progress'" groups="stock.group_stock_manager"/>
+              </list>
+            </field>
+          </page>
+          <page name="adjustment_moves" string="调整流水"><field name="stock_move_ids" readonly="1"><list create="0" delete="0">
+            <field name="date"/><field name="product_id"/><field name="location_id"/><field name="location_dest_id"/>
+            <field name="lot_id"/><field name="package_id"/><field name="result_package_id"/><field name="owner_id"/>
+            <field name="quantity"/><field name="uom_id"/>
+          </list></field></page>
+          <page name="notes" string="备注"><field name="note"/></page>
+        </notebook>
+      </sheet><chatter/>
+    </form></field>
+  </record>
+  <record id="stock_inventory_view_search" model="ir.ui.view">
+    <field name="name">stock.inventory.search</field><field name="model">stock.inventory</field>
+    <field name="arch" type="xml"><search><field name="name"/><field name="responsible_id"/><field name="location_ids"/>
+      <filter name="in_progress" string="进行中" domain="[('state','=','in_progress')]"/>
+      <filter name="done" string="已完成" domain="[('state','=','done')]"/>
+      <group><filter name="group_responsible" string="负责人" context="{'group_by':'responsible_id'}"/>
+        <filter name="group_state" string="状态" context="{'group_by':'state'}"/></group>
+    </search></field>
+  </record>
+  <record id="action_inventory" model="ir.actions.act_window">
+    <field name="name">盘库</field><field name="res_model">stock.inventory</field><field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_inventory" name="盘库" parent="stock.menu_stock_root" action="action_inventory" sequence="3" groups="stock.group_stock_user"/>
+</odoo>

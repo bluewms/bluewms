@@ -56,7 +56,7 @@ class BlueErpEvent(models.Model):
         return self.with_context(blue_erp_token=ERP_TOKEN).create({
             'interface_id': interface.id, 'company_id': interface.company_id.id,
             'release_id': release.id, 'source_key': source_key, 'event_key': key,
-            'input_snapshot': snapshot, 'document_id': document.id if document else False,
+            'input_snapshot': snapshot, 'state': 'queued', 'document_id': document.id if document else False,
             'picking_id': picking.id if picking else False})
 
     def _prepare(self):
