@@ -1,0 +1,13 @@
+<odoo>
+  <record id="template_erp" model="blue.scene.template">
+    <field name="name">ERP 单据映射 /1</field><field name="hook_code">erp_mapping</field>
+    <field name="contract">erp_mapping/1</field><field name="cloud_managed" eval="True"/>
+  </record>
+  <data noupdate="1">
+    <record id="cron_erp_dispatch" model="ir.cron">
+      <field name="name">ERP: 完成事件持久发送</field><field name="model_id" ref="model_blue_erp_event"/>
+      <field name="state">code</field><field name="code">model._cron_dispatch()</field>
+      <field name="interval_number">1</field><field name="interval_type">minutes</field><field name="active" eval="True"/>
+    </record>
+  </data>
+</odoo>

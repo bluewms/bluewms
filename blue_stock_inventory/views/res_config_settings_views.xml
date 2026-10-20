@@ -1,0 +1,13 @@
+<odoo>
+  <record id="res_config_settings_view_form" model="ir.ui.view">
+    <field name="name">res.config.settings.form.inherit.inventory</field><field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//block[@name='operations_setting_container']" position="inside">
+        <setting id="blue_inventory_auto_complete" string="盘点全部记账后自动完成" help="盘点全部明细已通过原生库存调整记账时,自动结束盘点单.">
+          <field name="stock_inventory_auto_complete"/>
+        </setting>
+      </xpath>
+    </field>
+  </record>
+</odoo>

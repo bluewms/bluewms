@@ -146,6 +146,18 @@ class TestNativeGateway(unittest.TestCase):
         with self.assertRaises(module.Rejected):
             self.request('context', contract='erp_mapping/1')
 
+    def test_erp_contract_requires_explicit_approved_metadata(self):
+        self.payload.update(hook_code='erp_mapping', contract='erp_mapping/1')
+        with self.assertRaises(module.Rejected):
+            self.request('context')
+        asset = self.gateway.assets['erp']
+        metadata = json.loads(asset['metadata_json'])
+        metadata.update(approved=True, generation_ready=True, approved_contracts=['erp_mapping/1'])
+        asset.update(status='approved', metadata_json=json.dumps(metadata))
+        result = self.request('context')
+        self.assertTrue(result['catalog'][1]['generation_ready'])
+        self.assertEqual(result['catalog'][1]['approved_contracts'], ['erp_mapping/1'])
+
     def test_each_business_identity_uses_its_exact_task(self):
         for hook, task in module.TASK_NAMES.items():
             self.payload.update(hook_code=hook, contract='')

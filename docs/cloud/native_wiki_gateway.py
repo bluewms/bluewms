@@ -19,7 +19,7 @@ from pathlib import Path
 HOOKS = {
     'putaway_policy': ('putaway', ['putaway_policy/1', 'putaway_policy/2']),
     'wcs_creation': ('wcs', ['wcs_creation/4']),
-    'erp_mapping': ('erp', []),
+    'erp_mapping': ('erp', ['erp_mapping/1']),
     'device_protocol': ('equipment', ['device_protocol/1']),
     'barcode_policy': ('barcode', []),
 }

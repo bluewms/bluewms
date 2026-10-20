@@ -1,6 +1,6 @@
 # 库存迁移候选与状态
 
-更新：2026-10-18。这里只记录已选和待选范围，不作为安装全部候选的授权。
+更新：2026-10-20。这里只记录已选和待选范围，不作为安装全部候选的授权。
 
 | 原功能／旧来源 | 归属 | 当前状态 |
 |---|---|---|
@@ -9,7 +9,7 @@
 | `stock_same_lot`、`stock_putaway_same_picking` | `blue_stock_putaway` | 已重做为受限增强能力；同单、同批次与跨产品批次号案例在云端，见[上架说明](../migrations/putaway-policy-20.md) |
 | `stock_empty_package_storage` | 候选 `blue_stock_empty_package` | 待选择；先解决包裹位置、依赖和单位语义 |
 | `blue_auto_unpack` | 候选包裹扩展或 `blue_stock_auto_unpack` | 待选择；按独立安装价值确定，不新增通用脚本入口 |
-| `stock_inventory_ajustement` | 候选 `blue_stock_inventory` | 待迁移；人工盘点和差异流程不依赖机器人或条码 |
+| `stock_inventory_ajustement` | `blue_stock_inventory` | 已迁移人工盘点、维度快照、差异与原生记账；ERP 使用独立链接模块，见[盘点迁移](../migrations/stock-inventory-20.md) |
 | `stock_inventory_barcode_bridge` | 候选 `blue_barcode_inventory` | 等条码基础与盘点能力就绪，保持与库存基础分开 |
 | 机器人盘点、客户 WCS／ERP 桥接 | `blue_wcs_*` 或 `blue_project_*` | 按具体协议和项目独立评审，不因 WCS 基础可用就视为全部迁入 |
 
