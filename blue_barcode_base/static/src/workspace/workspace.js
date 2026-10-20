@@ -73,11 +73,17 @@ export class BarcodeWorkspace extends Component {
                         this.state.pending = data.pending;
                         this.queue = data.queue || [];
                         this.state.queued = this.queue.length;
-                        this.acceptView(await this.orm.call('blue.barcode.session', 'action_view', [
+                        const view = await this.orm.call('blue.barcode.session', 'action_view', [
                             [data.sessionId], this.client,
-                        ]));
-                        if (data.pending) {
-                            this.state.error = '有上次尚未确认的扫描，请按原事件重试核对结果。';
+                        ]);
+                        if (view.state === 'closed' && !data.pending && !this.queue.length) {
+                            sessionStorage.removeItem(this.storageKey);
+                            this.state.message = '上次扫描会话已关闭，请重新选择作业。';
+                        } else {
+                            this.acceptView(view);
+                            if (data.pending) {
+                                this.state.error = '有上次尚未确认的扫描，请按原事件重试核对结果。';
+                            }
                         }
                     } catch (error) {
                         if (data?.sessionId) {
@@ -280,6 +286,7 @@ export class BarcodeWorkspace extends Component {
                 this.acceptView(view);
             }
             this.state.error = '';
+            this.state.message = '';
             this.focusScan();
         } catch (error) {
             this.error(error);

@@ -6,7 +6,7 @@
                     <button t-if="this.state.canBack" class="btn btn-secondary" t-on-click="this.back" t-att-disabled="this.state.busy">返回</button>
                     <button class="btn btn-secondary" t-on-click="this.home" t-att-disabled="this.state.busy">首页</button>
                     <h4 class="m-0 text-truncate"><t t-out="this.state.page === 'work' ? this.state.session.name : this.state.details &amp;&amp; this.state.page === 'details' ? this.state.details.name : this.state.lookupKind === 'product' ? '产品查询' : this.state.lookupKind === 'location' ? '位置查询' : '条码'"/></h4>
-                    <span t-if="this.state.page === 'work'" class="badge text-bg-secondary ms-auto"><t t-out="this.state.session.state === 'closed' ? '已结束' : '作业中'"/></span>
+                    <span t-if="this.state.page === 'work'" class="badge text-bg-secondary ms-auto"><t t-out="this.state.session.state === 'closed' ? '只读' : '作业中'"/></span>
                 </div>
                 <div class="o_blue_barcode_scan_status d-flex gap-2 align-items-center rounded px-3 py-2">
                     <div class="flex-grow-1">
