@@ -441,6 +441,10 @@ class BlueBarcodeSession(models.Model):
                 or ('raw' in payload and (type(payload['raw']) is not str or len(payload['raw']) > 8192))
                 or ('raw' in payload and 'total' in payload)):
             raise ValidationError(self.env._('无效的扫描事件.'))
+        if 'total' in payload:
+            # Reject invalid numbers before canonical JSON hashing, so the client
+            # receives a definite business rejection instead of an unknown error.
+            quantity(payload['total'], zero=True)
         event_hash = digest(payload)
         events = self.env['blue.barcode.event'].search([('session_id', '=', self.id), ('event_key', '=', event_key)], limit=1)
         if events:

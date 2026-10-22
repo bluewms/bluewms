@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from odoo import Command
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import new_test_user, tagged
@@ -314,3 +316,44 @@ class TestBarcodeScanning(BaseCommon):
         view = self.service.open_session('picking', session.picking_id.id, self.client)
         self.assertEqual(view['rows'][0]['quantity'], 1)
         self.assertEqual(view['rows'][0]['expected'], 20)
+
+    def test_nonfinite_totals_are_explicit_business_rejections(self):
+        session = self._session()
+        row_key = session._rows()[0]['key']
+        for invalid in (float('nan'), float('inf'), float('-inf'), True):
+            with self.subTest(value=str(invalid)), self.assertRaises(ValidationError):
+                self._scan(session, payload={'row_key': row_key, 'total': invalid})
+        self.assertFalse(session.event_ids)
+        self.assertEqual(session.revision, 0)
+        self.assertEqual(session._rows()[0]['quantity'], 0)
+
+    def test_cancelled_document_rejects_new_events(self):
+        session = self._session()
+        self._scan(session)
+        session.picking_id.action_cancel()
+        with self.assertRaises(UserError):
+            self._scan(session, event='barcode_event_000002')
+        self.assertEqual(len(session.event_ids), 1)
+        self.assertEqual(session.revision, 1)
+
+    def test_unauthorized_followup_rolls_back_the_entire_count(self):
+        session = self._session()
+
+        def forbidden(records, parsed, candidates):
+            return {'action': 'count', 'keys': [candidates[0]['key']], 'reason': '', 'after': 'wcs'}
+
+        with patch.object(type(session), '_decide', autospec=True, side_effect=forbidden):
+            with self.assertRaises(ValidationError):
+                self._scan(session)
+        self.assertEqual(session._rows()[0]['quantity'], 0)
+        self.assertFalse(session.event_ids)
+        self.assertEqual(session.revision, 0)
+
+    def test_switching_current_company_cannot_reuse_a_session(self):
+        session = self._session()
+        company = self.env['res.company'].create({'name': 'Other barcode company'})
+        self.env.user.company_ids = [Command.link(company.id)]
+        foreign = session.with_context(allowed_company_ids=[company.id, self.env.company.id])
+        with self.assertRaises(AccessError):
+            foreign.action_event(self.client, 'barcode_event_000001', 0, {'raw': self.product.barcode})
+        self.assertFalse(session.event_ids)
