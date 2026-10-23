@@ -1,0 +1,566 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_ai_client.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.blue_config_profile_view_form
+msgid "AI 生成 / 修改"
+msgstr "AI 生成 / 修改"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_ai_connection.py:36
+msgid "API Key 格式无效。"
+msgstr "API Key 格式无效。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_ai_connection.py:34
+msgid "Agent 名称必须是最多 128 字符的单行文本，不能有首尾空格。"
+msgstr "Agent 名称必须是最多 128 字符的单行文本，不能有首尾空格。"
+
+#. module: blue_ai_client
+#: model:ir.actions.server,name:blue_ai_client.blue_ai_chat_erp_mapping
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_menu_erp_mapping
+msgid "ERP接口"
+msgstr "ERP接口"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "ERP接口 → ERP接口；设备连接接口 → 设备连接接口；条码扫描策略 → 条码扫描策略"
+msgstr "ERP接口 → ERP接口；设备连接接口 → 设备连接接口；条码扫描策略 → 条码扫描策略"
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_blue_ai_connection__user_id
+msgid "Odoo 用户"
+msgstr "Odoo 用户"
+
+#. module: blue_ai_client
+#: model:ir.actions.server,name:blue_ai_client.blue_ai_chat_wcs_creation
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_menu_wcs_creation
+msgid "WCS生成策略"
+msgstr "WCS生成策略"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:47
+msgid "Wiki 响应过大或超时,请缩小检索范围."
+msgstr "Wiki 响应过大或超时,请缩小检索范围."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:91
+msgid "Wiki 完整正文或来源摘要校验失败."
+msgstr "Wiki 完整正文或来源摘要校验失败."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:82
+msgid "Wiki 搜索结果格式无效."
+msgstr "Wiki 搜索结果格式无效."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:42
+msgid "Wiki 读取被拒绝,请检查用户权限,合同和知识批准版本;草稿未修改."
+msgstr "Wiki 读取被拒绝,请检查用户权限,合同和知识批准版本;草稿未修改."
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.blue_ai_connection_view_form
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "default-agent-Lang"
+msgstr "default-agent-Lang"
+
+#. module: blue_ai_client
+#: model:ir.actions.server,name:blue_ai_client.blue_ai_chat_putaway_policy
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_menu_putaway_policy
+msgid "上架策略"
+msgstr "上架策略"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "上架策略 → 上架策略；WCS生成策略 → WCS生成策略"
+msgstr "上架策略 → 上架策略；WCS生成策略 → WCS生成策略"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:44
+msgid "不能直接修改云端会话与代码资产关联。"
+msgstr "不能直接修改云端会话与代码资产关联。"
+
+#. module: blue_ai_client
+#: model:ir.model.fields,help:blue_ai_client.field_blue_ai_connection__agent_name
+msgid "与云端名称完全一致，不填写 Agent ID。"
+msgstr "与云端名称完全一致，不填写 Agent ID。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:120
+msgid "业务 Task 身份解析失败,不使用日常任务兜底."
+msgstr "业务 Task 身份解析失败,不使用日常任务兜底."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:63
+msgid "业务会话必须使用宝蓝云端,请从原业务入口重新打开."
+msgstr "业务会话必须使用宝蓝云端,请从原业务入口重新打开."
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_muk_ai_session__blue_hook_code
+msgid "业务入口"
+msgstr "业务入口"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "业务入口与云端 Task"
+msgstr "业务入口与云端 Task"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:68
+msgid "业务入口与云端 Task 不匹配,请重新打开会话."
+msgstr "业务入口与云端 Task 不匹配,请重新打开会话."
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_blue_ai_connection__api_key
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "业务用户 API Key"
+msgstr "业务用户 API Key"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_muk_ai_provider_form
+msgid "业务用户 Key 在“宝蓝用户连接”中按用户保存。此处共用服务地址、模型与请求限制。"
+msgstr "业务用户 Key 在“宝蓝用户连接”中按用户保存。此处共用服务地址、模型与请求限制。"
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_blue_ai_connection__agent_name
+msgid "云端 Agent 名称"
+msgstr "云端 Agent 名称"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:104
+msgid "云端 Task 身份与本会话不一致."
+msgstr "云端 Task 身份与本会话不一致."
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_muk_ai_session__blue_task_name
+msgid "云端业务任务"
+msgstr "云端业务任务"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:303
+msgid "云端初始化表单格式不兼容，请检查代理版本。"
+msgstr "云端初始化表单格式不兼容，请检查代理版本。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:100
+msgid "云端回复无效或连接中断，请检查服务日志。"
+msgstr "云端回复无效或连接中断，请检查服务日志。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:52
+msgid "云端服务地址无效，请使用 HTTPS 地址。"
+msgstr "云端服务地址无效，请使用 HTTPS 地址。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:251
+msgid "云端模型拒绝了此次请求。"
+msgstr "云端模型拒绝了此次请求。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:309
+msgid "云端测试未收到有效文本回复。"
+msgstr "云端测试未收到有效文本回复。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:106
+msgid "云端用户,Agent 或 Task 已变化,请重新打开会话."
+msgstr "云端用户,Agent 或 Task 已变化,请重新打开会话."
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_muk_ai_session__blue_knowledge_reference
+msgid "云端知识版本"
+msgstr "云端知识版本"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:59
+msgid "云端知识版本或批准状态已改变,请重新打开 AI 会话."
+msgstr "云端知识版本或批准状态已改变,请重新打开 AI 会话."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:157
+msgid "云端身份初始化未完成，请检查团队、Agent 和任务配置。"
+msgstr "云端身份初始化未完成，请检查团队、Agent 和任务配置。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:76
+msgid "云端身份已改变，请从代码资产页面重新打开 AI 修改。"
+msgstr "云端身份已改变，请从代码资产页面重新打开 AI 修改。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:91
+msgid "云端连接失败，请检查网络和服务地址。"
+msgstr "云端连接失败，请检查网络和服务地址。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "五类业务各自绑定对应 Task；日常任务只用于普通聊天。Agent 与 Key 按用户配置。"
+msgstr "五类业务各自绑定对应 Task；日常任务只用于普通聊天。Agent 与 Key 按用户配置。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "五类知识入口位于 MuK AI → 宝蓝业务知识；ERP、设备、条码目前仅知识沟通。"
+msgstr "五类知识入口位于 MuK AI → 宝蓝业务知识；ERP、设备、条码目前仅知识沟通。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "从对应入口创建新会话，旧会话保留历史任务。代码生成从绑定资产页进入。"
+msgstr "从对应入口创建新会话，旧会话保留历史任务。代码生成从绑定资产页进入。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:57
+msgid "代码会话只允许专用草稿工具。"
+msgstr "代码会话只允许专用草稿工具。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:97
+msgid "代码会话必须使用宝蓝云端连接。"
+msgstr "代码会话必须使用宝蓝云端连接。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:255
+msgid "代码生成回复达到输出上限,本轮未执行截断的工具调用.请提高模型 Max Tokens 后重试;已有草稿保留."
+msgstr "代码生成回复达到输出上限,本轮未执行截断的工具调用.请提高模型 Max Tokens 后重试;已有草稿保留."
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_muk_ai_session__blue_profile_id
+msgid "代码资产"
+msgstr "代码资产"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:38
+msgid "代码资产关联只能通过业务页面创建。"
+msgstr "代码资产关联只能通过业务页面创建。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "使用当前用户的云端连接,从原生 Wiki 读取规范和案例."
+msgstr "使用当前用户的云端连接,从原生 Wiki 读取规范和案例."
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "保存并测试连接"
+msgstr "保存并测试连接"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:62
+msgid "原生 Wiki 连接或正文校验失败,请检查知识服务."
+msgstr "原生 Wiki 连接或正文校验失败,请检查知识服务."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_ai_connection.py:31
+msgid "只允许为内部用户配置云端连接。"
+msgstr "只允许为内部用户配置云端连接。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:83
+msgid "只有会话所有者可以使用业务知识和草稿工具."
+msgstr "只有会话所有者可以使用业务知识和草稿工具."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/res_config_settings.py:36
+msgid "只有管理员可以修改云端配置。"
+msgstr "只有管理员可以修改云端配置。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_ai_connection.py:50
+msgid "只有管理员可以测试或配置用户连接。"
+msgstr "只有管理员可以测试或配置用户连接。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/res_config_settings.py:43
+msgid "只有管理员可以管理用户连接。"
+msgstr "只有管理员可以管理用户连接。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "启用宝蓝云端"
+msgstr "启用宝蓝云端"
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_blue_ai_connection__team_name
+msgid "固定团队"
+msgstr "固定团队"
+
+#. module: blue_ai_client
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_business_menu
+msgid "宝蓝业务知识"
+msgstr "宝蓝业务知识"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "宝蓝云端服务"
+msgstr "宝蓝云端服务"
+
+#. module: blue_ai_client
+#: model:ir.actions.act_window,name:blue_ai_client.blue_ai_session_action
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_session_menu
+msgid "宝蓝代码会话"
+msgstr "宝蓝代码会话"
+
+#. module: blue_ai_client
+#: model:ir.actions.act_window,name:blue_ai_client.blue_ai_connection_action
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_connection_menu
+msgid "宝蓝用户连接"
+msgstr "宝蓝用户连接"
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_muk_ai_session__blue_cloud_identity
+msgid "实际云端 Task 绑定"
+msgstr "实际云端 Task 绑定"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.blue_ai_connection_view_form
+msgid "将以此用户身份完成云端选择，并调用模型生成一条简短测试回复。"
+msgstr "将以此用户身份完成云端选择，并调用模型生成一条简短测试回复。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "将保存设置，并调用模型生成一条简短测试回复。"
+msgstr "将保存设置，并调用模型生成一条简短测试回复。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_ai_connection.py:57
+msgid "已完成固定团队、指定 Agent、日常任务选择，并收到模型回复。"
+msgstr "已完成固定团队、指定 Agent、日常任务选择，并收到模型回复。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:104
+msgid "已读知识正文发生变化,请重新打开会话."
+msgstr "已读知识正文发生变化,请重新打开会话."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:108
+msgid "已读知识超过会话预算,请选择较少的完整案例."
+msgstr "已读知识超过会话预算,请选择较少的完整案例."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_config_profile.py:16
+msgid "当前 AI 代码入口支持上架策略及WCS /4, 其他入口须先完成合同和业务验证."
+msgstr "当前 AI 代码入口支持上架策略及WCS /4, 其他入口须先完成合同和业务验证."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_config_profile.py:20
+msgid "当前业务合同尚未开放 AI 生成."
+msgstr "当前业务合同尚未开放 AI 生成."
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "当前用户的云端身份"
+msgstr "当前用户的云端身份"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:41
+msgid "无法确认当前业务 Task,请检查云端用户,Agent 和同名任务关联;不使用日常任务兜底."
+msgstr "无法确认当前业务 Task,请检查云端用户,Agent 和同名任务关联;不使用日常任务兜底."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_config_profile.py:18
+msgid "旧WCS合同和正式版本保留. 完整AI编排请新建/4配置后试算发布, 不自动转换旧资产."
+msgstr "旧WCS合同和正式版本保留. 完整AI编排请新建/4配置后试算发布, 不自动转换旧资产."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:131
+msgid "旧代码会话仅保留历史,请从资产页面重新打开原生 Wiki 会话."
+msgstr "旧代码会话仅保留历史,请从资产页面重新打开原生 Wiki 会话."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:66
+msgid "旧代码会话保留为历史,请从资产页面重新打开 AI,使用对应业务 Task 与原生 Wiki."
+msgstr "旧代码会话保留为历史,请从资产页面重新打开 AI,使用对应业务 Task 与原生 Wiki."
+
+#. module: blue_ai_client
+#: model:ir.model.fields,field_description:blue_ai_client.field_blue_ai_connection__task_name
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "普通聊天任务"
+msgstr "普通聊天任务"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "服务地址"
+msgstr "服务地址"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:145
+msgid "未知宝蓝 AI 业务入口."
+msgstr "未知宝蓝 AI 业务入口."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:120
+msgid "本会话仅用于本领域知识沟通,不绑定代码资产,不得生成或提交可执行草稿.上架与 WCS 的可执行修改从对应资产页打开;ERP,设备,条码仍为 planned."
+msgstr "本会话仅用于本领域知识沟通,不绑定代码资产,不得生成或提交可执行草稿.上架与 WCS 的可执行修改从对应资产页打开;ERP,设备,条码仍为 planned."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:84
+msgid "本会话检索页数过多,请缩小需求或重新打开会话."
+msgstr "本会话检索页数过多,请缩小需求或重新打开会话."
+
+#. module: blue_ai_client
+#: model:ir.actions.server,name:blue_ai_client.blue_ai_chat_barcode_policy
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_menu_barcode_policy
+msgid "条码扫描策略"
+msgstr "条码扫描策略"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "模型名称"
+msgstr "模型名称"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:19
+msgid "此会话没有绑定代码资产。"
+msgstr "此会话没有绑定代码资产。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:147
+msgid "此连接不提供模型内置搜索或代码执行，请使用已授权的业务工具。"
+msgstr "此连接不提供模型内置搜索或代码执行，请使用已授权的业务工具。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.blue_ai_connection_view_form
+msgid "每个 Odoo 用户对应自己的业务用户 Key 和云端 Agent。团队为 odooAI；五类业务分别使用同名 Task；“日常任务”只表示普通聊天。旧代码会话保留记录，重新从资产页打开后使用原生 Wiki。"
+msgstr "每个 Odoo 用户对应自己的业务用户 Key 和云端 Agent。团队为 odooAI；五类业务分别使用同名 Task；“日常任务”只表示普通聊天。旧代码会话保留记录，重新从资产页打开后使用原生 Wiki。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.blue_ai_connection_view_form
+msgid "测试用户连接"
+msgstr "测试用户连接"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:25
+msgid "知识引用方式已升级,请从业务页面重新打开 AI 会话."
+msgstr "知识引用方式已升级,请从业务页面重新打开 AI 会话."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:94
+msgid "知识引用方式已升级,请从业务页面重新打开AI会话."
+msgstr "知识引用方式已升级,请从业务页面重新打开AI会话."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:105
+msgid "知识来源复核失败,草稿未修改."
+msgstr "知识来源复核失败,草稿未修改."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:74
+msgid "知识范围与当前入口不一致."
+msgstr "知识范围与当前入口不一致."
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "管理各用户连接"
+msgstr "管理各用户连接"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:45
+msgid "草稿已变化，请回到业务页面重新打开 AI 修改，避免覆盖其他修改。"
+msgstr "草稿已变化，请回到业务页面重新打开 AI 修改，避免覆盖其他修改。"
+
+#. module: blue_ai_client
+#: model:ir.actions.server,name:blue_ai_client.blue_ai_chat_device_protocol
+#: model:ir.ui.menu,name:blue_ai_client.blue_ai_menu_device_protocol
+msgid "设备连接接口"
+msgstr "设备连接接口"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:17
+msgid "请从代码资产页面打开 AI 修改。"
+msgstr "请从代码资产页面打开 AI 修改。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:24
+msgid "请从宝蓝业务入口打开 AI 会话."
+msgstr "请从宝蓝业务入口打开 AI 会话."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_provider.py:17
+msgid "请使用有效的 HTTPS 服务地址，不包含密码、查询参数或片段。"
+msgstr "请使用有效的 HTTPS 服务地址，不包含密码、查询参数或片段。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:148
+msgid "请先启用宝蓝云端服务并配置当前用户连接."
+msgstr "请先启用宝蓝云端服务并配置当前用户连接."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_config_profile.py:23
+msgid "请先启用宝蓝云端服务，并配置当前用户的连接。"
+msgstr "请先启用宝蓝云端服务，并配置当前用户的连接。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:83
+msgid "请先在 MuK AI 设置中启用宝蓝云端服务。"
+msgstr "请先在 MuK AI 设置中启用宝蓝云端服务。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:97
+msgid "请先在本会话搜索知识,不能读取任意页面或其他会话的引用."
+msgstr "请先在本会话搜索知识,不能读取任意页面或其他会话的引用."
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "请先在用户连接中为当前用户新建配置。"
+msgstr "请先在用户连接中为当前用户新建配置。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:97
+msgid "请先搜索并完整读取通用规则,本领域规范及匹配案例."
+msgstr "请先搜索并完整读取通用规则,本领域规范及匹配案例."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:123
+msgid "请先读取当前绑定资产与本地合同,再提交草稿."
+msgstr "请先读取当前绑定资产与本地合同,再提交草稿."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/chat_completions.py:107
+msgid "请在用户连接设置中填写云端 Agent 名称。"
+msgstr "请在用户连接设置中填写云端 Agent 名称。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:102
+msgid "请完整读取通用生成规则,本领域规范及至少一个匹配案例,再提交草稿."
+msgstr "请完整读取通用生成规则,本领域规范及至少一个匹配案例,再提交草稿."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_ai_connection.py:44
+msgid "请让管理员为当前 Odoo 用户配置云端 Agent 和业务用户 Key。"
+msgstr "请让管理员为当前 Odoo 用户配置云端 Agent 和业务用户 Key。"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/providers/knowledge.py:79
+msgid "请输入 1-256 字符的知识检索词."
+msgstr "请输入 1-256 字符的知识检索词."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/mcp/code_asset.py:26
+msgid "请重新从业务入口打开原生 Wiki 会话."
+msgstr "请重新从业务入口打开原生 Wiki 会话."
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/muk_ai_session.py:89
+msgid "资产接口或公司已改变，请重新打开 AI 修改。"
+msgstr "资产接口或公司已改变，请重新打开 AI 修改。"
+
+#. module: blue_ai_client
+#: model_terms:ir.ui.view,arch_db:blue_ai_client.view_res_config_settings_form
+msgid "连接与模型"
+msgstr "连接与模型"
+
+#. module: blue_ai_client
+#: code:addons/blue_ai_client/models/blue_ai_connection.py:56
+msgid "连接成功"
+msgstr "连接成功"

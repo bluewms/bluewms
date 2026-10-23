@@ -1,0 +1,408 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_config_asset.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:71
+msgid "A published scene keeps its company and template. Create another scene for a different scope."
+msgstr "已发布的场景保持其公司和模板不变。如需其他适用范围，请另行创建场景。"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_profile__conversation_ref
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__conversation_ref
+msgid "AI会话引用"
+msgstr "AI会话引用"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_profile__draft_source_0
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_customization_version__source_0
+msgid "AI生成"
+msgstr "AI生成"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:206
+msgid "Activate the scene before publishing."
+msgstr "发布前请先启用场景。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:79
+msgid "Archive scenes with history instead of deleting them."
+msgstr "请归档带历史记录的场景，而非直接删除。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_event.py:25
+msgid "Audit events are immutable."
+msgstr "审计事件不可修改。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_event.py:29
+msgid "Audit events must be retained."
+msgstr "审计事件必须保留。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:169
+msgid "Draft fields must be bounded text."
+msgstr "草稿字段必须是有限长度的文本。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:56
+msgid "Draft text exceeds the supported size."
+msgstr "草稿文本超出支持的大小。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:127
+msgid "Each trial needs name, input and expected_order."
+msgstr "每个试用用例都需要名称、输入和 expected_order。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:131
+msgid "Expected order must be a list of location IDs."
+msgstr "expected_order 必须是库位 ID 列表。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:173
+msgid "Invalid cloud knowledge references."
+msgstr "无效的云端知识库引用。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:171
+msgid "Invalid conversation reference."
+msgstr "无效的会话引用。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:84
+msgid "Only inventory managers can edit or publish policies."
+msgstr "只有库存管理员才能编辑或发布策略。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:123
+msgid "Provide 1 to 20 trial cases."
+msgstr "请提供 1 到 20 个试用用例。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:117
+msgid "Provide bounded JSON trial cases before publication."
+msgstr "发布前请提供有限大小的 JSON 试用用例。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_release.py:27
+msgid "Published releases are immutable."
+msgstr "已发布的版本不可修改。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_release.py:31
+msgid "Published releases must be retained for audit and rollback."
+msgstr "已发布的版本必须保留，用于审计和回滚。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:167
+msgid "The active release changed. Reload before submitting a draft."
+msgstr "当前生效版本已变更，提交草稿前请重新加载。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:210
+msgid "The base release changed. Start a new draft before publishing."
+msgstr "基础版本已变更，发布前请重新创建草稿。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:231
+msgid "There is no previous release to restore."
+msgstr "没有可恢复的先前版本。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:133
+msgid "Trial %(name)s failed: expected %(expected)s, received %(actual)s."
+msgstr "试用 %(name)s 失败：期望 %(expected)s，实际 %(actual)s。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:121
+msgid "Trial cases must be valid JSON."
+msgstr "试用用例必须是有效的 JSON。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:176
+msgid "Trial input is too large."
+msgstr "试用输入过大。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/asset_guard.py:9
+msgid "Use the validated policy workflow to create this record."
+msgstr "请使用已验证的策略工作流创建此记录。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:69
+msgid "Use validation, publication or rollback to change workflow fields."
+msgstr "请通过验证、发布或回滚来变更工作流字段。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:208
+msgid "Validate the current draft before publishing."
+msgstr "发布前请先验证当前草稿。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_customization_version.py:34
+msgid "Validated versions are immutable. Create a new draft."
+msgstr "已验证的版本不可修改，请新建草稿。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_customization_version.py:38
+msgid "Validated versions must be retained for audit and rollback."
+msgstr "已验证的版本必须保留，用于审计和回滚。"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:62
+msgid "Workflow fields cannot be supplied directly."
+msgstr "工作流字段不能直接填写。"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_scene_template__hook_code_0
+msgid "上架策略"
+msgstr "上架策略"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_profile__knowledge_references
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__knowledge_references
+msgid "云端参考版本"
+msgstr "云端参考版本"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_profile__draft_source_0
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_customization_version__source_0
+msgid "人工编辑"
+msgstr "人工编辑"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "从正式版本新建草稿"
+msgstr "从正式版本新建草稿"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "代码版本"
+msgstr "代码版本"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__content_hash
+msgid "内容校验值"
+msgstr "内容校验值"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__code_text
+msgid "准确代码"
+msgstr "准确代码"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_event__event_type_0
+msgid "发布"
+msgstr "发布"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "发布历史"
+msgstr "发布历史"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "发布后，新作业将使用此版本。已分配作业保留原版本。"
+msgstr "发布后，新作业将使用此版本。已分配作业保留原版本。"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_release__name
+msgid "发布版本"
+msgstr "发布版本"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "发布生效"
+msgstr "发布生效"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "可编辑代码"
+msgstr "可编辑代码"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_profile__draft_code
+msgid "可编辑策略代码"
+msgstr "可编辑策略代码"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_event__event_type_0
+msgid "回滚"
+msgstr "回滚"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "回滚上一版"
+msgstr "回滚上一版"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_profile__name
+msgid "场景名称"
+msgstr "场景名称"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_release__content_hash
+msgid "场景校验值"
+msgstr "场景校验值"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_release__snapshot
+msgid "完整场景快照"
+msgstr "完整场景快照"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "审计记录"
+msgstr "审计记录"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "将覆盖当前草稿，正式版本保持不变。"
+msgstr "将覆盖当前草稿，正式版本保持不变。"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_profile__state_0
+msgid "已发布"
+msgstr "已发布"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_profile__state_0
+msgid "已验证"
+msgstr "已验证"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_profile__state_0
+msgid "待验证"
+msgstr "待验证"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "恢复上一正式版本，已有作业保持原版本。"
+msgstr "恢复上一正式版本，已有作业保持原版本。"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__contract
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_scene_template__contract
+msgid "接口版本"
+msgstr "接口版本"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "描述优先顺序、允许拆分和无可用位置时的处理方式"
+msgstr "描述优先顺序、允许拆分和无可用位置时的处理方式"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_scene_template__code_text
+msgid "旧版本示例代码"
+msgstr "旧版本示例代码"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_scene_template__test_cases
+msgid "旧版本示例试算数据"
+msgstr "旧版本示例试算数据"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_scene_template__requirements
+msgid "旧版本示例说明"
+msgstr "旧版本示例说明"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_profile__draft_source_0
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_customization_version__source_0
+msgid "标准示例"
+msgstr "标准示例"
+
+#. module: blue_config_asset
+#: code:addons/blue_config_asset/models/blue_config_profile.py:140
+msgid "此接口的通用示例由云端维护，请使用 AI 生成 / 修改。已有正式代码仍可新建草稿。"
+msgstr "此接口的通用示例由云端维护，请使用 AI 生成 / 修改。已有正式代码仍可新建草稿。"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__name
+msgid "版本名称"
+msgstr "版本名称"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_scene_template__cloud_managed
+msgid "示例由云端维护"
+msgstr "示例由云端维护"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_scene_template__name
+msgid "策略接口名称"
+msgstr "策略接口名称"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_event__details
+msgid "记录"
+msgstr "记录"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "试算"
+msgstr "试算"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "试算与验证"
+msgstr "试算与验证"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_profile__draft_tests
+msgid "试算样例 JSON"
+msgstr "试算样例 JSON"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_profile__simulation_result
+msgid "试算结果"
+msgstr "试算结果"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__test_cases
+msgid "试算输入"
+msgstr "试算输入"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "载入标准示例"
+msgstr "载入标准示例"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "输入为 request 与 candidates；输出 result，每项包含 location_id、score、reason。分数越小越优先。代码可由人工或后续AI修改，保存草稿不会自动生效。"
+msgstr "输入为 request 与 candidates；输出 result，每项包含 location_id、score、reason。分数越小越优先。代码可由人工或后续AI修改，保存草稿不会自动生效。"
+
+#. module: blue_config_asset
+#: model_terms:ir.ui.view,arch_db:blue_config_asset.blue_config_profile_view_form
+msgid "需求"
+msgstr "需求"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_config_profile__requirements
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__requirements
+msgid "需求说明"
+msgstr "需求说明"
+
+#. module: blue_config_asset
+#: model:ir.model.fields.selection,name:blue_config_asset.selection_blue_config_event__event_type_0
+msgid "验证"
+msgstr "验证"
+
+#. module: blue_config_asset
+#: model:ir.model.fields,field_description:blue_config_asset.field_blue_customization_version__test_result
+msgid "验证结果"
+msgstr "验证结果"

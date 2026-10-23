@@ -1,0 +1,520 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_wcs_extension.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:161
+msgid "A group must use one pair of position mapping sources."
+msgstr "一个分组只能使用一对位置映射源。"
+
+#. module: blue_wcs_extension
+#: model:ir.ui.menu,name:blue_wcs_extension.wcs_policy_menu
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_preview_form
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_type_form
+msgid "AI创建配置"
+msgstr "AI创建配置"
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_profile_form
+msgid "AI创建配置从全部有效行逐行决定创建、等待或无需WCS, 可调整数量依据、容器组合与位置映射, 再编排单/双/多任务(含同数据后续任务). 设备和任务类型必须使用人工授权. 无绑定时按移动行直接创建. 保存草稿不会生效."
+msgstr "AI创建配置从全部有效行逐行决定创建、等待或无需WCS, 可调整数量依据、容器组合与位置映射, 再编排单/双/多任务(含同数据后续任务). 设备和任务类型必须使用人工授权. 无绑定时按移动行直接创建. 保存草稿不会生效."
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_picking_form
+msgid "AI创建配置版本"
+msgstr "AI创建配置版本"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:155
+msgid "Additional equipment must be active and belong to this company."
+msgstr "附加设备必须处于启用状态且属于本公司。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_package.py:20
+msgid "Carrier counters require the planning service."
+msgstr "承载物计数需要计划服务。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/blue_config_profile.py:48
+msgid "Choose a WCS strategy."
+msgstr "请选择 WCS 策略。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/wizard/wcs_preview.py:24
+msgid "Choose a picking in the strategy company."
+msgstr "请选择属于策略公司的调拨单。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:298
+msgid "Confirm actual WCS quantities on an open inbound operation."
+msgstr "请在未关闭的入库作业上确认 WCS 实际数量。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:296
+msgid "Confirm quantities only for enabled WCS operations."
+msgstr "只能对已启用 WCS 的作业类型确认数量。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:212
+msgid "Confirm the real device supports repeated same-data goods programs before using this orchestration."
+msgstr "使用此编排前，请确认真实设备支持相同数据的重复货物程序。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:314
+msgid "Create WCS tasks only on open confirmed operations."
+msgstr "只能在未关闭且已确认的作业上创建 WCS 任务。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:127
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:52
+msgid "Current quantity is below the fixed WCS plan."
+msgstr "当前数量低于固定的 WCS 计划。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:118
+msgid "Do not combine different physical carriers in one WCS movement."
+msgstr "不要在一个 WCS 移动中混合不同实体承载物。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:29
+msgid "Do not supply fixed WCS versions directly."
+msgstr "请勿直接填写固定的 WCS 版本。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/blue_config_profile.py:33
+msgid "Each trial requires name, input and the contract-specific expected result."
+msgstr "每个试用用例都需要名称、输入和契约约定的预期结果。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:312
+msgid "Enable WCS for this operation type first."
+msgstr "请先为此作业类型启用 WCS。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:301
+msgid "Enter positive actual quantities and required lots."
+msgstr "请输入正数实际数量和必需的批次。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:114
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:109
+msgid "Every WCS product must be inventory tracked."
+msgstr "所有 WCS 产品必须启用库存跟踪。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:308
+msgid "Inventory users are required to plan WCS."
+msgstr "规划 WCS 需要库存用户权限。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_move_line.py:20
+msgid "Keep stock lines referenced by active WCS plans."
+msgstr "请保留被生效 WCS 计划引用的库存行。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:23
+msgid "Keep the operation scope fixed while WCS plans exist."
+msgstr "存在 WCS 计划时请保持作业范围不变。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:19
+msgid "Line decisions require the WCS planning service."
+msgstr "行决策需要 WCS 计划服务。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:138
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:126
+msgid "One carrier contains several product lines. Use an AI container grouping policy or separate the physical carriers before line-by-line creation."
+msgstr "一个承载物包含多个产品行。请使用 AI 集箱策略，或先分隔实体承载物再逐行创建。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:157
+msgid "One equipment needs one manually authorized task type."
+msgstr "每台设备需要一个手动授权的任务类型。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:116
+msgid "One physical carrier must have one source and destination."
+msgstr "每个实体承载物必须只有一个源位置和目标位置。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/wizard/wcs_preview.py:20
+msgid "Only managers can preview draft strategies."
+msgstr "只有管理员才能预览草稿策略。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:147
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:141
+msgid "Outbound WCS requires available reserved goods."
+msgstr "出库 WCS 需要有可用的预留货物。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:196
+msgid "Physical source/destination scopes must contain the fixed inventory locations."
+msgstr "实体源/目标范围必须包含固定的库存位置。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:156
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:145
+msgid "Plan all contents before moving an entire carrier."
+msgstr "移动整承载物前请先计划全部内容。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:404
+msgid "Plan and complete the WCS quantities before validating inventory."
+msgstr "验证库存前请先规划并完成 WCS 数量。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:129
+msgid "Plan the complete carrier quantities; do not split a physical carrier."
+msgstr "请按承载物完整数量做计划，不要拆分实体承载物。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/blue_config_profile.py:28
+msgid "Provide 1 to 20 WCS trials."
+msgstr "请提供 1 到 20 个 WCS 试用用例。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:328
+msgid "Publish the bound WCS strategy before creating tasks."
+msgstr "创建任务前请先发布绑定的 WCS 策略。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_move_line.py:14
+msgid "Reconcile the fixed WCS plan before changing its goods or locations."
+msgstr "变更货物或位置前请先对账固定的 WCS 计划。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:165
+msgid "The selected position mapping is missing or ambiguous for this group."
+msgstr "所选位置映射对此分组缺失或不明确。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:210
+msgid "This adapter needs explicit support for area/zone position mappings."
+msgstr "此适配器需要显式支持库区/区域位置映射。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:101
+msgid "This carrier has already moved on this operation. Reconcile remaining goods instead of moving it again."
+msgstr "此承载物已在当前作业上移动过。请对账剩余货物，而不是再次移动。"
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_type_form
+msgid "WCS"
+msgstr "WCS"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/blue_config_profile.py:40
+msgid "WCS /3 trials must cover configure and tasks phases."
+msgstr "WCS /3 试用用例必须覆盖配置和任务阶段。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/blue_config_profile.py:42
+msgid "WCS /4 trials must cover lines and tasks phases."
+msgstr "WCS /4 试用用例必须覆盖行和任务阶段。"
+
+#. module: blue_wcs_extension
+#: model:ir.actions.act_window,name:blue_wcs_extension.wcs_profile_action
+msgid "WCS AI创建配置"
+msgstr "WCS AI创建配置"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:118
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:115
+msgid "WCS cannot use blocked locations."
+msgstr "WCS 不能使用已封锁的库位。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:110
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:105
+msgid "WCS goods must belong to the operation company."
+msgstr "WCS 货物必须属于作业公司。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:204
+msgid "WCS mapping locations must be active and in the operation company."
+msgstr "WCS 映射库位必须处于启用状态且属于作业公司。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:81
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:43
+msgid "WCS planning supports at most 200 product lines per operation."
+msgstr "WCS 规划对每个作业最多支持 200 个产品行。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/blue_config_profile.py:26
+msgid "WCS trials must be valid JSON."
+msgstr "WCS 试用用例必须是有效的 JSON。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:21
+msgid "WCS version fields require the planning service."
+msgstr "WCS 版本字段需要计划服务。"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:363
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:291
+msgid "WCS任务"
+msgstr "WCS任务"
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_picking_form
+msgid "WCS作业"
+msgstr "WCS作业"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__wcs_request_mode
+msgid "WCS作业模式"
+msgstr "WCS作业模式"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__wcs_type
+msgid "WCS入库类型"
+msgstr "WCS入库类型"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__is_auto_validate
+msgid "WCS完成后自动验证"
+msgstr "WCS完成后自动验证"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__wcs_generate_condition
+msgid "WCS生成条件"
+msgstr "WCS生成条件"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/blue_config_profile.py:49
+#: code:addons/blue_wcs_extension/wizard/wcs_preview.py:53
+msgid "WCS真实作业试算"
+msgstr "WCS真实作业试算"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking__blue_wcs_decision_snapshot
+msgid "WCS逐行决策"
+msgstr "WCS逐行决策"
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_type_form
+msgid "不绑定AI配置时, 每条就绪移动行按实际起终点创建直达作业. AI可配置条件、数量依据、容器分组及编排. 附加设备及任务类型须人工授权. 旧固定选项仅保留历史兼容."
+msgstr "不绑定AI配置时, 每条就绪移动行按实际起终点创建直达作业. AI可配置条件、数量依据、容器分组及编排. 附加设备及任务类型须人工授权. 旧固定选项仅保留历史兼容."
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,help:blue_wcs_extension.field_stock_picking_type__wcs_secondary_task_type
+msgid "人工授权的附加设备任务类型, AI不能替换."
+msgstr "人工授权的附加设备任务类型, AI不能替换."
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__task_type
+msgid "任务类型"
+msgstr "任务类型"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_type_0
+msgid "入库"
+msgstr "入库"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_request_mode_0
+msgid "入库双作业"
+msgstr "入库双作业"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_generate_condition_0
+msgid "全部已拣选"
+msgstr "全部已拣选"
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_preview_form
+msgid "关闭"
+msgstr "关闭"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_type_0
+msgid "出库"
+msgstr "出库"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_request_mode_0
+msgid "出库双作业"
+msgstr "出库双作业"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__blue_wcs_ready_mode
+msgid "创建数量依据"
+msgstr "创建数量依据"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:259
+msgid "创建配置不能使用冻结的起点、交接位置或目的位置."
+msgstr "创建配置不能使用冻结的起点、交接位置或目的位置."
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_request_mode_0
+msgid "单作业"
+msgstr "单作业"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:190
+msgid "同一设备的主任务和附加任务必须使用同一人工任务类型."
+msgstr "同一设备的主任务和附加任务必须使用同一人工任务类型."
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_request_mode_0
+msgid "同货两段接力"
+msgstr "同货两段接力"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__blue_wcs_enabled
+msgid "启用WCS"
+msgstr "启用WCS"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__blue_wcs_ready_mode_0
+msgid "完成前的有效预留数量"
+msgstr "完成前的有效预留数量"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__blue_wcs_ready_mode_0
+msgid "实际确认数量"
+msgstr "实际确认数量"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:257
+msgid "所选设备未支持无容器货物搬运. 请确认JSON网关散件能力或为明细指定实际载具."
+msgstr "所选设备未支持无容器货物搬运. 请确认JSON网关散件能力或为明细指定实际载具."
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_picking_form
+msgid "执行WCS"
+msgstr "执行WCS"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_wcs_preview__technical_result
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_preview_form
+msgid "技术数据"
+msgstr "技术数据"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__is_create_wcs_by_container
+msgid "按容器生成WCS任务"
+msgstr "按容器生成WCS任务"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:214
+msgid "接力策略需要人工选择附加设备、附加任务类型和交接位置."
+msgstr "接力策略需要人工选择附加设备、附加任务类型和交接位置."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_v4.py:316
+msgid "旧/1配置没有符合当前人工设备、模式和库存位置的线路. 请人工选择匹配设置或新建/4配置试算后改绑."
+msgstr "旧/1配置没有符合当前人工设备、模式和库存位置的线路. 请人工选择匹配设置或新建/4配置试算后改绑."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:55
+msgid "旧合同的发布和任务历史已保留. 新建任务请绑定/3版AI创建配置, 或取消绑定使用基础逐行创建."
+msgstr "旧合同的发布和任务历史已保留. 新建任务请绑定/3版AI创建配置, 或取消绑定使用基础逐行创建."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:246
+msgid "旧配置任务类型超出人工授权, 请迁移AI创建配置."
+msgstr "旧配置任务类型超出人工授权, 请迁移AI创建配置."
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_profile_form
+msgid "真实作业试算"
+msgstr "真实作业试算"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:50
+msgid "绑定的AI创建配置尚未发布. 请发布或取消绑定后使用基础逐行创建."
+msgstr "绑定的AI创建配置尚未发布. 请发布或取消绑定后使用基础逐行创建."
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__auto_create_wcs_request_execute
+msgid "自动创建WCS作业并执行"
+msgstr "自动创建WCS作业并执行"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_type.py:40
+msgid "设备必须属于所选设备类别."
+msgstr "设备必须属于所选设备类别."
+
+#. module: blue_wcs_extension
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_preview_form
+msgid "试算"
+msgstr "试算"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_wcs_preview__result
+#: model_terms:ir.ui.view,arch_db:blue_wcs_extension.wcs_preview_form
+msgid "试算结果"
+msgstr "试算结果"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:398
+msgid "该作业类型的单据必须创建并完成WCS作业后才能验证."
+msgstr "该作业类型的单据必须创建并完成WCS作业后才能验证."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:266
+msgid "请为WCS起点和目的位置配置AGV地图坐标点或条码."
+msgstr "请为WCS起点和目的位置配置AGV地图坐标点或条码."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:165
+msgid "请人工明确选择WCS入库类型、设备类别、设备和任务类型."
+msgstr "请人工明确选择WCS入库类型、设备类别、设备和任务类型."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking_type.py:38
+msgid "请选择WCS AI创建配置."
+msgstr "请选择WCS AI创建配置."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:276
+msgid "请选择同公司的创建配置."
+msgstr "请选择同公司的创建配置."
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:44
+msgid "请选择本公司的WCS AI创建配置."
+msgstr "请选择本公司的WCS AI创建配置."
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields.selection,name:blue_wcs_extension.selection_stock_picking_type__wcs_generate_condition_0
+msgid "部分已拣选"
+msgstr "部分已拣选"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_blue_config_profile__wcs_upgrade_notice
+msgid "配置说明"
+msgstr "配置说明"
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__wcs_secondary_task_type
+msgid "附加设备任务类型"
+msgstr "附加设备任务类型"
+
+#. module: blue_wcs_extension
+#: code:addons/blue_wcs_extension/models/stock_picking.py:188
+msgid "附加设备须处于启用状态、属于同公司并人工指定任务类型."
+msgstr "附加设备须处于启用状态、属于同公司并人工指定任务类型."
+
+#. module: blue_wcs_extension
+#: model:ir.model.fields,field_description:blue_wcs_extension.field_stock_picking_type__is_wcs_required_for_validate
+msgid "验证前必须存在WCS作业"
+msgstr "验证前必须存在WCS作业"

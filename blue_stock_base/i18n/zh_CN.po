@@ -1,0 +1,282 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_stock_base.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/models/stock_location_coordinate.py:38
+msgid "An occupied capacity position cannot be removed."
+msgstr "已占用的容量位置不能删除。"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/models/stock_location_coordinate.py:32
+msgid "An occupied capacity position cannot be renumbered or moved."
+msgstr "已占用的容量位置不能重新编号或移动。"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/models/stock_location.py:85
+msgid "Capacity must be an integer between 0 and 2000."
+msgstr "容量必须是 0 到 2000 之间的整数。"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/models/stock_location.py:78
+msgid "Only inventory managers can synchronize capacity positions."
+msgstr "只有库存管理员才能同步容量位置。"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/models/stock_location.py:82
+msgid "Select a storage category with one package capacity."
+msgstr "请选择仅包含一个包裹容量规则的存储类别。"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/models/stock_move.py:25
+msgid "Selected lines have different default package types. Select a package type explicitly."
+msgstr "所选行的默认包裹类型不一致，请明确选择包裹类型。"
+
+#. module: blue_stock_base
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_package__package_use_0
+msgid "一次性包装盒"
+msgstr "一次性包装盒"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__child_count
+msgid "下级库位数"
+msgstr "下级库位数"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location_coordinate__location_id
+msgid "位置"
+msgstr "位置"
+
+#. module: blue_stock_base
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_form_inherit
+msgid "位置与库存摘要"
+msgstr "位置与库存摘要"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__location_rank
+msgid "位置等级"
+msgstr "位置等级"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__list
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_location__location_rank_0
+msgid "列"
+msgstr "列"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_copy_package_wizard__pack
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__package_name
+msgid "包裹"
+msgstr "包裹"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_package__package_use
+msgid "包裹使用"
+msgstr "包裹使用"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__single_product_id
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_view_tree2_inherit
+msgid "单一产品"
+msgstr "单一产品"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_storage_category__capacity_qty
+msgid "单一包裹类型数量"
+msgstr "单一包裹类型数量"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__single_uom_id
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_view_tree2_inherit
+msgid "单位"
+msgstr "单位"
+
+#. module: blue_stock_base
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.view_copy_package_wizard_form
+msgid "取消"
+msgstr "取消"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__child_none_count
+msgid "可用库位数"
+msgstr "可用库位数"
+
+#. module: blue_stock_base
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_package__package_use_0
+msgid "可重复使用的盒子"
+msgstr "可重复使用的盒子"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location_coordinate__location_name
+msgid "名称"
+msgstr "名称"
+
+#. module: blue_stock_base
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_form_inherit
+msgid "在手库存"
+msgstr "在手库存"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__location_destination_value
+msgid "地图ID"
+msgstr "地图ID"
+
+#. module: blue_stock_base
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.view_copy_package_wizard_form
+msgid "复制"
+msgstr "复制"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_copy_package_wizard__qty
+msgid "复制数量"
+msgstr "复制数量"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/wizard/copy_package.py:15
+msgid "复制数量必须在1到2000之间"
+msgstr "复制数量必须在1到2000之间"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_package__package_removal_priority
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_quant__package_removal_priority
+msgid "子位置"
+msgstr "子位置"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_lot__partner_ref
+msgid "客户订单号"
+msgstr "客户订单号"
+
+#. module: blue_stock_base
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_form_inherit
+msgid "将增补缺少的位置，并删除未占用的多余位置，已有编号保持不变。"
+msgstr "将增补缺少的位置，并删除未占用的多余位置，已有编号保持不变。"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__layer
+msgid "层"
+msgstr "层"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location_coordinate__name
+msgid "序号"
+msgstr "序号"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__position
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_location__location_rank_0
+msgid "库位"
+msgstr "库位"
+
+#. module: blue_stock_base
+#: model:ir.actions.act_window,name:blue_stock_base.stock_location_coordinate_action
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__coordinate_ids
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_form_inherit
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.stock_location_coordinate_view_tree
+msgid "库位容量"
+msgstr "库位容量"
+
+#. module: blue_stock_base
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_location__location_rank_0
+msgid "库区"
+msgstr "库区"
+
+#. module: blue_stock_base
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.view_stock_quant_package_form_inherit2
+msgid "批量复制"
+msgstr "批量复制"
+
+#. module: blue_stock_base
+#: code:addons/blue_stock_base/models/stock_package.py:21
+msgid "批量复制包裹"
+msgstr "批量复制包裹"
+
+#. module: blue_stock_base
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_form_inherit
+msgid "按存储类别同步容量位置"
+msgstr "按存储类别同步容量位置"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__single_product_qty
+#: model_terms:ir.ui.view,arch_db:blue_stock_base.blue_stock_location_view_tree2_inherit
+msgid "数量"
+msgstr "数量"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__is_locking
+msgid "是否锁定"
+msgstr "是否锁定"
+
+#. module: blue_stock_base
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_location__state_0
+msgid "有货"
+msgstr "有货"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__storey
+msgid "楼层/库区"
+msgstr "楼层/库区"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__is_mixed_product
+msgid "混放产品"
+msgstr "混放产品"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__state
+msgid "状态"
+msgstr "状态"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_picking_type__not_all_package
+msgid "移动不是整个包裹提醒(API)"
+msgstr "移动不是整个包裹提醒(API)"
+
+#. module: blue_stock_base
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_location__state_0
+msgid "空位"
+msgstr "空位"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location_coordinate__location_code
+msgid "编号"
+msgstr "编号"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_uom_uom__barcode
+msgid "编码"
+msgstr "编码"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_picking_type__is_auto_lot
+msgid "自动生成批次号(API)"
+msgstr "自动生成批次号(API)"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__passageway
+#: model:ir.model.fields.selection,name:blue_stock_base.selection_stock_location__location_rank_0
+msgid "通道"
+msgstr "通道"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_location__color
+msgid "颜色"
+msgstr "颜色"
+
+#. module: blue_stock_base
+#: model:ir.model.fields,field_description:blue_stock_base.field_stock_picking_type__default_package_type
+msgid "默认包裹类型"
+msgstr "默认包裹类型"

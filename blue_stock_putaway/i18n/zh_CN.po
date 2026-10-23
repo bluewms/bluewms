@@ -1,0 +1,315 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_stock_putaway.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:47
+msgid "%(rank)s. %(name)s | 分配后托盘数: %(after)s / %(capacity)s | %(reason)s"
+msgstr "%(rank)s. %(name)s | 分配后托盘数: %(after)s / %(capacity)s | %(reason)s"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:50
+msgid "%(rank)s. %(name)s | 可放数量: %(quantity)s | %(reason)s"
+msgstr "%(rank)s. %(name)s | 可放数量: %(quantity)s | %(reason)s"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:206
+msgid "A move line would need more than 200 putaway allocations."
+msgstr "一个移动行将需要超过 200 次上架分配。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:53
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:75
+msgid "A package cannot span companies."
+msgstr "包裹不能跨公司。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_picking.py:25
+msgid "A picking with a pinned policy keeps its company and operation."
+msgstr "已固定策略的调拨单保持其公司和作业类型不变。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_putaway_application.py:32
+msgid "Allocation audit is immutable."
+msgstr "分配审计不可修改。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_putaway_application.py:36
+msgid "Allocation audit must be retained."
+msgstr "分配审计必须保留。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_warehouse.py:13
+#: code:addons/blue_stock_putaway/models/stock_warehouse.py:18
+msgid "Allocation revisions are maintained by the server."
+msgstr "分配修订版本由服务器维护。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_picking.py:34
+msgid "Apply putaway to an open transfer."
+msgstr "请对未完成的调拨单执行上架。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:68
+msgid "Choose a storable product move line with positive quantity."
+msgstr "请选择数量为正的可库存产品移动行。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_picking.py:31
+msgid "Inventory access is required."
+msgstr "需要库存访问权限。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:25
+msgid "Only inventory managers can trial unpublished drafts."
+msgstr "只有库存管理员才能试运行未发布的草稿。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/policy_guard.py:8
+msgid "Policy execution fields cannot be supplied directly."
+msgstr "策略执行字段不能直接填写。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:36
+msgid "Publish a version before trialing the active policy."
+msgstr "试运行当前生效策略前请先发布版本。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:21
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:30
+msgid "Putaway execution fields cannot be supplied directly."
+msgstr "上架执行字段不能直接填写。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_picking.py:18
+#: code:addons/blue_stock_putaway/models/stock_picking.py:23
+msgid "Putaway versions are assigned by policy execution."
+msgstr "上架版本由策略执行指定。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:92
+msgid "Select a smaller storage area: at most 200 candidate locations per trial."
+msgstr "请选择更小的存储区域：每次试运行最多 200 个候选库位。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:230
+msgid "The available capacity is smaller than the move unit precision."
+msgstr "可用容量小于移动单位精度。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:123
+msgid "The policy release code is inconsistent."
+msgstr "策略发布代码不一致。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:153
+msgid "This pallet already has conflicting pending destinations."
+msgstr "此托盘已有冲突的待处理目标位置。"
+
+#. module: blue_stock_putaway
+#: model:ir.actions.act_window,name:blue_stock_putaway.blue_config_profile_action_putaway
+#: model:ir.ui.menu,name:blue_stock_putaway.blue_config_profile_menu_putaway
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.view_picking_form
+msgid "上架策略"
+msgstr "上架策略"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_stock_move_line__blue_putaway_reason
+msgid "上架选择原因"
+msgstr "上架选择原因"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:52
+msgid "仅试算, 不修改库存、目的库位或单据版本."
+msgstr "仅试算, 不修改库存、目的库位或单据版本."
+
+#. module: blue_stock_putaway
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.blue_putaway_preview_view_form
+msgid "关闭"
+msgstr "关闭"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_application__quantity
+msgid "分配数量"
+msgstr "分配数量"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_binding__rule_key
+msgid "原始规则ID"
+msgstr "原始规则ID"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:156
+msgid "原生上架规则"
+msgstr "原生上架规则"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_application__binding_ids
+msgid "原生规则与版本"
+msgstr "原生规则与版本"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:49
+msgid "原生规则和明细必须属于同一公司."
+msgstr "原生规则和明细必须属于同一公司."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:181
+msgid "增强分配需要原生作业或目的库位关联仓库."
+msgstr "增强分配需要原生作业或目的库位关联仓库."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_putaway_binding.py:31
+msgid "已使用的策略选择需要保留用于审计."
+msgstr "已使用的策略选择需要保留用于审计."
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_stock_putaway_rule__blue_active_release_id
+msgid "当前增强版本"
+msgstr "当前增强版本"
+
+#. module: blue_stock_putaway
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.blue_putaway_preview_view_form
+msgid "技术数据"
+msgstr "技术数据"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields.selection,name:blue_stock_putaway.selection_blue_putaway_application__unit_0
+msgid "散件（产品单位）"
+msgstr "散件（产品单位）"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields.selection,name:blue_stock_putaway.selection_blue_putaway_application__unit_0
+msgid "整包/托盘（个）"
+msgstr "整包/托盘（个）"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:192
+msgid "整托盘上架需要所有商品启用库存追踪, 才能准确计算托盘占用."
+msgstr "整托盘上架需要所有商品启用库存追踪, 才能准确计算托盘占用."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:46
+msgid "未设置此包装类型上限"
+msgstr "未设置此包装类型上限"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:42
+msgid "没有满足全部条件的库位. 实际分配会停止并提示处理."
+msgstr "没有满足全部条件的库位. 实际分配会停止并提示处理."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:34
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:55
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.blue_config_profile_view_form
+msgid "真实单据试算"
+msgstr "真实单据试算"
+
+#. module: blue_stock_putaway
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.blue_config_profile_view_form
+msgid "系统设置优先：原生上架规则、存储类别和托盘容量先检查；本页代码只增加限制或在同一系统优先级内排序。本场景的使用范围由选择它的原生上架规则决定。"
+msgstr "系统设置优先：原生上架规则、存储类别和托盘容量先检查；本页代码只增加限制或在同一系统优先级内排序。本场景的使用范围由选择它的原生上架规则决定。"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:40
+msgid "系统设置允许 %(native)s 个库位, 补充条件保留 %(retained)s 个."
+msgstr "系统设置允许 %(native)s 个库位, 补充条件保留 %(retained)s 个."
+
+#. module: blue_stock_putaway
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.blue_config_profile_view_form
+msgid "绑定的上架规则"
+msgstr "绑定的上架规则"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_scene_template__requires_batch_names
+msgid "补充规则需要批次号"
+msgstr "补充规则需要批次号"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_putaway_binding.py:27
+msgid "规则的已使用策略版本不可直接修改."
+msgstr "规则的已使用策略版本不可直接修改."
+
+#. module: blue_stock_putaway
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.blue_putaway_preview_view_form
+msgid "试算"
+msgstr "试算"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_preview__result
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.blue_putaway_preview_view_form
+msgid "试算结果"
+msgstr "试算结果"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_preview__use_draft
+msgid "试算草稿代码"
+msgstr "试算草稿代码"
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:196
+msgid "请先为托盘选择包装类型, 再执行上架."
+msgstr "请先为托盘选择包装类型, 再执行上架."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/blue_config_profile.py:45
+msgid "请选择同一公司下的作业明细."
+msgstr "请选择同一公司下的作业明细."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_putaway_rule.py:17
+msgid "请选择同一公司的上架增强策略."
+msgstr "请选择同一公司的上架增强策略."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/wizard/blue_putaway_preview.py:27
+msgid "请选择绑定当前场景的原生上架规则."
+msgstr "请选择绑定当前场景的原生上架规则."
+
+#. module: blue_stock_putaway
+#: code:addons/blue_stock_putaway/models/stock_move_line.py:120
+msgid "请重新验证并发布按原生规则绑定的增强版本."
+msgstr "请重新验证并发布按原生规则绑定的增强版本."
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_preview__detail
+msgid "输入与输出快照"
+msgstr "输入与输出快照"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_application__input_json
+msgid "输入快照"
+msgstr "输入快照"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_application__output_json
+msgid "输出快照"
+msgstr "输出快照"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,field_description:blue_stock_putaway.field_blue_putaway_application__reason
+msgid "选择原因"
+msgstr "选择原因"
+
+#. module: blue_stock_putaway
+#: model:ir.model.fields,help:blue_stock_putaway.field_stock_putaway_rule__blue_profile_id
+msgid "选择可复用的场景名称. 系统范围和容量先检查, 场景代码只继续筛选. 未发布时不执行草稿."
+msgstr "选择可复用的场景名称. 系统范围和容量先检查, 场景代码只继续筛选. 未发布时不执行草稿."
+
+#. module: blue_stock_putaway
+#: model_terms:ir.ui.view,arch_db:blue_stock_putaway.view_picking_form
+msgid "重新分配上架"
+msgstr "重新分配上架"

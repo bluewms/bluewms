@@ -1,0 +1,521 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_stock_inventory.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/guard.py:13
+msgid "仅库存管理员可以开始或应用盘点."
+msgstr "仅库存管理员可以开始或应用盘点."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:99
+msgid "仅盘点负责人或库存管理员可以录入实盘."
+msgstr "仅盘点负责人或库存管理员可以录入实盘."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__exclude_sublocation
+msgid "仅选定库位"
+msgstr "仅选定库位"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__product_selection_0
+msgid "全部商品"
+msgstr "全部商品"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__stock_quant_ids
+msgid "关联库存记录"
+msgstr "关联库存记录"
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "刷新账存"
+msgstr "刷新账存"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:116
+msgid "包裹所在库位与盘点明细不符."
+msgstr "包裹所在库位与盘点明细不符."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__product_selection_0
+msgid "单一商品"
+msgstr "单一商品"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:87
+msgid "单一商品或批次模式只能选择一个商品."
+msgstr "单一商品或批次模式只能选择一个商品."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "取消"
+msgstr "取消"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:75
+msgid "只有没有记账历史的草稿或取消盘点单可以删除."
+msgstr "只有没有记账历史的草稿或取消盘点单可以删除."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:162
+msgid "只有草稿可以开始盘点."
+msgstr "只有草稿可以开始盘点."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:135
+msgid "只能刷新进行中且未记账的明细."
+msgstr "只能刷新进行中且未记账的明细."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:207
+msgid "只能应用本单尚未记账并已确认实盘的明细."
+msgstr "只能应用本单尚未记账并已确认实盘的明细."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:60
+msgid "同一盘点单的库存维度不能重复,请修改已有明细."
+msgstr "同一盘点单的库存维度不能重复,请修改已有明细."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,help:blue_stock_inventory.field_stock_inventory__exclude_sublocation
+msgid "启用时不包含子库位."
+msgstr "启用时不包含子库位."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:222
+msgid "商品 %(product)s 的账存已变化,请刷新账存并重新确认实盘."
+msgstr "商品 %(product)s 的账存已变化,请刷新账存并重新确认实盘."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__product_selection_0
+msgid "商品分类"
+msgstr "商品分类"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:212
+msgid "商品库存单位已变化,请重新建立盘点明细."
+msgstr "商品库存单位已变化,请重新建立盘点明细."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__product_selection
+msgid "商品范围"
+msgstr "商品范围"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__note
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "备注"
+msgstr "备注"
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "完成盘点并记账"
+msgstr "完成盘点并记账"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory_line__product_qty
+msgid "实盘数量"
+msgstr "实盘数量"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:99
+msgid "实盘数量必须是有限的非负数."
+msgstr "实盘数量必须是有限的非负数."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "实盘明细"
+msgstr "实盘明细"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__prefill_counted_quantity
+msgid "实盘预填方式"
+msgstr "实盘预填方式"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__state_0
+msgid "已取消"
+msgstr "已取消"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__state_0
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_search
+msgid "已完成"
+msgstr "已完成"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:271
+msgid "已有记账历史或已结束的盘点不能取消、退回草稿."
+msgstr "已有记账历史或已结束的盘点不能取消、退回草稿."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__counted_count
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory_line__counted
+msgid "已确认实盘"
+msgstr "已确认实盘"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:46
+msgid "已结束的盘点单不能添加明细."
+msgstr "已结束的盘点单不能添加明细."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__applied_count
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory_line__applied
+msgid "已记账"
+msgstr "已记账"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:91
+msgid "已记账或已完成盘点明细必须保留."
+msgstr "已记账或已完成盘点明细必须保留."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:83
+msgid "已记账或已结束的明细不可修改."
+msgstr "已记账或已结束的明细不可修改."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_move.py:24
+#: code:addons/blue_stock_inventory/models/stock_move_line.py:25
+msgid "已记账盘点流水不可修改,请用新的库存调整记录更正."
+msgstr "已记账盘点流水不可修改,请用新的库存调整记录更正."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_move.py:30
+#: code:addons/blue_stock_inventory/models/stock_move_line.py:31
+msgid "已记账盘点流水必须保留."
+msgstr "已记账盘点流水必须保留."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:114
+msgid "序列号商品的实盘数量只能为 0 或 1."
+msgstr "序列号商品的实盘数量只能为 0 或 1."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:78
+msgid "库存维度及快照不能直接更改,请重新添加未记账明细."
+msgstr "库存维度及快照不能直接更改,请重新添加未记账明细."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:224
+msgid "库存记录已有其他实盘录入,请先核对."
+msgstr "库存记录已有其他实盘录入,请先核对."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "应用本行"
+msgstr "应用本行"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,help:blue_stock_inventory.field_stock_inventory__start_empty
+msgid "开始时不生成已有库存明细,由盘点人员手工添加."
+msgstr "开始时不生成已有库存明细,由盘点人员手工添加."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "开始盘点"
+msgstr "开始盘点"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:69
+msgid "开始盘点后不能改变范围,请在无调整流水时退回草稿."
+msgstr "开始盘点后不能改变范围,请在无调整流水时退回草稿."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "录入实盘数量后视为已确认. 预填数量需要明确确认;账存变化时先刷新并重新盘点. 应用前不会改变实际库存."
+msgstr "录入实盘数量后视为已确认. 预填数量需要明确确认;账存变化时先刷新并重新盘点. 应用前不会改变实际库存."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "执行设置"
+msgstr "执行设置"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:110
+msgid "批次必须与商品和公司一致."
+msgstr "批次必须与商品和公司一致."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:89
+msgid "批次必须属于所选公司和商品."
+msgstr "批次必须属于所选公司和商品."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__lot_ids
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__product_selection_0
+msgid "批次或序列号"
+msgstr "批次或序列号"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:112
+msgid "批次或序列号跟踪商品必须填写已有批次."
+msgstr "批次或序列号跟踪商品必须填写已有批次."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__product_ids
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__product_selection_0
+msgid "指定商品"
+msgstr "指定商品"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:106
+msgid "明细包裹与盘点范围不符."
+msgstr "明细包裹与盘点范围不符."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:108
+msgid "明细批次不在指定范围内."
+msgstr "明细批次不在指定范围内."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__line_count
+msgid "明细数"
+msgstr "明细数"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:102
+msgid "明细的库位或商品超出盘点范围."
+msgstr "明细的库位或商品超出盘点范围."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:104
+msgid "明细货主与盘点范围不符."
+msgstr "明细货主与盘点范围不符."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_quant.py:37
+msgid "此库存属于进行中的盘点,请通过对应盘点单应用."
+msgstr "此库存属于进行中的盘点,请通过对应盘点单应用."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_quant.py:27
+msgid "此库存正在盘点,请在盘点单明细录入实盘."
+msgstr "此库存正在盘点,请在盘点单明细录入实盘."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:219
+msgid "此库存维度存在重复库存记录,请先通过原生库存整理后刷新账存."
+msgstr "此库存维度存在重复库存记录,请先通过原生库存整理后刷新账存."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__state
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_search
+msgid "状态"
+msgstr "状态"
+
+#. module: blue_stock_inventory
+#: model:ir.actions.act_window,name:blue_stock_inventory.action_inventory
+#: model:ir.ui.menu,name:blue_stock_inventory.menu_inventory
+msgid "盘库"
+msgstr "盘库"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:56
+msgid "盘点使用商品的库存单位."
+msgstr "盘点使用商品的库存单位."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.res_config_settings_view_form
+msgid "盘点全部明细已通过原生库存调整记账时,自动结束盘点单."
+msgstr "盘点全部明细已通过原生库存调整记账时,自动结束盘点单."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_res_company__stock_inventory_auto_complete
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.res_config_settings_view_form
+msgid "盘点全部记账后自动完成"
+msgstr "盘点全部记账后自动完成"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_quant.py:19
+#: code:addons/blue_stock_inventory/models/stock_quant.py:25
+msgid "盘点关联只能由盘点单维护."
+msgstr "盘点关联只能由盘点单维护."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__name
+msgid "盘点单号"
+msgstr "盘点单号"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:81
+msgid "盘点单号须为 1 至 128 个字符."
+msgstr "盘点单号须为 1 至 128 个字符."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_quant__stock_inventory_ids
+msgid "盘点历史"
+msgstr "盘点历史"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory_line__difference_qty
+msgid "盘点差异"
+msgstr "盘点差异"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__location_ids
+msgid "盘点库位"
+msgstr "盘点库位"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:83
+msgid "盘点库位必须是当前公司的有效内部库位."
+msgstr "盘点库位必须是当前公司的有效内部库位."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_quant__to_do
+msgid "盘点待办"
+msgstr "盘点待办"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_move.py:21
+#: code:addons/blue_stock_inventory/models/stock_move_line.py:22
+msgid "盘点流水关联不可修改."
+msgstr "盘点流水关联不可修改."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_quant.py:47
+msgid "盘点流水关联未通过校验."
+msgstr "盘点流水关联未通过校验."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_move.py:16
+#: code:addons/blue_stock_inventory/models/stock_move_line.py:17
+msgid "盘点流水关联由系统生成."
+msgstr "盘点流水关联由系统生成."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:65
+msgid "盘点状态、编号和流水只能通过业务流程更新."
+msgstr "盘点状态、编号和流水只能通过业务流程更新."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "盘点范围"
+msgstr "盘点范围"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:154
+msgid "盘点范围与进行中的 %(name)s 重叠,请先完成或调整范围."
+msgstr "盘点范围与进行中的 %(name)s 重叠,请先完成或调整范围."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:288
+msgid "盘点调整流水"
+msgstr "盘点调整流水"
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "确认全部实盘"
+msgstr "确认全部实盘"
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "确认全部实盘数量,并通过库存调整记录差异?"
+msgstr "确认全部实盘数量,并通过库存调整记录差异?"
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "确认本单全部未记账明细的实盘数量已逐项核实?"
+msgstr "确认本单全部未记账明细的实盘数量已逐项核实?"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory__start_empty
+msgid "空白盘点"
+msgstr "空白盘点"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:172
+msgid "范围内存在原生实盘录入或其他盘点,请先处理."
+msgstr "范围内存在原生实盘录入或其他盘点,请先处理."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__state_0
+msgid "草稿"
+msgstr "草稿"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:260
+msgid "请先开始盘点,添加明细并确认全部实盘数量."
+msgstr "请先开始盘点,添加明细并确认全部实盘数量."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:197
+msgid "请先开始盘点."
+msgstr "请先开始盘点."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:167
+msgid "请填写完整的库位及商品、分类或批次范围."
+msgstr "请填写完整的库位及商品、分类或批次范围."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:85
+msgid "请选择本公司或共享的库存商品."
+msgstr "请选择本公司或共享的库存商品."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:54
+msgid "请通过盘点业务按钮改变状态及历史."
+msgstr "请通过盘点业务按钮改变状态及历史."
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "调整流水"
+msgstr "调整流水"
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_search
+msgid "负责人"
+msgstr "负责人"
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory.py:92
+msgid "负责人须为具有本公司库存权限的有效用户."
+msgstr "负责人须为具有本公司库存权限的有效用户."
+
+#. module: blue_stock_inventory
+#: code:addons/blue_stock_inventory/models/stock_inventory_line.py:48
+msgid "账存快照及记账状态由系统生成."
+msgstr "账存快照及记账状态由系统生成."
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields,field_description:blue_stock_inventory.field_stock_inventory_line__theoretical_qty
+msgid "账面数量快照"
+msgstr "账面数量快照"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__state_0
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_search
+msgid "进行中"
+msgstr "进行中"
+
+#. module: blue_stock_inventory
+#: model_terms:ir.ui.view,arch_db:blue_stock_inventory.stock_inventory_view_form
+msgid "退回草稿"
+msgstr "退回草稿"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__prefill_counted_quantity_0
+msgid "预填账面数量"
+msgstr "预填账面数量"
+
+#. module: blue_stock_inventory
+#: model:ir.model.fields.selection,name:blue_stock_inventory.selection_stock_inventory__prefill_counted_quantity_0
+msgid "预填零"
+msgstr "预填零"

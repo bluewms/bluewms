@@ -1,0 +1,26 @@
+# Translation of Odoo Server.
+# Chinese translation for muk_web_group.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: muk_web_group
+#: code:addons/muk_web_group/static/src/search/collapse_all/collapse_all.xml:0
+msgid "Collapse All"
+msgstr "全部折叠"
+
+#. module: muk_web_group
+#: code:addons/muk_web_group/static/src/search/expand_all/expand_all.xml:0
+msgid "Expand All"
+msgstr "全部展开"

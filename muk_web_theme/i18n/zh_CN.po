@@ -1,0 +1,181 @@
+# Translation of Odoo Server.
+# Chinese translation for muk_web_theme.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Apps Active"
+msgstr "应用激活色"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__theme_background_image
+msgid "Apps Menu Background Image"
+msgstr "应用菜单背景图片"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__color_appsmenu_text_theme
+msgid "Apps Menu Text Color"
+msgstr "应用菜单文字颜色"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Apps Text"
+msgstr "应用文字"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__color_appbar_active_theme
+msgid "AppsBar Active Color"
+msgstr "应用栏激活色"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__color_appbar_background_theme
+msgid "AppsBar Background Color"
+msgstr "应用栏背景色"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__color_appbar_text_theme
+msgid "AppsBar Text Color"
+msgstr "应用栏文字颜色"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Backend Theme"
+msgstr "后台主题"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Background"
+msgstr "背景"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Background Image"
+msgstr "背景图片"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Brand"
+msgstr "品牌"
+
+#. module: muk_web_theme
+#: model:ir.model,name:muk_web_theme.model_res_company
+msgid "Companies"
+msgstr "公司"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__theme_favicon
+msgid "Company Favicon"
+msgstr "公司图标"
+
+#. module: muk_web_theme
+#: model:ir.model,name:muk_web_theme.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Context Colors"
+msgstr "情境颜色"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Customize context colors of the system"
+msgstr "自定义系统情境颜色"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Customize the look and feel of the theme"
+msgstr "自定义主题外观"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Danger"
+msgstr "危险"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Favicon"
+msgstr "网站图标"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Favicon & Logo"
+msgstr "图标与 Logo"
+
+#. module: muk_web_theme
+#: model:ir.model,name:muk_web_theme.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP 路由"
+
+#. module: muk_web_theme
+#: model:ir.model.fields,field_description:muk_web_theme.field_res_config_settings__id
+msgid "ID"
+msgstr "ID"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Info"
+msgstr "信息"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Logo"
+msgstr "Logo"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Menu Text"
+msgstr "菜单文字"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Primary"
+msgstr "主色"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Reset Theme Colors"
+msgstr "重置主题颜色"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Set the background image for the apps menu"
+msgstr "设置应用菜单的背景图片"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Set your own favicon and logo for the appsbar"
+msgstr "为应用栏设置自定义图标和 Logo"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Success"
+msgstr "成功"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Theme Colors"
+msgstr "主题颜色"
+
+#. module: muk_web_theme
+#: model_terms:ir.ui.view,arch_db:muk_web_theme.view_res_config_settings_colors_form
+msgid "Warning"
+msgstr "警告"
