@@ -39,9 +39,9 @@ class BlueBarcodeService(models.AbstractModel):
         return super()._lock_target(kind, target, pickings)
 
     @api.model
-    def list_records(self, kind, term='', offset=0):
+    def list_records(self, kind, term='', offset=0, operation_type_id=False):
         if kind != 'inventory':
-            return super().list_records(kind, term, offset)
+            return super().list_records(kind, term, offset, operation_type_id)
         self._authorize()
         if type(term) is not str or len(term) > 256 or type(offset) is not int or not 0 <= offset <= 100000:
             raise ValidationError('Invalid search arguments.')

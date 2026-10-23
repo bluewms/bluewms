@@ -371,12 +371,15 @@ class BlueBarcodeSession(models.Model):
             source = any(r['location_id'] == locations.id for r in rows)
             context = {'location_id' if source else 'destination_id': locations.id}
             result = {'selected': locations.display_name}
+            matching_groups = {r['group'] for r in rows
+                if r['location_id' if source else 'destination_id'] == locations.id}
         elif parsed['kind'] == 'package':
             packages = {r['package_id'] for r in rows if r['package'] == parsed['code'] and r['package_id']}
             if len(packages) != 1:
                 raise UserError(self.env._('源包裹不在本单范围或不唯一.'))
             context = {**{k: v for k, v in context.items() if k not in ('lot', 'pending')}, 'package_id': packages.pop()}
             result = {'selected': parsed['code']}
+            matching_groups = {r['group'] for r in rows if r['package_id'] == context['package_id']}
         elif parsed['kind'] == 'lot':
             pending = context.pop('pending', None)
             if pending:
@@ -390,6 +393,8 @@ class BlueBarcodeSession(models.Model):
             result = {'selected': parsed['code']}
         else:
             raise ValidationError(self.env._('不支持的扫描类型.'))
+        if parsed['kind'] in ('location', 'package') and len(matching_groups) == 1:
+            result['group'] = matching_groups.pop()
         self._internal().write({'scan_context': context})
         return self._followup(decision, result)
 

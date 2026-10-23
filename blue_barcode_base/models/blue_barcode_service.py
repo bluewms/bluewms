@@ -100,10 +100,23 @@ class BlueBarcodeService(models.AbstractModel):
                 {'kind': 'location', 'name': self.env._('位置'), 'icon': 'map-marker'}]
 
     @api.model
-    def list_records(self, kind, term='', offset=0):
+    def operation_types(self):
+        self._authorize()
+        domain = [('company_id', '=', self.env.company.id),
+                  ('state', 'in', ['waiting', 'confirmed', 'assigned'])]
+        # Aggregate visible pickings, so a type badge never counts inaccessible work.
+        grouped = self.env['stock.picking']._read_group(domain, ['picking_type_id'], ['__count'])
+        return [{'id': operation.id, 'name': operation.name,
+                 'warehouse': operation.warehouse_id.display_name or self.env._('其他作业'),
+                 'count': count, 'kind': 'operation_type'} for operation, count in grouped]
+
+    @api.model
+    def list_records(self, kind, term='', offset=0, operation_type_id=False):
         self._authorize()
         if type(term) is not str or len(term) > 256 or type(offset) is not int or not 0 <= offset <= 100000:
             raise ValidationError('Invalid search arguments.')
+        if operation_type_id is not False and (type(operation_type_id) is not int or operation_type_id <= 0):
+            raise ValidationError('Invalid operation type.')
         models_by_kind = {'operations': 'stock.picking', 'batch': 'stock.picking.batch',
                           'product': 'product.product', 'location': 'stock.location'}
         if kind == 'inventory':
@@ -113,6 +126,8 @@ class BlueBarcodeService(models.AbstractModel):
         domain = fields.Domain('company_id', 'in', [False, self.env.company.id])
         if kind == 'operations':
             domain &= fields.Domain('state', 'in', ['waiting', 'confirmed', 'assigned'])
+            if operation_type_id:
+                domain &= fields.Domain('picking_type_id', '=', operation_type_id)
         elif kind == 'batch':
             domain &= fields.Domain('state', 'in', ['draft', 'in_progress'])
         elif kind == 'location':
@@ -120,8 +135,20 @@ class BlueBarcodeService(models.AbstractModel):
         if term:
             domain &= fields.Domain('display_name', 'ilike', term)
         records = self.env[models_by_kind[kind]].search(domain, limit=51, offset=offset)
-        return {'items': [{'id': r.id, 'name': r.display_name,
-            'kind': 'picking' if kind == 'operations' else kind} for r in records[:50]], 'more': len(records) > 50}
+        items = []
+        for record in records[:50]:
+            item = {'id': record.id, 'name': record.display_name,
+                    'kind': 'picking' if kind == 'operations' else kind}
+            if kind == 'operations':
+                item.update(partner=record.partner_id.display_name or '',
+                    origin=record.origin or '', date=str(record.scheduled_date or ''),
+                    state=dict(record._fields['state']._description_selection(self.env)).get(record.state))
+            elif kind == 'product':
+                item.update(barcode=record.barcode or '', reference=record.default_code or '')
+            elif kind == 'location':
+                item.update(barcode=record.barcode or '')
+            items.append(item)
+        return {'items': items, 'more': len(records) > 50}
 
     @api.model
     def lookup(self, raw, kind=False):

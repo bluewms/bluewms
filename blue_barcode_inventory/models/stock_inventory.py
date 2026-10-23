@@ -8,4 +8,4 @@ class StockInventory(models.Model):
         self.ensure_one()
         self._counter()
         return {'type': 'ir.actions.client', 'tag': 'blue_barcode.workspace',
-                'name': self.env._('扫码盘库'), 'params': {'kind': 'inventory', 'record_id': self.id}}
+                'target': 'fullscreen', 'name': self.env._('扫码盘库'), 'params': {'kind': 'inventory', 'record_id': self.id}}

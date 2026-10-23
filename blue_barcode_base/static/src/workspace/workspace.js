@@ -1,5 +1,5 @@
 import {
-    Component, onMounted, onWillStart, onWillUnmount, proxy, useProps,
+    Component, onMounted, onWillStart, onWillUnmount, proxy, signal, useProps,
 } from '@odoo/owl';
 import { registry } from '@web/core/registry';
 import { useBus, useService } from '@web/core/utils/hooks';
@@ -9,6 +9,8 @@ import { user } from '@web/core/user';
 import { session } from '@web/session';
 import { Mutex } from '@web/core/utils/concurrency';
 import { PdaCapture } from '../scanning/pda_capture';
+import { QuantityEditor } from '../quantity_editor/quantity_editor';
+import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
 
 function identity() {
     const bytes = new Uint8Array(16);
@@ -18,18 +20,22 @@ function identity() {
 
 export class BarcodeWorkspace extends Component {
     static template = 'blue_barcode_base.Workspace';
+    static components = { QuantityEditor };
     props = useProps({ ...standardActionServiceProps });
 
     setup() {
         this.orm = useService('orm');
         this.action = useService('action');
         this.notification = useService('notification');
+        this.dialog = useService('dialog');
         this.barcode = useService('barcode');
         this.lookupMutex = new Mutex();
+        this.root = signal.ref();
         this.state = proxy({
             entries: [], page: 'home', listKind: '', items: [], more: false, offset: 0,
             search: '', session: null, details: null, group: '', selected: '', lookupKind: '', canBack: false, lastScan: '',
-            editing: false, total: '', error: '', storageError: '', busy: false, pending: null, queued: 0, message: '',
+            editing: false, error: '', storageError: '', busy: false, pending: null, queued: 0, message: '',
+            operationType: null, operationTypes: [], completedLast: false,
         });
         this.companyId = user.activeCompanies[0].id;
         this.storageKey = `blue_barcode_${user.userId}_${this.companyId}`;
@@ -71,6 +77,8 @@ export class BarcodeWorkspace extends Component {
                     try {
                         data = JSON.parse(saved);
                         this.state.pending = data.pending;
+                        this.state.group = typeof data.group === 'string' ? data.group : '';
+                        this.state.selected = typeof data.selected === 'string' ? data.selected : '';
                         this.queue = data.queue || [];
                         this.state.queued = this.queue.length;
                         const view = await this.orm.call('blue.barcode.session', 'action_view', [
@@ -101,9 +109,9 @@ export class BarcodeWorkspace extends Component {
 
     focusScan() {
         const input = this.barcode.barcodeInput;
-        if (input && !this.state.editing && this.scanActive()) {
-            input.setAttribute('inputmode', 'none');
-            requestAnimationFrame(() => input.focus({preventScroll: true}));
+        if (!this.state.editing && this.scanActive()) {
+            input?.setAttribute('inputmode', 'none');
+            requestAnimationFrame(() => (input || this.root())?.focus({preventScroll: true}));
         }
     }
 
@@ -119,11 +127,16 @@ export class BarcodeWorkspace extends Component {
         this.history.push({page: this.state.page, listKind: this.state.listKind,
             items: this.state.items, more: this.state.more, offset: this.state.offset,
             search: this.state.search, details: this.state.details, lookupKind: this.state.lookupKind});
+        Object.assign(this.history[this.history.length - 1], {operationType: this.state.operationType});
         this.state.canBack = true;
     }
 
     async back() {
-        if (this.state.busy || this.state.editing) {
+        if (this.state.editing) {
+            this.cancelEdit();
+            return;
+        }
+        if (this.state.busy) {
             return;
         }
         if (this.state.page === 'work' && (this.state.pending || this.queue.length)) {
@@ -170,6 +183,7 @@ export class BarcodeWorkspace extends Component {
             if (this.state.session) {
                 sessionStorage.setItem(this.storageKey, JSON.stringify({
                     sessionId: this.state.session.id, pending: this.state.pending, queue: this.queue,
+                    group: this.state.group, selected: this.state.selected,
                 }));
             }
             this.state.storageError = '';
@@ -205,7 +219,18 @@ export class BarcodeWorkspace extends Component {
             }
             groups.get(row.group).rows.push(row);
         }
-        return [...groups.values()];
+        return [...groups.values()].map((group) => {
+            group.mixedRoutes = group.rows.some((row) => row.source !== group.source || row.destination !== group.destination);
+            for (const [field, rowField, label] of [
+                ['source', 'source', '多个来源位置'], ['destination', 'destination', '多个目的位置'],
+                ['package', 'package', '多个源包裹'], ['destinationPackage', 'destination_package', '多个目的包裹'],
+            ]) {
+                if (new Set(group.rows.map((row) => row[rowField])).size > 1) {
+                    group[field] = label;
+                }
+            }
+            return group;
+        });
     }
 
     currentGroup() {
@@ -214,6 +239,124 @@ export class BarcodeWorkspace extends Component {
 
     currentIndex() {
         return this.groups().findIndex((group) => group.key === this.state.group);
+    }
+
+    title() {
+        if (this.state.editing) {
+            return '修改数量';
+        }
+        if (this.state.page === 'work') {
+            return this.state.session.name;
+        }
+        if (this.state.page === 'details') {
+            return this.state.details.name;
+        }
+        if (this.state.lookupKind) {
+            return this.state.lookupKind === 'product' ? '产品信息' : '位置信息';
+        }
+        return this.state.operationType?.name || ({home: '条码工作台', types: '仓库作业'}[this.state.page])
+            || ({inventory: '选择盘库单', batch: '批次作业', operations: '选择作业单'}[this.state.listKind]) || '条码';
+    }
+
+    scanPrompt() {
+        if (this.state.editing) {
+            return '输入本行总数后确认';
+        }
+        if (this.state.page === 'work') {
+            if (this.state.session.state === 'closed') {
+                return '本次作业已结束';
+            }
+            if (this.state.session.context.pending) {
+                return '请补扫批次 / 序列号';
+            }
+            const context = this.state.session.context;
+            const rows = this.currentGroup()?.rows || [];
+            if ((context.location_id && rows.length && rows.every((row) => row.location_id !== context.location_id))
+                || (context.destination_id && rows.length && rows.every((row) => row.destination_id !== context.destination_id))) {
+                return '请扫描本页位置，确认切换作业位置';
+            }
+            return this.state.session.kind === 'inventory' ? '扫描产品累计实盘 · 选中产品修改总数' : '扫描产品 · 位置 · 包裹';
+        }
+        return this.state.lookupKind === 'product' ? '扫描产品条码查看详情'
+            : this.state.lookupKind === 'location' ? '扫描位置条码查看详情' : '扫描单据直接作业，或选择下方入口';
+    }
+
+    warehouses() {
+        const groups = new Map();
+        for (const operation of this.state.operationTypes) {
+            if (!groups.has(operation.warehouse)) {
+                groups.set(operation.warehouse, []);
+            }
+            groups.get(operation.warehouse).push(operation);
+        }
+        return [...groups].map(([name, operations]) => ({name, operations}));
+    }
+
+    async operations() {
+        try {
+            const types = await this.orm.call('blue.barcode.service', 'operation_types', []);
+            this.saveNavigation();
+            Object.assign(this.state, {page: 'types', operationTypes: types,
+                operationType: null, search: '', lookupKind: '', error: '', message: ''});
+        } catch (error) {
+            this.error(error);
+        }
+    }
+
+    async chooseOperation(operation) {
+        await this.list('operations', true, operation);
+    }
+
+    rows() {
+        const rows = [...(this.currentGroup()?.rows || [])];
+        if (this.state.completedLast) {
+            rows.sort((a, b) => Number(this.rowDone(a)) - Number(this.rowDone(b)));
+        }
+        return rows;
+    }
+
+    rowDone(row) {
+        return this.state.session.kind === 'inventory' ? row.counted : row.counted && row.quantity >= row.expected;
+    }
+
+    selectedRow() {
+        return this.state.session?.rows.find((row) => row.key === this.state.selected);
+    }
+
+    selectRow(row) {
+        if (!this.state.editing && !this.state.busy) {
+            this.state.selected = this.state.selected === row.key ? '' : row.key;
+            this.persist();
+            this.focusScan();
+        }
+    }
+
+    canChange(row) {
+        return !!row && !row.applied && this.state.session?.state === 'active'
+            && !this.state.busy && !this.state.pending && !this.queue.length
+            && !this.state.session.context.pending && !this.state.storageError;
+    }
+
+    pageProgress() {
+        const rows = this.currentGroup()?.rows || [];
+        return `${rows.filter((row) => this.rowDone(row)).length} / ${rows.length}`;
+    }
+
+    remaining(row) {
+        return Number((row.expected - row.quantity).toFixed(8));
+    }
+
+    selectGroup() {
+        this.state.selected = '';
+        this.persist();
+        this.focusScan();
+    }
+
+    highlightRow(key) {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            document.querySelector(`.o_blue_barcode_row[data-row-key="${CSS.escape(key)}"]`)
+                ?.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+        }));
     }
 
     changeGroup(delta) {
@@ -226,22 +369,29 @@ export class BarcodeWorkspace extends Component {
         if (index >= 0 && index < groups.length) {
             this.state.group = groups[index].key;
             this.state.selected = '';
+            this.persist();
         }
         this.focusScan();
     }
 
-    async list(kind, reset = true) {
+    async list(kind, reset = true, operation = undefined) {
         if (this.state.pending || this.queue.length) {
             this.state.error = '请先核对尚未确认的扫描。';
             return;
         }
         try {
             if (reset) {
-                this.saveNavigation();
+                if (this.state.page !== 'list' || kind !== this.state.listKind || operation !== undefined) {
+                    this.saveNavigation();
+                    this.state.search = '';
+                }
                 this.state.offset = 0;
             }
+            if (operation !== undefined) {
+                this.state.operationType = operation;
+            }
             const result = await this.orm.call('blue.barcode.service', 'list_records', [
-                kind, this.state.search, this.state.offset,
+                kind, this.state.search, this.state.offset, kind === 'operations' ? this.state.operationType?.id || false : false,
             ]);
             this.state.page = 'list';
             this.state.listKind = kind;
@@ -250,6 +400,7 @@ export class BarcodeWorkspace extends Component {
             this.state.more = result.more;
             this.state.message = result.message || '';
             this.state.error = '';
+            this.focusScan();
         } catch (error) {
             this.error(error);
         }
@@ -280,6 +431,9 @@ export class BarcodeWorkspace extends Component {
                 const view = await this.orm.call('blue.barcode.service', 'open_session', [
                     record.kind, record.id, this.client, takeover,
                 ]);
+                if (view.id !== this.state.session?.id) {
+                    this.state.lastScan = '';
+                }
                 if (this.state.page !== 'work') {
                     this.saveNavigation();
                 }
@@ -397,7 +551,8 @@ export class BarcodeWorkspace extends Component {
             this.state.group = response.event.group;
         }
         this.nextAction = response.replayed ? '' : response.event.after || '';
-        this.state.selected = '';
+        const selected = response.event.key || response.view.context.pending?.key || '';
+        this.state.selected = response.view.rows.some((row) => row.key === selected && row.group === this.state.group) ? selected : '';
         this.state.message = response.event.selected || (
             response.event.quantity !== undefined ? `已保存数量：${response.event.quantity}` : '已确认'
         );
@@ -405,6 +560,9 @@ export class BarcodeWorkspace extends Component {
             this.state.message += '（已定位到匹配的业务组）';
         }
         this.persist();
+        if (this.state.selected) {
+            this.highlightRow(this.state.selected);
+        }
         if (!response.replayed && 'vibrate' in navigator) {
             navigator.vibrate(50);
         }
@@ -487,6 +645,8 @@ export class BarcodeWorkspace extends Component {
             }
         } catch (error) {
             this.error(error);
+        } finally {
+            this.focusScan();
         }
     }
 
@@ -501,26 +661,70 @@ export class BarcodeWorkspace extends Component {
     }
 
     editTotal(row) {
-        if (this.state.pending || this.state.busy) {
+        if (!this.canChange(row)) {
             return;
         }
         this.state.selected = row.key;
-        this.state.total = String(row.quantity);
         this.state.editing = true;
+        this.state.error = '';
     }
 
-    async saveTotal() {
-        if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(this.state.total)) {
-            this.state.error = '请输入明确的非负实盘总数。';
+    cancelEdit() {
+        this.state.editing = false;
+        this.state.error = '';
+        this.focusScan();
+    }
+
+    async saveTotal(value) {
+        if (!this.canChange(this.selectedRow())) {
+            return;
+        }
+        await this.setTotal(this.selectedRow(), value);
+    }
+
+    async adjust(row, delta) {
+        if (this.canChange(row)) {
+            const current = this.state.session.kind === 'inventory' && !row.counted ? 0 : row.quantity;
+            await this.setTotal(row, Math.max(0, Number((current + delta).toFixed(8))));
+        }
+    }
+
+    async setTotal(row, total) {
+        if (!this.canChange(row)) {
+            return;
+        }
+        if (!Number.isFinite(total) || total < 0 || total > 1e9) {
+            this.state.error = '请输入有效的非负总数。';
             return;
         }
         this.queue.push({ key: identity(), payload: {
-            row_key: this.state.selected, total: Number(this.state.total), group: this.state.group,
+            row_key: row.key, total, group: row.group,
         } });
         this.state.queued = this.queue.length;
         this.state.editing = false;
         this.state.error = '';
         await this.drain();
+    }
+
+    confirmExecute(action) {
+        if (this.state.busy || this.state.pending || this.queue.length || this.state.editing) {
+            return;
+        }
+        this.dialog.add(ConfirmationDialog, {
+            title: action === 'validate' ? '验证作业' : '本页装箱',
+            body: action === 'validate' ? '确认提交整张作业单？数量不足时将按 Odoo 原生流程处理欠交。'
+                : '确认将本页已扫描且未装箱的明细装入包裹？',
+            confirmLabel: '确认', cancelLabel: '继续扫描',
+            confirm: () => this.execute(action),
+            cancel: () => { requestAnimationFrame(() => this.focusScan()); },
+        });
+    }
+
+    async exit() {
+        await this.home();
+        if (this.state.page === 'home') {
+            await this.action.doAction('stock.action_picking_tree_all');
+        }
     }
 
     async execute(action) {
@@ -573,6 +777,7 @@ export class BarcodeWorkspace extends Component {
             this.state.search = '';
             this.state.lookupKind = '';
             this.state.details = null;
+            this.state.operationType = null;
             this.history = [];
             this.state.canBack = false;
             sessionStorage.removeItem(this.storageKey);

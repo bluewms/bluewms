@@ -35,7 +35,34 @@
     "repository": "bluewms16",
     "commit": "abb2df7d5da970d5f0250d40ef850e6226280616",
     "module": "bluewms_barcode_app",
-    "usage": "Interaction reference only; no whole-module import"
+    "usage": "Interaction reference: terminal shell, warehouse/type selection, grouped pages, selected-row tools, keypad and details navigation; reimplemented with Owl 3, no whole-module import",
+    "review_date": "2026-10-23",
+    "reference_files": [
+      {
+        "path": "bluewms_barcode_app/static/src/js/main_screen/MainScreen.js",
+        "sha256": "c5f7d476a3122bee22e81c501744f4da46c9f4bb411963da01ced8c57eefb885"
+      },
+      {
+        "path": "bluewms_barcode_app/static/src/js/warehouse_operations/WarehouseOperation.js",
+        "sha256": "113c0a72c828df06b86b735dae43f4aba8482b7c658d8a7fd16b402c3a6f6881"
+      },
+      {
+        "path": "bluewms_barcode_app/static/src/js/warehouse_operations/WarehouseOperation.xml",
+        "sha256": "23d4b48055867d5f919bf4c6fef58242a598f918f179bcce34f769c09f030ff8"
+      },
+      {
+        "path": "bluewms_barcode_app/static/src/js/warehouse_operations/WarehouseOperationDisplay.xml",
+        "sha256": "511175047303ef2ac3d7d5a74af25cf354d67748ee15f3a4930ae9e347e18eb2"
+      },
+      {
+        "path": "bluewms_barcode_app/static/src/js/inventory_transfer_components/EditPopUpComponent.js",
+        "sha256": "bc379817623d2640397db0cd4a8d3ea20042e9457b6904b3b391081f5950015c"
+      },
+      {
+        "path": "bluewms_barcode_app/static/src/js/inventory_transfer_components/EditPopUpComponent.xml",
+        "sha256": "b29f6545862769b6e185d516b2a74aed41a090d47b5825caa6de385d80bcf2f6"
+      }
+    ]
   },
   "targets": [
     "blue_barcode_base",

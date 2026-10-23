@@ -1,6 +1,7 @@
 <odoo>
     <record id="barcode_workspace_action" model="ir.actions.client">
         <field name="name">条码</field><field name="tag">blue_barcode.workspace</field>
+        <field name="target">fullscreen</field>
     </record>
     <menuitem id="barcode_root_menu" name="条码" action="barcode_workspace_action" sequence="35" groups="stock.group_stock_user"/>
     <record id="view_picking_form" model="ir.ui.view">

@@ -87,6 +87,30 @@ class TestBarcodeScanning(BaseCommon):
         self._scan(session, event='barcode_event_000002')
         self.assertEqual(session.picking_id.move_line_ids.quantity, 9)
 
+    def test_terminal_browse_filters_operation_type_and_reports_visible_work(self):
+        receipt = self._picking()
+        operation = next(item for item in self.service.operation_types()
+            if item['id'] == receipt.picking_type_id.id)
+        self.assertGreaterEqual(operation['count'], 1)
+        records = self.service.list_records('operations', operation_type_id=receipt.picking_type_id.id)
+        item = next(item for item in records['items'] if item['id'] == receipt.id)
+        self.assertEqual(item['kind'], 'picking')
+        self.assertTrue(item['state'])
+        other = self.service.list_records('operations', operation_type_id=self.warehouse.out_type_id.id)
+        self.assertNotIn(receipt.id, [item['id'] for item in other['items']])
+        with self.assertRaises(ValidationError):
+            self.service.list_records('operations', operation_type_id=True)
+
+    def test_scan_unique_location_returns_its_terminal_page_without_counting(self):
+        picking = self._picking()
+        destination = picking.location_dest_id
+        destination.barcode = 'TERMINAL-DESTINATION'
+        session = self._session(picking)
+        row = session._rows()[0]
+        response = self._scan(session, payload={'raw': destination.barcode})
+        self.assertEqual(response['event']['group'], row['group'])
+        self.assertEqual(session._rows()[0]['quantity'], 0)
+
     def test_second_terminal_requires_explicit_takeover(self):
         session = self._session()
         with self.assertRaises(UserError):
