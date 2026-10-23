@@ -1,0 +1,472 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_wcs_protocol.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "AI 生成 / 修改"
+msgstr "AI 生成 / 修改"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_key_header
+msgid "App Key 请求头名称"
+msgstr "App Key 请求头名称"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_secret_header
+msgid "App Secret 请求头名称"
+msgstr "App Secret 请求头名称"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields.selection,name:blue_wcs_protocol.selection_wcs_equipment_category__protocol_auth_mode_0
+#: model:ir.model.fields.selection,name:blue_wcs_protocol.selection_wcs_equipment_category__protocol_callback_mode_0
+msgid "Bearer Token"
+msgstr "Bearer 令牌"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_auth_mode
+msgid "下发认证"
+msgstr "下发认证"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields.selection,name:blue_wcs_protocol.selection_wcs_equipment_category__protocol_auth_mode_0
+msgid "不附加认证"
+msgstr "不附加认证"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:136
+msgid "中间搬运步骤不能回写最终库存位置或包裹子位置."
+msgstr "中间搬运步骤不能回写最终库存位置或包裹子位置."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:93
+msgid "人工接口配置已改变,请先核对固定任务."
+msgstr "人工接口配置已改变,请先核对固定任务."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "从正式版本新建草稿"
+msgstr "从正式版本新建草稿"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,help:blue_wcs_protocol.field_wcs_equipment_category__protocol_parameters
+msgid "仓库编码等固定参数. 真实密钥仍填写 App Key / Secret 等专用字段."
+msgstr "仓库编码等固定参数. 真实密钥仍填写 App Key / Secret 等专用字段."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "代码处理 HTTP / JSON 下发、响应和最终完成回调. 通过 subposition 或 destination_code 决定位置回写, 系统校验后执行. 保存草稿不会自动生效."
+msgstr "代码处理 HTTP / JSON 下发、响应和最终完成回调. 通过 subposition 或 destination_code 决定位置回写, 系统校验后执行. 保存草稿不会自动生效."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "代码版本"
+msgstr "代码版本"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:133
+msgid "位置回写必须关联明确的货物明细."
+msgstr "位置回写必须关联明确的货物明细."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_allow_subposition
+msgid "允许回写包裹子位置"
+msgstr "允许回写包裹子位置"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_allow_destination
+msgid "允许回调确定库存目的库位"
+msgstr "允许回调确定库存目的库位"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:35
+msgid "协议、设备类别及公司必须一致."
+msgstr "协议、设备类别及公司必须一致."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_parameters
+msgid "厂商业务参数(非密钥)"
+msgstr "厂商业务参数(非密钥)"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:128
+msgid "厂商业务参数必须是 JSON 对象."
+msgstr "厂商业务参数必须是 JSON 对象."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:126
+msgid "厂商业务参数必须是有界 JSON 对象."
+msgstr "厂商业务参数必须是有界 JSON 对象."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields.selection,name:blue_wcs_protocol.selection_wcs_equipment_category__protocol_auth_mode_0
+msgid "厂商认证请求头"
+msgstr "厂商认证请求头"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:140
+msgid "厂商认证请求头名称无效."
+msgstr "厂商认证请求头名称无效."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment__protocol_device_code
+msgid "厂商设备编码"
+msgstr "厂商设备编码"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:119
+msgid "历史协议未允许库存目的库位回写."
+msgstr "历史协议未允许库存目的库位回写."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:86
+msgid "历史版本的人工配置不同,请先核对类别设置再回滚."
+msgstr "历史版本的人工配置不同,请先核对类别设置再回滚."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "发布历史"
+msgstr "发布历史"
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "发布后, 新作业使用此版本, 已分配作业保留原版本."
+msgstr "发布后, 新作业使用此版本, 已分配作业保留原版本."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "发布生效"
+msgstr "发布生效"
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "可编辑代码"
+msgstr "可编辑代码"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment.py:33
+msgid "可编辑接口必须关联同公司设备类别."
+msgstr "可编辑接口必须关联同公司设备类别."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:153
+msgid "同一库存明细有多个搬运计划,请人工核对实际库位."
+msgstr "同一库存明细有多个搬运计划,请人工核对实际库位."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_tusk_compat
+msgid "启用旧 TUSK 回调地址"
+msgstr "启用旧 TUSK 回调地址"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_request__protocol_subposition
+msgid "回写包裹子位置"
+msgstr "回写包裹子位置"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:218
+msgid "回报子位置已被其他包裹或待入账任务占用."
+msgstr "回报子位置已被其他包裹或待入账任务占用."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:207
+msgid "回报子位置未唯一匹配该库位已配置的容量位置."
+msgstr "回报子位置未唯一匹配该库位已配置的容量位置."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:240
+msgid "回报点与计划终点不同,请在协议中明确子位置或库存库位映射."
+msgstr "回报点与计划终点不同,请在协议中明确子位置或库存库位映射."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "回滚上一版"
+msgstr "回滚上一版"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_task_key
+msgid "回调任务号字段"
+msgstr "回调任务号字段"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:136
+msgid "回调任务号字段必须是单个 JSON 字段名称."
+msgstr "回调任务号字段必须是单个 JSON 字段名称."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:235
+msgid "回调任务设备或类别已变化."
+msgstr "回调任务设备或类别已变化."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__protocol_callback_mode
+msgid "回调接入方式"
+msgstr "回调接入方式"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,help:blue_wcs_protocol.field_wcs_equipment__protocol_device_code
+msgid "回调提供 deviceId 时用于核对,不作为连接地址或认证信息."
+msgstr "回调提供 deviceId 时用于核对,不作为连接地址或认证信息."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:226
+msgid "回调设备编码与任务设备不一致."
+msgstr "回调设备编码与任务设备不一致."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_request__protocol_task_snapshot
+msgid "固定设备报文输入"
+msgstr "固定设备报文输入"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:199
+msgid "子位置必须归属唯一的实际库存库位."
+msgstr "子位置必须归属唯一的实际库存库位."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_request__protocol_last_callback
+msgid "完成回调原文"
+msgstr "完成回调原文"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:125
+msgid "完成库位编码必须在批准库区内唯一匹配既有库位."
+msgstr "完成库位编码必须在批准库区内唯一匹配既有库位."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:175
+msgid "实际目的库位不满足原生包裹容量、重量或混放条件."
+msgstr "实际目的库位不满足原生包裹容量、重量或混放条件."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:187
+msgid "实际目的库位不满足原生容量、重量或混放条件."
+msgstr "实际目的库位不满足原生容量、重量或混放条件."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:160
+msgid "实际目的库位不能等于原库存起点."
+msgstr "实际目的库位不能等于原库存起点."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:128
+msgid "实际目的库位已冻结或禁止入库."
+msgstr "实际目的库位已冻结或禁止入库."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "审计记录"
+msgstr "审计记录"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:138
+msgid "已完成或取消的库存单据不能回写历史位置."
+msgstr "已完成或取消的库存单据不能回写历史位置."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:149
+msgid "库存明细已变化,请核对实际完成库位."
+msgstr "库存明细已变化,请核对实际完成库位."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "恢复上一正式版本, 已有作业保持原版本."
+msgstr "恢复上一正式版本, 已有作业保持原版本."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:66
+msgid "接口代码资产不能直接更换."
+msgstr "接口代码资产不能直接更换."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:58
+msgid "接口代码资产由类别自动关联,不能指定其他资产."
+msgstr "接口代码资产由类别自动关联,不能指定其他资产."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_equipment_category__adapter_code
+msgid "接口执行方式"
+msgstr "接口执行方式"
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "描述厂家接口及文档版本、报文、接受条件和完成位置如何处理"
+msgstr "描述厂家接口及文档版本、报文、接受条件和完成位置如何处理"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:114
+msgid "无法确定当前作业仓库,不能回写库存目的库位."
+msgstr "无法确定当前作业仓库,不能回写库存目的库位."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields.selection,name:blue_wcs_protocol.selection_wcs_equipment_category__protocol_callback_mode_0
+msgid "旧版兼容,不附加 Token"
+msgstr "旧版兼容,不附加 Token"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields.selection,name:blue_wcs_protocol.selection_wcs_equipment_category__protocol_callback_mode_0
+msgid "根据回调凭据自动选择"
+msgstr "根据回调凭据自动选择"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields.selection,name:blue_wcs_protocol.selection_wcs_equipment_category__protocol_auth_mode_0
+msgid "根据连接凭据自动选择"
+msgstr "根据连接凭据自动选择"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:233
+msgid "此任务当前不接受新的完成回报."
+msgstr "此任务当前不接受新的完成回报."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:106
+msgid "此任务必须通过固定版本的设备协议回调完成,不能使用普通设备回执."
+msgstr "此任务必须通过固定版本的设备协议回调完成,不能使用普通设备回执."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:244
+msgid "此任务或类别未允许包裹子位置回写."
+msgstr "此任务或类别未允许包裹子位置回写."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:67
+msgid "每个设备试算需要 name、input 和 expected_result."
+msgstr "每个设备试算需要 name、input 和 expected_result."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:142
+msgid "目的库区必须属于当前公司."
+msgstr "目的库区必须属于当前公司."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:72
+msgid "类别存在未结束设备任务,请先完成或核对后再修改连接及回写范围."
+msgstr "类别存在未结束设备任务,请先完成或核对后再修改连接及回写范围."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:145
+msgid "计划还有后续固定设备程序,请先核对新落点与后续路线,不能自动改派."
+msgstr "计划还有后续固定设备程序,请先核对新落点与后续路线,不能自动改派."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:130
+msgid "认证信息请使用专用密钥字段,不能放入发送给 AI 的业务参数."
+msgstr "认证信息请使用专用密钥字段,不能放入发送给 AI 的业务参数."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_request_view_form
+msgid "设备协议与实际位置"
+msgstr "设备协议与实际位置"
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.blue_config_profile_view_form
+msgid "设备协议处理 HTTP / JSON 下发、响应和最终完成回调. 连接参数由人工维护, 代码决定子位置或库存目的库位映射, 固定服务复核后执行."
+msgstr "设备协议处理 HTTP / JSON 下发、响应和最终完成回调. 连接参数由人工维护, 代码决定子位置或库存目的库位映射, 固定服务复核后执行."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:25
+msgid "设备协议资产不能更换所属类别."
+msgstr "设备协议资产不能更换所属类别."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:20
+msgid "设备协议资产只能从设备类别创建."
+msgstr "设备协议资产只能从设备类别创建."
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_event__protocol_report
+msgid "设备原始回报"
+msgstr "设备原始回报"
+
+#. module: blue_wcs_protocol
+#: model:ir.model.fields,field_description:blue_wcs_protocol.field_wcs_request__protocol_reported_point
+msgid "设备回报点位"
+msgstr "设备回报点位"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment.py:23
+msgid "设备存在未结束协议任务,不能更换类别、编码或停用."
+msgstr "设备存在未结束协议任务,不能更换类别、编码或停用."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:60
+msgid "设备报文试算必须是有效 JSON."
+msgstr "设备报文试算必须是有效 JSON."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:90
+msgid "设备类别已有协议版本,请保留历史记录."
+msgstr "设备类别已有协议版本,请保留历史记录."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:90
+msgid "设备类别或协议已改变,请先核对固定任务."
+msgstr "设备类别或协议已改变,请先核对固定任务."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:74
+msgid "设备试算必须覆盖下发、响应及完成回调三个阶段."
+msgstr "设备试算必须覆盖下发、响应及完成回调三个阶段."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "试算"
+msgstr "试算"
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "试算与验证"
+msgstr "试算与验证"
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:149
+msgid "请人工填写 HTTP(S) 设备地址及任务接口路径."
+msgstr "请人工填写 HTTP(S) 设备地址及任务接口路径."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:32
+msgid "请从设备类别创建设备协议资产."
+msgstr "请从设备类别创建设备协议资产."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:157
+msgid "请先验证并发布与当前类别设置一致的设备协议."
+msgstr "请先验证并发布与当前类别设置一致的设备协议."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/blue_config_profile.py:62
+msgid "请提供 3 至 20 个报文试算,覆盖下发、响应及回调."
+msgstr "请提供 3 至 20 个报文试算,覆盖下发、响应及回调."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:134
+msgid "请输入不含凭据和查询参数的 HTTP(S) 设备地址."
+msgstr "请输入不含凭据和查询参数的 HTTP(S) 设备地址."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_equipment_category.py:164
+msgid "请选择可编辑 HTTP 接口."
+msgstr "请选择可编辑 HTTP 接口."
+
+#. module: blue_wcs_protocol
+#: code:addons/blue_wcs_protocol/models/wcs_request.py:158
+msgid "部分数量或货物已变化,不能将整条库存明细改到回报库位."
+msgstr "部分数量或货物已变化,不能将整条库存明细改到回报库位."
+
+#. module: blue_wcs_protocol
+#: model_terms:ir.ui.view,arch_db:blue_wcs_protocol.wcs_equipment_category_view_form
+msgid "需求"
+msgstr "需求"

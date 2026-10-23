@@ -1,0 +1,101 @@
+# Translation of Odoo Server.
+# Chinese translation for muk_web_utils.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/webclient/settings/form_label_addon.xml:0
+msgid "Add-on"
+msgstr "应用模块"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/views/fields/module_link/module_link.js:0
+msgid "Apps store URL override"
+msgstr "应用商店 URL 覆盖"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/core/block_progress/block_progress_ui.xml:0
+msgid "Batch"
+msgstr "批处理"
+
+#. module: muk_web_utils
+#: model:ir.model,name:muk_web_utils.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
+
+#. module: muk_web_utils
+#: model_terms:ir.ui.view,arch_db:muk_web_utils.view_res_config_settings_form
+msgid "Disable Quick Create"
+msgstr "禁用快速创建"
+
+#. module: muk_web_utils
+#: model:ir.model.fields,field_description:muk_web_utils.field_res_config_settings__disable_many2one_quick_create
+msgid "Disable Quick Create for Many2one Fields"
+msgstr "为多对一字段禁用快速创建"
+
+#. module: muk_web_utils
+#: model_terms:ir.ui.view,arch_db:muk_web_utils.view_res_config_settings_form
+msgid "Disable the Quick Create Feature for Many2one fields"
+msgstr "为多对一字段禁用快速创建功能"
+
+#. module: muk_web_utils
+#: model:ir.model.fields,field_description:muk_web_utils.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/core/block_progress/block_progress_ui.xml:0
+msgid "Estimated time left:"
+msgstr "预计剩余时间："
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/views/fields/module_link/module_link.xml:0
+msgid "Get this add-on from the Odoo Apps store"
+msgstr "从 Odoo 应用商店获取此模块"
+
+#. module: muk_web_utils
+#: model:ir.model,name:muk_web_utils.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP 路由"
+
+#. module: muk_web_utils
+#: model:ir.model.fields,field_description:muk_web_utils.field_res_config_settings__id
+msgid "ID"
+msgstr "ID"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/views/fields/module_link/module_link.js:0
+msgid "Module Link"
+msgstr "模块链接"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/webclient/actions/debug_items.js:0
+msgid "Reports"
+msgstr "报表"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/core/block_progress/block_progress_ui.xml:0
+msgid "minutes"
+msgstr "分钟"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/core/block_progress/block_progress_ui.xml:0
+msgid "out of"
+msgstr "/"
+
+#. module: muk_web_utils
+#: code:addons/muk_web_utils/static/src/core/block_progress/block_progress_ui.xml:0
+msgid "seconds"
+msgstr "秒"

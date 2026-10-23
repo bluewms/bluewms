@@ -1,0 +1,83 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_stock_rules.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_stock_rules
+#: code:addons/blue_stock_rules/models/stock_quant.py:77
+msgid "产品 %(product)s 在库位 %(location)s 的库存将变为 %(quantity)s, 批次 %(lot)s. 此产品和位置未配置负库存例外, 本次操作已阻止."
+msgstr "产品 %(product)s 在库位 %(location)s 的库存将变为 %(quantity)s, 批次 %(lot)s. 此产品和位置未配置负库存例外, 本次操作已阻止."
+
+#. module: blue_stock_rules
+#: code:addons/blue_stock_rules/models/product.py:13
+msgid "仅库存管理员可以修改负库存例外配置."
+msgstr "仅库存管理员可以修改负库存例外配置."
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,help:blue_stock_rules.field_stock_location__allow_negative_stock
+msgid "允许此位置的库存产品出现负库存。"
+msgstr "允许此位置的库存产品出现负库存。"
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,help:blue_stock_rules.field_product_category__allow_negative_stock
+msgid "允许此类别直接关联的库存产品出现负库存，不自动继承到子类别。"
+msgstr "允许此类别直接关联的库存产品出现负库存，不自动继承到子类别。"
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,field_description:blue_stock_rules.field_product_category__allow_negative_stock
+#: model:ir.model.fields,field_description:blue_stock_rules.field_product_template__allow_negative_stock
+#: model:ir.model.fields,field_description:blue_stock_rules.field_stock_location__allow_negative_stock
+msgid "允许负库存"
+msgstr "允许负库存"
+
+#. module: blue_stock_rules
+#: code:addons/blue_stock_rules/models/stock_quant.py:65
+msgid "冻结库位中的库存不能删除."
+msgstr "冻结库位中的库存不能删除."
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,help:blue_stock_rules.field_stock_location__is_locking
+msgid "冻结此位置及下级位置的库存进出和新增预留；可以释放已有预留或取消作业。"
+msgstr "冻结此位置及下级位置的库存进出和新增预留；可以释放已有预留或取消作业。"
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,field_description:blue_stock_rules.field_stock_location__blue_policy_blocked
+msgid "受库位规则限制"
+msgstr "受库位规则限制"
+
+#. module: blue_stock_rules
+#: code:addons/blue_stock_rules/models/stock_quant.py:24
+msgid "库位 %(location)s 已冻结, 本次库存变更已阻止."
+msgstr "库位 %(location)s 已冻结, 本次库存变更已阻止."
+
+#. module: blue_stock_rules
+#: code:addons/blue_stock_rules/models/stock_quant.py:30
+msgid "库位 %(location)s 禁止入库, 本次库存增加已阻止."
+msgstr "库位 %(location)s 禁止入库, 本次库存增加已阻止."
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,field_description:blue_stock_rules.field_stock_location__block_stock_entrance
+msgid "禁止入库"
+msgstr "禁止入库"
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,help:blue_stock_rules.field_stock_location__block_stock_entrance
+msgid "阻止向此位置及下级位置增加库存；允许将现有库存移出。"
+msgstr "阻止向此位置及下级位置增加库存；允许将现有库存移出。"
+
+#. module: blue_stock_rules
+#: model:ir.model.fields,help:blue_stock_rules.field_product_template__allow_negative_stock
+msgid "默认禁止库存产品在内部／中转位置出现负库存。只有明确允许的产品、类别或位置可以例外。"
+msgstr "默认禁止库存产品在内部／中转位置出现负库存。只有明确允许的产品、类别或位置可以例外。"

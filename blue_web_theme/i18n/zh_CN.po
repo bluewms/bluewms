@@ -1,0 +1,54 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_web_theme.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_web_theme
+#: model:ir.ui.menu,name:blue_web_theme.menu_product_root
+#: model:ir.ui.menu,name:blue_web_theme.stock.menu_product_variant_config_stock
+msgid "产品"
+msgstr "产品"
+
+#. module: blue_web_theme
+#: model:ir.ui.menu,name:blue_web_theme.menu_product_variants
+msgid "产品变体"
+msgstr "产品变体"
+
+#. module: blue_web_theme
+#: model:ir.ui.menu,name:blue_web_theme.menu_location_root
+#: model:ir.ui.menu,name:blue_web_theme.stock.menu_action_location_form
+msgid "位置"
+msgstr "位置"
+
+#. module: blue_web_theme
+#: model:ir.ui.menu,name:blue_web_theme.menu_package_root
+#: model:ir.ui.menu,name:blue_web_theme.stock.menu_package
+msgid "包裹"
+msgstr "包裹"
+
+#. module: blue_web_theme
+#: model:ir.ui.menu,name:blue_web_theme.stock_location_coordinate_menu
+msgid "库位容量"
+msgstr "库位容量"
+
+#. module: blue_web_theme
+#: model:ir.ui.menu,name:blue_web_theme.stock.menu_action_production_lot_form
+msgid "批次/序列号码"
+msgstr "批次/序列号码"
+
+#. module: blue_web_theme
+#: model_terms:ir.ui.view,arch_db:blue_web_theme.blue_zx_product_template_search_form_view_stock
+msgid "类别"
+msgstr "类别"

@@ -1,0 +1,703 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_erp_interface.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "AI 生成 / 修改"
+msgstr "AI 生成 / 修改"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_connection__app_key
+msgid "App Key / Token (appId)"
+msgstr "App Key / 令牌 (appId)"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_connection__app_secret
+msgid "App Secret (appSecret)"
+msgstr "App 密钥 (appSecret)"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_connection__auth_mode_0
+msgid "Bearer Token"
+msgstr "Bearer 令牌"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,help:blue_erp_interface.field_blue_erp_interface__inbound_lines_key
+msgid "ERP JSON 对象中用于提供 candidates 的顶层数组字段. 其他单头字段由代码解析."
+msgstr "ERP JSON 对象中用于提供 candidates 的顶层数组字段. 其他单头字段由代码解析."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_event.py:41
+msgid "ERP 事件快照不可修改."
+msgstr "ERP 事件快照不可修改."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_event.py:46
+msgid "ERP 事件须保留追溯."
+msgstr "ERP 事件须保留追溯."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:107
+msgid "ERP 仍有关联单据未结束,请先处理后修改配置."
+msgstr "ERP 仍有关联单据未结束,请先处理后修改配置."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_connection.py:44
+msgid "ERP 仍有关联单据未结束,请先处理后再修改连接."
+msgstr "ERP 仍有关联单据未结束,请先处理后再修改连接."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_picking.py:42
+msgid "ERP 公司及作业类型关联已变化."
+msgstr "ERP 公司及作业类型关联已变化."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_document__number
+msgid "ERP 单号"
+msgstr "ERP 单号"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_document__external_id
+msgid "ERP 单据 ID"
+msgstr "ERP 单据 ID"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_picking.py:19
+msgid "ERP 单据关联由接口生成."
+msgstr "ERP 单据关联由接口生成."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:153
+msgid "ERP 单据内容已变化,请人工核对后处理."
+msgstr "ERP 单据内容已变化,请人工核对后处理."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.stock_picking_view_form
+msgid "ERP 同步"
+msgstr "ERP 同步"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_picking.py:54
+msgid "ERP 商品及行关联不一致."
+msgstr "ERP 商品及行关联不一致."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:139
+msgid "ERP 报文必须包含配置的明细数组."
+msgstr "ERP 报文必须包含配置的明细数组."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:34
+msgid "ERP 接口、资产公司及合同必须一致."
+msgstr "ERP 接口、资产公司及合同必须一致."
+
+#. module: blue_erp_interface
+#: model:ir.ui.menu,name:blue_erp_interface.menu_erp_root
+msgid "ERP 接口管理"
+msgstr "ERP 接口管理"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "ERP 操作"
+msgstr "ERP 操作"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_interface__inbound_lines_key
+msgid "ERP 明细数组字段"
+msgstr "ERP 明细数组字段"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_connection__base_url
+msgid "ERP 服务地址"
+msgstr "ERP 服务地址"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_connection.py:31
+msgid "ERP 服务地址只能包含 HTTP(S) 协议、主机和端口."
+msgstr "ERP 服务地址只能包含 HTTP(S) 协议、主机和端口."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_picking.py:24
+msgid "ERP 来源关联不能直接修改."
+msgstr "ERP 来源关联不能直接修改."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_document.py:34
+msgid "ERP 来源单据须保留追溯."
+msgstr "ERP 来源单据须保留追溯."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_stock_move__blue_erp_line_id
+msgid "ERP 行 ID"
+msgstr "ERP 行 ID"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_move.py:21
+msgid "ERP 行关联不能直接修改."
+msgstr "ERP 行关联不能直接修改."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_move.py:16
+msgid "ERP 行关联由接口生成."
+msgstr "ERP 行关联由接口生成."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:58
+msgid "ERP 试算必须是 JSON 数组."
+msgstr "ERP 试算必须是 JSON 数组."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:20
+msgid "ERP 资产只能从接口页面创建."
+msgstr "ERP 资产只能从接口页面创建."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__external_number
+msgid "ERP 返回单号"
+msgstr "ERP 返回单号"
+
+#. module: blue_erp_interface
+#: model:ir.actions.act_window,name:blue_erp_interface.action_erp_connections
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_list
+msgid "ERP 连接"
+msgstr "ERP 连接"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_delivery.py:61
+msgid "ERP 连接或批准范围已改变."
+msgstr "ERP 连接或批准范围已改变."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:25
+msgid "不能更换 ERP 资产所属接口."
+msgstr "不能更换 ERP 资产所属接口."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_operation.py:42
+msgid "不能更换操作所属接口."
+msgstr "不能更换操作所属接口."
+
+#. module: blue_erp_interface
+#: model:ir.actions.act_window,name:blue_erp_interface.action_erp_interfaces
+msgid "业务接口"
+msgstr "业务接口"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "业务范围"
+msgstr "业务范围"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_event__event_key
+msgid "事件 ID"
+msgstr "事件 ID"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__reconciliation_note
+msgid "人工核对说明"
+msgstr "人工核对说明"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,help:blue_erp_interface.field_blue_erp_interface__inventory_location_ids
+msgid "仅同步所选内部库位,不自动包含子库位. 同公司同库位只配置一个启用接口."
+msgstr "仅同步所选内部库位,不自动包含子库位. 同公司同库位只配置一个启用接口."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/guard.py:13
+msgid "仅库存管理员可以管理 ERP 接口."
+msgstr "仅库存管理员可以管理 ERP 接口."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_event.py:91
+msgid "仅未生成外部操作的失败事件可重新准备. 已发送操作请逐步核对."
+msgstr "仅未生成外部操作的失败事件可重新准备. 已发送操作请逐步核对."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_connection.py:41
+msgid "仅系统管理员可以修改 ERP 连接."
+msgstr "仅系统管理员可以修改 ERP 连接."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "从正式版本新建草稿"
+msgstr "从正式版本新建草稿"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_event.py:74
+msgid "代码引用了未批准的 ERP 操作."
+msgstr "代码引用了未批准的 ERP 操作."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:73
+msgid "代码引用了未配置的 ERP 操作."
+msgstr "代码引用了未配置的 ERP 操作."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "代码版本"
+msgstr "代码版本"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:47
+msgid "代码资产由接口自动创建."
+msgstr "代码资产由接口自动创建."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:84
+msgid "作业类型须与接口类别相符,并配置来源与目的位置."
+msgstr "作业类型须与接口类别相符,并配置来源与目的位置."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "保存后先试算,人工发布生效. 库存单验证完成后按实际数量反馈;外部操作由同步队列处理."
+msgstr "保存后先试算,人工发布生效. 库存单验证完成后按实际数量反馈;外部操作由同步队列处理."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_interface__kind_0
+msgid "入库"
+msgstr "入库"
+
+#. module: blue_erp_interface
+#: model:ir.actions.act_window,name:blue_erp_interface.action_erp_documents
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_list
+msgid "关联单据"
+msgstr "关联单据"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:91
+msgid "内部位置须属于作业仓库."
+msgstr "内部位置须属于作业仓库."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_interface__kind_0
+msgid "内部调拨"
+msgstr "内部调拨"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__body
+msgid "准确发送报文"
+msgstr "准确发送报文"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_event__input_snapshot
+msgid "准确输入快照"
+msgstr "准确输入快照"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_interface__kind_0
+msgid "出库"
+msgstr "出库"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:92
+msgid "历史版本的接口配置不同,请先核对."
+msgstr "历史版本的接口配置不同,请先核对."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "发布历史"
+msgstr "发布历史"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "发布后新单据使用本版代码,已有单据和事件保持原版本."
+msgstr "发布后新单据使用本版代码,已有单据和事件保持原版本."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "发布生效"
+msgstr "发布生效"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_delivery__state_0
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_event__state_0
+msgid "发送中"
+msgstr "发送中"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_delivery_view_form
+msgid "发送报文"
+msgstr "发送报文"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "可编辑代码"
+msgstr "可编辑代码"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:99
+msgid "同一库位只能启用一个盘点同步接口."
+msgstr "同一库位只能启用一个盘点同步接口."
+
+#. module: blue_erp_interface
+#: model:ir.actions.act_window,name:blue_erp_interface.action_erp_events
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_list
+msgid "同步记录"
+msgstr "同步记录"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "回滚上一版"
+msgstr "回滚上一版"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__path
+msgid "固定请求路径"
+msgstr "固定请求路径"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_delivery_view_form
+msgid "处理历史"
+msgstr "处理历史"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__result
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_event__result
+msgid "处理结果"
+msgstr "处理结果"
+
+#. module: blue_erp_interface
+#: model:ir.actions.act_window,name:blue_erp_interface.action_erp_deliveries
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_list
+msgid "外部操作"
+msgstr "外部操作"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_delivery.py:41
+msgid "外部操作的请求快照不可修改."
+msgstr "外部操作的请求快照不可修改."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_delivery.py:48
+msgid "外部操作记录须保留."
+msgstr "外部操作记录须保留."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_event__state_0
+msgid "失败"
+msgstr "失败"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_connection.py:47
+msgid "存在未结束 ERP 事件,请先处理后再更改连接."
+msgstr "存在未结束 ERP 事件,请先处理后再更改连接."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:109
+msgid "存在未结束同步记录,请先处理后修改接口配置."
+msgstr "存在未结束同步记录,请先处理后修改接口配置."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_picking.py:48
+msgid "实际作业位置超出 ERP 接口批准范围."
+msgstr "实际作业位置超出 ERP 接口批准范围."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_picking.py:56
+msgid "实际批次与 ERP 指定批次不一致."
+msgstr "实际批次与 ERP 指定批次不一致."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "审计记录"
+msgstr "审计记录"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:70
+msgid "已有历史的接口请归档保留."
+msgstr "已有历史的接口请归档保留."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:65
+msgid "已有发布历史,请新建接口以更改公司或类别."
+msgstr "已有发布历史,请新建接口以更改公司或类别."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_delivery_view_form
+msgid "已核实 ERP 处理成功"
+msgstr "已核实 ERP 处理成功"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_delivery_view_form
+msgid "已核实未处理,重新排队"
+msgstr "已核实未处理,重新排队"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_connection.py:35
+msgid "建单执行用户必须有效,具有本公司权限及库存权限."
+msgstr "建单执行用户必须有效,具有本公司权限及库存权限."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_document.py:55
+msgid "往来单位编码不存在或不唯一."
+msgstr "往来单位编码不存在或不唯一."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_delivery__state_0
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_event__state_0
+msgid "待发送"
+msgstr "待发送"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_delivery__state_0
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_event__state_0
+msgid "待核对"
+msgstr "待核对"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "恢复上一正式版本,不撤销已完成的库存或 ERP 操作."
+msgstr "恢复上一正式版本,不撤销已完成的库存或 ERP 操作."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_delivery__state_0
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_event__state_0
+msgid "成功"
+msgstr "成功"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_document.py:67
+msgid "批次不存在或不唯一."
+msgstr "批次不存在或不唯一."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:59
+msgid "接口代码资产不能直接更换."
+msgstr "接口代码资产不能直接更换."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:87
+msgid "接口位置必须有效且属于接口公司或共享位置."
+msgstr "接口位置必须有效且属于接口公司或共享位置."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_interface__name
+msgid "接口名称"
+msgstr "接口名称"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_interface__kind
+msgid "接口类别"
+msgstr "接口类别"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_event.py:69
+msgid "接口连接或业务范围已变化,事件尚未发送."
+msgstr "接口连接或业务范围已变化,事件尚未发送."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_interface__inbound_token
+msgid "接收凭据"
+msgstr "接收凭据"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__operation
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_operation__code
+msgid "操作代码"
+msgstr "操作代码"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_operation.py:31
+msgid "操作代码使用小写字母和下划线,路径须为本服务内的相对路径."
+msgstr "操作代码使用小写字母和下划线,路径须为本服务内的相对路径."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__history
+msgid "操作历史"
+msgstr "操作历史"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_operation__name
+msgid "操作名称"
+msgstr "操作名称"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_delivery__state_0
+msgid "明确失败"
+msgstr "明确失败"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_document.py:30
+msgid "来源单据及固定版本不可修改."
+msgstr "来源单据及固定版本不可修改."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_document__normalized
+msgid "标准化原始单据"
+msgstr "标准化原始单据"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__sequence
+msgid "步骤"
+msgstr "步骤"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_connection__auth_mode_0
+msgid "由代码指定请求头"
+msgstr "由代码指定请求头"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_interface__inventory_location_ids
+msgid "盘点同步库位"
+msgstr "盘点同步库位"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields.selection,name:blue_erp_interface.selection_blue_erp_interface__kind_0
+msgid "盘点差异"
+msgstr "盘点差异"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:136
+msgid "盘点接口只发送 WMS 已确认的差异."
+msgstr "盘点接口只发送 WMS 已确认的差异."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:95
+msgid "盘点接口请选择当前公司的内部库位."
+msgstr "盘点接口请选择当前公司的内部库位."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_delivery_view_form
+msgid "确认 ERP 未处理此请求后重新排队,保留相同幂等键."
+msgstr "确认 ERP 未处理此请求后重新排队,保留相同幂等键."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_delivery_view_form
+msgid "确认已向 ERP 核实成功,本步骤将不再发送."
+msgstr "确认已向 ERP 核实成功,本步骤将不再发送."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/stock_picking.py:61
+msgid "累计完成数量超过 ERP 计划量."
+msgstr "累计完成数量超过 ERP 计划量."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "试算"
+msgstr "试算"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "试算与验证"
+msgstr "试算与验证"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:67
+msgid "试算类别须与当前 ERP 接口一致."
+msgstr "试算类别须与当前 ERP 接口一致."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:65
+msgid "试算需要 name、input、expected_result."
+msgstr "试算需要 name、input、expected_result."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:77
+msgid "试算须覆盖接收或盘点、完成及响应的适用阶段."
+msgstr "试算须覆盖接收或盘点、完成及响应的适用阶段."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "说明 ERP 报文字段、单据生成方式、部分完成反馈及成功判断规则"
+msgstr "说明 ERP 报文字段、单据生成方式、部分完成反馈及成功判断规则"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:32
+msgid "请从 ERP 接口页面创建资产."
+msgstr "请从 ERP 接口页面创建资产."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:123
+msgid "请先启用连接及接口,并验证发布接口代码."
+msgstr "请先启用连接及接口,并验证发布接口代码."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_delivery.py:83
+msgid "请先填写核对说明,确认 ERP 已处理此待核对操作."
+msgstr "请先填写核对说明,确认 ERP 已处理此待核对操作."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_delivery.py:91
+msgid "请先确认 ERP 未处理,填写核对说明后重新排队."
+msgstr "请先确认 ERP 未处理,填写核对说明后重新排队."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:85
+msgid "请先配置允许调用的 ERP 操作."
+msgstr "请先配置允许调用的 ERP 操作."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_config_profile.py:60
+msgid "请提供 3 至 20 个准确试算."
+msgstr "请提供 3 至 20 个准确试算."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:80
+msgid "请提供有效的明细数组字段."
+msgstr "请提供有效的明细数组字段."
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_delivery__headers
+msgid "请求头凭据引用"
+msgstr "请求头凭据引用"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_operation__path
+msgid "请求路径"
+msgstr "请求路径"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/guard.py:8
+msgid "请通过 ERP 接口业务流程操作记录."
+msgstr "请通过 ERP 接口业务流程操作记录."
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_delivery.py:43
+msgid "请通过 ERP 核对按钮操作发送状态."
+msgstr "请通过 ERP 核对按钮操作发送状态."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_connection_view_form
+msgid "连接与权限"
+msgstr "连接与权限"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_connection__name
+msgid "连接名称"
+msgstr "连接名称"
+
+#. module: blue_erp_interface
+#: code:addons/blue_erp_interface/models/blue_erp_interface.py:125
+msgid "连接或接口配置已变化,请重新验证并发布代码."
+msgstr "连接或接口配置已变化,请重新验证并发布代码."
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_event_view_form
+msgid "重新准备"
+msgstr "重新准备"
+
+#. module: blue_erp_interface
+#: model_terms:ir.ui.view,arch_db:blue_erp_interface.blue_erp_interface_view_form
+msgid "需求"
+msgstr "需求"
+
+#. module: blue_erp_interface
+#: model:ir.model.fields,field_description:blue_erp_interface.field_blue_erp_connection__auth_mode
+msgid "默认下发认证"
+msgstr "默认下发认证"

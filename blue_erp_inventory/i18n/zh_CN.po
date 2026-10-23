@@ -1,0 +1,31 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_erp_inventory.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_erp_inventory
+#: model_terms:ir.ui.view,arch_db:blue_erp_inventory.stock_inventory_view_form
+msgid "ERP 同步"
+msgstr "ERP 同步"
+
+#. module: blue_erp_inventory
+#: code:addons/blue_erp_inventory/models/blue_erp_event.py:17
+msgid "盘点同步关联只能由盘点流程建立."
+msgstr "盘点同步关联只能由盘点流程建立."
+
+#. module: blue_erp_inventory
+#: code:addons/blue_erp_inventory/models/blue_erp_event.py:22
+msgid "盘点同步的公司或状态不一致."
+msgstr "盘点同步的公司或状态不一致."

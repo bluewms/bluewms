@@ -1,0 +1,1039 @@
+# Translation of Odoo Server.
+# Chinese translation for blue_wcs_base.
+# Reuses BlueWMS19 translations and completes the installed catalog.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 00:00+0800\n"
+"PO-Revision-Date: 2026-10-23 00:00+0800\n"
+"Last-Translator: BlueWMS\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:303
+msgid "A sent plan requires device reconciliation; do not release its quantities."
+msgstr "已下发的计划需要设备结果对账，请勿释放其数量。"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_stock_location__agv_map_point
+msgid "AGV地图坐标点"
+msgstr "AGV地图坐标点"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:190
+msgid "Actual WCS goods are no longer confirmed."
+msgstr "WCS 实际货物不再处于已确认状态。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_reconciliation.py:36
+msgid "An unsent failure cannot be accepted."
+msgstr "未下发的失败不能被接受。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_reconciliation.py:32
+msgid "An unsent failure cannot be completed."
+msgstr "未下发的失败不能被完成。"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__api_key
+msgid "App Key / Bearer Token"
+msgstr "App Key / Bearer 令牌"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__app_key
+msgid "App Key / Token (appId)"
+msgstr "App Key / 令牌 (appId)"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__app_secret
+msgid "App Secret (appSecret)"
+msgstr "App 密钥 (appSecret)"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/stock_picking.py:31
+msgid "Cancel or reconcile WCS tasks before cancelling the stock operation."
+msgstr "取消库存作业前，请先取消或对账 WCS 任务。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:223
+msgid "Carrier contents changed after planning; reconcile before dispatch."
+msgstr "计划生成后承载物内容已变更，下发前请先对账。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:233
+msgid "Carrier stock contents changed after planning; reconcile before dispatch."
+msgstr "计划生成后承载物库存内容已变更，下发前请先对账。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/stock_picking.py:43
+msgid "Complete all WCS plan steps before validating inventory."
+msgstr "验证库存前请完成所有 WCS 计划步骤。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:182
+msgid "Complete the predecessor before dispatch."
+msgstr "下发前请先完成前置任务。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_equipment.py:76
+msgid "Configure both HIK App Key and App Secret."
+msgstr "请同时配置 HIK App Key 和 App Secret。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:168
+msgid "Configure device callback authentication before dispatch."
+msgstr "下发前请配置设备回调认证。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_plan.py:28
+msgid "Create plans through the WCS planning service."
+msgstr "请通过 WCS 计划服务创建计划。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:211
+msgid "Destination capacity or storage rules changed."
+msgstr "目标位置容量或存储规则已变更。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_event.py:27
+msgid "Device events are immutable."
+msgstr "设备事件不可修改。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:180
+msgid "Device no longer supports area position mappings."
+msgstr "设备不再支持库区位置映射。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:178
+msgid "Device no longer supports repeated goods programs."
+msgstr "设备不再支持重复货物程序。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:176
+msgid "Device no longer supports these loose goods."
+msgstr "设备不再支持这些散料。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_reconciliation.py:43
+msgid "Device outcome %(outcome)s verified: %(evidence)s"
+msgstr "设备结果 %(outcome)s 已核验：%(evidence)s"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:165
+msgid "Device protocol changed; reconcile the fixed task before sending."
+msgstr "设备协议已变更，下发前请对账固定任务。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/stock_picking.py:36
+msgid "Do not cancel inventory while WCS may still move the carrier."
+msgstr "WCS 仍可能移动承载物时，请勿取消库存作业。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_reconciliation.py:40
+msgid "Do not resend a task known to be accepted or running."
+msgstr "请勿重复下发已接受或执行中的任务。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_route.py:36
+msgid "Early release needs an explicitly approved event point."
+msgstr "提前释放需要显式审批的事件节点。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:244
+msgid "Event ID was reused with different content."
+msgstr "事件 ID 已被不同内容复用。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_event.py:23
+msgid "Events require the authenticated device workflow."
+msgstr "事件需要走已认证的设备工作流。"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_equipment_category__adapter_code_0
+msgid "HikRobot"
+msgstr "HikRobot"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__ip_post
+msgid "IP地址"
+msgstr "IP地址"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_route.py:38
+msgid "Inbound paired tasks cannot use an outbound operation type."
+msgstr "入库成对任务不能使用出库作业类型。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:239
+msgid "Invalid device event."
+msgstr "无效的设备事件。"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_equipment_category__adapter_code_0
+msgid "JSON接口"
+msgstr "JSON接口"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__supports_location_scope
+msgid "JSON网关支持库区位置映射"
+msgstr "JSON网关支持库区位置映射"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__supports_loose_goods
+msgid "JSON网关支持无容器货物"
+msgstr "JSON网关支持无容器货物"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_plan.py:35
+msgid "Keep WCS movement history."
+msgstr "保留 WCS 移动历史。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:133
+msgid "Keep WCS task history."
+msgstr "保留 WCS 任务历史。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_event.py:30
+msgid "Keep device event history."
+msgstr "保留设备事件历史。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_plan_line.py:35
+msgid "Keep planned quantity history."
+msgstr "保留计划数量历史。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:284
+msgid "Managers can simulate only simulated devices."
+msgstr "管理员只能仿真模拟类设备。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_reconciliation.py:24
+msgid "Only inventory managers can reconcile device outcomes."
+msgstr "只有库存管理员才能对账设备结果。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:296
+msgid "Only managers can cancel unsent plans."
+msgstr "只有管理员才能取消未下发的计划。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:290
+msgid "Only managers can reconcile device tasks."
+msgstr "只有管理员才能对账设备任务。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:270
+msgid "Only pending simulated tasks can be accepted."
+msgstr "只有待处理的模拟任务才能被接受。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:107
+msgid "Only ready tasks can be queued for execution."
+msgstr "只有就绪任务才能排队执行。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:170
+msgid "Operation or device is no longer available."
+msgstr "作业或设备不再可用。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_route.py:40
+msgid "Outbound paired tasks cannot use an inbound operation type."
+msgstr "出库成对任务不能使用入库作业类型。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_plan_line.py:27
+msgid "Plan lines can only be created by the planning service."
+msgstr "计划行只能由计划服务创建。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:192
+msgid "Planned goods changed; reconcile this plan."
+msgstr "计划货物已变更，请对账此计划。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_plan_line.py:32
+msgid "Planned quantities are immutable."
+msgstr "计划数量不可修改。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_reconciliation.py:26
+msgid "Record 20 to 4096 characters of device/physical verification evidence."
+msgstr "请记录 20 到 4096 个字符的设备/实物核验证据。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:206
+msgid "Reserved stock changed before device dispatch."
+msgstr "设备下发前预留库存已变更。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_route.py:34
+msgid "Same-goods relay requires the first leg to complete."
+msgstr "同货接力要求先完成第一程。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_route.py:30
+msgid "Source and destination must differ."
+msgstr "源位置和目标位置不能相同。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:194
+msgid "Stock locations are blocked."
+msgstr "库存位置已被封锁。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:126
+msgid "Task instructions are immutable."
+msgstr "任务指令不可修改。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_reconciliation.py:29
+msgid "This task does not require device outcome reconciliation."
+msgstr "此任务无需设备结果对账。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:247
+msgid "This task has not been sent."
+msgstr "此任务尚未下发。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_route.py:32
+msgid "Two-task routes need a second device and intermediate point."
+msgstr "双任务路线需要第二台设备和中间点位。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:251
+msgid "Unexpected actual destination; reconcile before completing."
+msgstr "实际目标位置异常，完成前请先对账。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:124
+msgid "Use WCS workflow actions."
+msgstr "请使用 WCS 工作流动作。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_equipment_category.py:39
+msgid "Use a relative device API path starting with one slash."
+msgstr "请使用以单个斜杠开头的相对设备 API 路径。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_equipment.py:74
+msgid "Use an HTTP(S) endpoint without credentials or query parameters."
+msgstr "请使用不带凭据和查询参数的 HTTP(S) 端点。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:119
+msgid "Use the WCS planning service to create tasks."
+msgstr "请通过 WCS 计划服务创建任务。"
+
+#. module: blue_wcs_base
+#: model:ir.ui.menu,name:blue_wcs_base.wcs_menu
+msgid "WCS"
+msgstr "WCS"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_plan.py:32
+msgid "WCS plans are immutable."
+msgstr "WCS 计划不可修改。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/wcs_request.py:173
+msgid "WCS task locations are blocked."
+msgstr "WCS 任务库位已被封锁。"
+
+#. module: blue_wcs_base
+#: code:addons/blue_wcs_base/models/stock_picking.py:23
+#: code:addons/blue_wcs_base/models/wcs_equipment.py:64
+#: model:ir.actions.act_window,name:blue_wcs_base.request_action
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.equipment_form
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_list
+msgid "WCS作业"
+msgstr "WCS作业"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_stock_picking__wsc_request_count
+msgid "WCS作业数量"
+msgstr "WCS作业数量"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_stock_picking__wcs_stage
+msgid "WCS状态"
+msgstr "WCS状态"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_route__intermediate_point
+msgid "交接 / 空载具站点编码"
+msgstr "交接 / 空载具站点编码"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_kanban
+msgid "产品:"
+msgstr "产品:"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.equipment_form
+msgid "产品信息"
+msgstr "产品信息"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,help:blue_wcs_base.field_wcs_equipment__supports_loose_goods
+msgid "仅标准JSON网关经现场确认支持按货物明细搬运后启用. 模拟设备始终支持; 海康仍需要载具."
+msgstr "仅标准JSON网关经现场确认支持按货物明细搬运后启用. 模拟设备始终支持; 海康仍需要载具."
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__is_package_only
+msgid "仅空包裹"
+msgstr "仅空包裹"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__endpoint
+msgid "任务下发 URL"
+msgstr "任务下发 URL"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__submit_path
+msgid "任务接口路径"
+msgstr "任务接口路径"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__task_tmpl
+msgid "任务模板"
+msgstr "任务模板"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__name
+msgid "任务编号"
+msgstr "任务编号"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__priority
+msgid "优先级"
+msgstr "优先级"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__priority_0
+msgid "低"
+msgstr "低"
+
+#. module: blue_wcs_base
+#: model:ir.ui.menu,name:blue_wcs_base.request_menu
+msgid "作业"
+msgstr "作业"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.equipment_kanban
+msgid "作业:"
+msgstr "作业:"
+
+#. module: blue_wcs_base
+#: model:ir.actions.act_window,name:blue_wcs_base.team_action
+#: model:ir.ui.menu,name:blue_wcs_base.team_menu
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.team_form
+msgid "作业团队"
+msgstr "作业团队"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__maintenance_count
+msgid "作业数量"
+msgstr "作业数量"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__picking_type_id
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_search
+msgid "作业类型"
+msgstr "作业类型"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__maintenance_count
+msgid "作业统计"
+msgstr "作业统计"
+
+#. module: blue_wcs_base
+#: model:ir.actions.act_window,name:blue_wcs_base.stage_action
+#: model:ir.ui.menu,name:blue_wcs_base.stage_menu
+msgid "作业阶段"
+msgstr "作业阶段"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__location
+msgid "使用地点"
+msgstr "使用地点"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__partner_ref
+msgid "供应商参考"
+msgstr "供应商参考"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__dependency_point
+msgid "依赖点位"
+msgstr "依赖点位"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.reconciliation_form
+msgid "保存核对结果"
+msgstr "保存核对结果"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.reconciliation_form
+msgid "先在设备系统或现场核对原任务号, 填写依据后更新本地结果."
+msgstr "先在设备系统或现场核对原任务号, 填写依据后更新本地结果."
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__description
+msgid "内部注释"
+msgstr "内部注释"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__payload
+msgid "准确发送报文"
+msgstr "准确发送报文"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__assign_date
+msgid "分配日期"
+msgstr "分配日期"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_list
+msgid "创建时间"
+msgstr "创建时间"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_route__dependency_event_0
+msgid "到达指定点"
+msgstr "到达指定点"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_route__dependency_event_0
+msgid "前段完成"
+msgstr "前段完成"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_kanban
+msgid "包裹:"
+msgstr "包裹:"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_route__mode_0
+msgid "单段搬运"
+msgstr "单段搬运"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,help:blue_wcs_base.field_wcs_equipment_category__app_key
+msgid "厂商 App Key、appId 或已取得的 Token. 填写 appId 不会自动执行获取 Token 请求."
+msgstr "厂商 App Key、appId 或已取得的 Token. 填写 appId 不会自动执行获取 Token 请求."
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,help:blue_wcs_base.field_wcs_equipment_category__app_secret
+msgid "厂商 App Secret 或 appSecret, 与 App Key / appId 配套填写."
+msgstr "厂商 App Secret 或 appSecret, 与 App Key / appId 配套填写."
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_plan_line__source_line_ref
+msgid "原库存明细编号"
+msgstr "原库存明细编号"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "发送中"
+msgstr "发送中"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "发送前取消"
+msgstr "发送前取消"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__last_result
+msgid "发送结果"
+msgstr "发送结果"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.reconciliation_form
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_list
+msgid "取消"
+msgstr "取消"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_list
+msgid "取消所选尚未下发的WCS作业. 已下发作业须先核对设备."
+msgstr "取消所选尚未下发的WCS作业. 已下发作业须先核对设备."
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__dependency_event_0
+msgid "取货"
+msgstr "取货"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__dependency_event_0
+msgid "取货或点位通知"
+msgstr "取货或点位通知"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__goods_mode_0
+msgid "同数据后续程序"
+msgstr "同数据后续程序"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_route__mode_0
+msgid "同货两段接力"
+msgstr "同货两段接力"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_stage__name
+msgid "名称"
+msgstr "名称"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__callback_token
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__callback_token
+msgid "回调凭据"
+msgstr "回调凭据"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_team__name
+msgid "团队名称"
+msgstr "团队名称"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_team__member_ids
+msgid "团队成员"
+msgstr "团队成员"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_plan__snapshot
+msgid "固定路线及策略"
+msgstr "固定路线及策略"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_stock_picking__wcs_stage_0
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__dependency_event_0
+msgid "完成"
+msgstr "完成"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__effective_date
+msgid "实际日期"
+msgstr "实际日期"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_route__dependency_event_0
+msgid "已取货"
+msgstr "已取货"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "已完成"
+msgstr "已完成"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_stage__done
+msgid "已结束"
+msgstr "已结束"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__serial_no
+msgid "序列号"
+msgstr "序列号"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_stage__sequence
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_team__sequence
+msgid "序号"
+msgstr "序号"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "待发送"
+msgstr "待发送"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__cost
+msgid "成本"
+msgstr "成本"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "执行"
+msgstr "执行"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "执行中"
+msgstr "执行中"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "执行记录"
+msgstr "执行记录"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "技术信息"
+msgstr "技术信息"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__dependency_event_0
+msgid "指定点"
+msgstr "指定点"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_route__mode_0
+msgid "放货及空载具回收"
+msgstr "放货及空载具回收"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__product_qty
+msgid "数量"
+msgstr "数量"
+
+#. module: blue_wcs_base
+#: model:ir.ui.menu,name:blue_wcs_base.route_menu
+msgid "旧版线路资料"
+msgstr "旧版线路资料"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.equipment_form
+msgid "旧连接参数"
+msgstr "旧连接参数"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_stage__fold
+msgid "是否折叠"
+msgstr "是否折叠"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_stage__is_in_progres
+msgid "是否进行中"
+msgstr "是否进行中"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__priority_0
+msgid "普通"
+msgstr "普通"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "未发送失败"
+msgstr "未发送失败"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_search
+msgid "未完成"
+msgstr "未完成"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_equipment__adapter_code_0
+msgid "标准 JSON 网关"
+msgstr "标准 JSON 网关"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "核对设备结果"
+msgstr "核对设备结果"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__model
+msgid "模型"
+msgstr "模型"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_equipment__adapter_code_0
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_equipment_category__adapter_code_0
+msgid "模拟设备"
+msgstr "模拟设备"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "模拟设备完成"
+msgstr "模拟设备完成"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "模拟设备接受"
+msgstr "模拟设备接受"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__step
+msgid "步骤"
+msgstr "步骤"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__note
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__note
+msgid "注释"
+msgstr "注释"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_stage__code
+msgid "流程代码"
+msgstr "流程代码"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__api_secret
+msgid "海康 App Secret"
+msgstr "海康 App Secret"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_equipment__adapter_code_0
+msgid "海康国标任务"
+msgstr "海康国标任务"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_kanban
+msgid "源位置:"
+msgstr "源位置:"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,help:blue_wcs_base.field_wcs_equipment__supports_repeated_goods
+msgid "现场确认设备任务程序可重复处理相同货物数据后启用, 不增加库存记账次数."
+msgstr "现场确认设备任务程序可重复处理相同货物数据后启用, 不增加库存记账次数."
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_kanban
+msgid "目的位置:"
+msgstr "目的位置:"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__destination_point
+msgid "目的站点"
+msgstr "目的站点"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_route__destination_point
+msgid "目的站点编码"
+msgstr "目的站点编码"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__supports_repeated_goods
+msgid "真实设备支持同数据多任务"
+msgstr "真实设备支持同数据多任务"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "确认取消尚未下发的作业?"
+msgstr "确认取消尚未下发的作业?"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__role_0
+msgid "空载具供应"
+msgstr "空载具供应"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_route__mode_0
+msgid "空载具供应及搬货"
+msgstr "空载具供应及搬货"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__role_0
+msgid "空载具回收"
+msgstr "空载具回收"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__goods_mode_0
+msgid "空载具配合"
+msgstr "空载具配合"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "等待前段"
+msgstr "等待前段"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__name
+msgid "类别名称"
+msgstr "类别名称"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__priority_0
+msgid "紧急"
+msgstr "紧急"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "结果待核对"
+msgstr "结果待核对"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_plan__name
+msgid "计划编号"
+msgstr "计划编号"
+
+#. module: blue_wcs_base
+#: model:ir.actions.act_window,name:blue_wcs_base.equipment_action
+#: model:ir.ui.menu,name:blue_wcs_base.equipment_menu
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.equipment_form
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_search
+msgid "设备"
+msgstr "设备"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_kanban
+msgid "设备:"
+msgstr "设备:"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__task_type
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__task_type
+msgid "设备任务模板"
+msgstr "设备任务模板"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__name
+msgid "设备名称"
+msgstr "设备名称"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_reconciliation__outcome_0
+msgid "设备已完成且目的地已核对"
+msgstr "设备已完成且目的地已核对"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_reconciliation__outcome_0
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__state_0
+msgid "设备已接受"
+msgstr "设备已接受"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__equipment_count
+msgid "设备数量"
+msgstr "设备数量"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_reconciliation__evidence
+msgid "设备查询结果 / 现场核对依据"
+msgstr "设备查询结果 / 现场核对依据"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_reconciliation__outcome_0
+msgid "设备确认未接受，可按原任务号发送"
+msgstr "设备确认未接受，可按原任务号发送"
+
+#. module: blue_wcs_base
+#: model:ir.actions.act_window,name:blue_wcs_base.category_action
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__category_id
+#: model:ir.ui.menu,name:blue_wcs_base.category_menu
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.category_form
+msgid "设备类别"
+msgstr "设备类别"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__destination_ref
+msgid "设备终点映射来源"
+msgstr "设备终点映射来源"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__destination_scope
+msgid "设备终点是库区"
+msgstr "设备终点是库区"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__source_ref
+msgid "设备起点映射来源"
+msgstr "设备起点映射来源"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__source_scope
+msgid "设备起点是库区"
+msgstr "设备起点是库区"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__request_date
+msgid "请求日期"
+msgstr "请求日期"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__role_0
+msgid "货物搬运"
+msgstr "货物搬运"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__goods_line_ids
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_form
+msgid "货物明细"
+msgstr "货物明细"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__warranty_date
+msgid "质量保证到期日期"
+msgstr "质量保证到期日期"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__source_point
+msgid "起点站点"
+msgstr "起点站点"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_route__source_point
+msgid "起点站点编码"
+msgstr "起点站点编码"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_route__name
+msgid "路线名称"
+msgstr "路线名称"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__carrier_code
+msgid "载具编码"
+msgstr "载具编码"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_stock_picking__wcs_stage_0
+msgid "进行中"
+msgstr "进行中"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.category_form
+msgid "连接参数"
+msgstr "连接参数"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__goods_mode_0
+msgid "连续接力"
+msgstr "连续接力"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_stock_picking__wcs_stage_0
+msgid "部分完成"
+msgstr "部分完成"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_route__dependency_point
+msgid "释放后段的指定点编码"
+msgstr "释放后段的指定点编码"
+
+#. module: blue_wcs_base
+#: model_terms:ir.ui.view,arch_db:blue_wcs_base.request_search
+msgid "阶段"
+msgstr "阶段"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment__color
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_equipment_category__color
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_request__color
+#: model:ir.model.fields,field_description:blue_wcs_base.field_wcs_team__color
+msgid "颜色"
+msgstr "颜色"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__goods_mode_0
+msgid "首个货物程序"
+msgstr "首个货物程序"
+
+#. module: blue_wcs_base
+#: model:ir.model.fields.selection,name:blue_wcs_base.selection_wcs_request__priority_0
+msgid "高"
+msgstr "高"
