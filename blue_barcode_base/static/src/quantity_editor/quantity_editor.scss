@@ -1,0 +1,113 @@
+.o_blue_barcode_editor {
+    display: grid;
+    max-width: 980px;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 0 auto;
+    padding: 24px;
+
+    .o_blue_barcode_editor_product {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+        overflow-wrap: anywhere;
+    }
+
+    .o_blue_barcode_editor_product img {
+        width: 160px;
+        height: 160px;
+        object-fit: contain;
+    }
+
+    .o_blue_barcode_editor_product h2 {
+        font-size: 23px;
+    }
+
+    .o_blue_barcode_editor_display {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 8px 0;
+        padding: 12px;
+        border: 2px solid var(--blue-barcode__accent);
+        border-radius: 6px;
+        background: var(--blue-barcode__paper);
+    }
+
+    .o_blue_barcode_editor_display input {
+        width: 0;
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        color: inherit;
+        background: transparent;
+        outline: none;
+        text-align: right;
+        font-size: 38px;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .o_blue_barcode_keypad {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .o_blue_barcode_keypad button {
+        min-height: 62px;
+        border: 1px solid var(--border-color, #dee2e6);
+        border-radius: 6px;
+        color: inherit;
+        background: var(--blue-barcode__paper);
+        font-size: 25px;
+        font-weight: 600;
+    }
+
+    .o_blue_barcode_keypad .o_blue_barcode_key_function {
+        background: var(--blue-barcode__tint);
+        font-size: 21px;
+    }
+
+    .o_blue_barcode_editor_actions {
+        display: flex;
+        grid-column: 1 / -1;
+        gap: 12px;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .o_blue_barcode_editor_actions button {
+        flex: 1;
+        min-height: 54px;
+        font-size: 20px;
+    }
+
+    @media (max-width: 575px) {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
+
+        .o_blue_barcode_editor_product {
+            flex-direction: row;
+            gap: 12px;
+        }
+
+        .o_blue_barcode_editor_product img {
+            width: 56px;
+            height: 56px;
+        }
+
+        .o_blue_barcode_editor_product h2 {
+            font-size: 19px;
+        }
+
+        .o_blue_barcode_editor_product p {
+            margin: 4px 0 0;
+            font-size: 13px;
+        }
+
+        .o_blue_barcode_keypad button {
+            min-height: 56px;
+        }
+    }
+}

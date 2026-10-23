@@ -1,0 +1,6 @@
+<odoo>
+    <record id="template_barcode" model="blue.scene.template">
+        <field name="name">条码扫描策略 /1</field><field name="hook_code">barcode_policy</field>
+        <field name="contract">barcode_policy/1</field><field name="cloud_managed" eval="True"/>
+    </record>
+</odoo>

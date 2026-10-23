@@ -24,6 +24,10 @@
 | `blue_wcs_base` | 设备、计划／任务、持久发送队列与认证回调 | AGPL-3 |
 | `blue_wcs_extension` | 库存作业接入、/4 行决定与任务编排 | AGPL-3 |
 | `blue_wcs_protocol` | 类别级可编辑 HTTP 协议、AI 草稿、固定版本及受控位置回写 | AGPL-3 |
+| `blue_barcode_base` | 四入口查询、单据/批次分页、持久扫码事件与固定库存动作 | AGPL-3 |
+| `blue_barcode_inventory` | 现有盘库单的实盘累计、总数与扫码会话 | AGPL-3 |
+| `blue_barcode_extension` | 条码 /1、二维码受限解析、AI 资产与固定版本 | AGPL-3 |
+| `blue_barcode_wcs` | 已保存扫描与 WCS 正式入口之间的桥接 | AGPL-3 |
 | `blue_web_theme` | 品牌主菜单和产品界面，与库存基础分开 | LGPL-3 |
 | `muk_*` 等第三方模块 | Web／主题、AI、Skills、MCP 底座，保留上游名称 | 以各模块清单与[第三方记录](third-party/muk-ai-install-2026-10-12.md)为准 |
 
@@ -31,7 +35,9 @@
 
 ## 后续分类
 
-`blue_barcode_base`／`blue_barcode_inventory`／`blue_barcode_extension`、`blue_erp_base`／`blue_erp_<系统>`、库存包裹／盘点和交付资产按需求推进，不能因名称出现在规划中就视为已创建。常规 HTTP 厂家优先使用设备类别协议资产；新增传输形式或系统没有的认证算法再补通用能力。
+条码首版已建立 `blue_barcode_base`（四入口、单据/批次、分页、持久事件）、`blue_barcode_inventory`（盘库实盘桥接）、`blue_barcode_extension`（AI /1 与资产）和 `blue_barcode_wcs`（正式 WCS 入口桥接）,当前仅在隔离库安装验证,见[迁移进度](migrations/barcode-20-progress.md). 主库安装和现场验收单独记录.
+
+客户 ERP 扩展、其他库存包裹和交付资产继续按需求推进,不能因名称出现在规划中就视为已创建. 常规 HTTP 厂家优先使用设备类别协议资产;新增传输形式或系统没有的认证算法再补通用能力.
 
 界面扩展采用 `blue_web_*`；报表、培训、公共调度采用 `blue_report_*`、`blue_training_*`、`blue_system_*`。客户专属 ERP、设备或扫描动作放 `blue_project_*`，共性修复回到标准模块。
 
@@ -40,7 +46,7 @@
 - 库存基础不反向依赖 AI、WCS、条码、品牌界面或客户模块。
 - 库存硬约束与上架策略分别可选安装；AI 不能放宽固定模块的库存保护。
 - 合同不依赖资产／AI；资产依赖合同，AI 依赖资产与 MuK。WCS、条码和 ERP 通过各自桥接接入资产，避免循环依赖。
-- WCS 可以不扫码运行。未来 WCS／条码及条码／盘点桥接同时依赖对应领域，人工盘点不强制安装机器人。
+- WCS 可以不扫码运行。WCS/条码及条码/盘点桥接同时依赖对应领域,人工盘点不强制安装机器人。
 - ERP 连接、主数据和单据处理不以 WCS 为必选；仅设备协同场景增加桥接。
 - 云端 Wiki 和记忆适配合入 `blue_ai_client`，不增加客户本地 `blue_ai_memory` 或示例库式 `blue_ai_skills`。
 

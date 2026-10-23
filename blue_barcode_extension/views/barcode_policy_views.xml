@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_picking_type_form" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.inherit.blue.barcode.ai</field>
+        <field name="model">stock.picking.type</field><field name="inherit_id" ref="blue_barcode_base.view_picking_type_form"/>
+        <field name="arch" type="xml"><page name="blue_barcode" position="inside">
+            <group string="AI 扫描配置" groups="stock.group_stock_manager">
+                <field name="blue_barcode_profile_id"/>
+                <button name="action_blue_barcode_policy" type="object" string="打开 / 新建 AI 扫描配置" class="btn-primary"/>
+                <p>在代码资产中说明二维码字段、扫描顺序和候选选择规则,准确试算后人工发布. 扫描时在本地执行固定版本.</p>
+            </group>
+        </page></field>
+    </record>
+    <record id="view_company_form" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.blue.barcode</field><field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml"><field name="currency_id" position="after">
+            <field name="blue_barcode_profile_id" groups="stock.group_stock_manager"/>
+        </field></field>
+    </record>
+</odoo>

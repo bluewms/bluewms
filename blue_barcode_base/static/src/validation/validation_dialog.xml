@@ -1,0 +1,26 @@
+<templates xml:space="preserve">
+    <t t-name="blue_barcode_base.ValidationDialog">
+        <Dialog title="this.props.review.kind === 'batch' ? '验证批次作业' : '验证作业'" size="'md'">
+            <div class="o_blue_barcode_validation">
+                <h5 t-out="this.props.review.name"/>
+                <p t-if="this.props.review.complete" class="text-success">全部需求已扫描完成，确认验证整单？</p>
+                <t t-else="">
+                    <p>以下明细尚未完成。本次验证处理已扫描数量，剩余数量按作业类型的欠单设置处理。</p>
+                    <div class="o_blue_barcode_validation_lines">
+                        <div t-foreach="this.missing()" t-as="line" t-key="line.id" class="o_blue_barcode_validation_line">
+                            <strong t-out="line.product"/>
+                            <small t-if="this.props.review.kind === 'batch'" t-out="line.picking"/>
+                            <div>已扫 <strong t-out="line.quantity"/> / 需求 <t t-out="line.expected"/> · 剩余 <strong t-out="line.remaining"/> <t t-out="line.uom"/></div>
+                            <small t-out="({ask:'欠单设置：询问，下一步选择是否保留欠单',always:'欠单设置：自动创建欠单',never:'欠单设置：不创建，验证后取消剩余需求'})[line.backorder]"/>
+                        </div>
+                    </div>
+                    <div t-if="this.props.review.kind === 'batch' &amp;&amp; this.props.review.unstarted.length" class="alert alert-info mt-3 mb-0">尚未扫描的单据将按 Odoo 批次流程移出本批次，仍保留原单据：<t t-out="this.props.review.unstarted.join('、')"/></div>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="this.confirm" t-att-disabled="this.state.busy" t-out="this.props.review.complete ? '确认验证' : '按已扫数量验证'"/>
+                <button class="btn btn-secondary" t-on-click="() => this.props.close()">继续扫描</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

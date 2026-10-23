@@ -1,0 +1,35 @@
+<templates xml:space="preserve">
+    <t t-name="blue_barcode_base.QuantityEditor">
+        <section class="o_blue_barcode_editor">
+            <div class="o_blue_barcode_editor_product">
+                <img t-att-src="'/web/image/product.product/' + this.props.row.product_id + '/image_128'" alt="产品图片"/>
+                <div><h2 t-out="this.props.row.product"/><span t-out="this.props.row.barcode"/>
+                    <p t-if="this.props.row.lot">批次 / 序列号：<t t-out="this.props.row.lot"/></p>
+                    <p>位置：<t t-out="this.props.row.source"/></p>
+                </div>
+            </div>
+            <div class="o_blue_barcode_editor_calculator">
+                <label for="blue_barcode_quantity" t-out="this.props.inventory ? '实盘总数' : '已扫总数'"/>
+                <div class="o_blue_barcode_editor_display">
+                    <input id="blue_barcode_quantity" t-ref="this.input" type="text" inputmode="none"
+                        t-model.proxy="this.state.value" t-on-input="() => this.state.replace = false"
+                        t-on-keydown="this.keydown" autocomplete="off"/>
+                    <span t-out="this.props.row.uom"/>
+                </div>
+                <p>当前 <t t-out="this.props.row.quantity"/> · <t t-out="this.props.inventory ? '账面' : '应作业'"/> <t t-out="this.props.row.expected"/></p>
+                <div class="o_blue_barcode_keypad">
+                    <button t-foreach="['7','8','9','+1','4','5','6','-1','1','2','3','back','clear','0','.']" t-as="key" t-key="key"
+                        t-att-class="['+1','-1','back','clear'].includes(key) ? 'o_blue_barcode_key_function' : ''"
+                        t-on-click="() => this.key(key)" t-att-aria-label="key === 'back' ? '退格' : key === 'clear' ? '清空' : key">
+                        <i aria-hidden="true" t-if="key === 'back'" class="oi" data-icon="backspace"/><t t-else="" t-out="key === 'clear' ? '清空' : key"/>
+                    </button>
+                </div>
+                <p t-if="this.state.error" class="text-danger" role="alert" t-out="this.state.error"/>
+            </div>
+            <div class="o_blue_barcode_editor_actions">
+                <button class="btn btn-secondary" t-on-click="() => this.props.onCancel()">取消</button>
+                <button class="btn btn-primary" t-on-click="this.confirm">确认总数</button>
+            </div>
+        </section>
+    </t>
+</templates>

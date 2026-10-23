@@ -73,6 +73,19 @@ if 'blue.erp.interface' in env:
         results.append({'page': str(path.relative_to(wiki)), 'contract': 'erp_mapping/1',
                         'code_sha256': hashlib.sha256(code.encode()).hexdigest(), 'cases': len(cases)})
 
+if env['ir.module.module'].search_count([('name', '=', 'blue_barcode_extension'), ('state', '=', 'installed')]):
+    assert json.loads((wiki / 'domains/barcode/barcode-policy-v1-contract.json').read_text()) == engine._describe('barcode_policy/1')
+    fixture = json.loads((root / 'blue_barcode_extension/tests/data/delimiter_qr.json').read_text())
+    path = wiki / 'domains/barcode/examples/delimiter-qr.md'
+    body = path.read_text()
+    code = re.search(r'```python\n(.*?)```', body, re.S).group(1)
+    cases = json.loads(re.search(r'```json\n(.*?)\n```', body, re.S).group(1))
+    assert code == fixture['code'] and cases == fixture['cases'], path
+    for case in cases:
+        assert engine._run(code, case['input'], 'barcode_policy/1') == case['expected_result'], (path, case['name'])
+    results.append({'page': str(path.relative_to(wiki)), 'contract': 'barcode_policy/1',
+                    'code_sha256': hashlib.sha256(code.encode()).hexdigest(), 'cases': len(cases)})
+
 for path in wiki.rglob('*.md'):
     for target in re.findall(r'\]\(([^)]+)\)', path.read_text()):
         target = target.split('#', 1)[0]

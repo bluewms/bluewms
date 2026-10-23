@@ -1,0 +1,9 @@
+<odoo>
+    <record id="stock_inventory_view_form" model="ir.ui.view">
+        <field name="name">stock.inventory.form.inherit.blue.barcode</field><field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="blue_stock_inventory.stock_inventory_view_form"/>
+        <field name="arch" type="xml"><header position="inside">
+            <button name="action_blue_barcode" type="object" string="进入扫码盘库" class="btn-primary" invisible="state != 'in_progress'"/>
+        </header></field>
+    </record>
+</odoo>

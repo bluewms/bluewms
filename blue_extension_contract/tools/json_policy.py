@@ -73,7 +73,8 @@ def validate_headers(headers):
     return headers
 
 
-def validate_protocol(code):
+def validate_protocol(code, extra_calls=None):
+    extra_calls = extra_calls or {}
     if type(code) is not str or not code.strip() or len(code) > 32768:
         raise ProtocolError('Provide 1 to 32768 characters of protocol code.')
     try:
@@ -102,12 +103,14 @@ def validate_protocol(code):
         if isinstance(node, ast.Attribute) and node.attr not in ('get', 'append'):
             raise ProtocolError('Only JSON get and local-list append are available.')
         if isinstance(node, ast.Call):
-            if node.keywords or len(node.args) > 2:
+            if node.keywords:
                 raise ProtocolError('Unsupported call arguments.')
             if isinstance(node.func, ast.Name):
-                if node.func.id not in ('str', 'float', 'int', 'len') or len(node.args) != 1:
+                arity = 1 if node.func.id in ('str', 'float', 'int', 'len') else extra_calls.get(node.func.id)
+                if arity is None or len(node.args) != arity:
                     raise ProtocolError('Only bounded scalar conversion and len are available.')
-            elif not isinstance(node.func, ast.Attribute) or node.func.attr not in ('get', 'append'):
+            elif (not isinstance(node.func, ast.Attribute) or node.func.attr not in ('get', 'append')
+                  or len(node.args) > 2):
                 raise ProtocolError('Unsupported call.')
         if isinstance(node, ast.Expr) and not isinstance(node.value, ast.Call):
             raise ProtocolError('Standalone expressions are not supported.')
