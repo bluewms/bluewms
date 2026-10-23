@@ -105,6 +105,47 @@
         overscroll-behavior: contain;
     }
 
+    .o_blue_barcode_tools, .o_blue_barcode_completion {
+        display: flex;
+        max-width: 720px;
+        flex-direction: column;
+        gap: 12px;
+        margin: 0 auto;
+        padding: 24px 16px;
+    }
+
+    .o_blue_barcode_tools .btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        font-size: 17px;
+    }
+
+    .o_blue_barcode_tools .btn span {
+        flex: 1;
+    }
+
+    .o_blue_barcode_completion {
+        text-align: center;
+    }
+
+    .o_blue_barcode_completion > .oi {
+        color: var(--blue-barcode__accent);
+        font-size: 64px;
+    }
+
+    .o_blue_barcode_backorders .btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .o_blue_barcode_action_reason {
+        margin: 8px 0 0;
+        color: var(--bs-secondary-color);
+        font-size: 12px;
+    }
+
     .o_blue_barcode_welcome, .o_blue_barcode_query {
         padding: 40px 16px 20px;
         text-align: center;

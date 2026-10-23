@@ -11,12 +11,20 @@ import { Mutex } from '@web/core/utils/concurrency';
 import { PdaCapture } from '../scanning/pda_capture';
 import { QuantityEditor } from '../quantity_editor/quantity_editor';
 import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
+import { ValidationDialog } from '../validation/validation_dialog';
 
 function identity() {
     const bytes = new Uint8Array(16);
     crypto.getRandomValues(bytes);
     return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 }
+
+const operationCodes = new Map([
+    ['OBTVALI', ['execute', 'validate']], ['OBTPACK', ['execute', 'pack']],
+    ['OCDCANC', ['execute', 'cancel']], ['OBTPRSL', ['document', 'print_delivery']],
+    ['OBTPROP', ['document', 'print_operations']], ['OBTRETU', ['document', 'return_document']],
+    ['OCDMENU', ['navigation', 'home']],
+]);
 
 export class BarcodeWorkspace extends Component {
     static template = 'blue_barcode_base.Workspace';
@@ -36,6 +44,7 @@ export class BarcodeWorkspace extends Component {
             search: '', session: null, details: null, group: '', selected: '', lookupKind: '', canBack: false, lastScan: '',
             editing: false, error: '', storageError: '', busy: false, pending: null, queued: 0, message: '',
             operationType: null, operationTypes: [], completedLast: false,
+            tools: false, nativeOpen: false, operating: false,
         });
         this.companyId = user.activeCompanies[0].id;
         this.storageKey = `blue_barcode_${user.userId}_${this.companyId}`;
@@ -49,7 +58,11 @@ export class BarcodeWorkspace extends Component {
         this.queue = [];
         this.history = [];
         this.capture = new PdaCapture({
-            emit: (barcode) => this.barcode.bus.trigger('barcode_scanned', {barcode}),
+            // Odoo's generic OCD handler runs before action subscribers and
+            // treats terminal-only commands as unknown. Consume our fixed
+            // command codes locally; product/QR scans still use the native bus.
+            emit: (barcode) => operationCodes.has(barcode) ? this.submitRaw(barcode)
+                : this.barcode.bus.trigger('barcode_scanned', {barcode}),
             isActive: () => this.scanActive(), input: this.barcode.barcodeInput,
             delay: session.max_time_between_keys_in_ms || 150,
         });
@@ -84,7 +97,7 @@ export class BarcodeWorkspace extends Component {
                         const view = await this.orm.call('blue.barcode.session', 'action_view', [
                             [data.sessionId], this.client,
                         ]);
-                        if (view.state === 'closed' && !data.pending && !this.queue.length) {
+                        if (view.state === 'closed' && !view.outcome?.ended && !data.pending && !this.queue.length) {
                             sessionStorage.removeItem(this.storageKey);
                             this.state.message = '上次扫描会话已关闭，请重新选择作业。';
                         } else {
@@ -116,8 +129,8 @@ export class BarcodeWorkspace extends Component {
     }
 
     scanActive() {
-        return !this.state.editing && !document.hidden && !document.querySelector('.o_dialog [role="dialog"], .modal.show')
-            && !(this.state.page === 'work' && this.state.session?.state === 'closed');
+        return !this.state.editing && !this.state.nativeOpen && !document.hidden
+            && !document.querySelector('.o_dialog [role="dialog"], .modal.show');
     }
 
     saveNavigation() {
@@ -132,6 +145,14 @@ export class BarcodeWorkspace extends Component {
     }
 
     async back() {
+        if (this.state.nativeOpen) {
+            return;
+        }
+        if (this.state.tools) {
+            this.state.tools = false;
+            this.focusScan();
+            return;
+        }
         if (this.state.editing) {
             this.cancelEdit();
             return;
@@ -242,6 +263,9 @@ export class BarcodeWorkspace extends Component {
     }
 
     title() {
+        if (this.state.tools) {
+            return '操作与打印';
+        }
         if (this.state.editing) {
             return '修改数量';
         }
@@ -259,12 +283,15 @@ export class BarcodeWorkspace extends Component {
     }
 
     scanPrompt() {
+        if (this.state.tools) {
+            return '选择操作或扫描操作码，返回作业后扫描产品';
+        }
         if (this.state.editing) {
             return '输入本行总数后确认';
         }
         if (this.state.page === 'work') {
             if (this.state.session.state === 'closed') {
-                return '本次作业已结束';
+                return this.state.session.outcome?.ended ? '本次作业已结束' : '会话已关闭，单据可重新进入';
             }
             if (this.state.session.context.pending) {
                 return '请补扫批次 / 序列号';
@@ -334,7 +361,7 @@ export class BarcodeWorkspace extends Component {
     canChange(row) {
         return !!row && !row.applied && this.state.session?.state === 'active'
             && !this.state.busy && !this.state.pending && !this.queue.length
-            && !this.state.session.context.pending && !this.state.storageError;
+            && !this.state.nativeOpen && !this.state.session.context.pending && !this.state.storageError;
     }
 
     pageProgress() {
@@ -460,11 +487,53 @@ export class BarcodeWorkspace extends Component {
         if (!raw || this.state.editing || this.state.storageError) {
             return;
         }
+        if (this.state.operating) {
+            this.notification.add('正在处理单据操作，请稍后重新扫描；本次未计数。', {type: 'warning'});
+            return;
+        }
         if (raw.length > 8192 || this.queue.length >= 50) {
             this.state.error = '输入过长或待处理队列已满，当前这次尚未计数。请先核对队列后重新扫描。';
             return;
         }
         this.state.lastScan = raw.length > 64 ? `${raw.slice(0,64)}…` : raw;
+        if (this.state.tools && !operationCodes.has(raw)) {
+            this.state.error = '请先返回作业再扫描产品。本次扫描未计数。';
+            return;
+        }
+        if (this.state.page !== 'work' && operationCodes.has(raw)) {
+            if (raw === 'OCDMENU') {
+                return this.home();
+            }
+            this.notification.add('请先进入作业单，再扫描操作码。', {type: 'warning'});
+            return;
+        }
+        if (this.state.page === 'work' && this.state.session.state === 'closed' && !operationCodes.has(raw)) {
+            this.state.error = '作业已结束，不再计数。可使用当前可用的单据操作或返回首页。';
+            return;
+        }
+        if (this.state.page === 'work' && operationCodes.has(raw)) {
+            if (this.state.busy || this.state.pending || this.queue.length) {
+                this.notification.add('请先核对前面的扫描，处理完成后重新扫描操作码。当前操作码没有计数。', {type: 'warning'});
+                return;
+            }
+            let [kind, action] = operationCodes.get(raw);
+            this.state.error = '';
+            if (kind === 'navigation') {
+                return this.home();
+            }
+            if (raw === 'OBTVALI' && this.state.session.operation?.primary === 'wcs') {
+                action = 'wcs';
+            }
+            if (kind === 'document') {
+                return this.documentAction(action);
+            }
+            if (!this.state.session.actions.includes(action) || !this.actionEnabled(action)) {
+                this.state.error = this.state.session.state === 'closed' ? '作业已结束，不能再次验证或装箱。'
+                    : this.state.session.operation?.validate_reason || '当前作业不允许此操作。';
+                return;
+            }
+            return this.confirmExecute(action);
+        }
         if (this.state.page !== 'work') {
             return this.lookupMutex.exec(async () => {
                 if (this.state.page === 'work') {
@@ -706,15 +775,66 @@ export class BarcodeWorkspace extends Component {
         await this.drain();
     }
 
-    confirmExecute(action) {
-        if (this.state.busy || this.state.pending || this.queue.length || this.state.editing) {
+    actionEnabled(action) {
+        if (this.state.busy || this.state.pending || this.queue.length || this.state.editing
+            || this.state.nativeOpen || this.state.storageError || this.state.session?.state !== 'active') {
+            return false;
+        }
+        const status = this.state.session.operation || {};
+        if (status.pending) {
+            return false;
+        }
+        if (action === 'pack') {
+            return status.pack && (this.currentGroup()?.rows || []).some((row) => row.counted && row.quantity > 0 && !row.destination_package_id);
+        }
+        return action === 'cancel' || !!status[action];
+    }
+
+    validateLabel() {
+        const status = this.state.session.operation || {};
+        return status.complete ? '验证整单' : '验证已扫数量';
+    }
+
+    toggleTools() {
+        if (this.state.editing || this.state.busy || this.state.pending || this.queue.length || this.state.nativeOpen) {
             return;
         }
+        this.state.tools = !this.state.tools;
+        this.capture.reset();
+        this.focusScan();
+    }
+
+    async confirmExecute(action) {
+        if (!this.actionEnabled(action)) {
+            return;
+        }
+        this.state.tools = false;
+        if (action === 'validate') {
+            this.state.busy = true;
+            this.state.operating = true;
+            try {
+                const review = await this.orm.call('blue.barcode.session', 'action_validation_review', [
+                    [this.state.session.id], this.client, this.state.session.revision,
+                ]);
+                this.dialog.add(ValidationDialog, {review, confirm: () => this.execute('validate', review.revision)});
+            } catch (error) {
+                this.error(error);
+            } finally {
+                this.state.busy = false;
+                this.state.operating = false;
+            }
+            return;
+        }
+        const batch = this.state.session.kind === 'batch';
+        const descriptions = {
+            pack: ['本页装箱', '确认将本页已扫描且未装箱的明细装入包裹？'],
+            wcs: ['执行 WCS', '确认按已保存数量通过 WCS 正式入口申请执行？设备规则及可执行范围由 WCS 复核。'],
+            cancel: [batch ? '取消批次' : '取消调拨', batch ? '确认取消此批次？原作业单保留，不会取消库存作业。' : '确认取消此调拨？尚未完成的库存移动将取消。'],
+        };
         this.dialog.add(ConfirmationDialog, {
-            title: action === 'validate' ? '验证作业' : '本页装箱',
-            body: action === 'validate' ? '确认提交整张作业单？数量不足时将按 Odoo 原生流程处理欠交。'
-                : '确认将本页已扫描且未装箱的明细装入包裹？',
+            title: descriptions[action][0], body: descriptions[action][1],
             confirmLabel: '确认', cancelLabel: '继续扫描',
+            confirmClass: action === 'cancel' ? 'btn-danger' : 'btn-primary',
             confirm: () => this.execute(action),
             cancel: () => { requestAnimationFrame(() => this.focusScan()); },
         });
@@ -727,24 +847,66 @@ export class BarcodeWorkspace extends Component {
         }
     }
 
-    async execute(action) {
-        if (this.state.pending || this.state.busy || this.queue.length || this.state.editing) {
+    async execute(action, revision = this.state.session?.revision) {
+        if (!this.actionEnabled(action)) {
             return;
         }
         this.state.busy = true;
+        this.state.operating = true;
         try {
             const response = await this.orm.call('blue.barcode.session', 'action_execute', [
-                [this.state.session.id], this.client, this.state.session.revision, action, this.state.group,
+                [this.state.session.id], this.client, revision, action, this.state.group,
             ]);
             this.acceptView(response.view);
-            this.state.message = response.message || '已处理，请核对单据状态。';
+            this.state.message = response.message || (response.view.outcome?.ended ? '作业已完成。' : '已处理，请核对单据状态。');
             if (response.action) {
-                await this.action.doAction(response.action, { onClose: () => this.afterNativeAction() });
+                await this.openNative(response.action);
             }
         } catch (error) {
             this.error(error);
         } finally {
             this.state.busy = false;
+            this.state.operating = false;
+            this.focusScan();
+        }
+    }
+
+    async openNative(action) {
+        this.state.nativeOpen = true;
+        this.capture.reset();
+        try {
+            const onClose = () => this.afterNativeAction();
+            if (action.type === 'ir.actions.client') {
+                action = {...action, params: {...action.params, onClose}};
+            }
+            await this.action.doAction(action, { onClose });
+            if (action.type === 'ir.actions.report') {
+                this.state.nativeOpen = false;
+            }
+        } catch (error) {
+            this.state.nativeOpen = false;
+            throw error;
+        }
+    }
+
+    async documentAction(action, pickingId = false) {
+        if (this.state.busy || this.state.pending || this.queue.length || this.state.editing || this.state.nativeOpen) {
+            return;
+        }
+        this.state.busy = true;
+        this.state.operating = true;
+        this.state.tools = false;
+        try {
+            const result = await this.orm.call('blue.barcode.session', 'action_document', [
+                [this.state.session.id], this.client, action, pickingId,
+            ]);
+            await this.openNative(result);
+        } catch (error) {
+            this.error(error);
+        } finally {
+            this.state.busy = false;
+            this.state.operating = false;
+            this.focusScan();
         }
     }
 
@@ -752,17 +914,24 @@ export class BarcodeWorkspace extends Component {
         try {
             const view = await this.orm.call('blue.barcode.session', 'action_view', [[this.state.session.id], this.client]);
             this.acceptView(view);
-            if (view.state === 'active') {
+            if (view.outcome?.ended) {
+                this.state.message = view.outcome.cancelled ? '作业已取消。' : '作业已完成。';
+            }
+            if (view.state === 'active' && view.requires_reopen) {
                 await this.orm.call('blue.barcode.session', 'action_release', [[view.id], this.client]);
-                await this.openRecord({kind: view.kind, id: view.record_id});
+                const refreshed = await this.orm.call('blue.barcode.service', 'open_session', [view.kind, view.record_id, this.client]);
+                this.acceptView(refreshed);
             }
         } catch (error) {
             this.error(error);
+        } finally {
+            this.state.nativeOpen = false;
+            this.focusScan();
         }
     }
 
     async home() {
-        if (this.state.pending || this.state.busy || this.state.editing || this.queue.length) {
+        if (this.state.pending || this.state.busy || this.state.editing || this.queue.length || this.state.nativeOpen) {
             this.state.error = '请先确认当前输入和待处理扫描。';
             return;
         }
@@ -778,6 +947,7 @@ export class BarcodeWorkspace extends Component {
             this.state.lookupKind = '';
             this.state.details = null;
             this.state.operationType = null;
+            this.state.tools = false;
             this.history = [];
             this.state.canBack = false;
             sessionStorage.removeItem(this.storageKey);

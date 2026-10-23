@@ -1,6 +1,7 @@
 from unittest.mock import patch
 from lxml import etree
 
+from odoo import Command
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.addons.base.tests.common import BaseCommon
@@ -40,6 +41,40 @@ class TestBarcodeWcs(BaseCommon):
                 session.action_execute(client, session.revision, 'wcs')
         self.assertEqual(picking.move_line_ids.quantity, 1)
         self.assertEqual(len(session.event_ids), 1)
+
+    def test_wcs_primary_button_and_required_validation_guard(self):
+        session, client, picking = self._session()
+        picking.picking_type_id.is_wcs_required_for_validate = True
+        status = session._view()['operation']
+        self.assertEqual(status['primary'], 'wcs')
+        self.assertTrue(status['wcs'])
+        self.assertFalse(status['validate'])
+        with self.assertRaises(UserError):
+            session.action_execute(client, session.revision, 'validate')
+
+    def test_wcs_rejects_zero_confirmed_quantity(self):
+        session, client, picking = self._session()
+        session.action_event(client, 'wcs_scan_zero_total', session.revision,
+            {'row_key': session._rows()[0]['key'], 'total': 0})
+        with patch.object(type(picking), 'action_create_wcs_request_from_button') as create:
+            with self.assertRaises(UserError):
+                session.action_execute(client, session.revision, 'wcs')
+        create.assert_not_called()
+
+    def test_batch_wcs_only_calls_members_with_confirmed_quantity(self):
+        session, client, picking = self._session()
+        other = picking.copy()
+        other.action_confirm()
+        # Incoming reservations are not confirmed barcode work.
+        other.move_line_ids.write({'picked': False})
+        session.action_release(client)
+        batch = self.env['stock.picking.batch'].create({'picking_type_id': picking.picking_type_id.id,
+            'picking_ids': [Command.set((picking | other).ids)]})
+        view = self.env['blue.barcode.service'].open_session('batch', batch.id, client)
+        current = self.env['blue.barcode.session'].browse(view['id'])
+        with patch.object(type(picking), 'action_create_wcs_request_from_button', autospec=True, return_value=True) as create:
+            current.action_execute(client, current.revision, 'wcs')
+        create.assert_called_once_with(picking)
 
     def test_barcode_settings_follow_wcs_in_one_notebook(self):
         view = self.env['stock.picking.type'].get_view(

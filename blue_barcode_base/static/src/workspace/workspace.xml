@@ -6,6 +6,7 @@
                     <button t-if="this.state.page !== 'home'" class="o_blue_barcode_icon_button" t-on-click="this.back" t-att-disabled="this.state.busy" aria-label="返回"><i aria-hidden="true" class="oi" data-icon="chevron_left"/></button>
                     <i aria-hidden="true" t-else="" class="oi o_blue_barcode_brand" data-icon="barcode"/>
                     <h1 t-out="this.title()"/>
+                    <button t-if="this.state.page === 'work' &amp;&amp; !this.state.editing &amp;&amp; this.state.session.documents?.length" class="o_blue_barcode_icon_button" t-on-click="this.toggleTools" t-att-disabled="this.state.busy || !!this.state.pending || !!this.state.queued || this.state.nativeOpen" aria-label="操作与打印"><i aria-hidden="true" class="oi" t-att-data-icon="this.state.tools ? 'close' : 'more_vert'"/></button>
                     <button t-if="this.state.page !== 'home'" class="o_blue_barcode_icon_button" t-on-click="this.home" t-att-disabled="this.state.busy || this.state.editing" aria-label="条码首页"><i aria-hidden="true" class="oi" data-icon="home"/></button>
                     <button t-else="" class="o_blue_barcode_icon_button" t-on-click="this.exit" aria-label="退出条码"><i aria-hidden="true" class="oi" data-icon="logout"/></button>
                     <button class="o_blue_barcode_icon_button" t-on-click="this.camera" aria-label="相机扫描" t-att-disabled="this.state.editing || (this.state.page === 'work' &amp;&amp; this.state.session.state === 'closed')"><i aria-hidden="true" class="oi" data-icon="photo_camera"/></button>
@@ -13,7 +14,7 @@
                 <div class="o_blue_barcode_scan_status" role="status">
                     <i aria-hidden="true" t-att-class="this.state.busy ? 'oi o_blue_barcode_spinner' : 'oi'" t-att-data-icon="this.state.busy ? 'progress_activity' : 'barcode'"/>
                     <strong t-out="this.scanPrompt()"/>
-                    <span t-if="this.state.page === 'work'" class="o_blue_barcode_progress">本页 <t t-out="this.pageProgress()"/></span>
+                    <span t-if="this.state.page === 'work' &amp;&amp; this.state.session.state === 'active' &amp;&amp; !this.state.tools" class="o_blue_barcode_progress">本页 <t t-out="this.pageProgress()"/></span>
                 </div>
                 <div t-if="this.state.error" class="alert alert-danger mt-2 mb-0" role="alert">
                     <t t-out="this.state.error"/>
@@ -41,6 +42,25 @@
             </header>
             <main class="o_blue_barcode_content flex-grow-1 overflow-auto">
                 <QuantityEditor t-if="this.state.editing &amp;&amp; this.selectedRow()" row="this.selectedRow()" inventory="this.state.session.kind === 'inventory'" onConfirm="(value) => this.saveTotal(value)" onCancel="() => this.cancelEdit()"/>
+                <section t-elif="this.state.page === 'work' &amp;&amp; this.state.tools" class="o_blue_barcode_tools">
+                    <h2 t-out="this.state.session.name"/>
+                    <button t-foreach="this.state.session.documents" t-as="option" t-key="option.key" class="btn btn-secondary" t-on-click="() => this.documentAction(option.key)" t-att-disabled="this.state.busy || this.state.nativeOpen"><i aria-hidden="true" class="oi" t-att-data-icon="option.icon"/><span t-out="option.name"/><i aria-hidden="true" class="oi" data-icon="chevron_right"/></button>
+                    <button t-if="this.state.session.actions.includes('validate') &amp;&amp; this.state.session.state === 'active'" class="btn btn-secondary" t-on-click="() => this.confirmExecute('validate')" t-att-disabled="!this.actionEnabled('validate')"><i aria-hidden="true" class="oi" data-icon="check"/><span>验证库存</span></button>
+                    <p t-if="this.state.session.operation.validate_reason &amp;&amp; this.state.session.state === 'active'" class="text-muted" t-out="this.state.session.operation.validate_reason"/>
+                    <button t-if="this.state.session.actions.includes('cancel') &amp;&amp; this.state.session.state === 'active'" class="btn btn-outline-danger" t-on-click="() => this.confirmExecute('cancel')" t-att-disabled="!this.actionEnabled('cancel')"><i aria-hidden="true" class="oi" data-icon="cancel"/><span t-out="this.state.session.kind === 'batch' ? '取消批次（原作业单保留）' : '取消调拨'"/></button>
+                    <button class="btn btn-primary" t-on-click="this.toggleTools">返回作业</button>
+                </section>
+                <section t-elif="this.state.page === 'work' &amp;&amp; this.state.session.state === 'closed'" class="o_blue_barcode_completion">
+                    <i aria-hidden="true" class="oi" t-att-data-icon="this.state.session.outcome?.cancelled ? 'cancel' : this.state.session.outcome?.ended ? 'check_circle' : 'info'"/>
+                    <h2 t-out="this.state.session.outcome?.cancelled ? '作业已取消' : this.state.session.outcome?.ended ? '作业已完成' : '本次会话已关闭'"/>
+                    <p>数量和单据状态已按原生流程保存。</p>
+                    <div t-if="this.state.session.outcome?.backorders?.length" class="o_blue_barcode_backorders"><h3>待继续的欠单</h3><button t-foreach="this.state.session.outcome.backorders" t-as="record" t-key="record.id" class="btn btn-secondary" t-on-click="() => this.openRecord(record)"><t t-out="record.name"/><i aria-hidden="true" class="oi" data-icon="chevron_right"/></button></div>
+                    <div t-if="this.state.session.kind === 'batch' &amp;&amp; this.state.session.outcome?.pending_pickings?.length" class="o_blue_barcode_backorders"><h3>未完成的原作业单</h3><p>原单据保留，可能按原生配置进入新的批次。</p><button t-foreach="this.state.session.outcome.pending_pickings" t-as="record" t-key="record.id" class="btn btn-secondary" t-on-click="() => this.openRecord(record)"><t t-out="record.name"/><i aria-hidden="true" class="oi" data-icon="chevron_right"/></button></div>
+                    <button t-if="this.state.session.documents?.length" class="btn btn-secondary" t-on-click="this.toggleTools">查看单据 / 打印</button>
+                    <button t-if="this.state.session.documents?.some((option) => option.key === 'return_document')" class="btn btn-secondary" t-on-click="() => this.documentAction('return_document')">退货</button>
+                    <button t-if="!this.state.session.outcome?.ended" class="btn btn-primary" t-on-click="() => this.openRecord({kind:this.state.session.kind,id:this.state.session.record_id})">重新进入作业</button>
+                    <button class="btn btn-primary" t-on-click="this.home">返回条码首页</button>
+                </section>
                 <div t-elif="this.state.page === 'home'" class="o_blue_barcode_home_screen">
                     <div class="o_blue_barcode_welcome"><i aria-hidden="true" class="oi" data-icon="barcode"/><h2>扫描，即刻开始作业</h2><p>支持 PDA / 扫码枪，也可使用相机</p></div>
                     <div class="o_blue_barcode_home">
@@ -185,14 +205,15 @@
                     <p t-if="!group" class="o_blue_barcode_empty">本单暂无可扫描明细，请先在单据中建立明细。</p>
                 </t>
             </main>
-            <footer t-if="this.state.page === 'work' &amp;&amp; !this.state.editing" class="o_blue_barcode_footer">
+            <footer t-if="this.state.page === 'work' &amp;&amp; !this.state.editing &amp;&amp; !this.state.tools &amp;&amp; this.state.session.state !== 'closed'" class="o_blue_barcode_footer">
                 <div class="o_blue_barcode_last_scan"><i aria-hidden="true" class="oi me-2" data-icon="barcode"/><span t-out="this.state.lastScan || '等待扫描'"/></div>
                 <div class="o_blue_barcode_actions" t-if="this.state.session.state !== 'closed'">
-                    <button t-if="this.state.session.actions.includes('pack')" class="btn btn-secondary" t-on-click="() => this.confirmExecute('pack')" t-att-disabled="this.state.busy || !!this.state.pending || !!this.state.queued">本页装箱</button>
-                    <button t-if="this.state.session.actions.includes('wcs')" class="btn btn-secondary" t-on-click="() => this.execute('wcs')" t-att-disabled="this.state.busy || !!this.state.pending || !!this.state.queued">申请 WCS</button>
-                    <button t-if="this.state.session.actions.includes('validate')" class="btn btn-primary" t-on-click="() => this.confirmExecute('validate')" t-att-disabled="this.state.busy || !!this.state.pending || !!this.state.queued"><i aria-hidden="true" class="oi me-2" data-icon="check"/>验证整单</button>
+                    <button t-if="this.state.session.actions.includes('pack')" class="btn btn-secondary" t-on-click="() => this.confirmExecute('pack')" t-att-disabled="!this.actionEnabled('pack')">本页装箱</button>
+                    <button t-if="this.state.session.actions.includes('wcs') &amp;&amp; this.state.session.operation.primary === 'wcs'" class="btn btn-primary" t-on-click="() => this.confirmExecute('wcs')" t-att-disabled="!this.actionEnabled('wcs')">执行 WCS</button>
+                    <button t-if="this.state.session.actions.includes('validate') &amp;&amp; this.state.session.operation.primary !== 'wcs'" t-att-class="this.state.session.operation.complete ? 'btn btn-primary' : 'btn btn-secondary'" t-on-click="() => this.confirmExecute('validate')" t-att-disabled="!this.actionEnabled('validate')"><i aria-hidden="true" class="oi me-2" data-icon="check"/><t t-out="this.validateLabel()"/></button>
                     <t t-if="this.state.session.kind === 'inventory'"><span class="text-muted small">扫码录入实盘；管理员在盘库单记账</span><button class="btn btn-primary" t-on-click="this.back" t-att-disabled="this.state.busy || !!this.state.pending || !!this.state.queued">完成本次盘库</button></t>
                 </div>
+                <p t-if="this.state.session.operation?.validate_reason &amp;&amp; this.state.session.operation.primary !== 'wcs'" class="o_blue_barcode_action_reason" t-out="this.state.session.operation.validate_reason"/>
             </footer>
         </div>
     </t>

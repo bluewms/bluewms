@@ -142,7 +142,7 @@ class BlueBarcodeSession(models.Model):
         return bool(self.picking_ids) and all(p.state in ('done', 'cancel') for p in self.picking_ids)
 
     def _actions(self):
-        actions = ['validate'] if self.kind in ('picking', 'batch') else []
+        actions = ['validate', 'cancel'] if self.kind in ('picking', 'batch') else []
         if self.picking_ids and all(p.picking_type_id.blue_barcode_allow_pack for p in self.picking_ids):
             actions.append('pack')
         return actions
@@ -343,7 +343,7 @@ class BlueBarcodeSession(models.Model):
 
     def _followup(self, decision, result):
         after = decision.get('after', '')
-        if after and after not in (self._actions() + ['next_group']):
+        if after and after not in ([action for action in self._actions() if action != 'cancel'] + ['next_group']):
             raise ValidationError(self.env._('扫描策略请求了未授权的后续动作.'))
         if after:
             result['after'] = after
@@ -411,13 +411,15 @@ class BlueBarcodeSession(models.Model):
 
     def action_view(self, client_key):
         self._check_client(client_key, active=False)
-        if self._is_ended():
+        if self.state == 'closed':
+            return self._view()
+        if self._is_ended() or self._scope_changed():
             self._lock()
             if self.state != 'closed':
                 self._internal().write({'state': 'closed', 'revision': self.revision + 1})
             return self._view()
         self._check_target()
-        return self._view()
+        return {**self._view(), 'requires_reopen': self.fingerprint != self._fingerprint()}
 
     def action_release(self, client_key):
         self._lock()
@@ -480,8 +482,17 @@ class BlueBarcodeSession(models.Model):
         self._check_target()
         if type(revision) is not int or revision != self.revision or self.fingerprint != self._fingerprint():
             raise UserError(self.env._('作业已变化,请核对后再执行.'))
-        if action not in ('validate', 'pack') or action not in self._actions():
+        if action not in ('validate', 'pack', 'cancel') or action not in self._actions():
             raise AccessError(self.env._('此作业不允许该动作.'))
+        self._check_operation(action, group_key)
+        if action == 'cancel':
+            if self.kind == 'picking':
+                self.picking_id.action_cancel()
+            else:
+                self.batch_id.action_cancel()
+            self._internal().write({'revision': self.revision + 1, 'fingerprint': self._fingerprint(), 'state': 'closed'})
+            return {'action': False, 'view': self._view(), 'message': self.env._('单据已取消.') if self.kind == 'picking'
+                else self.env._('批次已取消,原作业单保留,未取消库存作业.')}
         if action == 'pack':
             if type(group_key) is not str or not group_key or len(group_key) > 256:
                 raise ValidationError(self.env._('请先选择需要装箱的业务组.'))
@@ -496,6 +507,6 @@ class BlueBarcodeSession(models.Model):
         # Native validation owns warnings, backorders and stock accounting.
         result = self.picking_id.button_validate() if self.kind == 'picking' else self.batch_id.action_done()
         self._internal().write({'revision': self.revision + 1, 'fingerprint': self._fingerprint()})
-        if self._is_ended():
+        if self._is_ended() or self._scope_changed():
             self._internal().write({'state': 'closed'})
         return {'action': result if isinstance(result, dict) else False, 'view': self._view()}

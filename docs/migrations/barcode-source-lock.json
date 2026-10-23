@@ -28,8 +28,29 @@
       {
         "path": "stock_barcode_wcs/__manifest__.py",
         "sha256": "2e83471832a9678d7117ab31831d23871d17c9a4032f1ed418cc83b63d33d213"
+      },
+      {
+        "path": "stock_bluebarcode/static/src/components/main.xml",
+        "sha256": "f8327a2f4a116bfda5b3744a855244a1b767cb0d6351065eef4552b8e29c8e8c"
+      },
+      {
+        "path": "stock_bluebarcode/static/src/components/main.js",
+        "sha256": "bb980376f47bb68a0acfeda5c767c867c5155b967efcfefb8393631087867e10"
+      },
+      {
+        "path": "stock_bluebarcode/static/src/models/barcode_picking_model.js",
+        "sha256": "2e0c15916ad7e0fb8aeb5eb09f0764a19194e6952dccb38b6658f001d9797802"
+      },
+      {
+        "path": "stock_bluebarcode/static/src/picking_batch/models/barcode_picking_batch_model.js",
+        "sha256": "76edfcfcaf496047178d79bf948ca24aab9d4286f7f0da5fa7278f0e14c41238"
+      },
+      {
+        "path": "stock_barcode_wcs/static/src/models/barcode_picking_model_patch.js",
+        "sha256": "b361ea5a5b2efa1fb1d412d2b9542b55ad3e0ab1f722790895d0b84543d53aac"
       }
-    ]
+    ],
+    "operation_review_date": "2026-10-23"
   },
   "interaction_reference": {
     "repository": "bluewms16",

@@ -1,0 +1,18 @@
+.o_blue_barcode_validation {
+    .o_blue_barcode_validation_lines {
+        max-height: 45vh;
+        overflow-y: auto;
+    }
+
+    .o_blue_barcode_validation_line {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-color, #dee2e6);
+    }
+
+    small {
+        color: var(--bs-secondary-color);
+    }
+}
