@@ -15,13 +15,16 @@ class BlueBarcodeSession(models.Model):
         status = super()._operation_status(rows)
         if 'wcs' in self._actions():
             completed = True
+            started = {row['picking_id'] for row in rows if row['counted'] and row['quantity'] > 0}
             for picking in self.picking_ids:
+                if self.kind == 'batch' and picking.id not in started:
+                    continue
                 live = picking.wcs_request_ids.filtered(lambda task: task.state != 'cancelled')
                 completed = completed and bool(live) and all(task.state == 'completed' for task in live)
                 if ((picking.picking_type_id.is_wcs_required_for_validate and not live)
                         or any(task.state != 'completed' for task in live)):
                     status.update(validate=False, validate_reason=self.env._('请先创建并完成 WCS 作业,再验证库存.'))
-            status['primary'] = 'validate' if completed else 'wcs'
+            status['primary'] = 'validate' if started and completed else 'wcs'
         return status
 
     def action_execute(self, client_key, revision, action, group_key=''):

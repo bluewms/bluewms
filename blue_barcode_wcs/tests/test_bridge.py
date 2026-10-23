@@ -5,6 +5,7 @@ from odoo import Command
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.addons.base.tests.common import BaseCommon
+from odoo.addons.blue_wcs_base.models.guard import WCS_TOKEN
 
 
 @tagged('post_install', '-at_install')
@@ -75,6 +76,32 @@ class TestBarcodeWcs(BaseCommon):
         with patch.object(type(picking), 'action_create_wcs_request_from_button', autospec=True, return_value=True) as create:
             current.action_execute(client, current.revision, 'wcs')
         create.assert_called_once_with(picking)
+
+    def test_completed_wcs_member_can_validate_without_unscanned_members(self):
+        session, client, picking = self._session()
+        picking.picking_type_id.is_wcs_required_for_validate = True
+        other = picking.copy()
+        other.action_confirm()
+        other.move_line_ids.write({'picked': False})
+        device = self.env['wcs.equipment'].create({'name': 'Terminal status simulation',
+            'adapter_code': 'simulation', 'company_id': self.env.company.id})
+        plan = self.env['wcs.plan'].with_context(blue_wcs_token=WCS_TOKEN).create({
+            'name': 'Terminal status plan', 'company_id': self.env.company.id, 'picking_id': picking.id,
+            'unit_key': 'terminal-status', 'revision': 1, 'snapshot': '{}'})
+        line = picking.move_line_ids
+        self.env['wcs.plan.line'].with_context(blue_wcs_token=WCS_TOKEN).create({
+            'plan_id': plan.id, 'move_line_id': line.id, 'product_id': line.product_id.id,
+            'uom_id': line.uom_id.id, 'quantity': 1})
+        self.env['wcs.request'].with_context(blue_wcs_token=WCS_TOKEN).create({
+            'plan_id': plan.id, 'company_id': self.env.company.id, 'equipment_id': device.id,
+            'step': 1, 'role': 'goods', 'source_point': 'A', 'destination_point': 'B',
+            'task_type': 'TRANSFER', 'state': 'completed'})
+        session.action_release(client)
+        batch = self.env['stock.picking.batch'].create({'picking_type_id': picking.picking_type_id.id,
+            'picking_ids': [Command.set((picking | other).ids)]})
+        view = self.env['blue.barcode.service'].open_session('batch', batch.id, client)
+        self.assertEqual(view['operation']['primary'], 'validate')
+        self.assertTrue(view['operation']['validate'])
 
     def test_barcode_settings_follow_wcs_in_one_notebook(self):
         view = self.env['stock.picking.type'].get_view(
