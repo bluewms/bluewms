@@ -16,9 +16,14 @@ class FakeGateway(module.NativeWikiGateway):
         self.valid_key = True
         self.user_id = 'owner'
         self.agent_id = 'agent'
+        self.member_overrides = {}
+        self.agent_overrides = {}
+        self.duplicate_agent = False
+        self.incomplete_agents = False
+        self.incomplete_tasks = False
+        self.core_calls = []
         self.task_overrides = {}
         self.duplicate_task = False
-        self.task_link_active = True
         self.assets = {}
         self.pages = {}
         self.versions = {}
@@ -32,10 +37,16 @@ class FakeGateway(module.NativeWikiGateway):
             self.assets[scope] = {'asset_id': scope, 'team_id': 'team', 'status': 'candidate' if scope == 'erp' else 'approved', 'version': 1, 'metadata_json': json.dumps(metadata)}
 
     def _core(self, path, body, key, deadline):
+        self.core_calls.append(path)
         if path == 'auth/verify':
             return {'valid': self.valid_key, 'user': {'user_id': self.user_id} if self.valid_key else None}
+        if path == 'team-member/get':
+            return {'team_id': 'team', 'user_id': self.user_id, 'status': 'active', **self.member_overrides}
         if path == 'agent/list':
-            return {'items': [{'agent_id': self.agent_id, 'owner_user_id': self.user_id, 'team_id': 'team', 'name': 'personal', 'status': 'active'}]}
+            agent = {'agent_id': self.agent_id, 'owner_user_id': self.user_id, 'team_id': 'team',
+                     'name': 'personal', 'status': 'active', **self.agent_overrides}
+            items = [agent, {**agent, 'agent_id': 'duplicate'}] if self.duplicate_agent else [agent]
+            return {'items': items, 'total': len(items) + int(self.incomplete_agents)}
         if path == 'agent-fixed-asset/list-with-detail':
             return {'items': [{'asset_id': s, 'status': a['status']} for s, a in self.assets.items()]}
         if path == 'acl/check':
@@ -51,9 +62,7 @@ class FakeGateway(module.NativeWikiGateway):
                 tasks.append({**task, 'task_id': 'duplicate'})
             if body.get('creator_user_id'):
                 tasks = [t for t in tasks if t['creator_user_id'] == body['creator_user_id']]
-            return {'items': tasks}
-        if path == 'task-agent/list':
-            return {'items': [{'agent_id': self.agent_id, 'status': 'active' if self.task_link_active else 'inactive'}]}
+            return {'items': tasks, 'total': len(tasks) + int(self.incomplete_tasks)}
         raise AssertionError(path)
 
     def _native(self, operation, wiki_id, params, key, deadline):
@@ -204,8 +213,45 @@ class TestNativeGateway(unittest.TestCase):
             with self.subTest(overrides=overrides), self.assertRaises(module.Rejected):
                 self.request('identity')
 
-    def test_shared_task_rejects_revoked_agent_link(self):
-        self.gateway.task_link_active = False
+    def test_native_identity_needs_no_declared_link_or_cloud_writes(self):
+        for hook in module.TASK_NAMES:
+            self.payload.update(hook_code=hook, contract='')
+            self.assertEqual(self.request('identity')['task_name'], module.TASK_NAMES[hook])
+        self.assertNotIn('task-agent/list', self.gateway.core_calls)
+        self.assertTrue(set(self.gateway.core_calls) <= {
+            'auth/verify', 'team-member/get', 'agent/list', 'agent-fixed-asset/list-with-detail',
+            'task/list', 'acl/check', 'asset/get',
+        })
+
+    def test_inactive_other_team_or_other_user_membership_rejected_for_all_operations(self):
+        for overrides in [{'status': 'inactive'}, {'team_id': 'other'}, {'user_id': 'other'}]:
+            self.gateway.member_overrides = overrides
+            for operation in ['identity', 'context', 'search', 'read', 'verify']:
+                with self.subTest(overrides=overrides, operation=operation), self.assertRaises(module.Rejected):
+                    self.request(operation)
+
+    def test_identity_requires_own_active_unique_agent_and_complete_lists(self):
+        for overrides in [{'owner_user_id': 'other'}, {'team_id': 'other'},
+                          {'status': 'archived'}, {'name': 'other'}]:
+            self.gateway.agent_overrides = overrides
+            with self.subTest(overrides=overrides), self.assertRaises(module.Rejected):
+                self.request('identity')
+        self.gateway.agent_overrides = {}
+        for flag in ['duplicate_agent', 'incomplete_agents', 'incomplete_tasks']:
+            setattr(self.gateway, flag, True)
+            with self.subTest(flag=flag), self.assertRaises(module.Rejected):
+                self.request('identity')
+            setattr(self.gateway, flag, False)
+
+    def test_identity_requires_wiki_binding_acl_approval_and_contract(self):
+        self.gateway.allowed = False
+        with self.assertRaises(module.Rejected):
+            self.request('identity')
+        self.gateway.allowed = True
+        self.gateway.assets['putaway']['status'] = 'candidate'
+        with self.assertRaises(module.Rejected):
+            self.request('identity')
+        del self.gateway.assets['putaway']
         with self.assertRaises(module.Rejected):
             self.request('identity')
 
