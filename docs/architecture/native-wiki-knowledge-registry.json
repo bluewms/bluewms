@@ -34,15 +34,15 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "4",
+        "version": "6",
         "source_pages": 4,
         "content_uploaded": true,
         "agent_bound": true,
         "asset_status": "approved"
       },
       "contracts": [],
-      "source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
-      "publication_manifest": "../validation/device-protocol-20261018.manifest.json"
+      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
+      "publication_manifest": "../wiki-publication/20261026.manifest.json"
     },
     {
       "scope": "putaway",
@@ -62,8 +62,8 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "2",
-        "source_pages": 5,
+        "version": "4",
+        "source_pages": 7,
         "content_uploaded": true,
         "agent_bound": true,
         "asset_status": "approved"
@@ -72,8 +72,8 @@
         "putaway_policy/1",
         "putaway_policy/2"
       ],
-      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-      "publication_manifest": "../validation/native-wiki-20261018.manifest.json"
+      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
+      "publication_manifest": "../wiki-publication/20261026.manifest.json"
     },
     {
       "scope": "erp",
@@ -88,20 +88,20 @@
       ],
       "local_contract_implemented": true,
       "native_retrieval_enabled": true,
-      "approved_for_native_generation": false,
+      "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "2",
-        "source_pages": 2,
+        "version": "4",
+        "source_pages": 5,
         "content_uploaded": true,
         "agent_bound": true,
-        "asset_status": "candidate"
+        "asset_status": "approved"
       },
       "contracts": [
         "erp_mapping/1"
       ],
-      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-      "publication_manifest": "../validation/native-wiki-20261018.manifest.json"
+      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
+      "publication_manifest": "../wiki-publication/20261026.manifest.json"
     },
     {
       "scope": "wcs",
@@ -138,7 +138,7 @@
         "wcs_creation/4"
       ],
       "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
-      "publication_manifest": "../validation/wes-retirement-20261019.manifest.json"
+      "publication_manifest": "../wiki-publication/20261026.manifest.json"
     },
     {
       "scope": "equipment",
@@ -173,7 +173,7 @@
         "device_protocol/1"
       ],
       "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
-      "publication_manifest": "../validation/wes-retirement-20261019.manifest.json"
+      "publication_manifest": "../wiki-publication/20261026.manifest.json"
     },
     {
       "scope": "barcode",
@@ -188,20 +188,20 @@
       ],
       "local_contract_implemented": true,
       "native_retrieval_enabled": true,
-      "approved_for_native_generation": false,
+      "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "2",
-        "source_pages": 2,
+        "version": "4",
+        "source_pages": 5,
         "content_uploaded": true,
         "agent_bound": true,
-        "asset_status": "candidate"
+        "asset_status": "approved"
       },
       "contracts": [
         "barcode_policy/1"
       ],
-      "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-      "publication_manifest": "../validation/native-wiki-20261018.manifest.json"
+      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
+      "publication_manifest": "../wiki-publication/20261026.manifest.json"
     }
   ],
   "routes": {
@@ -226,7 +226,7 @@
         "erp_mapping/1"
       ],
       "knowledge_discussion_enabled": true,
-      "code_generation_enabled": false
+      "code_generation_enabled": true
     },
     "wcs_creation": {
       "scopes": [
@@ -259,7 +259,7 @@
         "barcode_policy/1"
       ],
       "knowledge_discussion_enabled": true,
-      "code_generation_enabled": false
+      "code_generation_enabled": true
     }
   },
   "skill_transition": {

@@ -1,7 +1,24 @@
-# 知识发布状态
+# 当前知识发布
 
-更新: 2026-10-26。本轮正在按当前源码整理六库并验证,实际云端结果以本目录完成后的发布回执为准。历史 manifest/问答 JSON 保存在 [结构化记录](../validation/README.md),旧阶段叙述从 Git 查阅。
+日期: 2026-10-26。准确资料来源为已提交的 `7f28db3`；未变动库保留原发布提交及版本，见 [准确清单](20261026.manifest.json)。
 
-规范与案例唯一来源为 [docs/wiki](../wiki/README.md)。本地 verified、云端索引 ready、平台批准和客户策略发布分别管理;Git 合并不会自动上传知识。
+| 逻辑库 | 版本 | 批准资料数 | 状态 |
+|---|---|---:|---|
+| common | 4 → 6 | 4 | approved / ready |
+| putaway | 2 → 4 | 7 | approved / ready |
+| erp | 2 → 4 | 5 | approved / ready |
+| wcs | 4（内容未变，复核） | 14 | approved / ready |
+| equipment | 8（内容未变，复核） | 12 | approved / ready |
+| barcode | 2 → 4 | 5 | approved / ready |
 
-发布步骤见 [维护流程](../operations/knowledge-publication.md),六库当前逻辑清单见 [注册表](../architecture/native-wiki-knowledge-registry.json)。凭据、实际实例 ID、数据库备份和原始回执只保存在私有运维目录。
+共 47 份准确资料全部按原生 read_page 读回核对。通用、上架、ERP、条码四库更新；WCS/设备与当前来源一致，保留版本。平台生成的结构页不计入批准正文，也未用 LLM 摘要替代代码/测试/合同。
+
+本轮 19 个案例、62 条准确试算与 6 份合同附件通过当前源码纯数据解释器校验；本地网关 17 项测试通过。云端网关已开放本机已实现的 ERP /1、条码 /1 路由，原有 ACL、摘要和合同检查保留。
+
+两个不同业务成员分别验证五类入口的真实 Task、搜索、全文读取及引用复核，共 10 组通过，并拒绝越领域/未知合同。团队仍为 6 个 Task、6 个 Agent，未复制身份或绑定。[脱敏运行核对](20261026.runtime.json)。
+
+写前完成 Knowledge/Metadata SQLite 在线备份、quick_check、六库目录及服务文件归档并检查；没有做整库恢复演练。原始回执和备份只留私有目录。工程文档、凭据及开发流水没有上传到生成库，也没有发布客户本地业务策略。
+
+本轮未运行 Odoo 数据库业务回归、真实模型生成、设备/PDA/相机现场验收；本机 Docker 未启动，准确案例使用离线纯解释器模式，不模拟 ORM。新能力的现场交付仍按对应指南验收。
+
+知识版本已变化，旧 AI 会话应重新打开，不能静默混用。源码合并不自动发布云端；之后更新按 [知识发布流程](../operations/knowledge-publication.md) 执行。历史结构化记录见 [validation](../validation/README.md)，阶段叙述从 Git 历史查阅。
