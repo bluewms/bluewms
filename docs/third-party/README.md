@@ -1,9 +1,5 @@
-# 第三方依赖
+# 外部依赖
 
-MuK 模块来自 [官方 Odoo 20 分支](https://github.com/muk-it/odoo-modules/tree/20.0)，保留原名称、作者及 LGPL-3 许可。原始上游说明见 [MuK README](MuK-upstream-README.md)，许可全文见 [MuK-LICENSE](MuK-LICENSE)。
+仓库中的 `muk_*` 模块来自 [MuK IT 的 Odoo 20 开源项目](https://github.com/muk-it/odoo-modules/tree/20.0). 各模块保留自身的作者信息、版权说明与 LICENSE, 具体许可见各模块 `__manifest__.py` 和 LICENSE.
 
-[Web 来源锁](muk-web-lock.json) 和 [AI 来源锁](muk-ai-lock.json) 保存引入提交、逐文件摘要和本地翻译补丁；版本以实际模块 manifest 为准。中文翻译和计价单位显示补丁不改变模型价格或费用计算。
-
-第三方源码与库存/AI/品牌业务扩展分开维护；品牌及客户行为使用独立 `blue_*` 模块。安装、测试和运行当前步骤见 [Docker 指南](../../docker/README.md) 与 [验证指南](../testing/README.md)。历史安装过程从 Git 查阅，不在这里重复维护阶段日志。
-
-自研 BlueWMS 模块以当前代码实现、manifest、LICENSE 和文件内实际保留的声明为准. 不再用旧版整模块文件摘要表描述当前实现; 已删除台账可从 Git 历史追溯.
+本说明仅用于定位外部依赖, 不增加使用、修改或分发限制. 分发按各模块所附许可证执行, 无需维护额外的逐文件哈希台账. 历史引入记录可从 Git 历史查询.

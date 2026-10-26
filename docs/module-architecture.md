@@ -31,7 +31,7 @@
 | `blue_web_theme` | 品牌主菜单和产品界面，与库存基础分开 | LGPL-3 |
 | `muk_*` 等第三方模块 | Web／主题、AI、Skills、MCP 底座，保留上游名称 | 以各模块清单与[第三方记录](third-party/README.md)为准 |
 
-版本以各 `__manifest__.py` 及部署实例为准，来源与许可细节保留在模块 LICENSE／NOTICE及[第三方依赖说明](third-party/README.md) 中。
+版本以各 `__manifest__.py` 及部署实例为准，来源与许可细节保留在模块 LICENSE／NOTICE 及[第三方依赖说明](third-party/README.md) 中。
 
 ## 后续分类
 
