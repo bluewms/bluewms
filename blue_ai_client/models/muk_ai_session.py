@@ -3,13 +3,17 @@ import uuid
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, UserError
 
-from ..guard import BINDING_TOKEN, CODE_TOOLS, HOOK_TASKS, KNOWLEDGE_TOOLS, TASK_NAME
+from ..guard import (
+    BINDING_TOKEN, CODE_TOOLS, HOOK_TASKS, KNOWLEDGE_TOOLS, REQUIRED_GUIDANCE,
+    REVIEW_APPROVE, REVIEW_QUESTION_PREFIX, TASK_NAME,
+)
 
 
 BINDING_FIELDS = {
     'blue_session_uuid', 'blue_profile_id', 'blue_draft_hash', 'blue_base_release_id',
     'blue_task_name', 'blue_contract', 'blue_company_id', 'blue_identity_scope', 'blue_knowledge_reference',
     'blue_hook_code', 'blue_knowledge_search_results', 'blue_asset_read', 'blue_cloud_identity',
+    'blue_requirements_review',
 }
 
 
@@ -30,6 +34,7 @@ class AISession(models.Model):
     blue_knowledge_search_results = fields.Json(readonly=True, copy=False)
     blue_asset_read = fields.Boolean(readonly=True, copy=False)
     blue_cloud_identity = fields.Json('实际云端 Task 绑定', readonly=True, copy=False)
+    blue_requirements_review = fields.Json('本次需求确认', readonly=True, copy=False)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -50,6 +55,53 @@ class AISession(models.Model):
             allowed = KNOWLEDGE_TOOLS | (CODE_TOOLS if self.blue_profile_id else set())
             return [entry for entry in catalog if entry['name'] in allowed]
         return catalog
+
+    def _enqueue_user_turn(self, user_message, attachments, extend=True):
+        if self.blue_profile_id and self.blue_requirements_review:
+            self._blue_check_binding()
+            self.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_requirements_review': False})
+        return super()._enqueue_user_turn(user_message, attachments, extend=extend)
+
+    def _register_ask_user(self, call):
+        question = (call.get('arguments') or {}).get('question') or ''
+        if self.blue_profile_id and isinstance(question, str) and question.startswith(REVIEW_QUESTION_PREFIX):
+            self._blue_check_binding()
+            requirements = question[len(REVIEW_QUESTION_PREFIX):].strip()
+            pages = {(p.get('scope'), p.get('ref'))
+                     for p in (self.blue_knowledge_reference or {}).get('pages', [])}
+            references = self.blue_knowledge_reference or {}
+            scopes = [book['scope'] for book in references.get('catalog', []) if book['scope'] != 'common']
+            roles = {(p.get('scope'), p.get('role')) for p in references.get('pages', [])}
+            if not self.blue_asset_read or not {('common', ref) for ref in REQUIRED_GUIDANCE}.issubset(pages):
+                raise UserError(self.env._('请先读资产和两份通用必读页,再提交需求确认.'))
+            if len(scopes) != 1 or not {(scopes[0], 'specification'), (scopes[0], 'example')}.issubset(roles):
+                raise UserError(self.env._('请先完整读取本领域规范和匹配案例,再提交需求确认.'))
+            if not 20 <= len(requirements) <= 8192 or '```' in requirements:
+                raise UserError(self.env._('需求确认请提供20至8192字符的具体业务摘要,不要附带代码.'))
+            self.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_requirements_review': {
+                'status': 'pending', 'question': question, 'requirements': requirements,
+                'draft_hash': self.blue_draft_hash, 'call_id': call['call_id'],
+            }})
+        return super()._register_ask_user(call)
+
+    def answer(self, answer, attachment_ids=None):
+        review = self.blue_requirements_review or {}
+        pending = self.pending_ask or {}
+        if self.blue_profile_id and review and self.state == 'waiting' and pending.get('kind') == 'question':
+            self._blue_check_binding()
+            matches = (self.state == 'waiting' and pending.get('kind') == 'question'
+                       and pending.get('text') == review.get('question')
+                       and pending.get('call_id') == review.get('call_id'))
+            if matches and review.get('status') == 'pending':
+                text = answer.strip() if isinstance(answer, str) else ''
+                approved = text == REVIEW_APPROVE or (pending.get('resolution') == 'yesno' and text.lower() == 'yes')
+                self.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_requirements_review': {
+                    **review, 'status': 'confirmed' if approved else 'changes_requested',
+                    'confirmed_by': self.env.uid if approved else False,
+                }})
+            elif review.get('status') == 'confirmed':
+                self.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_requirements_review': False})
+        return super().answer(answer, attachment_ids=attachment_ids)
 
     def _dispatch_tool_call(self, name, arguments, call_id):
         allowed = KNOWLEDGE_TOOLS | (CODE_TOOLS if self.blue_profile_id else set()) | {'tool_load'}
@@ -116,10 +168,14 @@ class AISession(models.Model):
                 '必须完整读 basics/ai-generation-workflow.md 和 basics/requirements-clarification.md,'
                 '分别检索"生成步骤 工具规则"和"五类 需求澄清";本领域规范检索 specification 或业务字段.'
                 '只能使用当前入口的实际工具;没有正文,批准失效,合同不匹配或版本漂移时报告错误,不回退旧示例.'
-                '对照五类入口澄清规则区分已确认事实,待决业务选择和本机能力缺口.'
+                '对照五类入口澄清规则区分已有事实,待核实事实,待决业务选择和本机能力缺口.'
+                '未知厂家,协议,实际字段和单位先核实资料,不能把已有案例推荐成现场事实.'
                 '已有代码和AI生成的需求文字只说明已有实现,不等于用户已确认本次未决选择;提问也不能偷设默认答案.'
                 '凡相关关键选择未明确,先 ask_user 并结束本轮等待真实回答,不先写代码或保存猜测草稿.'
-                '每轮集中问1-3个相关问题,已明确或工具可读取的信息不重复询问;信息完整时直接继续.'
+                '每轮集中问1-3个相关问题,已明确或工具可读取的信息不重复询问;信息完整时直接整理摘要供确认.'
+                '开始生成前仍须一次真实需求摘要确认:按 blue_read_code_asset 返回的 requirements_review 协议,'
+                '用 ask_user 展示具体业务摘要并等待确认.不能自己宣称用户已确认.'
+                '确认后提交的 requirements 必须与获确认摘要逐字相同;同需求自动修复不重复确认.'
                 '不要在同一模型响应同时调用 ask_user 与业务工具.固定执行器未支持的行为必须说明限制,不能假装已实现.',
                 HOOK_TASKS[self.blue_hook_code], self.blue_task_name)
             if not self.blue_profile_id:

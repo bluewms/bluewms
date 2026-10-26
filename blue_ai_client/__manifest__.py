@@ -1,7 +1,7 @@
 {
     'name': '宝蓝 AI 云端连接',
     'summary': '原生 Wiki 知识,用户与业务 Task 绑定,代码草稿工具',
-    'version': '20.0.1.5.1',
+    'version': '20.0.1.5.2',
     'author': '宁波宝蓝物流科技有限公司',
     'website': 'https://www.bluewms.com',
     'license': 'LGPL-3',

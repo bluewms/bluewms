@@ -6,7 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 
 from odoo.addons.muk_mcp.core.tool import mcp_tool
 
-from ..guard import BINDING_TOKEN, REQUIRED_GUIDANCE
+from ..guard import BINDING_TOKEN, HOOK_MODULES, REQUIRED_GUIDANCE, REVIEW_APPROVE, REVIEW_QUESTION_PREFIX
 from ..providers.knowledge import MAX_PAGES, MAX_TOTAL, NativeWiki
 
 
@@ -54,14 +54,24 @@ class BlueCodeAssetTools(models.AbstractModel):
         schema = self.env['blue.extension.contract']._describe(profile.contract)
         schema['instance_scope'] = profile._scope_snapshot()
         knowledge = self._blue_wiki_context(session)
+        # Expose only installed version metadata for this hook, never module settings or secrets.
+        modules = self.env['ir.module.module'].sudo().search_read([
+            ('name', 'in', HOOK_MODULES[profile.hook_code]), ('state', '=', 'installed')],
+            ['name', 'latest_version'])
         session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_asset_read': True})
         return {'profile_id': profile.id, 'name': profile.name, 'hook_code': profile.hook_code,
                 'contract': profile.contract, 'code': profile.draft_code or '',
                 'contract_schema': schema, 'contract_specification': schema,
                 'cloud_knowledge': knowledge,
                 'required_guidance': list(REQUIRED_GUIDANCE),
+                'requirements_review': {'question_prefix': REVIEW_QUESTION_PREFIX,
+                    'approve_answer': REVIEW_APPROVE, 'other_answer': '需要修改',
+                    'status': (session.blue_requirements_review or {}).get('status', 'not_reviewed'),
+                    'summary': (session.blue_requirements_review or {}).get('requirements', ''),
+                    'instruction': 'Resolve missing details, then ask_user with question_prefix + a concrete business summary and these two options. Wait for the real answer. Submit requirements exactly as approved, without the prefix. Never treat existing AI requirements as user confirmation.'},
                 'tests': profile.draft_tests or '', 'requirements': profile.requirements or '',
                 'draft_source': profile.draft_source,
+                'installed_module_versions': {module['name']: module['latest_version'] for module in modules},
                 'draft_hash': session.blue_draft_hash, 'current_draft_hash': profile._draft_hash(),
                 'release_id': profile.active_release_id.id or False,
                 'record_link': f'blue.config.profile,{profile.id}'}
@@ -125,12 +135,19 @@ class BlueCodeAssetTools(models.AbstractModel):
         if not session.blue_asset_read:
             raise UserError(self.env._('请先读取当前绑定资产与本地合同,再提交草稿.'))
         self._blue_wiki(session).verify()
+        review = session.blue_requirements_review or {}
+        if (review.get('status') != 'confirmed' or review.get('confirmed_by') != self.env.uid
+                or review.get('requirements') != requirements or review.get('draft_hash') != expected_hash):
+            raise UserError(self.env._('保存前必须取得本次需求摘要的真实用户确认.请按读资产返回的 requirements_review 使用 ask_user,等待用户确认;不能以模型自述代替.'))
         result = profile.action_submit_draft(
             code, tests, requirements, expected_release_id=profile.active_release_id.id or False,
             conversation_ref=f'muk_ai.session:{session.blue_session_uuid}',
             knowledge_references=json.dumps(session.blue_knowledge_reference, ensure_ascii=False, sort_keys=True),
         )
-        session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_draft_hash': result['draft_hash']})
+        session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({
+            'blue_draft_hash': result['draft_hash'],
+            'blue_requirements_review': {**review, 'draft_hash': result['draft_hash']},
+        })
         return result
 
     @api.model
