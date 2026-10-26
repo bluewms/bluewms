@@ -25,4 +25,4 @@
 
 合同只接受纯 JSON 和受限语法；不能调用 ORM、网络、文件或任意 Python。试算预期为 `expected_order`。首次参与业务时固定“作业单＋原生规则”选择的正式版本或无增强选择；新发布/改绑不追溯改变已固定业务。
 
-规范、完整合同和准确案例只维护在 [上架知识](../wiki/domains/putaway/specification.md)，不在工程文档复制代码。通用生成流程见 [AI 使用](ai.md)，升级见 [运维步骤](../operations/upgrades.md)。
+规范、完整合同和准确案例只维护在 [上架知识](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/putaway/specification.md)，不在工程文档复制代码。通用生成流程见 [AI 使用](ai.md)，升级见 [运维步骤](../operations/upgrades.md)。

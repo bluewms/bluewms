@@ -77,7 +77,7 @@ docker compose -f docker/compose.yaml up -d odoo
 
 在独立 `*_test` 数据库运行测试，复制其需要的附件，并使 `--db-filter` 与测试库完全匹配，避免 HTTP 测试选到主库。`compose.test.yaml` 只关闭一次性测试容器的健康探测，日常服务保留健康检查。
 
-参考示例使用 `scripts/validate_ai_wiki.py`，网关检查使用 `python3 -m unittest discover -s docs/cloud/tests`；业务模块按改动运行对应测试。不要在主库执行库存或真实设备测试夹具。当前已完成的验证与限制见[原生 Wiki 交付](../docs/guides/ai.md)及[WCS 设计](../docs/guides/wcs.md)。
+参考示例使用 `scripts/validate_ai_wiki.py`，网关检查使用 在配套仓库执行 `python3 -m unittest discover -s cloud/tests`；业务模块按改动运行对应测试。不要在主库执行库存或真实设备测试夹具。当前已完成的验证与限制见[原生 Wiki 交付](../docs/guides/ai.md)及[WCS 设计](../docs/guides/wcs.md)。
 
 完整 Wiki 校验现含设备 /1，测试库须安装 `blue_stock_putaway`、`blue_wcs_extension` 和 `blue_wcs_protocol`。设备接口首次安装、人工参数、位置回写及测试范围见[设备交付](../docs/guides/equipment.md)。
 

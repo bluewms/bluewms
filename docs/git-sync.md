@@ -50,6 +50,10 @@ docker compose -f docker/compose.yaml up -d odoo
 - Codex／CodeBuddy 登录及安装到用户目录的 Skill 副本。
 - 云端 Wiki 的实际发布、批准、Task、Agent 或 ACL 变更。
 
-数据与附件使用配套备份，配置资产按已实现的导出／恢复流程处理。**拉取 Git 不会自动更新云端知识**；维护来源与发布流程见[知识维护](operations/knowledge-publication.md)，新用户云端身份见[Tencent 配置](operations/cloud.md)。
+数据与附件使用配套备份，配置资产按已实现的导出／恢复流程处理。**拉取 Git 不会自动更新云端知识**；维护来源与发布流程见[知识维护](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/knowledge-publication.md)，新用户云端身份见[Tencent 配置](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/cloud.md)。
 
 开发规则与计划统一维护在本仓库 `docs/planning/`。仓库外旧 `bluewms20-doc` 不由此仓库同步，也不作为新状态的第二维护来源。
+
+## 腾讯知识配套仓库
+
+独立知识、云端网关、发布记录和运维资料已迁移到私有 Gitee bluewms-wiki, 并列检出在 ../bluewms-wiki. 仅该项目 wiki/ 是上传正文; 运行 Odoo 不要求检出它. 做知识/合同配套开发时同时检出, 在知识项目执行链接、跨仓契约、网关及案例校验. 本仓库两个旧脚本只保留显式调用的兼容入口, 不在 Odoo 启动时加载配套仓库.

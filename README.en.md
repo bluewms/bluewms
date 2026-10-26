@@ -42,8 +42,8 @@ Addons are top-level directories. Choose modules by dependency; see [module arch
 
 - [Documentation index](docs/README.md): current usage, engineering, testing and operations guides.
 - [AI workflow](docs/guides/ai.md): contracts, assets, shared Tasks and user publication.
-- [Generation knowledge](docs/wiki/README.md): the canonical specifications, complete contracts and accurate examples.
-- [Cloud publication status](docs/wiki-publication/README.md): actual versions and read-back evidence; Git merges do not publish knowledge.
+- [Generation knowledge](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md): the canonical specifications, complete contracts and accurate examples.
+- [Cloud publication status](https://gitee.com/jch100322/bluewms-wiki/blob/master/publications/README.md): actual versions and read-back evidence; Git merges do not publish knowledge.
 - [Upgrades](docs/operations/upgrades.md), [Git workflow](docs/git-sync.md) and [validation](docs/testing/README.md).
 
 Production Odoo archives exclude `docs/`; cloud services are deployed separately. Git retains project history. Addon versions and product release tags are managed separately.

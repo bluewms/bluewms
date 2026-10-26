@@ -52,8 +52,8 @@ cd bluewms
 
 - [文档入口](docs/README.md)：业务使用指南、开发、测试和运维。
 - [AI 使用](docs/guides/ai.md)：五类入口、资产、Task、验证与人工发布。
-- [AI 生成知识库](docs/wiki/README.md)：规范、完整合同与准确案例的唯一维护来源。
-- [知识发布状态](docs/wiki-publication/README.md)：实际云端版本与读回结果；Git 合并不自动发布知识。
+- [AI 生成知识库](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md)：规范、完整合同与准确案例的唯一维护来源。
+- [知识发布状态](https://gitee.com/jch100322/bluewms-wiki/blob/master/publications/README.md)：实际云端版本与读回结果；Git 合并不自动发布知识。
 - [安装与升级](docs/operations/upgrades.md) · [Git 协作](docs/git-sync.md) · [验证指南](docs/testing/README.md)。
 
 正式 Odoo 发行包排除整个 `docs/`，云端配套代码单独部署。项目历史通过 Git 查阅，不在当前使用文档中累积阶段日志。模块版本与产品 Release 分别管理。

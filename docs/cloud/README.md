@@ -1,21 +1,5 @@
-# Native Wiki read-only gateway
+# 已迁移至 BlueWMS Wiki 配套仓库
 
-This directory contains separately deployed cloud service sources and deployment material. It is not an Odoo addon. It remains in the development Git repository under `docs/cloud/`; production Odoo release archives exclude `docs/`.
+唯一维护位置: [bluewms-wiki/cloud](https://gitee.com/jch100322/bluewms-wiki/tree/master/cloud).
 
-This gateway forwards authenticated Odoo requests to TencentDB-Agent-Memory's standard `tools/list` and `tools/call` APIs. Tencent performs BM25 search and full-page reads. There is no local example library, Skill dependency, reindexer or arbitrary URL forwarding here.
-
-Use the existing HTTPS model origin. Deploy `native_wiki_gateway.py` with Python 3.9+, adapt the service unit, and include `nginx-native-wiki.conf` inside that origin's HTTPS server. The process listens only on loopback port 8430. Keep deployment configuration and its service credential outside Git, readable only by the dedicated service account. The Odoo client continues to use its existing business user Key.
-
-Copy `native-wiki-config.example.json` to the private service configuration and supply actual tenant, team and six Wiki IDs. Core and Knowledge endpoints must be fixed loopback services. The service credential belongs only on the cloud host; never copy it into Odoo, browser settings or model prompts.
-
-The six target assets must contain the reviewed publication metadata: purpose `odoo_runtime_code_generation`, logical scope, Wiki version, contract list, generation approval, source commit and an `approved_pages` list with exact page digests. Unapproved knowledge is discussion-only. All five implemented domain contracts remain gated by explicit approved metadata and the installed local contract.
-
-The project team shares exactly six running Tasks: the five business Tasks with names in `TASK_NAMES`, plus the ordinary daily Task. Use Tencent's native session selection of existing team Tasks; never create another set for a new user. Identity resolution validates active project membership, the user's active Agent ownership, the unique running team Task, and scoped Wiki access/approval, regardless of who created the Task. A declared `task-agent/link` association is not required. It returns the actual IDs, and the Odoo model request supplies the proxy's standard `x-team-id`, `x-agent-id` and `x-task-id` preset headers. Missing or ambiguous identities, Tasks or required Wiki bindings fail without creating Tasks or selecting the daily Task as a fallback.
-
-The HTTPS interface is limited to `identity`, `context`, `search`, `read` and `verify` under `/odoo-wiki/v1/`. It checks the business credential, Agent ownership, fixed resource bindings, current Core ACL, readiness, approval and contract before forwarding. Full-page reads check the approved digest and Wiki version before and after. Verification requires complete reads of `basics/ai-generation-workflow.md` and `basics/requirements-clarification.md`, the domain specification and a relevant example. The Odoo client independently checks the same required common references. A catalog, search snippet, or another common page does not satisfy this gate. Ambiguity is addressed through `ask_user`, whose runtime pause skips sibling tool calls; identifying every semantic ambiguity remains model behavior and must be checked with real-model probes. Unknown identities, endpoints, domains and operations are rejected.
-
-Before deployment, back up affected service/reverse-proxy files and metadata. Validate the proxy configuration, then reload it. Updating gateway code requires restarting this service; vendor containers are unchanged. For rollback, restore the previous reviewed gateway release and private configuration. Old Skill assets may remain available for older clients; this gateway never uses them as fallback.
-
-From the repository root, run gateway checks with `python3 -m unittest discover -s docs/cloud/tests`. Odoo integration tests live in `blue_ai_client/tests`; run them in an isolated database with a matching dbfilter. Deployment and real Task-routing evidence are recorded in [the AI guide](../guides/ai.md).
-
-Operator setup and exact publishing steps are maintained in [cloud operations](../operations/cloud.md) and [knowledge publication](../operations/knowledge-publication.md).
+本目录仅保留导航, 不维护正文或实现. Odoo 运行不依赖相邻知识仓库; 知识校验和云端部署开发请同时检出该私有仓库. 本次目录迁移不改变云端页面或已发布业务策略.

@@ -34,6 +34,6 @@
 
 ## AI 配置及范围
 
-作业类型的条码页位于 WCS 后；公司可设通用解析，作业类型可覆盖。二维码分隔取值、扫描选择和已授权后续动作通过 `barcode_policy/1`，会话固定正式版本，实际扫码不逐次调用云端模型。完整规范见 [条码知识](../wiki/domains/barcode/specification.md)。
+作业类型的条码页位于 WCS 后；公司可设通用解析，作业类型可覆盖。二维码分隔取值、扫描选择和已授权后续动作通过 `barcode_policy/1`，会话固定正式版本，实际扫码不逐次调用云端模型。完整规范见 [条码知识](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/barcode/specification.md)。
 
 不开放任意模型/前端命令或跨多行自动分摊；额外产品/库存维度更改走正式业务流程。RFID/EPC、报废等附加页面按后续计划处理。现场编码、PDA 注入方式、相机和吞吐须实机验收，详细用例见 [条码验收场景](../testing/barcode-scenarios.md)。

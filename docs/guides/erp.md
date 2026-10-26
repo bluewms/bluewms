@@ -29,4 +29,4 @@
 
 新发布影响新单据，原单与欠单保持固定版本。真实客户 ERP 协议须取得文档、脱敏报文并现场联调；准确试算不等于外部 ERP 已连接。
 
-接口四阶段、完整合同和准确案例只维护在 [ERP 知识](../wiki/domains/erp/specification.md)。生成链路与云端发布状态见 [AI 使用](ai.md)，安装见 [升级说明](../operations/upgrades.md)。
+接口四阶段、完整合同和准确案例只维护在 [ERP 知识](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/erp/specification.md)。生成链路与云端发布状态见 [AI 使用](ai.md)，安装见 [升级说明](../operations/upgrades.md)。
