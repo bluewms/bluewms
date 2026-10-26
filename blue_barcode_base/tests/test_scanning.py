@@ -111,6 +111,90 @@ class TestBarcodeScanning(BaseCommon):
         self.assertEqual(response['event']['group'], row['group'])
         self.assertEqual(session._rows()[0]['quantity'], 0)
 
+    def _destination_child(self, parent=None, **values):
+        return self.env['stock.location'].create({
+            'name': 'Scan child', 'location_id': (parent or self.warehouse.lot_stock_id).id,
+            'company_id': self.env.company.id, 'barcode': 'SCAN-CHILD', **values})
+
+    def test_scanned_child_destination_updates_only_selected_line_without_counting_again(self):
+        destination = self._destination_child()
+        session = self._session()
+        self._scan(session)
+        row = session._rows()[0]
+        payload = {'raw': destination.barcode, 'row_key': row['key'], 'group': row['group']}
+        result = self._scan(session, event='barcode_event_child001', payload=payload)
+        self.assertEqual(session.picking_id.move_line_ids.location_dest_id, destination)
+        self.assertEqual(session.picking_id.move_line_ids.quantity, 1)
+        self.assertEqual(session.picking_id.move_ids.location_dest_id, self.warehouse.lot_stock_id)
+        self.assertEqual(result['event']['key'], row['key'])
+        self.assertEqual(result['event']['group'], session._rows()[0]['group'])
+        replay = self._scan(session, event='barcode_event_child001', payload=payload, revision=1)
+        self.assertTrue(replay['replayed'])
+        self.assertEqual(session.picking_id.move_line_ids.quantity, 1)
+        self._scan(session, event='barcode_event_child002')
+        self.assertEqual(session.picking_id.move_line_ids.quantity, 2)
+        self.assertEqual(session.picking_id.move_line_ids.location_dest_id, destination)
+
+    def test_child_destination_requires_counted_unique_row(self):
+        destination = self._destination_child()
+        session = self._session()
+        self.assertEqual(session._decode(destination.barcode)['kind'], 'location')
+        with self.assertRaisesRegex(UserError, '请先扫描并选择唯一'):
+            self._scan(session, payload={'raw': destination.barcode})
+        self.assertFalse(session.picking_id.move_line_ids.filtered('picked'))
+
+    def test_registered_location_outside_move_destination_is_not_treated_as_product(self):
+        outside = self._destination_child(parent=self.warehouse.view_location_id)
+        session = self._session()
+        self._scan(session)
+        row = session._rows()[0]
+        self.assertEqual(session._decode(outside.barcode)['kind'], 'location')
+        with self.assertRaisesRegex(UserError, '原目的位置范围'):
+            self._scan(session, event='barcode_event_child001',
+                       payload={'raw': outside.barcode, 'row_key': row['key'], 'group': row['group']})
+        self.assertEqual(session.picking_id.move_line_ids.location_dest_id, self.warehouse.lot_stock_id)
+        self.assertEqual(session.picking_id.move_line_ids.quantity, 1)
+
+    def test_child_destination_respects_parent_freeze_and_storage_capacity(self):
+        destination = self._destination_child()
+        session = self._session()
+        self._scan(session)
+        row = session._rows()[0]
+        payload = {'raw': destination.barcode, 'row_key': row['key'], 'group': row['group']}
+        self.warehouse.lot_stock_id.is_locking = True
+        with self.assertRaisesRegex(UserError, '冻结|禁止入库'):
+            self._scan(session, event='barcode_event_child001', payload=payload)
+        self.warehouse.lot_stock_id.is_locking = False
+        category = self.env['stock.storage.category'].create({'name': 'Full child', 'max_weight': 0.5})
+        self.product.weight = 1
+        destination.storage_category_id = category
+        with self.assertRaisesRegex(UserError, '容量'):
+            self._scan(session, event='barcode_event_child002', payload=payload)
+        self.assertEqual(session.picking_id.move_line_ids.location_dest_id, self.warehouse.lot_stock_id)
+        self.assertEqual(session.picking_id.move_line_ids.quantity, 1)
+
+    def test_child_destination_never_rewrites_other_product_lines(self):
+        destination = self._destination_child()
+        picking = self._picking()
+        other = self.env['product.product'].create({
+            'name': 'Other scan product', 'is_storable': True, 'barcode': 'OTHER-SCAN-PRODUCT'})
+        move = self.env['stock.move'].create({
+            'picking_id': picking.id, 'product_id': other.id, 'product_uom_qty': 10,
+            'uom_id': other.uom_id.id, 'location_id': picking.location_id.id,
+            'location_dest_id': picking.location_dest_id.id})
+        move._action_confirm()
+        session = self._session(picking)
+        self._scan(session)
+        self._scan(session, event='barcode_event_other001', payload={'raw': other.barcode})
+        with self.assertRaisesRegex(UserError, '唯一'):
+            self._scan(session, event='barcode_event_child001', payload={'raw': destination.barcode})
+        row = next(r for r in session._rows() if r['product_id'] == self.product.id)
+        self._scan(session, event='barcode_event_child002', payload={
+            'raw': destination.barcode, 'row_key': row['key'], 'group': row['group']})
+        self.assertEqual(move.move_line_ids.location_dest_id, self.warehouse.lot_stock_id)
+        self.assertEqual(move.move_line_ids.quantity, 1)
+        self.assertEqual(picking.move_line_ids.filtered(lambda l: l.product_id == self.product).location_dest_id, destination)
+
     def test_second_terminal_requires_explicit_takeover(self):
         session = self._session()
         with self.assertRaises(UserError):

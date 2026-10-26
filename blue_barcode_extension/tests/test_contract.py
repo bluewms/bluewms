@@ -100,3 +100,39 @@ class TestBarcodeContract(BaseCommon):
         self.env.company.blue_barcode_profile_id = self._profile()
         matches = self.env['blue.barcode.service'].lookup(picking.name)
         self.assertIn({'kind': 'picking', 'id': picking.id, 'name': picking.display_name}, matches)
+
+    def test_native_passthrough_policy_scans_product_then_child_destination(self):
+        warehouse = self.env['stock.warehouse'].create({'name': 'Native scan warehouse', 'code': 'NSC'})
+        product = self.env['product.product'].create({
+            'name': 'Native product', 'is_storable': True, 'barcode': 'NATIVE-PRODUCT'})
+        child = self.env['stock.location'].create({
+            'name': 'Refrigerator', 'barcode': 'NATIVE-REFRIG', 'location_id': warehouse.lot_stock_id.id,
+            'company_id': self.env.company.id})
+        picking = self.env['stock.picking'].create({
+            'picking_type_id': warehouse.in_type_id.id,
+            'location_id': warehouse.in_type_id.default_location_src_id.id,
+            'location_dest_id': warehouse.lot_stock_id.id})
+        self.env['stock.move'].create({
+            'picking_id': picking.id, 'product_id': product.id, 'product_uom_qty': 25,
+            'uom_id': product.uom_id.id, 'location_id': picking.location_id.id,
+            'location_dest_id': picking.location_dest_id.id})
+        picking.action_confirm()
+        view = self.env['blue.barcode.service'].open_session('picking', picking.id, 'native_scan_client01')
+        session = self.env['blue.barcode.session'].browse(view['id'])
+        code = """if request['phase'] == 'parse':
+    result = request['context'].get('standard', {})
+else:
+    if request['parsed']['kind'] == 'product' and len(candidates) == 1:
+        result = {'action': 'count', 'keys': [candidates[0]['key']], 'reason': ''}
+    else:
+        result = {'action': 'select', 'keys': [], 'reason': ''}
+"""
+        session._internal().write({'policy_snapshot': {'code': code, 'release_id': 1}})
+        session.action_event('native_scan_client01', 'native_scan_event001', 0, {'raw': product.barcode})
+        row = session._rows()[0]
+        result = session.action_event('native_scan_client01', 'native_scan_event002', 1, {
+            'raw': child.barcode, 'row_key': row['key'], 'group': row['group']})
+        self.assertEqual(picking.move_line_ids.location_dest_id, child)
+        self.assertEqual(picking.move_line_ids.quantity, 1)
+        self.assertEqual(result['event']['selected'], child.display_name)
+        self.assertEqual(session.policy_snapshot['code'], code)
