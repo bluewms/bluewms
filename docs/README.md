@@ -24,6 +24,6 @@
 
 ## AI 知识
 
-[docs/wiki](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md) 已迁移至独立私有配套仓库, 是唯一生成知识来源,仅包含通用规则、五类规范、合同与准确案例。工程文档、服务器信息、凭据和开发流水不上传到生成库。实际云端状态见 [发布记录](https://gitee.com/jch100322/bluewms-wiki/blob/master/publications/README.md),六库逻辑绑定见 [注册表](https://gitee.com/jch100322/bluewms-wiki/blob/master/registry/native-wiki-knowledge-registry.json)。
+[bluewms-wiki/wiki](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md) 已迁移至独立私有配套仓库, 是唯一生成知识来源,仅包含通用规则、五类规范、合同与准确案例。工程文档、服务器信息、凭据和开发流水不上传到生成库。实际云端状态见 [发布记录](https://gitee.com/jch100322/bluewms-wiki/blob/master/publications/README.md),六库逻辑绑定见 [注册表](https://gitee.com/jch100322/bluewms-wiki/blob/master/registry/native-wiki-knowledge-registry.json)。
 
 源码实现、数据库安装、知识批准、真实模型/设备验收分别核对。Git 不同步业务数据或自动发布云端知识。正式 Odoo 发行包排除整个 docs,云端服务源码仍保留在 [cloud](https://gitee.com/jch100322/bluewms-wiki/blob/master/cloud/README.md)。

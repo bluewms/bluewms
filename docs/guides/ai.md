@@ -33,6 +33,6 @@
 
 业务用户在 Odoo 填写自己的连接 Key 和准确 Agent 名称。服务管理凭据只留云端，不进入模型、浏览器或公开文档。新增用户、路由和异常排查见 [云端运维](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/cloud.md)。
 
-Wiki ready、知识批准、草稿验证和策略发布是不同状态。知识来源仅维护在 [docs/wiki](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md)，工程文档不上传到生成库；改文稿不自动发布云端，见 [知识发布流程](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/knowledge-publication.md)。
+Wiki ready、知识批准、草稿验证和策略发布是不同状态。知识来源仅维护在 [bluewms-wiki/wiki](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md)，工程文档不上传到生成库；改文稿不自动发布云端，见 [知识发布流程](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/knowledge-publication.md)。
 
 生成代码前还需要真实需求摘要确认: 使用读资产返回的 requirements_review 协议调用 ask_user, 用户实际确认后本地保存受保护的确认记录. 模型自称已确认、需求文字变化或旧确认跨新用户请求均不能通过提交门禁. 同一已确认摘要下的自动修复不重复确认.
