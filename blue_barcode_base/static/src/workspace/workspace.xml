@@ -181,6 +181,7 @@
                                     <span t-if="group.mixedRoutes" class="text-muted"><t t-out="row.source"/><t t-if="row.destination"> → <t t-out="row.destination"/></t></span>
                                     <span t-if="row.lot" class="o_blue_barcode_lot"><i aria-hidden="true" class="oi" data-icon="sell"/> <t t-out="row.lot"/></span>
                                     <span t-elif="['lot','serial'].includes(row.tracking)" class="text-muted" t-out="row.tracking === 'serial' ? '需扫描序列号' : '需扫描批次'"/>
+                                    <span t-if="row.destination_package" class="o_blue_barcode_lot"><i aria-hidden="true" class="oi" data-icon="inventory_2"/> <t t-out="row.destination_package"/></span>
                                 </div>
                                 <div class="o_blue_barcode_row_quantity">
                                     <small t-out="this.state.session.kind === 'inventory' ? '实盘 / 账面' : '已扫 / 应作业'"/>
