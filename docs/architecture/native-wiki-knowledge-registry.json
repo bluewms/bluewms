@@ -35,15 +35,15 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "6",
-        "source_pages": 4,
+        "version": "10",
+        "source_pages": 5,
         "content_uploaded": true,
         "agent_bound": true,
         "asset_status": "approved"
       },
       "contracts": [],
-      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
-      "publication_manifest": "../wiki-publication/20261026.manifest.json"
+      "source_commit": "3371fdb2fff796b7534800f7fada5134019e4096",
+      "publication_manifest": "../wiki-publication/20261026-clarification-final.manifest.json"
     },
     {
       "scope": "putaway",
@@ -63,7 +63,7 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "4",
+        "version": "6",
         "source_pages": 7,
         "content_uploaded": true,
         "agent_bound": true,
@@ -73,8 +73,8 @@
         "putaway_policy/1",
         "putaway_policy/2"
       ],
-      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
-      "publication_manifest": "../wiki-publication/20261026.manifest.json"
+      "source_commit": "bcd47c71418eeaa76b20d64270201cc063c4b2b6",
+      "publication_manifest": "../wiki-publication/20261026-clarification-final.manifest.json"
     },
     {
       "scope": "erp",
@@ -92,7 +92,7 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "4",
+        "version": "6",
         "source_pages": 5,
         "content_uploaded": true,
         "agent_bound": true,
@@ -101,8 +101,8 @@
       "contracts": [
         "erp_mapping/1"
       ],
-      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
-      "publication_manifest": "../wiki-publication/20261026.manifest.json"
+      "source_commit": "bcd47c71418eeaa76b20d64270201cc063c4b2b6",
+      "publication_manifest": "../wiki-publication/20261026-clarification-final.manifest.json"
     },
     {
       "scope": "wcs",
@@ -129,7 +129,7 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "4",
+        "version": "6",
         "source_pages": 14,
         "content_uploaded": true,
         "agent_bound": true,
@@ -138,8 +138,8 @@
       "contracts": [
         "wcs_creation/4"
       ],
-      "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
-      "publication_manifest": "../wiki-publication/20261026.manifest.json"
+      "source_commit": "bcd47c71418eeaa76b20d64270201cc063c4b2b6",
+      "publication_manifest": "../wiki-publication/20261026-clarification-final.manifest.json"
     },
     {
       "scope": "equipment",
@@ -164,7 +164,7 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "8",
+        "version": "10",
         "source_pages": 12,
         "content_uploaded": true,
         "agent_bound": true,
@@ -173,8 +173,8 @@
       "contracts": [
         "device_protocol/1"
       ],
-      "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
-      "publication_manifest": "../wiki-publication/20261026.manifest.json"
+      "source_commit": "bcd47c71418eeaa76b20d64270201cc063c4b2b6",
+      "publication_manifest": "../wiki-publication/20261026-clarification-final.manifest.json"
     },
     {
       "scope": "barcode",
@@ -192,7 +192,7 @@
       "approved_for_native_generation": true,
       "cloud_publication": {
         "status": "ready",
-        "version": "4",
+        "version": "10",
         "source_pages": 5,
         "content_uploaded": true,
         "agent_bound": true,
@@ -201,8 +201,8 @@
       "contracts": [
         "barcode_policy/1"
       ],
-      "source_commit": "7f28db3f1ad8dcea04a6025d98dc25b30bb07ff4",
-      "publication_manifest": "../wiki-publication/20261026.manifest.json"
+      "source_commit": "cfbbfba540c027a837ffb6735fab2d611e823265",
+      "publication_manifest": "../wiki-publication/20261026-clarification-final.manifest.json"
     }
   ],
   "routes": {
@@ -328,5 +328,9 @@
   ],
   "additional_deployment_evidence": [
     "../migrations/device-protocol-20.validation.json"
+  ],
+  "required_common_guidance": [
+    "basics/ai-generation-workflow.md",
+    "basics/requirements-clarification.md"
   ]
 }
