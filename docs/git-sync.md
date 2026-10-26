@@ -31,7 +31,7 @@ Python 修改需要重新加载服务；模型字段、XML 数据或迁移变化
 
 原生 Wiki／WCS /4 接入涉及以下模块，已有实例应先在隔离库验证：
 
-本次已移除 WES 专用模块。已安装 `blue_wcs_wes` 的机器先按[退役步骤](migrations/wes-retirement-20.md)在旧源码上完成核对和卸载，再切换新提交及升级；有 WES 数据的实例须先制定专门迁移方案。
+本次已移除 WES 专用模块。已安装 `blue_wcs_wes` 的机器先按[退役步骤](operations/upgrades.md)在旧源码上完成核对和卸载，再切换新提交及升级；有 WES 数据的实例须先制定专门迁移方案。
 
 ```sh
 docker compose -f docker/compose.yaml stop odoo
@@ -41,7 +41,7 @@ docker compose -f docker/compose.yaml up -d odoo
 
 只选择本实例已安装或本次明确需要的模块。升级后核对人工参数、客户草稿／版本／发布、库存及在途任务；不自动恢复旧绑定或发布策略。旧 AI 代码会话从资产页重新打开，普通聊天仍使用日常任务。各机器使用自己的 `BLUEWMS_RUNTIME_DIR`、登录用户、业务 Key 与 Agent。
 
-设备协议 /1 还需首次显式安装 `blue_wcs_protocol`，并升级已安装的 `blue_ai_client`、`blue_wcs_base` 及 `blue_wcs_extension`；仅拉源码不会创建字段或开放类别接口。完整命令、人工参数与限制见[设备接口交付](migrations/device-protocol-20.md)。通用／设备 Wiki 更新后，从业务页面新开 AI 会话取得当前知识版本。
+设备协议 /1 还需首次显式安装 `blue_wcs_protocol`，并升级已安装的 `blue_ai_client`、`blue_wcs_base` 及 `blue_wcs_extension`；仅拉源码不会创建字段或开放类别接口。完整命令、人工参数与限制见[设备接口交付](guides/equipment.md)。通用／设备 Wiki 更新后，从业务页面新开 AI 会话取得当前知识版本。
 
 ## Git 不同步什么
 
@@ -50,6 +50,6 @@ docker compose -f docker/compose.yaml up -d odoo
 - Codex／CodeBuddy 登录及安装到用户目录的 Skill 副本。
 - 云端 Wiki 的实际发布、批准、Task、Agent 或 ACL 变更。
 
-数据与附件使用配套备份，配置资产按已实现的导出／恢复流程处理。**拉取 Git 不会自动更新云端知识**；维护来源与发布流程见[知识维护](architecture/ai-generation-knowledge-maintenance.md)，新用户云端身份见[Tencent 配置](architecture/tencent-memory-configuration.md)。
+数据与附件使用配套备份，配置资产按已实现的导出／恢复流程处理。**拉取 Git 不会自动更新云端知识**；维护来源与发布流程见[知识维护](operations/knowledge-publication.md)，新用户云端身份见[Tencent 配置](operations/cloud.md)。
 
 开发规则与计划统一维护在本仓库 `docs/planning/`。仓库外旧 `bluewms20-doc` 不由此仓库同步，也不作为新状态的第二维护来源。

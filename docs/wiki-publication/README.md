@@ -1,21 +1,7 @@
-# 知识发布证据
+# 知识发布状态
 
-本目录只保留实际发布与验收材料，不保存一份 Wiki 或 Skill 正文副本。
+更新: 2026-10-26。本轮正在按当前源码整理六库并验证,实际云端结果以本目录完成后的发布回执为准。历史 manifest/问答 JSON 保存在 [结构化记录](../validation/README.md),旧阶段叙述从 Git 查阅。
 
-| 文件 | 说明 |
-|---|---|
-| [发布记录](native-wiki-20261018.md) | 六库 29 份资料的发布、准确读回及当时的临时问答范围 |
-| [准确来源清单](native-wiki-20261018.manifest.json) | 来源提交、文件、源摘要和发布正文摘要 |
-| [问答证据](native-wiki-20261018.qa.json) | 八组真实问答及搜索／读页摘要，不能代替真实 Task 路由验收 |
-| [设备协议发布](device-protocol-20261018.md) | 通用／设备 Wiki 版本 4、TUSK 真实生成及隔离执行范围 |
-| [WES 退役知识发布](wes-retirement-20261019.md) | 设备版本 8、WCS 版本 4，26 页准确读回及本地 Task 检索 |
-| [WES 退役准确来源](wes-retirement-20261019.manifest.json) | 新增 WES 参考及设备／WCS 文稿来源摘要 |
-| [统一设备接口发布](device-interface-20261019.md) | 设备 Wiki 版本 6、统一页面与代码决定回写规则 |
-| [统一设备接口来源](device-interface-20261019.manifest.json) | 设备 11 页准确来源及摘要 |
-| [设备协议准确来源](device-protocol-20261018.manifest.json) | 本轮 15 页的来源提交及摘要，不覆盖其他四库历史来源 |
+规范与案例唯一来源为 [docs/wiki](../wiki/README.md)。本地 verified、云端索引 ready、平台批准和客户策略发布分别管理;Git 合并不会自动上传知识。
 
-正式 Odoo 原生接入、五类真实 Task 及代码生成验证以[接入记录](../migrations/native-wiki-runtime-20.md)和[最新验收](../migrations/native-wiki-runtime-20.validation.json)为准。
-
-设备 /1 的新增能力、安装及最终验收见[设备交付](../migrations/device-protocol-20.md)和[设备验收](../migrations/device-protocol-20.validation.json)。
-
-维护来源只有 [docs/wiki/](../wiki/README.md)，操作流程见[维护与发布](../architecture/ai-generation-knowledge-maintenance.md)。旧 `wcs-v4` Skill 候选包和重复综合知识稿已从当前工作树移除，历史通过 Git 追溯；云端现存旧 Skill 和业务数据未因文档整理被删除。
+发布步骤见 [维护流程](../operations/knowledge-publication.md),六库当前逻辑清单见 [注册表](../architecture/native-wiki-knowledge-registry.json)。凭据、实际实例 ID、数据库备份和原始回执只保存在私有运维目录。

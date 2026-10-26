@@ -14,4 +14,4 @@ Odoo 20 的 MuK 扩展：使用当前用户的业务 Key／Agent，提供原生 
 
 默认输出预算为 16384；不同自定义值保留。代码回复被截断时明确报错，不执行不完整工具调用。正式库存与设备业务按本地固定代码执行，不因模型断网停止。
 
-部署步骤与完整验收见[原生 Wiki 与五类 Task 接入](../docs/migrations/native-wiki-runtime-20.md)。知识来源在[docs/wiki](../docs/wiki/README.md)，独立云端只读通道的代码及部署见[cloud/README](../docs/cloud/README.md)。旧代码会话保留历史，从资产页新开；跨机器拉取后仍需按实际变更升级数据库。
+部署步骤与完整验收见[原生 Wiki 与五类 Task 接入](../docs/guides/ai.md)。知识来源在[docs/wiki](../docs/wiki/README.md)，独立云端只读通道的代码及部署见[cloud/README](../docs/cloud/README.md)。旧代码会话保留历史，从资产页新开；跨机器拉取后仍需按实际变更升级数据库。

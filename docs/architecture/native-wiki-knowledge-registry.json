@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "document_kind": "engineering_registry_reference_not_instance_configuration",
-  "date": "2026-10-19",
+  "date": "2026-10-26",
   "source_root": "../wiki",
   "audience": "odoo_runtime_code_generation_assistant",
   "actual_ids_in_private_deployment_receipt": true,
@@ -42,7 +42,7 @@
       },
       "contracts": [],
       "source_commit": "ecba9607eedc398819013062c9e447249f3c481b",
-      "publication_manifest": "../wiki-publication/device-protocol-20261018.manifest.json"
+      "publication_manifest": "../validation/device-protocol-20261018.manifest.json"
     },
     {
       "scope": "putaway",
@@ -53,6 +53,8 @@
         "domains/putaway/examples/same-batch-name.md",
         "domains/putaway/examples/same-lot.md",
         "domains/putaway/examples/same-picking.md",
+        "domains/putaway/putaway-policy-v1-contract.json",
+        "domains/putaway/putaway-policy-v2-contract.json",
         "domains/putaway/specification.md"
       ],
       "local_contract_implemented": true,
@@ -71,17 +73,20 @@
         "putaway_policy/2"
       ],
       "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
+      "publication_manifest": "../validation/native-wiki-20261018.manifest.json"
     },
     {
       "scope": "erp",
       "display_name": "Odoo-AI-ERP接口",
       "hook_code": "erp_mapping",
       "sources": [
+        "domains/erp/erp-mapping-v1-contract.json",
         "domains/erp/examples/README.md",
+        "domains/erp/examples/inbound-completion.md",
+        "domains/erp/examples/inventory-difference.md",
         "domains/erp/specification.md"
       ],
-      "local_contract_implemented": false,
+      "local_contract_implemented": true,
       "native_retrieval_enabled": true,
       "approved_for_native_generation": false,
       "cloud_publication": {
@@ -92,9 +97,11 @@
         "agent_bound": true,
         "asset_status": "candidate"
       },
-      "contracts": [],
+      "contracts": [
+        "erp_mapping/1"
+      ],
       "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
+      "publication_manifest": "../validation/native-wiki-20261018.manifest.json"
     },
     {
       "scope": "wcs",
@@ -131,7 +138,7 @@
         "wcs_creation/4"
       ],
       "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
-      "publication_manifest": "../wiki-publication/wes-retirement-20261019.manifest.json"
+      "publication_manifest": "../validation/wes-retirement-20261019.manifest.json"
     },
     {
       "scope": "equipment",
@@ -166,17 +173,20 @@
         "device_protocol/1"
       ],
       "source_commit": "4f71220b530987a8790369d0b6bc36e94bb27129",
-      "publication_manifest": "../wiki-publication/wes-retirement-20261019.manifest.json"
+      "publication_manifest": "../validation/wes-retirement-20261019.manifest.json"
     },
     {
       "scope": "barcode",
       "display_name": "Odoo-AI-条码策略",
       "hook_code": "barcode_policy",
       "sources": [
+        "domains/barcode/barcode-policy-v1-contract.json",
         "domains/barcode/examples/README.md",
+        "domains/barcode/examples/delimiter-qr.md",
+        "domains/barcode/examples/native-and-qr.md",
         "domains/barcode/specification.md"
       ],
-      "local_contract_implemented": false,
+      "local_contract_implemented": true,
       "native_retrieval_enabled": true,
       "approved_for_native_generation": false,
       "cloud_publication": {
@@ -187,9 +197,11 @@
         "agent_bound": true,
         "asset_status": "candidate"
       },
-      "contracts": [],
+      "contracts": [
+        "barcode_policy/1"
+      ],
       "source_commit": "5770f8ade7107117051594577c6344cb068fbcd1",
-      "publication_manifest": "../wiki-publication/native-wiki-20261018.manifest.json"
+      "publication_manifest": "../validation/native-wiki-20261018.manifest.json"
     }
   ],
   "routes": {
@@ -210,7 +222,9 @@
         "common",
         "erp"
       ],
-      "contracts": [],
+      "contracts": [
+        "erp_mapping/1"
+      ],
       "knowledge_discussion_enabled": true,
       "code_generation_enabled": false
     },
@@ -241,7 +255,9 @@
         "common",
         "barcode"
       ],
-      "contracts": [],
+      "contracts": [
+        "barcode_policy/1"
+      ],
       "knowledge_discussion_enabled": true,
       "code_generation_enabled": false
     }

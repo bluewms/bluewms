@@ -4,4 +4,4 @@
 
 上架 v1／v2 保持兼容；WCS 由对应扩展注册合同，新生成使用 /4 的 lines/tasks，旧 /1–/3 历史保留。规范和示例不能给解释器增加能力，正式代码在本地执行。
 
-业务使用见[上架说明](../docs/migrations/putaway-policy-20.md)和[WCS 设计](../docs/design/wcs-v4-orchestration.md)，知识读取见[原生 Wiki 接入](../docs/migrations/native-wiki-runtime-20.md)。
+业务使用见[上架说明](../docs/guides/putaway.md)和[WCS 设计](../docs/guides/wcs.md)，知识读取见[原生 Wiki 接入](../docs/guides/ai.md)。

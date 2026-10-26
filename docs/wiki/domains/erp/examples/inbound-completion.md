@@ -220,6 +220,116 @@ else:
       "state": "rejected",
       "external_number": ""
     }
+  },
+  {
+    "name": "outgoing-receive",
+    "input": {
+      "request": {
+        "phase": "receive",
+        "kind": "outgoing",
+        "event_key": "receive-outgoing",
+        "external_id": "outgoing-001",
+        "number": "OUTGOING-001",
+        "message": {
+          "id": "outgoing-001",
+          "number": "OUTGOING-001",
+          "lines": [
+            {
+              "id": "10",
+              "product": "ERP-PRODUCT",
+              "qty": 10,
+              "unit": "Units"
+            }
+          ]
+        },
+        "http_status": 0,
+        "operation": ""
+      },
+      "candidates": [
+        {
+          "id": "10",
+          "product": "ERP-PRODUCT",
+          "qty": 10,
+          "unit": "Units"
+        }
+      ]
+    },
+    "expected_result": {
+      "documents": [
+        {
+          "external_id": "outgoing-001",
+          "number": "OUTGOING-001",
+          "partner_code": "",
+          "lines": [
+            {
+              "external_line_id": "10",
+              "product_code": "ERP-PRODUCT",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": "",
+              "source_code": "",
+              "destination_code": "",
+              "group": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "internal-receive",
+    "input": {
+      "request": {
+        "phase": "receive",
+        "kind": "internal",
+        "event_key": "receive-internal",
+        "external_id": "internal-001",
+        "number": "INTERNAL-001",
+        "message": {
+          "id": "internal-001",
+          "number": "INTERNAL-001",
+          "lines": [
+            {
+              "id": "10",
+              "product": "ERP-PRODUCT",
+              "qty": 10,
+              "unit": "Units"
+            }
+          ]
+        },
+        "http_status": 0,
+        "operation": ""
+      },
+      "candidates": [
+        {
+          "id": "10",
+          "product": "ERP-PRODUCT",
+          "qty": 10,
+          "unit": "Units"
+        }
+      ]
+    },
+    "expected_result": {
+      "documents": [
+        {
+          "external_id": "internal-001",
+          "number": "INTERNAL-001",
+          "partner_code": "",
+          "lines": [
+            {
+              "external_line_id": "10",
+              "product_code": "ERP-PRODUCT",
+              "quantity": 10,
+              "uom": "Units",
+              "lot": "",
+              "source_code": "",
+              "destination_code": "",
+              "group": ""
+            }
+          ]
+        }
+      ]
+    }
   }
 ]
 ```
@@ -227,3 +337,5 @@ else:
 ## 验证范围
 
 本页代码与试算逐项对比同版本解释器。业务回归另覆盖重复推送、欠单 6+4、累计超量拒绝、原生库存调整快照及公司隔离；均为隔离库与模拟 HTTP，不作为真实 ERP 联调结果。
+
+同一映射结构覆盖 incoming/outgoing/internal 三种单据,本页包含三方向接收试算;实际作业类型、来源/目的范围及库存约束由人工配置和固定服务复核. 纯转换通过不代表真实 ERP 已联调.

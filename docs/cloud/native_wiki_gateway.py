@@ -21,7 +21,7 @@ HOOKS = {
     'wcs_creation': ('wcs', ['wcs_creation/4']),
     'erp_mapping': ('erp', ['erp_mapping/1']),
     'device_protocol': ('equipment', ['device_protocol/1']),
-    'barcode_policy': ('barcode', []),
+    'barcode_policy': ('barcode', ['barcode_policy/1']),
 }
 TASK_NAMES = {'putaway_policy': '上架策略', 'wcs_creation': 'WCS生成策略', 'erp_mapping': 'ERP接口',
               'device_protocol': '设备连接接口', 'barcode_policy': '条码扫描策略'}

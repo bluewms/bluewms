@@ -10,8 +10,8 @@ AI 与上架共用浮窗，但使用独立 **WCS生成策略** Task 和原生 WC
 
 生产接口定义不保存示例正文，客户草稿、不可变版本及 /1–/3 历史保留，不自动转版、发布或改绑。真实设备的散件、库区和同数据多程序能力须现场确认，模拟与 HTTP 桩不代表真机验收。
 
-- [使用及迁移边界](../docs/migrations/wcs-20.md)
-- [编排设计与验收不变量](../docs/design/wcs-v4-orchestration.md)
-- [当前 AI 接入与验证](../docs/migrations/native-wiki-runtime-20.md)
+- [使用及迁移边界](../docs/guides/wcs.md)
+- [编排设计与验收不变量](../docs/guides/wcs.md)
+- [当前 AI 接入与验证](../docs/guides/ai.md)
 - [真实合同核对附件](../docs/wiki/domains/wcs/wcs-creation-v4-contract.json)
 - [十组准确案例](../docs/wiki/domains/wcs/examples/README.md)
