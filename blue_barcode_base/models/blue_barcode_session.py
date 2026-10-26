@@ -156,9 +156,8 @@ class BlueBarcodeSession(models.Model):
         possibilities = []
         if any(r['barcode'] == raw for r in rows):
             possibilities.append('product')
-        if self.env['stock.location'].search_count([
-                ('barcode', '=', raw), ('id', 'in', list({r['location_id'] for r in rows}
-                    | {r['destination_id'] for r in rows if r['destination_id']}))], limit=1):
+        if self.env['stock.location'].with_context(active_test=False).search_count([
+                ('barcode', '=', raw), ('company_id', 'in', [False, self.company_id.id])], limit=1):
             possibilities.append('location')
         if any(r['package'] == raw for r in rows):
             possibilities.append('package')
@@ -349,6 +348,54 @@ class BlueBarcodeSession(models.Model):
             result['after'] = after
         return result
 
+    def _select_scanned_location(self, code, row_key, group_key):
+        locations = self.env['stock.location'].search([
+            ('barcode', '=', code), ('company_id', 'in', [False, self.company_id.id])], limit=2)
+        if len(locations) != 1:
+            raise UserError(self.env._('位置已停用或编码不唯一,请核对位置条码.'))
+        location = locations
+        rows = self._rows()
+        exact = [r for r in rows if location.id in (r['location_id'], r['destination_id'])]
+        selected = [r for r in rows if r['key'] == row_key] if row_key else [
+            r for r in rows if r['counted'] and r['quantity'] > 0 and (not group_key or r['group'] == group_key)]
+        row = selected[0] if len(selected) == 1 else None
+        move = self.env['stock.move'].browse(row['move_id']) if row else self.env['stock.move']
+        destination = bool(row and location.id != row['location_id'] and location._child_of(move.location_dest_id))
+        if destination and row['counted'] and row['quantity'] > 0:
+            if group_key and row['group'] != group_key:
+                raise UserError(self.env._('所选明细与当前页不同,请重新选择.'))
+            if location.usage not in ('internal', 'transit'):
+                raise UserError(self.env._('目的子库位必须是内部或中转位置.'))
+            line = self.env['stock.move.line'].browse(row['line_id'])
+            line.check_access('write')
+            if line.location_dest_id != location:
+                if line.result_package_id:
+                    raise UserError(self.env._('已装箱明细不能单独更换目的位置,请先核对整包作业.'))
+                if (line.location_id._blue_stock_blocking_location()
+                        or location._blue_stock_blocking_location(receiving=True)):
+                    raise UserError(self.env._('来源位置已冻结或目的位置禁止入库,不能更换目的库位.'))
+                incoming = self.env['stock.move.line'].search([
+                    ('id', '!=', line.id), ('product_id', '=', line.product_id.id),
+                    ('location_dest_id', '=', location.id), ('state', 'not in', ['draft', 'done', 'cancel'])])
+                occupied = sum(location.quant_ids.filtered(lambda q: q.product_id == line.product_id).mapped('quantity'))
+                occupied += sum(incoming.mapped('quantity_product_uom'))
+                if not location.with_context(exclude_sml_ids={line.id})._check_can_be_used(
+                        line.product_id, quantity=line.quantity_product_uom, location_qty=occupied):
+                    raise UserError(self.env._('目的库位不满足原生存储类别或容量要求.'))
+                line.write({'location_dest_id': location.id})
+            current = next(r for r in self._rows() if r['key'] == row['key'])
+            self._internal().write({'scan_context': {'destination_id': location.id}})
+            return {'selected': location.display_name, 'key': row['key'], 'group': current['group']}
+        if not exact:
+            if row and not destination:
+                raise UserError(self.env._('位置不在所选明细的原目的位置范围内.'))
+            raise UserError(self.env._('请先扫描并选择唯一的商品明细,再扫描目的子库位.'))
+        source = any(r['location_id'] == location.id for r in exact)
+        field = 'location_id' if source else 'destination_id'
+        self._internal().write({'scan_context': {field: location.id}})
+        groups = {r['group'] for r in exact if r[field] == location.id}
+        return {'selected': location.display_name, **({'group': groups.pop()} if len(groups) == 1 else {})}
+
     def _consume_scan(self, raw, row_key, group_key):
         parsed = self._decode(raw)
         if (self.scan_context or {}).get('pending') and parsed['kind'] != 'lot':
@@ -363,16 +410,7 @@ class BlueBarcodeSession(models.Model):
         rows = self._rows()
         context = dict(self.scan_context or {})
         if parsed['kind'] == 'location':
-            locations = self.env['stock.location'].search([
-                ('barcode', '=', parsed['code']), ('id', 'in', list({r['location_id'] for r in rows}
-                    | {r['destination_id'] for r in rows if r['destination_id']}))], limit=2)
-            if len(locations) != 1:
-                raise UserError(self.env._('位置不在本单范围或编码不唯一.'))
-            source = any(r['location_id'] == locations.id for r in rows)
-            context = {'location_id' if source else 'destination_id': locations.id}
-            result = {'selected': locations.display_name}
-            matching_groups = {r['group'] for r in rows
-                if r['location_id' if source else 'destination_id'] == locations.id}
+            return self._followup(decision, self._select_scanned_location(parsed['code'], row_key, group_key))
         elif parsed['kind'] == 'package':
             packages = {r['package_id'] for r in rows if r['package'] == parsed['code'] and r['package_id']}
             if len(packages) != 1:

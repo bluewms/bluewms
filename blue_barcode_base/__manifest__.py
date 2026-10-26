@@ -1,6 +1,6 @@
 {
     'name': 'BlueWMS 条码作业',
-    'version': '20.0.1.3.1',
+    'version': '20.0.1.3.2',
     'author': '宁波宝蓝物流科技有限公司',
     'license': 'AGPL-3',
     'depends': ['stock', 'web', 'barcodes', 'barcodes_gs1_nomenclature', 'blue_stock_rules'],
