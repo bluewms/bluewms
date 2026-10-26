@@ -234,6 +234,7 @@ class TestBlueCloud(BaseCommon):
         result = tools._mcp_blue_read_code_asset()
         self.assertNotIn('example_code', result)
         self.assertNotIn('example_tests', result)
+        self.assertEqual(result['draft_source'], self.profile.draft_source)
         self.assertEqual(result['cloud_knowledge']['source'], 'tencent_wiki')
         self.assertFalse(result['cloud_knowledge']['pages'])
         self._read_standard_knowledge(tools)

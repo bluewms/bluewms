@@ -61,6 +61,7 @@ class BlueCodeAssetTools(models.AbstractModel):
                 'cloud_knowledge': knowledge,
                 'required_guidance': list(REQUIRED_GUIDANCE),
                 'tests': profile.draft_tests or '', 'requirements': profile.requirements or '',
+                'draft_source': profile.draft_source,
                 'draft_hash': session.blue_draft_hash, 'current_draft_hash': profile._draft_hash(),
                 'release_id': profile.active_release_id.id or False,
                 'record_link': f'blue.config.profile,{profile.id}'}
