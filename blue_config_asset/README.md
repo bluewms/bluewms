@@ -4,4 +4,4 @@
 
 AI 会话固定资产、用户／公司、合同、草稿摘要及正式基础版本。新生成使用原生 Wiki，引用、批准版本及摘要随准确代码版本保存；不能用聊天摘要重建代码或覆盖并发修改。
 
-使用见[上架说明](../docs/migrations/putaway-policy-20.md)、[WCS 说明](../docs/migrations/wcs-20.md)和[原生 Wiki 接入](../docs/migrations/native-wiki-runtime-20.md)。
+使用见[上架说明](../docs/guides/putaway.md)、[WCS 说明](../docs/guides/wcs.md)和[原生 Wiki 接入](../docs/guides/ai.md)。

@@ -22,8 +22,8 @@ class FakeGateway(module.NativeWikiGateway):
         self.assets = {}
         self.pages = {}
         self.versions = {}
-        for scope, refs in {'common': ['basics/overview.md'], 'putaway': ['domains/putaway/specification.md', 'domains/putaway/examples/same-picking.md'], 'wcs': ['domains/wcs/specification.md'], 'erp': ['domains/erp/specification.md'], 'equipment': ['domains/equipment/specification.md']}.items():
-            contracts = [] if scope in ['common', 'erp'] else ['putaway_policy/2'] if scope == 'putaway' else ['device_protocol/1'] if scope == 'equipment' else ['wcs_creation/4']
+        for scope, refs in {'common': ['basics/overview.md'], 'putaway': ['domains/putaway/specification.md', 'domains/putaway/examples/same-picking.md'], 'wcs': ['domains/wcs/specification.md'], 'erp': ['domains/erp/specification.md'], 'equipment': ['domains/equipment/specification.md'], 'barcode': ['domains/barcode/specification.md']}.items():
+            contracts = [] if scope in ['common', 'erp'] else ['putaway_policy/2'] if scope == 'putaway' else ['device_protocol/1'] if scope == 'equipment' else ['barcode_policy/1'] if scope == 'barcode' else ['wcs_creation/4']
             self.pages[scope] = {ref: '---\ncontracts: ' + json.dumps(contracts) + '\n---\nAccurate reference.' for ref in refs}
             self.versions[scope] = '2'
             metadata = {'scope': scope, 'purpose': 'odoo_runtime_code_generation', 'generation_ready': scope != 'erp',
@@ -157,6 +157,19 @@ class TestNativeGateway(unittest.TestCase):
         result = self.request('context')
         self.assertTrue(result['catalog'][1]['generation_ready'])
         self.assertEqual(result['catalog'][1]['approved_contracts'], ['erp_mapping/1'])
+
+    def test_barcode_contract_requires_approved_matching_metadata(self):
+        self.payload.update(hook_code='barcode_policy', contract='barcode_policy/1')
+        result = self.request('context')
+        self.assertEqual(result['catalog'][1]['approved_contracts'], ['barcode_policy/1'])
+        asset = self.gateway.assets['barcode']
+        metadata = json.loads(asset['metadata_json'])
+        metadata.update(approved=False, generation_ready=False)
+        asset.update(status='candidate', metadata_json=json.dumps(metadata))
+        with self.assertRaises(module.Rejected):
+            self.request('context')
+        with self.assertRaises(module.Rejected):
+            self.request('context', contract='barcode_policy/2')
 
     def test_each_business_identity_uses_its_exact_task(self):
         for hook, task in module.TASK_NAMES.items():

@@ -1,6 +1,6 @@
 # 模块分类与依赖
 
-更新：2026-10-20。所有 addon 直接位于仓库一级目录，按技术名前缀区分领域，不再套 `muk/`、`stock/` 或 `wcs/` 分类目录。
+更新：2026-10-26。所有 addon 直接位于仓库一级目录，按技术名前缀区分领域，不再套 `muk/`、`stock/` 或 `wcs/` 分类目录。
 
 ## 命名与维护归属
 
@@ -29,13 +29,13 @@
 | `blue_barcode_extension` | 条码 /1、二维码受限解析、AI 资产与固定版本 | AGPL-3 |
 | `blue_barcode_wcs` | 已保存扫描与 WCS 正式入口之间的桥接 | AGPL-3 |
 | `blue_web_theme` | 品牌主菜单和产品界面，与库存基础分开 | LGPL-3 |
-| `muk_*` 等第三方模块 | Web／主题、AI、Skills、MCP 底座，保留上游名称 | 以各模块清单与[第三方记录](third-party/muk-ai-install-2026-10-12.md)为准 |
+| `muk_*` 等第三方模块 | Web／主题、AI、Skills、MCP 底座，保留上游名称 | 以各模块清单与[第三方记录](third-party/README.md)为准 |
 
-版本以各 `__manifest__.py` 及部署实例为准，来源与许可细节保留在模块 LICENSE／NOTICE、`third-party/` 和 `migrations/*source-lock.json` 中。
+版本以各 `__manifest__.py` 及部署实例为准，来源与许可细节保留在模块 LICENSE／NOTICE、`third-party/` 和 `validation/*source-lock.json` 中。
 
 ## 后续分类
 
-条码首版已建立 `blue_barcode_base`（四入口、单据/批次、分页、持久事件）、`blue_barcode_inventory`（盘库实盘桥接）、`blue_barcode_extension`（AI /1 与资产）和 `blue_barcode_wcs`（正式 WCS 入口桥接）,当前仅在隔离库安装验证,见[迁移进度](migrations/barcode-20-progress.md). 主库安装和现场验收单独记录.
+条码由 base、inventory、extension、wcs 四模块组成,按业务需要安装;操作见[条码指南](guides/barcode.md). 实机和实例升级分别验收.
 
 客户 ERP 扩展、其他库存包裹和交付资产继续按需求推进,不能因名称出现在规划中就视为已创建. 常规 HTTP 厂家优先使用设备类别协议资产;新增传输形式或系统没有的认证算法再补通用能力.
 
@@ -50,4 +50,4 @@
 - ERP 连接、主数据和单据处理不以 WCS 为必选；仅设备协同场景增加桥接。
 - 云端 Wiki 和记忆适配合入 `blue_ai_client`，不增加客户本地 `blue_ai_memory` 或示例库式 `blue_ai_skills`。
 
-实际依赖以清单为准。新增迁移必须列出来源、许可、消费者和数据迁移路径；待选库存功能见[迁移候选](planning/bluewms20-migration-selection.md)，实施顺序见[开发计划](planning/bluewms20-development-plan.md)。
+实际依赖以清单为准。新增迁移必须列出来源、许可、消费者和数据迁移路径；待选库存功能见[迁移候选](planning/bluewms20-development-plan.md)，实施顺序见[开发计划](planning/bluewms20-development-plan.md)。

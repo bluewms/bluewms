@@ -176,6 +176,116 @@
         "state": "rejected",
         "external_number": ""
       }
+    },
+    {
+      "name": "outgoing-receive",
+      "input": {
+        "request": {
+          "phase": "receive",
+          "kind": "outgoing",
+          "event_key": "receive-outgoing",
+          "external_id": "outgoing-001",
+          "number": "OUTGOING-001",
+          "message": {
+            "id": "outgoing-001",
+            "number": "OUTGOING-001",
+            "lines": [
+              {
+                "id": "10",
+                "product": "ERP-PRODUCT",
+                "qty": 10,
+                "unit": "Units"
+              }
+            ]
+          },
+          "http_status": 0,
+          "operation": ""
+        },
+        "candidates": [
+          {
+            "id": "10",
+            "product": "ERP-PRODUCT",
+            "qty": 10,
+            "unit": "Units"
+          }
+        ]
+      },
+      "expected_result": {
+        "documents": [
+          {
+            "external_id": "outgoing-001",
+            "number": "OUTGOING-001",
+            "partner_code": "",
+            "lines": [
+              {
+                "external_line_id": "10",
+                "product_code": "ERP-PRODUCT",
+                "quantity": 10,
+                "uom": "Units",
+                "lot": "",
+                "source_code": "",
+                "destination_code": "",
+                "group": ""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "internal-receive",
+      "input": {
+        "request": {
+          "phase": "receive",
+          "kind": "internal",
+          "event_key": "receive-internal",
+          "external_id": "internal-001",
+          "number": "INTERNAL-001",
+          "message": {
+            "id": "internal-001",
+            "number": "INTERNAL-001",
+            "lines": [
+              {
+                "id": "10",
+                "product": "ERP-PRODUCT",
+                "qty": 10,
+                "unit": "Units"
+              }
+            ]
+          },
+          "http_status": 0,
+          "operation": ""
+        },
+        "candidates": [
+          {
+            "id": "10",
+            "product": "ERP-PRODUCT",
+            "qty": 10,
+            "unit": "Units"
+          }
+        ]
+      },
+      "expected_result": {
+        "documents": [
+          {
+            "external_id": "internal-001",
+            "number": "INTERNAL-001",
+            "partner_code": "",
+            "lines": [
+              {
+                "external_line_id": "10",
+                "product_code": "ERP-PRODUCT",
+                "quantity": 10,
+                "uom": "Units",
+                "lot": "",
+                "source_code": "",
+                "destination_code": "",
+                "group": ""
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "inventory_cases": [

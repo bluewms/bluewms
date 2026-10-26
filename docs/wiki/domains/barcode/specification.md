@@ -1,6 +1,6 @@
 # 条码扫描策略 /1
 
-hook: `barcode_policy`. 合同: `barcode_policy/1`. 更新: 2026-10-21. 状态: 本地合同及准确试算已实现;云端知识须独立批准和发布,Git 合并不会自动开放联网生成.
+hook: `barcode_policy`. 合同: `barcode_policy/1`. 更新: 2026-10-26. 状态: 本地合同及准确试算已实现;云端知识须独立批准和发布,Git 合并不会自动开放联网生成.
 
 ## 输入与执行
 
@@ -25,3 +25,5 @@ after 可为空或 next_group/wcs/validate/pack. 它只请求固定注册的后�
 复用纯 JSON 解释器的条件、对象读取、有限切片、标量转换、单层候选循环及本地列表构造. 不允许 import/eval/exec、ORM、网络、任意对象属性、正则或通用 split. 本合同增加 `between(raw, separator, start, end)`: 分隔符长 1–16 字符,start/end 为 1 起算的出现次数,满足 1 <= start < end <= 64. 空段保留,缺少边界明确失败.
 
 完整接口描述见[合同附件](barcode-policy-v1-contract.json),准确示例见[案例目录](examples/README.md). 每份新草稿须提供 2–20 个 expected_result 准确试算,同时覆盖 parse 和 decide,验证后人工发布. 案例通过不等于新代码或客户现场已验证.
+
+作业类型策略需保留非 QR 的标准解析,不能把位置、包裹、批次及 GS1 一律改为商品加 1. 首页通用查询上下文与作业不同,应单独覆盖查询编码规则. 服务端固定动作仍检查有效已扫数量、待补追踪及当前能力,AI after 不能取消作业. 完整工作示例见 [原生/QR 共存](examples/native-and-qr.md).

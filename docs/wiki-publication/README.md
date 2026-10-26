@@ -1,21 +1,24 @@
-# 知识发布证据
+# 当前知识发布
 
-本目录只保留实际发布与验收材料，不保存一份 Wiki 或 Skill 正文副本。
+日期: 2026-10-26。准确资料来源为已提交的 `7f28db3`；未变动库保留原发布提交及版本，见 [准确清单](20261026.manifest.json)。
 
-| 文件 | 说明 |
-|---|---|
-| [发布记录](native-wiki-20261018.md) | 六库 29 份资料的发布、准确读回及当时的临时问答范围 |
-| [准确来源清单](native-wiki-20261018.manifest.json) | 来源提交、文件、源摘要和发布正文摘要 |
-| [问答证据](native-wiki-20261018.qa.json) | 八组真实问答及搜索／读页摘要，不能代替真实 Task 路由验收 |
-| [设备协议发布](device-protocol-20261018.md) | 通用／设备 Wiki 版本 4、TUSK 真实生成及隔离执行范围 |
-| [WES 退役知识发布](wes-retirement-20261019.md) | 设备版本 8、WCS 版本 4，26 页准确读回及本地 Task 检索 |
-| [WES 退役准确来源](wes-retirement-20261019.manifest.json) | 新增 WES 参考及设备／WCS 文稿来源摘要 |
-| [统一设备接口发布](device-interface-20261019.md) | 设备 Wiki 版本 6、统一页面与代码决定回写规则 |
-| [统一设备接口来源](device-interface-20261019.manifest.json) | 设备 11 页准确来源及摘要 |
-| [设备协议准确来源](device-protocol-20261018.manifest.json) | 本轮 15 页的来源提交及摘要，不覆盖其他四库历史来源 |
+| 逻辑库 | 版本 | 批准资料数 | 状态 |
+|---|---|---:|---|
+| common | 4 → 6 | 4 | approved / ready |
+| putaway | 2 → 4 | 7 | approved / ready |
+| erp | 2 → 4 | 5 | approved / ready |
+| wcs | 4（内容未变，复核） | 14 | approved / ready |
+| equipment | 8（内容未变，复核） | 12 | approved / ready |
+| barcode | 2 → 4 | 5 | approved / ready |
 
-正式 Odoo 原生接入、五类真实 Task 及代码生成验证以[接入记录](../migrations/native-wiki-runtime-20.md)和[最新验收](../migrations/native-wiki-runtime-20.validation.json)为准。
+共 47 份准确资料全部按原生 read_page 读回核对。通用、上架、ERP、条码四库更新；WCS/设备与当前来源一致，保留版本。平台生成的结构页不计入批准正文，也未用 LLM 摘要替代代码/测试/合同。
 
-设备 /1 的新增能力、安装及最终验收见[设备交付](../migrations/device-protocol-20.md)和[设备验收](../migrations/device-protocol-20.validation.json)。
+本轮 19 个案例、62 条准确试算与 6 份合同附件通过当前源码纯数据解释器校验；本地网关 17 项测试通过。云端网关已开放本机已实现的 ERP /1、条码 /1 路由，原有 ACL、摘要和合同检查保留。
 
-维护来源只有 [docs/wiki/](../wiki/README.md)，操作流程见[维护与发布](../architecture/ai-generation-knowledge-maintenance.md)。旧 `wcs-v4` Skill 候选包和重复综合知识稿已从当前工作树移除，历史通过 Git 追溯；云端现存旧 Skill 和业务数据未因文档整理被删除。
+两个不同业务成员分别验证五类入口的真实 Task、搜索、全文读取及引用复核，共 10 组通过，并拒绝越领域/未知合同。团队仍为 6 个 Task、6 个 Agent，未复制身份或绑定。[脱敏运行核对](20261026.runtime.json)。
+
+写前完成 Knowledge/Metadata SQLite 在线备份、quick_check、六库目录及服务文件归档并检查；没有做整库恢复演练。原始回执和备份只留私有目录。工程文档、凭据及开发流水没有上传到生成库，也没有发布客户本地业务策略。
+
+本轮未运行 Odoo 数据库业务回归、真实模型生成、设备/PDA/相机现场验收；本机 Docker 未启动，准确案例使用离线纯解释器模式，不模拟 ORM。新能力的现场交付仍按对应指南验收。
+
+知识版本已变化，旧 AI 会话应重新打开，不能静默混用。源码合并不自动发布云端；之后更新按 [知识发布流程](../operations/knowledge-publication.md) 执行。历史结构化记录见 [validation](../validation/README.md)，阶段叙述从 Git 历史查阅。

@@ -1,6 +1,6 @@
 # BlueWMS20 开发规则
 
-更新：2026-10-20。当前范围和后续顺序见[开发计划](bluewms20-development-plan.md)，模块职责见[模块架构](../module-architecture.md)。
+更新：2026-10-26。当前范围和后续顺序见[开发计划](bluewms20-development-plan.md)，模块职责见[模块架构](../module-architecture.md)。
 
 ## 先复用，再扩展
 
@@ -22,7 +22,7 @@
 | WCS | /4 的 lines/tasks 纯数据合同；人工设备授权、货物覆盖、幂等和库存一次记账由固定模块复核 |
 | ERP | /1 单据映射、部分完成事件与盘点差异；连接、权限、幂等、原生库存及持久发送由固定模块负责，新增知识需独立发布 |
 | 设备 | /1 类别级 HTTP 报文、响应及完成回调；连接、密钥、状态机和受控位置回写由固定服务执行 |
-| 条码 | /1 已有 parse/decide 纯数据合同;固定服务执行计数、选择与获准后续动作,不开放任意 JavaScript/ORM;主库安装及云端新知识状态见条码迁移进度 |
+| 条码 | /1 已有 parse/decide 纯数据合同;固定服务执行计数、选择与获准后续动作,不开放任意 JavaScript/ORM;安装及云端批准状态见条码指南和发布记录 |
 
 AI 会话绑定用户、公司、hook、合同、资产摘要及正式基础版本。业务 Task 必须验证真实身份并显式传给代理，不能回落到日常任务。只使用原生 Wiki 搜索／读页和专用草稿工具；不要恢复固定 Skill 正文、本地通用示例兜底或任意 ORM／shell 工具。
 
@@ -38,6 +38,6 @@ AI 会话绑定用户、公司、hook、合同、资产摘要及正式基础版�
 
 ## 文档维护
 
-开发与运维资料留在本目录体系；AI 知识仅维护 `docs/wiki/`。修改知识后通过[独立发布流程](../architecture/ai-generation-knowledge-maintenance.md)更新云端，Git 合并不会自动发布。历史过程从 Git 查阅，不再整库复制一份到 archive 或离线 Skill 包。
+开发与运维资料留在本目录体系；AI 知识仅维护 `docs/wiki/`。修改知识后通过[独立发布流程](../operations/knowledge-publication.md)更新云端，Git 合并不会自动发布。历史过程从 Git 查阅，不再整库复制一份到 archive 或离线 Skill 包。
 
 云端配套服务源码和部署材料统一维护在 `docs/cloud/`，不放仓库根目录。正式 Odoo 发行包排除整个 `docs/`；开发仓库继续跟踪文档与云端源码。使用 `git archive` 生成发行包时由根目录 `.gitattributes` 执行排除；其他打包方式同样遵守此规则，并保留各模块的许可及来源声明。

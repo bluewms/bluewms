@@ -15,4 +15,4 @@ Odoo 20 设备类别级 HTTP／JSON 协议资产。新增厂家接口通过类�
 
 首期支持 TUSK 风格的单条 JSON 回调；M4、Mita、Modula 是云端协议参考，完整批量反馈及取消／关闭／解绑等动作仍待适配。部分数量或多计划共享库存明细的目的库位变更进入人工核对，不直接改整行或历史库存。
 
-使用与升级见 [设备接口交付](../docs/migrations/device-protocol-20.md)，AI 资料见 [设备 Wiki](../docs/wiki/domains/equipment/specification.md)。模拟及报文回归不代表真实厂商现场已验收。
+使用与升级见 [设备接口交付](../docs/guides/equipment.md)，AI 资料见 [设备 Wiki](../docs/wiki/domains/equipment/specification.md)。模拟及报文回归不代表真实厂商现场已验收。

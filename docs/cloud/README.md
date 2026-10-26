@@ -8,7 +8,7 @@ Use the existing HTTPS model origin. Deploy `native_wiki_gateway.py` with Python
 
 Copy `native-wiki-config.example.json` to the private service configuration and supply actual tenant, team and six Wiki IDs. Core and Knowledge endpoints must be fixed loopback services. The service credential belongs only on the cloud host; never copy it into Odoo, browser settings or model prompts.
 
-The six target assets must contain the reviewed publication metadata: purpose `odoo_runtime_code_generation`, logical scope, Wiki version, contract list, generation approval, source commit and an `approved_pages` list with exact page digests. Candidate ERP/device/barcode knowledge may be read for discussion without an execution contract. Generating a draft requires approved knowledge and the current implemented contract.
+The six target assets must contain the reviewed publication metadata: purpose `odoo_runtime_code_generation`, logical scope, Wiki version, contract list, generation approval, source commit and an `approved_pages` list with exact page digests. Unapproved knowledge is discussion-only. All five implemented domain contracts remain gated by explicit approved metadata and the installed local contract.
 
 The project team shares exactly six running Tasks: the five business Tasks with names in `TASK_NAMES`, plus the ordinary daily Task. Link each user's own Agent to these existing Tasks; never create another set for a new user. Identity resolution validates the user's Agent ownership, the unique running team Task and its active Agent association, regardless of who created the Task. It returns the actual IDs, and the Odoo model request supplies the proxy's standard `x-team-id`, `x-agent-id` and `x-task-id` preset headers. Missing or ambiguous bindings fail without creating Tasks or selecting the daily Task as a fallback.
 
@@ -16,4 +16,6 @@ The HTTPS interface is limited to `identity`, `context`, `search`, `read` and `v
 
 Before deployment, back up affected service/reverse-proxy files and metadata. Validate the proxy configuration, then reload it. Updating gateway code requires restarting this service; vendor containers are unchanged. For rollback, restore the previous reviewed gateway release and private configuration. Old Skill assets may remain available for older clients; this gateway never uses them as fallback.
 
-From the repository root, run gateway checks with `python3 -m unittest discover -s docs/cloud/tests`. Odoo integration tests live in `blue_ai_client/tests`; run them in an isolated database with a matching dbfilter. Deployment and real Task-routing evidence are recorded in [the runtime guide](../migrations/native-wiki-runtime-20.md).
+From the repository root, run gateway checks with `python3 -m unittest discover -s docs/cloud/tests`. Odoo integration tests live in `blue_ai_client/tests`; run them in an isolated database with a matching dbfilter. Deployment and real Task-routing evidence are recorded in [the AI guide](../guides/ai.md).
+
+Operator setup and exact publishing steps are maintained in [cloud operations](../operations/cloud.md) and [knowledge publication](../operations/knowledge-publication.md).
