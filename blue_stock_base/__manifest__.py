@@ -1,7 +1,7 @@
 {
     'name': 'BlueWMS 库存基础',
     'summary': '库位、容量位置、包裹和库存基础扩展',
-    'version': '20.0.1.0.0',
+    'version': '20.0.1.0.1',
     'category': 'BlueWMS/Stock',
     'author': '宁波宝蓝物流科技有限公司',
     'website': 'https://www.bluewms.com',

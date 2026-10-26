@@ -1,0 +1,17 @@
+<odoo>
+    <record id="stock_location_view_form_inherit" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit.blue_barcode_base</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_location_header')]" position="attributes">
+                <attribute name="class" add="d-flex justify-content-between flex-wrap gap-3" separator=" "/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_location_header')]" position="inside">
+                <div name="blue_barcode_location_preview" class="align-self-center p-2 bg-white border rounded" invisible="not barcode_img">
+                    <field name="barcode_img" widget="image" readonly="1" nolabel="1" options="{'size': [300, 100]}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
