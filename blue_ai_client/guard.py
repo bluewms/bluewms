@@ -2,6 +2,7 @@
 BINDING_TOKEN = object()
 TEAM_NAME = 'odooAI'
 TASK_NAME = '日常任务'
+REQUIRED_GUIDANCE = ('basics/ai-generation-workflow.md', 'basics/requirements-clarification.md')
 HOOK_TASKS = {
     'putaway_policy': '上架策略',
     'erp_mapping': 'ERP接口',

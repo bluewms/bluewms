@@ -27,7 +27,9 @@ class FakeGateway(module.NativeWikiGateway):
         self.assets = {}
         self.pages = {}
         self.versions = {}
-        for scope, refs in {'common': ['basics/overview.md'], 'putaway': ['domains/putaway/specification.md', 'domains/putaway/examples/same-picking.md'], 'wcs': ['domains/wcs/specification.md'], 'erp': ['domains/erp/specification.md'], 'equipment': ['domains/equipment/specification.md'], 'barcode': ['domains/barcode/specification.md']}.items():
+        for scope, refs in {'common': ['basics/overview.md', *module.REQUIRED_GUIDANCE], 'putaway': ['domains/putaway/specification.md', 'domains/putaway/examples/same-picking.md'], 'wcs': ['domains/wcs/specification.md'], 'erp': ['domains/erp/specification.md'], 'equipment': ['domains/equipment/specification.md'], 'barcode': ['domains/barcode/specification.md']}.items():
+            if scope not in ('common', 'putaway'):
+                refs = [*refs, 'domains/' + scope + '/examples/verified.md']
             contracts = [] if scope in ['common', 'erp'] else ['putaway_policy/2'] if scope == 'putaway' else ['device_protocol/1'] if scope == 'equipment' else ['barcode_policy/1'] if scope == 'barcode' else ['wcs_creation/4']
             self.pages[scope] = {ref: '---\ncontracts: ' + json.dumps(contracts) + '\n---\nAccurate reference.' for ref in refs}
             self.versions[scope] = '2'
@@ -98,7 +100,32 @@ class TestNativeGateway(unittest.TestCase):
         refs = [self.request('read', page=h)['reference'] for h in hits]
         self.assertTrue(self.request('verify', references=refs)['valid'])
         with self.assertRaises(module.Rejected):
-            self.request('verify', references=refs[1:])
+            self.request('verify', references=[r for r in refs if r['role'] != 'example'])
+
+    def test_each_required_guidance_page_must_be_read_even_with_other_guidance(self):
+        refs = [self.request('read', page=h)['reference'] for h in self.request('search', query='policy')['results']]
+        for missing in module.REQUIRED_GUIDANCE:
+            with self.subTest(missing=missing), self.assertRaisesRegex(module.Rejected, '澄清'):
+                self.request('verify', references=[r for r in refs if r['ref'] != missing])
+
+    def test_all_five_domains_require_clarification_workflow_specification_and_example(self):
+        asset = self.gateway.assets['erp']
+        metadata = json.loads(asset['metadata_json'])
+        metadata.update(approved=True, generation_ready=True, approved_contracts=['erp_mapping/1'])
+        for ref, body in self.gateway.pages['erp'].items():
+            self.gateway.pages['erp'][ref] = body.replace('contracts: []', 'contracts: ["erp_mapping/1"]')
+        metadata['approved_pages'] = [{'ref': ref, 'page_sha256': module.digest(body)}
+                                      for ref, body in self.gateway.pages['erp'].items()]
+        asset.update(status='approved', metadata_json=json.dumps(metadata))
+        for hook, (_, contracts) in module.HOOKS.items():
+            self.payload.update(hook_code=hook, contract=contracts[-1])
+            refs = [self.request('read', page=h)['reference']
+                    for h in self.request('search', query='policy')['results']]
+            with self.subTest(hook=hook):
+                self.assertTrue(self.request('verify', references=refs)['valid'])
+                for missing in module.REQUIRED_GUIDANCE:
+                    with self.assertRaises(module.Rejected):
+                        self.request('verify', references=[r for r in refs if r['ref'] != missing])
 
     def test_acl_revocation_and_invalid_credential_fail_closed(self):
         self.gateway.allowed = False

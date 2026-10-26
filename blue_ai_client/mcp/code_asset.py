@@ -6,7 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 
 from odoo.addons.muk_mcp.core.tool import mcp_tool
 
-from ..guard import BINDING_TOKEN
+from ..guard import BINDING_TOKEN, REQUIRED_GUIDANCE
 from ..providers.knowledge import MAX_PAGES, MAX_TOTAL, NativeWiki
 
 
@@ -59,6 +59,7 @@ class BlueCodeAssetTools(models.AbstractModel):
                 'contract': profile.contract, 'code': profile.draft_code or '',
                 'contract_schema': schema, 'contract_specification': schema,
                 'cloud_knowledge': knowledge,
+                'required_guidance': list(REQUIRED_GUIDANCE),
                 'tests': profile.draft_tests or '', 'requirements': profile.requirements or '',
                 'draft_hash': session.blue_draft_hash, 'current_draft_hash': profile._draft_hash(),
                 'release_id': profile.active_release_id.id or False,
@@ -84,7 +85,8 @@ class BlueCodeAssetTools(models.AbstractModel):
             raise UserError(self.env._('本会话检索页数过多,请缩小需求或重新打开会话.'))
         session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_knowledge_search_results': known})
         return {'results': results, 'task_name': session.blue_task_name,
-                'instruction': 'Read complete common guidance, domain specification and a relevant example before submitting.'}
+                'required_guidance': list(REQUIRED_GUIDANCE),
+                'instruction': 'Read the generation workflow, five-domain requirements clarification, domain specification and a relevant example in full. Ask and wait for unresolved business choices before writing code.'}
 
     @api.model
     @mcp_tool(name='blue_read_code_knowledge', description='读取本会话搜索返回的页面全文并固定批准来源,版本及摘要.',

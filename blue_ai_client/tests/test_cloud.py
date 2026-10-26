@@ -9,9 +9,10 @@ from odoo.tools import file_open
 from odoo.addons.base.tests.common import BaseCommon
 from odoo.addons.muk_ai.providers.base import PROVIDER_STATE_KEY
 
-from ..guard import BINDING_TOKEN, HOOK_TASKS
+from ..guard import BINDING_TOKEN, HOOK_TASKS, REQUIRED_GUIDANCE
 from .wiki_fixtures import FakeNativeWiki
 from ..providers.chat_completions import BlueCloudProvider, normalize_url
+from ..providers.knowledge import NativeWiki
 
 
 def chunk(delta=None, finish=None, identity='chat-test', usage=None):
@@ -251,6 +252,48 @@ class TestBlueCloud(BaseCommon):
         with self.assertRaises(UserError):
             tools._mcp_blue_submit_code_draft(self.code, self.tests, 'unread', session.blue_draft_hash)
 
+    def test_submit_rejects_missing_clarification_or_workflow_after_other_pages_read(self):
+        session = self._session()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        tools._mcp_blue_read_code_asset()
+        self._read_standard_knowledge(tools)
+        full = copy.deepcopy(session.blue_knowledge_reference)
+        for missing in REQUIRED_GUIDANCE:
+            pinned = {**full, 'pages': [p for p in full['pages'] if p['ref'] != missing]}
+            with patch.object(NativeWiki, '_post') as remote:
+                with self.subTest(missing=missing), self.assertRaises(UserError):
+                    NativeWiki(self._client(), 'putaway_policy', self.profile.contract, pinned).verify()
+                remote.assert_not_called()
+            session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_knowledge_reference': pinned})
+            before = self.profile._draft_hash()
+            with self.assertRaises(UserError):
+                tools._mcp_blue_submit_code_draft(self.code, self.tests, 'guessed', session.blue_draft_hash)
+            self.assertEqual(self.profile._draft_hash(), before)
+        session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_knowledge_reference': full})
+        with patch.object(NativeWiki, '_post', return_value={'valid': True}):
+            NativeWiki(self._client(), 'putaway_policy', self.profile.contract, full).verify()
+
+    def test_clarification_pauses_before_any_draft_write_in_the_same_response(self):
+        session = self._session()
+        tools = self.env['muk_mcp.mixin'].with_user(self.manager).with_context(muk_mcp_session_id=session.id)
+        tools._mcp_blue_read_code_asset()
+        self._read_standard_knowledge(tools)
+        before = self.profile._draft_hash()
+        calls = [
+            {'index': 0, 'id': 'clarify1', 'function': {'name': 'ask_user', 'arguments': json.dumps({
+                'question': '同单是强制限制还是优先排序?', 'options': ['强制限制', '优先排序']})}},
+            {'index': 1, 'id': 'draft1', 'function': {'name': 'blue_submit_code_draft', 'arguments': json.dumps({
+                'code': self.code, 'tests': self.tests, 'requirements': 'unconfirmed',
+                'expected_hash': session.blue_draft_hash})}},
+        ]
+        with patch.object(BlueCloudProvider, '_post_stream', return_value=iter([
+                chunk({'tool_calls': calls}), chunk(finish='tool_calls')])):
+            snapshot = session.start('同单放一起,帮我生成')
+        self.assertEqual(snapshot['state'], 'waiting', session.error_message)
+        self.assertEqual(snapshot['pending_ask']['kind'], 'question')
+        self.assertEqual(self.profile._draft_hash(), before)
+        self.assertFalse(self.profile.active_release_id)
+
     def test_identity_and_scope_changes_require_a_new_session(self):
         session = self._session()
         self.connection.sudo().agent_name = 'changed-agent'
@@ -312,7 +355,11 @@ class TestBlueCloud(BaseCommon):
         text = session._system_message()['content'][0]['text']
         self.assertNotIn('<files>', text)
         self.assertNotIn('<available_skills>', text)
-        self.assertIn('不要在同一轮', text)
+        self.assertIn('不要在同一模型响应', text)
+        self.assertIn('等待真实回答', text)
+        self.assertIn('不先写代码', text)
+        for ref in REQUIRED_GUIDANCE:
+            self.assertIn(ref, text)
 
     def test_shared_reader_cannot_steer_asset_tools(self):
         session = self._session()
@@ -335,11 +382,13 @@ class TestBlueCloud(BaseCommon):
                 3: ('blue_read_code_knowledge', {'page_ref': known[0] if known else ''}),
                 4: ('blue_read_code_knowledge', {'page_ref': known[1] if known else ''}),
                 5: ('blue_read_code_knowledge', {'page_ref': known[2] if known else ''}),
-                6: ('blue_submit_code_draft', {'code': self.code, 'tests': self.tests,
+                6: ('blue_read_code_knowledge', {'page_ref': known[3] if known else ''}),
+                7: ('blue_read_code_knowledge', {'page_ref': known[4] if known else ''}),
+                8: ('blue_submit_code_draft', {'code': self.code, 'tests': self.tests,
                     'requirements': 'cloud generated', 'expected_hash': profile._draft_hash()}),
-                7: ('blue_validate_code_draft', {'expected_hash': profile._draft_hash()}),
+                9: ('blue_validate_code_draft', {'expected_hash': profile._draft_hash()}),
             }
-            if number == 8:
+            if number == 10:
                 return iter([chunk({'content': '草稿已验证，请审阅后发布。'}), chunk(finish='stop')])
             name, arguments = calls[number]
             return iter([chunk({'tool_calls': [{'index': 0, 'id': f'call{number}', 'function': {
@@ -348,7 +397,7 @@ class TestBlueCloud(BaseCommon):
         with patch.object(BlueCloudProvider, '_post_stream', stream):
             session.start('生成代码并验证')
         self.assertEqual(session.state, 'done', session.error_message)
-        self.assertEqual(len(rounds), 8)
+        self.assertEqual(len(rounds), 10)
         profile = self.profile.with_user(self.manager)
         self.assertTrue(profile.validated_version_id)
         self.assertFalse(profile.active_release_id)

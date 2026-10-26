@@ -110,16 +110,21 @@ class AISession(models.Model):
         if self.blue_hook_code:
             instructions = self.env._(
                 '当前入口为 %s,云端 Task 为 %s.知识使用腾讯原生 Wiki,不能调用旧 Skill,Bash,curl 或文件工具.'
-                '先 blue_search_code_knowledge 按业务关键词搜索,再 blue_read_code_knowledge 读取搜索结果的 page_ref.'
+                '资产会话先 blue_read_code_asset 读取真实合同和已有需求,然后 blue_search_code_knowledge 搜索,'
+                '再 blue_read_code_knowledge 读取搜索结果的 page_ref.'
                 '搜索摘要不算读过正文.提交前必须完整读取通用生成规则,本领域规范及至少一个匹配案例.'
-                '读通用规则可检索"生成 合同",本领域规范可检索 specification,configuration 或相关字段.'
+                '必须完整读 basics/ai-generation-workflow.md 和 basics/requirements-clarification.md,'
+                '分别检索"生成步骤 工具规则"和"五类 需求澄清";本领域规范检索 specification 或业务字段.'
                 '只能使用当前入口的实际工具;没有正文,批准失效,合同不匹配或版本漂移时报告错误,不回退旧示例.'
-                '只在业务需求不清楚时 ask_user,不要在同一轮同时调用 ask_user 与业务工具.',
+                '对照五类入口澄清规则区分已确认事实,待决业务选择和本机能力缺口.'
+                '凡相关关键选择未明确,先 ask_user 并结束本轮等待真实回答,不先写代码或保存猜测草稿.'
+                '每轮集中问1-3个相关问题,已明确或工具可读取的信息不重复询问;信息完整时直接继续.'
+                '不要在同一模型响应同时调用 ask_user 与业务工具.固定执行器未支持的行为必须说明限制,不能假装已实现.',
                 HOOK_TASKS[self.blue_hook_code], self.blue_task_name)
             if not self.blue_profile_id:
                 return [instructions, self.env._(
                     '本会话仅用于本领域知识沟通,不绑定代码资产,不得生成或提交可执行草稿.'
-                    '上架与 WCS 的可执行修改从对应资产页打开;ERP,设备,条码仍为 planned.')]
+                    '五类入口的可执行修改均须从对应业务资产页打开,本知识会话只讨论需求和能力.')]
             return [instructions, self.env._(
                 '本会话仅可修改绑定资产 ID %s.必须先 blue_read_code_asset 读取真实代码,完整 contract_schema,'
                 '测试与 draft_hash;该工具只返回知识范围,正文须另外搜索,读取.'

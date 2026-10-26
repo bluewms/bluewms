@@ -27,6 +27,7 @@
         "README.md",
         "basics/ai-generation-workflow.md",
         "basics/overview.md",
+        "basics/requirements-clarification.md",
         "templates/example-template.md"
       ],
       "local_contract_implemented": false,

@@ -25,6 +25,7 @@ HOOKS = {
 }
 TASK_NAMES = {'putaway_policy': '上架策略', 'wcs_creation': 'WCS生成策略', 'erp_mapping': 'ERP接口',
               'device_protocol': '设备连接接口', 'barcode_policy': '条码扫描策略'}
+REQUIRED_GUIDANCE = ('basics/ai-generation-workflow.md', 'basics/requirements-clarification.md')
 MAX_BODY = 16384
 MAX_RESPONSE = 524288
 MAX_PAGE = 131072
@@ -41,7 +42,7 @@ def digest(body):
 
 
 def page_role(ref):
-    if ref in ('basics/overview.md', 'basics/ai-generation-workflow.md'):
+    if ref in ('basics/overview.md', *REQUIRED_GUIDANCE):
         return 'guidance'
     if ref.endswith(('/specification.md', '/configuration-guide.md')):
         return 'specification'
@@ -240,6 +241,8 @@ class NativeWikiGateway:
             if read['reference'] != old:
                 raise Rejected('引用版本,批准状态或正文已变化,请重新打开会话.')
             roles.add((old['scope'], old['role']))
+        if not {('common', ref) for ref in REQUIRED_GUIDANCE}.issubset(seen):
+            raise Rejected('请先完整读取通用生成步骤和五类入口需求澄清规则.')
         if not {('common', 'guidance'), (scope, 'specification'), (scope, 'example')}.issubset(roles):
             raise Rejected('请先完整读取通用规则,本领域规范和至少一个匹配案例.')
         return {'valid': True, 'catalog': catalog}

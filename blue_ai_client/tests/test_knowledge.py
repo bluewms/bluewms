@@ -12,6 +12,7 @@ from odoo.tests import tagged
 from odoo.addons.base.tests.common import BaseCommon
 
 from ..providers.knowledge import MAX_RESPONSE, NativeWiki
+from ..guard import REQUIRED_GUIDANCE
 
 
 @tagged('post_install', '-at_install')
@@ -101,6 +102,8 @@ class TestCloudKnowledge(BaseCommon):
             self._wiki(pinned).verify()
         pinned['pages'] = [{'scope': scope, 'role': role, 'ref': role + '.md', 'sha256': 'a' * 64, 'bytes': 40}
                            for scope, role in [('common', 'guidance'), ('putaway', 'specification'), ('putaway', 'example')]]
+        pinned['pages'].extend({'scope': 'common', 'role': 'guidance', 'ref': ref,
+                                'sha256': 'a' * 64, 'bytes': 40} for ref in REQUIRED_GUIDANCE)
         self._wiki(pinned).verify()
         sent = self.requests[-1][1]['json']['references']
         self.assertNotIn('bytes', sent[0])
