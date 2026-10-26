@@ -3,6 +3,8 @@
         <field name="name">stock.location.list.inherit.blue_stock_base</field><field name="model">stock.location</field>
         <field name="inherit_id" ref="stock.view_location_tree2"/>
         <field name="arch" type="xml"><field name="storage_category_id" position="after">
+            <field name="barcode" optional="show"/><field name="location_id" optional="hide"/>
+            <field name="removal_strategy_id" optional="hide"/>
             <field name="location_rank" optional="hide"/><field name="single_product_id" string="单一产品" optional="show"/>
             <field name="single_product_qty" string="数量" optional="show"/><field name="single_uom_id" string="单位" optional="show"/>
             <field name="is_mixed_product" optional="show"/><field name="package_name" optional="hide"/>
@@ -12,16 +14,34 @@
     <record id="blue_stock_location_form_inherit" model="ir.ui.view">
         <field name="name">stock.location.form.inherit.blue_stock_base</field><field name="model">stock.location</field>
         <field name="inherit_id" ref="stock.view_location_form"/>
-        <field name="arch" type="xml"><xpath expr="//sheet" position="inside"><notebook name="blue_stock_details">
+        <field name="arch" type="xml">
+        <field name="replenish_location" position="before"><field name="barcode"/></field>
+        <field name="usage" position="after"><field name="warehouse_id" readonly="1"/></field>
+        <xpath expr="//sheet" position="before"><header><field name="state" widget="statusbar"/></header></xpath>
+        <xpath expr="//sheet" position="inside"><notebook name="blue_stock_details">
             <page name="blue_stock_position" string="位置与库存摘要"><group>
                 <group><field name="location_rank"/><field name="storey"/><field name="passageway"/><field name="list"/><field name="layer"/><field name="position"/><field name="location_destination_value"/></group>
-                <group><field name="is_locking"/><field name="state"/><field name="child_count"/><field name="child_none_count"/><field name="is_mixed_product"/><field name="package_name"/><field name="single_product_id"/><field name="single_product_qty"/><field name="single_uom_id"/></group>
+                <group><field name="is_locking"/><field name="child_count"/><field name="child_none_count"/><field name="is_mixed_product"/><field name="package_name"/><field name="single_product_id"/><field name="single_product_qty"/><field name="single_uom_id"/></group>
             </group></page>
+            <page name="blue_stock_children" string="下级库位">
+                <field name="child_ids" readonly="1"><list create="0" delete="0">
+                    <field name="name"/><field name="barcode"/><field name="usage"/>
+                    <field name="location_rank"/><field name="state"/><field name="is_locking"/>
+                    <field name="storage_category_id" optional="show"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </list></field>
+            </page>
             <page name="blue_stock_quants" string="在手库存"><field name="quant_ids" readonly="1"/></page>
             <page name="blue_stock_capacity" string="库位容量">
                 <button name="action_sync_coordinates" type="object" string="按存储类别同步容量位置" groups="stock.group_stock_manager" confirm="将增补缺少的位置，并删除未占用的多余位置，已有编号保持不变。"/>
                 <field name="coordinate_ids"><list editable="bottom"><field name="sequence" widget="handle"/><field name="name"/><field name="location_name"/><field name="location_code"/></list></field>
             </page>
         </notebook></xpath></field>
+    </record>
+    <record id="stock_location_view_search_inherit" model="ir.ui.view">
+        <field name="name">stock.location.search.inherit.blue_stock_base</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search"/>
+        <field name="arch" type="xml"><field name="complete_name" position="after"><field name="barcode"/></field></field>
     </record>
 </odoo>
