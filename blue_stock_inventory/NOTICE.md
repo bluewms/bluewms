@@ -1,6 +1,6 @@
 # 来源与许可
 
-从用户项目 bluewms19 的 stock_inventory_ajustement 迁移业务能力，来源提交 7d77ae713b81ddef4de856361ac14ea99fedf967；文件摘要见 docs/migrations/stock-inventory-source-lock.json。
+从用户项目 bluewms19 的 stock_inventory_ajustement 迁移业务能力，来源提交 7d77ae713b81ddef4de856361ac14ea99fedf967；文件摘要见[来源记录](../docs/third-party/provenance/stock-inventory-source-lock.json)。
 
 旧 manifest 作者：宁波宝蓝物流科技有限公司，声明 LGPL-3。旧公司与设置字段含 Copyright 2024 ForgeFlow S.L. (http://www.forgeflow.com)，LGPL-3.0-or-later，相关声明在迁移文件中保留。旧 Python 的 Odoo 声明：Part of Odoo. See LICENSE file for full copyright and licensing details.
 

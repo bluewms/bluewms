@@ -20,7 +20,7 @@
 - [模块架构](module-architecture.md) · [开发规则](planning/bluewms-development.md) · [当前计划](planning/bluewms20-development-plan.md)。
 - [Docker 配置](../docker/README.md) · [升级与恢复](operations/upgrades.md) · [Git 同步](git-sync.md)。
 - [云端服务/用户接入](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/cloud.md) · [知识发布流程](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/knowledge-publication.md)。
-- [测试与验收](testing/README.md) · [结构化核对记录](validation/README.md) · [第三方依赖](third-party/README.md)。
+- [测试与验收](testing/README.md) · [第三方依赖](third-party/README.md)。
 
 ## AI 知识
 

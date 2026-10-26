@@ -32,7 +32,7 @@ with registry.cursor() as cr:
     picking.action_confirm()
     picking.action_assign()
     picking.move_line_ids.result_package_id = package
-    category = fixture['wcs.equipment.category'].create({'name': 'Concurrency simulation ' + suffix, 'company_id': fixture.company.id})
+    category = fixture['wcs.equipment.category'].create({'name': 'Concurrency simulation ' + suffix, 'company_id': fixture.company.id, 'adapter_code': 'simulation'})
     devices = fixture['wcs.equipment'].create([{'name': 'WCS concurrency device ' + suffix, 'company_id': fixture.company.id, 'category_id': category.id},
                                               {'name': 'WCS concurrency second ' + suffix, 'company_id': fixture.company.id}])
     intermediate = fixture['stock.location'].create({'name': 'WCS concurrency handoff ' + suffix,

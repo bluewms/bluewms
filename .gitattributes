@@ -1,2 +1,3 @@
-# Keep engineering documentation and cloud deployment sources out of release archives.
+# Keep maintenance docs and developer-only scripts out of Odoo release archives.
 /docs/ export-ignore
+/scripts/ export-ignore
