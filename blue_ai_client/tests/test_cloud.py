@@ -321,7 +321,7 @@ class TestBlueCloud(BaseCommon):
             'question': REVIEW_QUESTION_PREFIX + requirements, 'options': [REVIEW_APPROVE, '需要修改']}})
         session.write({'state': 'waiting'})
         with patch.object(type(session), '_trigger_worker'):
-            session.answer(REVIEW_APPROVE)
+            session.answer('确认')
         self.assertEqual(session.blue_requirements_review['status'], 'confirmed')
         with self.assertRaisesRegex(UserError, '真实用户确认'):
             tools._mcp_blue_submit_code_draft(self.code, self.tests, requirements + '追加自动动作', before)

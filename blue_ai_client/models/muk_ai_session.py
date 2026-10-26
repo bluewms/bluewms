@@ -93,8 +93,8 @@ class AISession(models.Model):
                        and pending.get('text') == review.get('question')
                        and pending.get('call_id') == review.get('call_id'))
             if matches and review.get('status') == 'pending':
-                text = answer.strip() if isinstance(answer, str) else ''
-                approved = text == REVIEW_APPROVE or (pending.get('resolution') == 'yesno' and text.lower() == 'yes')
+                text = answer.strip().rstrip('.!。！').lower() if isinstance(answer, str) else ''
+                approved = text in {REVIEW_APPROVE, '确认', '确认生成草稿', '确认以上需求', '同意', 'yes'}
                 self.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_requirements_review': {
                     **review, 'status': 'confirmed' if approved else 'changes_requested',
                     'confirmed_by': self.env.uid if approved else False,

@@ -124,7 +124,7 @@ class BlueCodeAssetTools(models.AbstractModel):
         return {'content': body, 'reference': reference, 'published': False}
 
     @api.model
-    @mcp_tool(name='blue_submit_code_draft', description='提交当前代码资产的 AI 草稿。不会发布。必须传入读取时的 draft_hash。',
+    @mcp_tool(name='blue_submit_code_draft', description='提交绑定资产的 AI 草稿,不发布.须完整读必读Wiki并取得真实用户需求摘要确认;requirements与获确认摘要逐字相同,携带当前draft_hash.模型自称已确认不能代替.',
               input_schema={'type': 'object', 'properties': {
                   'code': {'type': 'string'}, 'tests': {'type': 'string'},
                   'requirements': {'type': 'string'}, 'expected_hash': {'type': 'string'},
