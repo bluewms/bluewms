@@ -541,7 +541,9 @@ class BlueBarcodeSession(models.Model):
             # Native hooks retain package constraints and return their wizard.
             result = lines.with_context(all_move_line_ids=False, force_move_lines=False).action_put_in_pack()
             self._internal().write({'revision': self.revision + 1, 'fingerprint': self._fingerprint()})
-            return {'action': result if isinstance(result, dict) else False, 'view': self._view()}
+            packed = result if not isinstance(result, dict) else False
+            return {'action': result if isinstance(result, dict) else False, 'view': self._view(),
+                'message': self.env._('已装入包裹 %s.', packed.name) if packed else None}
         # Native validation owns warnings, backorders and stock accounting.
         result = self.picking_id.button_validate() if self.kind == 'picking' else self.batch_id.action_done()
         self._internal().write({'revision': self.revision + 1, 'fingerprint': self._fingerprint()})
