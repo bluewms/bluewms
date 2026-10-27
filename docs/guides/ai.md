@@ -6,6 +6,8 @@
 
 从对应业务表单打开“AI 生成/修改”浮窗。AI 先读取当前资产和本机合同，再搜索云端批准知识、读取完整规范及案例，生成代码与本次试算，保存并验证草稿。用户审核真实业务预览后人工发布。
 
+生成前按[五类入口需求澄清规则](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/basics/requirements-clarification.md)检查本次相关选择. 事实先读工具, 关键业务选择不明确时先提问并等待, 不先保存猜测草稿; 信息完整时直接给出需求摘要供用户一次确认, 不再追问已知细节. 提交前必须在当前会话完整读取生成步骤、需求澄清规则、本领域规范及案例, 本地与云端均复核必读引用.
+
 独立入口 MuK AI → 宝蓝业务知识用于需求讨论，没有资产写入工具。未知能力、缺少批准知识、身份/合同变化、草稿冲突或版本漂移都明确拒绝；不自动选日常 Task、不用本地文档兜底。
 
 | 入口 | hook | 本地合同 | 资产位置 |
@@ -16,7 +18,7 @@
 | 设备 | `device_protocol` | `/1` | 设备类别 |
 | 条码 | `barcode_policy` | `/1` | 公司通用/作业类型策略 |
 
-五类合同均已在源码实现。能否在某实例生成，仍取决于相应模块安装、当前合同、云端批准及当前用户授权；具体发布状态见 [知识发布记录](../wiki-publication/README.md)。
+五类合同均已在源码实现。能否在某实例生成，仍取决于相应模块安装、当前合同、云端批准及当前用户授权；具体发布状态见 [知识发布记录](https://gitee.com/jch100322/bluewms-wiki/blob/master/publications/README.md)。
 
 ## 职责与边界
 
@@ -29,6 +31,8 @@
 
 ## 配置与运维
 
-业务用户在 Odoo 填写自己的连接 Key 和准确 Agent 名称。服务管理凭据只留云端，不进入模型、浏览器或公开文档。新增用户、路由和异常排查见 [云端运维](../operations/cloud.md)。
+业务用户在 Odoo 填写自己的连接 Key 和准确 Agent 名称。服务管理凭据只留云端，不进入模型、浏览器或公开文档。新增用户、路由和异常排查见 [云端运维](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/cloud.md)。
 
-Wiki ready、知识批准、草稿验证和策略发布是不同状态。知识来源仅维护在 [docs/wiki](../wiki/README.md)，工程文档不上传到生成库；改文稿不自动发布云端，见 [知识发布流程](../operations/knowledge-publication.md)。
+Wiki ready、知识批准、草稿验证和策略发布是不同状态。知识来源仅维护在 [bluewms-wiki/wiki](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md)，工程文档不上传到生成库；改文稿不自动发布云端，见 [知识发布流程](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/knowledge-publication.md)。
+
+生成代码前还需要真实需求摘要确认: 使用读资产返回的 requirements_review 协议调用 ask_user, 用户实际确认后本地保存受保护的确认记录. 模型自称已确认、需求文字变化或旧确认跨新用户请求均不能通过提交门禁. 同一已确认摘要下的自动修复不重复确认.

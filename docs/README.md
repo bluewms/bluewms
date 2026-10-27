@@ -19,11 +19,11 @@
 
 - [模块架构](module-architecture.md) · [开发规则](planning/bluewms-development.md) · [当前计划](planning/bluewms20-development-plan.md)。
 - [Docker 配置](../docker/README.md) · [升级与恢复](operations/upgrades.md) · [Git 同步](git-sync.md)。
-- [云端服务/用户接入](operations/cloud.md) · [知识发布流程](operations/knowledge-publication.md)。
-- [测试与验收](testing/README.md) · [结构化核对记录](validation/README.md) · [第三方依赖](third-party/README.md)。
+- [云端服务/用户接入](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/cloud.md) · [知识发布流程](https://gitee.com/jch100322/bluewms-wiki/blob/master/docs/operations/knowledge-publication.md)。
+- [测试与验收](testing/README.md) · [第三方依赖](third-party/README.md)。
 
 ## AI 知识
 
-[docs/wiki](wiki/README.md) 是唯一生成知识来源,仅包含通用规则、五类规范、合同与准确案例。工程文档、服务器信息、凭据和开发流水不上传到生成库。实际云端状态见 [发布记录](wiki-publication/README.md),六库逻辑绑定见 [注册表](architecture/native-wiki-knowledge-registry.json)。
+[bluewms-wiki/wiki](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/README.md) 已迁移至独立私有配套仓库, 是唯一生成知识来源,仅包含通用规则、五类规范、合同与准确案例。工程文档、服务器信息、凭据和开发流水不上传到生成库。实际云端状态见 [发布记录](https://gitee.com/jch100322/bluewms-wiki/blob/master/publications/README.md),六库逻辑绑定见 [注册表](https://gitee.com/jch100322/bluewms-wiki/blob/master/registry/native-wiki-knowledge-registry.json)。
 
-源码实现、数据库安装、知识批准、真实模型/设备验收分别核对。Git 不同步业务数据或自动发布云端知识。正式 Odoo 发行包排除整个 docs,云端服务源码仍保留在 [cloud](cloud/README.md)。
+源码实现、数据库安装、知识批准、真实模型/设备验收分别核对。Git 不同步业务数据或自动发布云端知识。正式 Odoo 发行包排除整个 docs,云端服务源码仍保留在 [cloud](https://gitee.com/jch100322/bluewms-wiki/blob/master/cloud/README.md)。

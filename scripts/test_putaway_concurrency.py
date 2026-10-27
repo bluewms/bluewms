@@ -11,6 +11,7 @@ import time
 from odoo import Command, SUPERUSER_ID, api
 from odoo.exceptions import UserError
 from odoo.http.retrying import retrying
+from odoo.tools import file_open
 
 from odoo.addons.blue_stock_putaway.models.policy_guard import POLICY_TOKEN
 
@@ -36,7 +37,9 @@ with registry.cursor() as cr:
     profile = setup['blue.config.profile'].create({'name': 'Concurrency supplementary batch policy', 'company_id': company.id,
         'template_id': setup.ref('blue_stock_putaway.blue_scene_template_same_batch_name').id})
     native_rule.blue_profile_id = profile
-    profile.action_load_example()
+    with file_open('blue_stock_putaway/tests/data/putaway_regression_cases.json') as source_file:
+        case = json.load(source_file)['blue_scene_template_same_batch_name']
+    profile.action_submit_draft(case['code_text'], case['test_cases'], 'Isolated current-contract concurrency fixture')
     profile.action_validate()
     profile.action_publish()
     picking_ids = []

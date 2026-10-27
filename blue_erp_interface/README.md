@@ -14,6 +14,6 @@
 
 依赖 `blue_stock_rules`、`blue_config_asset`、`blue_ai_client` 和共享执行合同，独立于 WCS。先在隔离 `*_test` 库安装并回归，再备份主库数据库和 filestore，核对库存／资产／人工配置后安装。本模块不会安装客户案例或自动发布策略。
 
-知识来源在 [ERP Wiki](../docs/wiki/domains/erp/specification.md)。云端必须单独部署 ERP 合同白名单并发布批准的规范／准确案例；未批准时 AI 工具保持拒绝生成，不使用本地示例兜底。人工可维护代码并试算发布。
+知识来源在 [ERP Wiki](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/erp/specification.md)。云端必须单独部署 ERP 合同白名单并发布批准的规范／准确案例；未批准时 AI 工具保持拒绝生成，不使用本地示例兜底。人工可维护代码并试算发布。
 
 第一版范围是 ERP 主动推送、单次 JSON HTTP 操作和响应解释；轮询／分页拉单、金蝶 SDK、动态 Token 获取、前一步响应给后一步补字段、自动单据变更／取消仍待扩展。旧 E10／金蝶协议是参考，不代表本版本已完成其认证或现场联调。

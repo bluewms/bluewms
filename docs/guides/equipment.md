@@ -26,4 +26,4 @@ Token 空则不附默认认证，有值默认 Bearer。特殊请求头由代码�
 
 TUSK 下发路径 `/rpc/createTask`，旧 `/api/blue_wcs_tusk/feedbackTask` 保留兼容，最终完成回调不另加开关。HIK 既有认证保持原样。M4/Mita/Modula/WES 文档为协议参考，不据此宣称批量回调、取消、解绑或盘点已实现。
 
-准确语法、回调结构、TUSK 案例及厂商参考见 [设备知识](../wiki/domains/equipment/specification.md)。WES 专用模块已退役，旧实例先按 [升级说明](../operations/upgrades.md) 卸载。
+准确语法、回调结构、TUSK 案例及厂商参考见 [设备知识](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/equipment/specification.md)。WES 专用模块已退役，旧实例先按 [升级说明](../operations/upgrades.md) 卸载。

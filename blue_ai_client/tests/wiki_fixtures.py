@@ -3,7 +3,7 @@ import hashlib
 
 from odoo.exceptions import UserError
 
-from ..guard import HOOK_TASKS
+from ..guard import HOOK_TASKS, REQUIRED_GUIDANCE
 
 
 class FakeNativeWiki:
@@ -27,6 +27,7 @@ class FakeNativeWiki:
     def search(self, query):
         return [{'scope': scope, 'ref': ref, 'title': role, 'snippet': 'Search summary only.'}
                 for scope, ref, role in [('common', 'basics/overview.md', 'guidance'),
+                                        *[('common', ref, 'guidance') for ref in REQUIRED_GUIDANCE],
                                         (self.scope, 'domains/' + self.scope + '/specification.md', 'specification'),
                                         (self.scope, 'domains/' + self.scope + '/examples/approved.md', 'example')]]
 
@@ -39,5 +40,8 @@ class FakeNativeWiki:
 
     def verify(self):
         roles = {(p['scope'], p['role']) for p in (self.pinned or {}).get('pages', [])}
+        pages = {(p['scope'], p['ref']) for p in (self.pinned or {}).get('pages', [])}
+        if not {('common', ref) for ref in REQUIRED_GUIDANCE}.issubset(pages):
+            raise UserError('Read workflow and requirements clarification before submitting.')
         if not {('common', 'guidance'), (self.scope, 'specification'), (self.scope, 'example')}.issubset(roles):
             raise UserError('Read full guidance, specification and example before submitting.')

@@ -26,4 +26,4 @@
 
 正式版本固定到业务快照；新发布不改在途计划。旧 /1–/3 仅保留明确历史执行语义，不自动转为 /4。日常执行无需云端 AI。
 
-完整字段、配置语义和准确案例见 [WCS 知识](../wiki/domains/wcs/specification.md)。并发、发送恢复和库存一次记账应按 [测试指南](../testing/README.md) 持续验证。WES 旧专用模块的退役步骤见 [升级说明](../operations/upgrades.md)。
+完整字段、配置语义和准确案例见 [WCS 知识](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/wcs/specification.md)。并发、发送恢复和库存一次记账应按 [测试指南](../testing/README.md) 持续验证。WES 旧专用模块的退役步骤见 [升级说明](../operations/upgrades.md)。

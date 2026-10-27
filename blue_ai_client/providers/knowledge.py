@@ -8,6 +8,7 @@ import requests
 
 from odoo.exceptions import UserError
 
+from ..guard import REQUIRED_GUIDANCE
 
 MAX_RESPONSE = 262144
 MAX_PAGES = 12
@@ -38,7 +39,7 @@ class NativeWiki:
             )
             if not 200 <= response.status_code < 300:
                 if operation == 'identity':
-                    raise UserError(self.client.env._('无法确认当前业务 Task,请检查云端用户,Agent 和同名任务关联;不使用日常任务兜底.'))
+                    raise UserError(self.client.env._('业务身份或知识校验失败(HTTP %s),请检查有效团队成员,本人 Agent,业务 Task 和知识权限.', response.status_code))
                 raise UserError(self.client.env._('Wiki 读取被拒绝,请检查用户权限,合同和知识批准版本;草稿未修改.'))
             chunks, size = [], 0
             for chunk in response.iter_content(8192):
@@ -97,6 +98,9 @@ class NativeWiki:
             raise UserError(self.client.env._('请先搜索并完整读取通用规则,本领域规范及匹配案例.'))
         domains = [book['scope'] for book in self.pinned['catalog'] if book['scope'] != 'common']
         roles = {(page.get('scope'), page.get('role')) for page in pages}
+        read_pages = {(page.get('scope'), page.get('ref')) for page in pages}
+        if not {('common', ref) for ref in REQUIRED_GUIDANCE}.issubset(read_pages):
+            raise UserError(self.client.env._('请先搜索并完整读取通用生成步骤和五类入口需求澄清规则,再提交草稿.'))
         if len(domains) != 1 or not {('common', 'guidance'), (domains[0], 'specification'),
                                     (domains[0], 'example')}.issubset(roles):
             raise UserError(self.client.env._('请完整读取通用生成规则,本领域规范及至少一个匹配案例,再提交草稿.'))

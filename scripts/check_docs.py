@@ -1,4 +1,4 @@
-"""Check maintained Markdown links; immutable upstream README is excluded."""
+"""Check links in the current maintained Markdown documentation."""
 import re
 import sys
 from pathlib import Path
@@ -6,9 +6,8 @@ from urllib.parse import unquote
 
 root = Path(__file__).resolve().parents[1]
 files = [*root.glob('README*.md'), *root.glob('blue_*/README.md'),
-         *root.glob('blue_*/NOTICE.md'), *root.glob('docker/README.md'),
+         *root.glob('blue_*/NOTICE.md'), *root.glob('docker/README.md'), *root.glob('scripts/README.md'),
          *(root / 'docs').rglob('*.md')]
-files = [p for p in files if p.name != 'MuK-upstream-README.md']
 errors = []
 links = 0
 for path in files:

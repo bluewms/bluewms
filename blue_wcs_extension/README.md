@@ -13,5 +13,5 @@ AI 与上架共用浮窗，但使用独立 **WCS生成策略** Task 和原生 WC
 - [使用及迁移边界](../docs/guides/wcs.md)
 - [编排设计与验收不变量](../docs/guides/wcs.md)
 - [当前 AI 接入与验证](../docs/guides/ai.md)
-- [真实合同核对附件](../docs/wiki/domains/wcs/wcs-creation-v4-contract.json)
-- [十组准确案例](../docs/wiki/domains/wcs/examples/README.md)
+- [真实合同核对附件](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/wcs/wcs-creation-v4-contract.json)
+- [十组准确案例](https://gitee.com/jch100322/bluewms-wiki/blob/master/wiki/domains/wcs/examples/README.md)
