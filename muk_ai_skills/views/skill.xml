@@ -194,7 +194,7 @@
 		<field name="arch" type="xml">
 			<form>
 				<sheet>
-					<field name="is_editable" invisible="1"/>
+					<field name="is_editable" invisible="1"/><!-- hidden lock flag driving the read-only state of the fields below -->
 					<div class="oe_button_box" name="button_box">
 						<button
                             name="action_open_prompt_history"

@@ -147,13 +147,13 @@
 					<group>
 						<group string="Model" name="model">
 							<field name="provider_id" options="{'no_create': True}"/>
-							<field name="model_placeholder" invisible="1"/>
+							<field name="model_placeholder" invisible="1"/><!-- hidden placeholder text for the model selection below -->
 							<field
                                 name="model_id"
                                 domain="[('modality', '=', 'chat')] + (provider_id and [('provider_id', '=', provider_id)] or [])"
                                 options="{'no_create': True, 'placeholder_field': 'model_placeholder'}"
                             />
-							<field name="reasoning_effort_options" invisible="1"/>
+							<field name="reasoning_effort_options" invisible="1"/><!-- hidden option source for the reasoning effort selection below -->
 							<field
                                 name="reasoning_effort"
                                 string="Reasoning"
@@ -173,7 +173,7 @@
 						</group>
 						<group string="Abilities" name="abilities">
 							<field name="web_search"/>
-							<field name="image_model_placeholder" invisible="1"/>
+							<field name="image_model_placeholder" invisible="1"/><!-- hidden placeholder text for the image model selection below -->
 							<label for="enable_image_generation" string="Images"/>
 							<div class="d-flex align-items-center gap-2 flex-wrap">
 								<field

@@ -89,7 +89,7 @@
 							<field name="technical_name"/>
 							<field name="modality"/>
 							<field name="context_window" invisible="modality != 'chat'"/>
-							<field name="reasoning_efforts" invisible="1"/>
+							<field name="reasoning_efforts" invisible="1"/><!-- hidden option source for the default reasoning effort below -->
 							<field
                                 name="reasoning_effort_default"
                                 widget="filtered_selection"

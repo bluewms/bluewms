@@ -4,7 +4,7 @@
         <xpath expr="//header" position="inside"><button name="action_open_wcs_preview" string="真实作业试算" type="object" groups="stock.group_stock_manager" invisible="hook_code != 'wcs_creation'"/></xpath>
         <xpath expr="//page[@name='code']/p" position="attributes"><attribute name="invisible">hook_code == 'wcs_creation'</attribute></xpath>
         <xpath expr="//page[@name='code']" position="inside"><p invisible="hook_code != 'wcs_creation' or contract != 'wcs_creation/4'">AI创建配置从全部有效行逐行决定创建、等待或无需WCS, 可调整数量依据、容器组合与位置映射, 再编排单/双/多任务(含同数据后续任务). 设备和任务类型必须使用人工授权. 无绑定时按移动行直接创建. 保存草稿不会生效.</p></xpath>
-        <xpath expr="//group[@name='scene_scope']" position="inside"><field name="hook_code" invisible="1"/><field name="wcs_upgrade_notice" readonly="1" invisible="not wcs_upgrade_notice"/></xpath>
+        <xpath expr="//group[@name='scene_scope']" position="inside"><field name="hook_code" invisible="1"/><!-- 场景标识：被本视图头部按钮与说明文字的可见条件引用 --><field name="wcs_upgrade_notice" readonly="1" invisible="not wcs_upgrade_notice"/></xpath>
     </field></record>
     <record id="wcs_type_form" model="ir.ui.view"><field name="name">stock.picking.type.wcs</field><field name="model">stock.picking.type</field><field name="inherit_id" ref="stock.view_picking_type_form"/><field name="arch" type="xml">
         <xpath expr="//page[@name='hardware']" position="after">
@@ -23,7 +23,7 @@
         <xpath expr="//div[@name='button_box']" position="inside"><button class="oe_stat_button" name="action_to_blue_wcs_request" icon="fa-truck" type="object" invisible="wsc_request_count == 0"><field name="wsc_request_count" widget="statinfo" string="WCS作业"/></button></xpath>
         <xpath expr="//button[@name='button_validate']" position="before"><button name="action_create_wcs_request_from_button" string="执行WCS" type="object" class="oe_highlight" groups="stock.group_stock_user" invisible="not blue_wcs_enabled or state in ['draft','done','cancel']"/></xpath>
         <xpath expr="//label[@for='scheduled_date']" position="before"><field name="wcs_stage" readonly="1"/></xpath>
-        <xpath expr="//page[@name='note']" position="after"><page name="wcs_request" string="WCS作业" invisible="not blue_wcs_enabled and not wcs_request_ids"><field name="blue_wcs_enabled" invisible="1"/>
+        <xpath expr="//page[@name='note']" position="after"><page name="wcs_request" string="WCS作业" invisible="not blue_wcs_enabled and not wcs_request_ids"><field name="blue_wcs_enabled" invisible="1"/><!-- WCS 启用标记：被本页与"执行WCS"按钮的可见条件引用 -->
             <field name="wcs_request_ids" readonly="1"><list create="0" delete="0"><field name="product_id"/><field name="location_res_id"/><field name="location_dest_id"/><field name="package_id"/><field name="container_id" optional="hide"/><field name="equipment_id"/><field name="product_qty"/><field name="product_uom_id"/><field name="request_date"/><field name="stage_id"/></list></field>
             <group string="AI创建配置版本" groups="stock.group_stock_manager"><field name="blue_wcs_policy_fixed"/><field name="blue_wcs_release_id"/></group>
         </page></xpath>

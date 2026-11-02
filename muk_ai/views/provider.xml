@@ -66,7 +66,7 @@
 					<group>
 						<group string="Connection">
 							<field name="api_key" password="True"/>
-							<field name="model_modalities" invisible="1"/>
+							<field name="model_modalities" invisible="1"/><!-- hidden modality list driving the visibility of the default model fields below -->
 							<field
                                 name="default_chat_model_id"
                                 options="{'no_create': True}"
@@ -77,7 +77,7 @@
                                 options="{'no_create': True}"
                                 invisible="'image' not in (model_modalities or [])"
                             />
-							<field name="api_region_options" invisible="1"/>
+							<field name="api_region_options" invisible="1"/><!-- hidden option source and visibility driver for the region fields below -->
 							<field
                                 name="api_region"
                                 widget="filtered_selection"
@@ -96,7 +96,7 @@
                             />
 						</group>
 						<group string="Limits">
-							<field name="serves_chat" invisible="1"/>
+							<field name="serves_chat" invisible="1"/><!-- hidden capability flag driving the visibility of the max tokens limit below -->
 							<field name="max_tokens" invisible="not serves_chat"/>
 							<label for="request_timeout"/>
 							<div class="d-flex align-items-center gap-2">
