@@ -15,7 +15,7 @@
         </header>
       </xpath>
       <field name="equipment_ids" position="replace">
-        <field name="protocol_profile_id" invisible="1"/>
+        <field name="protocol_profile_id" invisible="1"/><!-- 协议配置绑定：被头部按钮与协议页签的可见条件引用，不直接展示 -->
         <notebook name="protocol_notebook" invisible="adapter_code != 'protocol' or not protocol_profile_id">
           <page name="requirements" string="需求">
             <field name="protocol_requirements" placeholder="描述厂家接口及文档版本、报文、接受条件和完成位置如何处理"/>

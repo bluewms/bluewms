@@ -16,9 +16,9 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <field name="active" invisible="1"/>
-                    <field name="cloud_managed" invisible="1"/>
-                    <group name="scene_scope"><field name="name"/><field name="company_id" groups="base.group_multi_company"/><field name="template_id"/><field name="contract"/><field name="active_release_id"/><field name="draft_base_release_id"/><field name="validated_version_id" invisible="1"/></group>
+                    <field name="active" invisible="1"/><!-- 启用状态：供归档与筛选使用，不直接展示 -->
+                    <field name="cloud_managed" invisible="1"/><!-- 云端托管标记：被"载入标准示例"按钮的可见条件引用 -->
+                    <group name="scene_scope"><field name="name"/><field name="company_id" groups="base.group_multi_company"/><field name="template_id"/><field name="contract"/><field name="active_release_id"/><field name="draft_base_release_id"/><field name="validated_version_id" invisible="1"/><!-- 已验证版本引用：由验证流程写入、发布流程读取，不直接展示 --></group>
                     <notebook>
                         <page name="requirements" string="需求"><field name="requirements" placeholder="描述优先顺序、允许拆分和无可用位置时的处理方式"/><group><field name="draft_source"/><field name="conversation_ref"/></group><field name="knowledge_references" invisible="not knowledge_references"/></page>
                         <page name="code" string="可编辑代码"><p>输入为 request 与 candidates；输出 result，每项包含 location_id、score、reason。分数越小越优先。代码可由人工或后续AI修改，保存草稿不会自动生效。</p><field name="draft_code" widget="ace" options="{'mode': 'python'}"/></page>

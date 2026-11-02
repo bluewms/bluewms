@@ -89,7 +89,7 @@
 						/>
 					</group>
 					<group string="System Space" invisible="user_id">
-						<field name="can_edit_domain" invisible="1"/>
+						<field name="can_edit_domain" invisible="1"/><!-- hidden permission flag driving the read-only state of the domain field below -->
 						<field name="pinned" widget="boolean_toggle"/>
 						<field
 							name="domain"

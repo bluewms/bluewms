@@ -4,6 +4,7 @@ from unittest.mock import patch
 from odoo.tests import tagged
 from odoo.addons.base.tests.common import BaseCommon
 from odoo.addons.blue_ai_client.tests.wiki_fixtures import FakeNativeWiki
+from odoo.addons.blue_ai_client.guard import BINDING_TOKEN
 
 from .common import make_interface
 
@@ -28,6 +29,11 @@ class TestErpAiAsset(BaseCommon):
             self.assertNotIn('test-only-secret', json.dumps(asset))
             for hit in tools._mcp_blue_search_code_knowledge('ERP mapping')['results']:
                 tools._mcp_blue_read_code_knowledge(hit['page_ref'])
+            # 与 test_cloud._confirmed_submit 相同: 先以绑定令牌落库真实用户确认,再提交草稿.
+            session.with_context(blue_ai_binding_token=BINDING_TOKEN).write({'blue_requirements_review': {
+                'status': 'confirmed', 'confirmed_by': self.env.uid,
+                'requirements': 'ERP AI generated test', 'draft_hash': asset['draft_hash'],
+            }})
             saved = tools._mcp_blue_submit_code_draft(interface.code, interface.tests, 'ERP AI generated test', asset['draft_hash'])
             result = tools._mcp_blue_validate_code_draft(saved['draft_hash'])
         self.assertTrue(result['valid'])

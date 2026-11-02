@@ -45,7 +45,7 @@
           <field name="inbound_lines_key" invisible="kind == 'inventory'"/>
           <field name="inbound_token" password="True" groups="base.group_system" invisible="kind == 'inventory'"/>
         </group></group>
-      <field name="profile_id" invisible="1"/>
+      <field name="profile_id" invisible="1"/><!-- 绑定的 AI 配置资产：被头部"试算/发布/回滚"等按钮的可见条件引用，不直接展示 -->
       <notebook>
         <page name="requirements" string="需求"><field name="requirements" placeholder="说明 ERP 报文字段、单据生成方式、部分完成反馈及成功判断规则"/></page>
         <page name="code" string="可编辑代码"><p>保存后先试算,人工发布生效. 库存单验证完成后按实际数量反馈;外部操作由同步队列处理.</p><field name="code" widget="ace" options="{'mode': 'python'}"/></page>
