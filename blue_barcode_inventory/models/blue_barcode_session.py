@@ -42,6 +42,10 @@ class BlueBarcodeSession(models.Model):
     def _actions(self):
         return [] if self.kind == 'inventory' else super()._actions()
 
+    def _row_done(self, row):
+        # 实盘可以少于账存, 已录入即视为本行完成.
+        return bool(row['counted']) if self.kind == 'inventory' else super()._row_done(row)
+
     def _record_id(self):
         return self.inventory_id.id if self.kind == 'inventory' else super()._record_id()
 

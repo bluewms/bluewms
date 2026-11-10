@@ -215,13 +215,13 @@ export class BarcodeWorkspace extends Component {
         }
     }
 
-    acceptView(view) {
+    acceptView(view, preferredGroup = '') {
         this.state.session = view;
         this.state.page = 'work';
         const groups = this.groups();
-        if (!groups.some((group) => group.key === this.state.group)) {
-            this.state.group = groups[0]?.key || '';
-        }
+        // 先用服务端指定的页; 原页已不存在时也不会先被重置成第一页.
+        const keep = [preferredGroup, this.state.group].find((key) => key && groups.some((group) => group.key === key));
+        this.state.group = keep || groups[0]?.key || '';
         if (!view.rows.some((row) => row.key === this.state.selected)) {
             this.state.selected = '';
         }
@@ -615,18 +615,25 @@ export class BarcodeWorkspace extends Component {
         ]);
         this.state.pending = null;
         this.state.error = '';
-        this.acceptView(response.view);
-        if (response.event.group && this.state.group === event.payload.group) {
-            this.state.group = response.event.group;
-        }
+        const previousGroup = this.state.group;
+        // 扫码期间操作员没有手动翻页时, 才跟随服务端返回的页.
+        const follow = response.event.group && previousGroup === event.payload.group ? response.event.group : '';
+        this.acceptView(response.view, follow);
         this.nextAction = response.replayed ? '' : response.event.after || '';
         const selected = response.event.key || response.view.context.pending?.key || '';
         this.state.selected = response.view.rows.some((row) => row.key === selected && row.group === this.state.group) ? selected : '';
         this.state.message = response.event.selected || (
             response.event.quantity !== undefined ? `已保存数量：${response.event.quantity}` : '已确认'
         );
-        if (response.event.group && response.event.group !== event.payload.group) {
+        if (follow && this.state.group === follow && follow !== previousGroup) {
             this.state.message += '（已定位到匹配的业务组）';
+        }
+        const moved = response.event.moved_group;
+        if (moved && moved !== this.state.group) {
+            const index = this.groups().findIndex((group) => group.key === moved);
+            if (index >= 0) {
+                this.state.message += `，货物已移到第 ${index + 1} 页`;
+            }
         }
         this.persist();
         if (this.state.selected) {

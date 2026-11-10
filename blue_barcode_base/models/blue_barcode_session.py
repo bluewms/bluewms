@@ -355,46 +355,85 @@ class BlueBarcodeSession(models.Model):
             raise UserError(self.env._('位置已停用或编码不唯一,请核对位置条码.'))
         location = locations
         rows = self._rows()
-        exact = [r for r in rows if location.id in (r['location_id'], r['destination_id'])]
-        selected = [r for r in rows if r['key'] == row_key] if row_key else [
-            r for r in rows if r['counted'] and r['quantity'] > 0 and (not group_key or r['group'] == group_key)]
-        row = selected[0] if len(selected) == 1 else None
-        move = self.env['stock.move'].browse(row['move_id']) if row else self.env['stock.move']
-        destination = bool(row and location.id != row['location_id'] and location._child_of(move.location_dest_id))
-        if destination and row['counted'] and row['quantity'] > 0:
-            if group_key and row['group'] != group_key:
-                raise UserError(self.env._('所选明细与当前页不同,请重新选择.'))
-            if location.usage not in ('internal', 'transit'):
-                raise UserError(self.env._('目的子库位必须是内部或中转位置.'))
-            line = self.env['stock.move.line'].browse(row['line_id'])
-            line.check_access('write')
-            if line.location_dest_id != location:
-                if line.result_package_id:
-                    raise UserError(self.env._('已装箱明细不能单独更换目的位置,请先核对整包作业.'))
-                if (line.location_id._blue_stock_blocking_location()
-                        or location._blue_stock_blocking_location(receiving=True)):
-                    raise UserError(self.env._('来源位置已冻结或目的位置禁止入库,不能更换目的库位.'))
-                incoming = self.env['stock.move.line'].search([
-                    ('id', '!=', line.id), ('product_id', '=', line.product_id.id),
-                    ('location_dest_id', '=', location.id), ('state', 'not in', ['draft', 'done', 'cancel'])])
-                occupied = sum(location.quant_ids.filtered(lambda q: q.product_id == line.product_id).mapped('quantity'))
-                occupied += sum(incoming.mapped('quantity_product_uom'))
-                if not location.with_context(exclude_sml_ids={line.id})._check_can_be_used(
-                        line.product_id, quantity=line.quantity_product_uom, location_qty=occupied):
-                    raise UserError(self.env._('目的库位不满足原生存储类别或容量要求.'))
-                line.write({'location_dest_id': location.id})
-            current = next(r for r in self._rows() if r['key'] == row['key'])
-            self._internal().write({'scan_context': {'destination_id': location.id}})
-            return {'selected': location.display_name, 'key': row['key'], 'group': current['group']}
-        if not exact:
-            if row and not destination:
+        row = self._relocation_row(rows, location, row_key)
+        if row:
+            return self._relocate(row, location, group_key)
+        return self._navigate_to_location(rows, location, row_key, group_key)
+
+    def _row_done(self, row):
+        return bool(row['counted']) and row['quantity'] >= row['expected']
+
+    def _best_group(self, matched, group_key):
+        """当前页匹配就留在当前页, 否则按页序取第一个未完成页."""
+        groups = list(dict.fromkeys(r['group'] for r in matched))
+        if group_key in groups:
+            return group_key
+        unfinished = [r['group'] for r in matched if not self._row_done(r)]
+        return unfinished[0] if unfinished else groups[0]
+
+    def _relocation_row(self, rows, location, row_key):
+        """只有扫码前明确选中的已计数明细, 才把扫到的子库位当作它的新目的位置."""
+        selected = [r for r in rows if r['key'] == row_key] if row_key else []
+        if len(selected) != 1:
+            return None
+        row = selected[0]
+        # 盘库等没有库存移动的明细只做定位.
+        if (not row.get('move_id') or not row['counted'] or row['quantity'] <= 0
+                or location.id in (row['location_id'], row['destination_id'])):
+            return None
+        move = self.env['stock.move'].browse(row['move_id'])
+        return row if location._child_of(move.location_dest_id) else None
+
+    def _relocate(self, row, location, group_key):
+        if group_key and row['group'] != group_key:
+            raise UserError(self.env._('所选明细与当前页不同,请重新选择.'))
+        if location.usage not in ('internal', 'transit'):
+            raise UserError(self.env._('目的子库位必须是内部或中转位置.'))
+        line = self.env['stock.move.line'].browse(row['line_id'])
+        line.check_access('write')
+        if line.result_package_id:
+            raise UserError(self.env._('已装箱明细不能单独更换目的位置,请先核对整包作业.'))
+        if (line.location_id._blue_stock_blocking_location()
+                or location._blue_stock_blocking_location(receiving=True)):
+            raise UserError(self.env._('来源位置已冻结或目的位置禁止入库,不能更换目的库位.'))
+        incoming = self.env['stock.move.line'].search([
+            ('id', '!=', line.id), ('product_id', '=', line.product_id.id),
+            ('location_dest_id', '=', location.id), ('state', 'not in', ['draft', 'done', 'cancel'])])
+        occupied = sum(location.quant_ids.filtered(lambda q: q.product_id == line.product_id).mapped('quantity'))
+        occupied += sum(incoming.mapped('quantity_product_uom'))
+        if not location.with_context(exclude_sml_ids={line.id})._check_can_be_used(
+                line.product_id, quantity=line.quantity_product_uom, location_qty=occupied):
+            raise UserError(self.env._('目的库位不满足原生存储类别或容量要求.'))
+        line.write({'location_dest_id': location.id})
+        rows = self._rows()
+        moved = next(r for r in rows if r['key'] == row['key'])
+        # 换位只改这一行, 不锁定后续扫描的目的位置; 原页还有未完成明细时留在原页继续作业.
+        stay = bool(group_key) and any(r['group'] == group_key and not self._row_done(r) for r in rows)
+        return {'selected': location.display_name, 'key': row['key'],
+                'group': group_key if stay else moved['group'], 'moved_group': moved['group']}
+
+    def _navigate_to_location(self, rows, location, row_key, group_key):
+        as_source = [r for r in rows if r['location_id'] == location.id]
+        as_destination = [r for r in rows if r['destination_id'] == location.id]
+        if not as_source and not as_destination:
+            if not any(r.get('move_id') for r in rows):
+                raise UserError(self.env._('位置不在本次作业范围内.'))
+            selected = [r for r in rows if r['key'] == row_key] if row_key else []
+            if selected and selected[0].get('move_id') and not location._child_of(
+                    self.env['stock.move'].browse(selected[0]['move_id']).location_dest_id):
                 raise UserError(self.env._('位置不在所选明细的原目的位置范围内.'))
             raise UserError(self.env._('请先扫描并选择唯一的商品明细,再扫描目的子库位.'))
-        source = any(r['location_id'] == location.id for r in exact)
-        field = 'location_id' if source else 'destination_id'
-        self._internal().write({'scan_context': {field: location.id}})
-        groups = {r['group'] for r in exact if r[field] == location.id}
-        return {'selected': location.display_name, **({'group': groups.pop()} if len(groups) == 1 else {})}
+        # 按字段合并上下文: 扫来源开始新路线, 扫目的保留已确认的来源.
+        context = {k: v for k, v in (self.scan_context or {}).items() if k not in ('lot', 'package_id')}
+        if as_source and not (as_destination and context.get('location_id') == location.id):
+            context['location_id'] = location.id
+            context.pop('destination_id', None)
+            matched = as_source
+        else:
+            context['destination_id'] = location.id
+            matched = as_destination
+        self._internal().write({'scan_context': context})
+        return {'selected': location.display_name, 'group': self._best_group(matched, group_key)}
 
     def _consume_scan(self, raw, row_key, group_key):
         parsed = self._decode(raw)

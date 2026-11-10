@@ -64,6 +64,22 @@ class TestInventoryScan(BaseCommon):
         self._event(second)
         self.assertEqual(inventory.line_ids.product_qty, 2)
 
+    def test_location_scan_after_count_opens_that_location(self):
+        shelf = self.env['stock.location'].create({'name': 'Count shelf', 'location_id': self.warehouse.lot_stock_id.id,
+            'company_id': self.env.company.id, 'barcode': 'COUNT-SHELF-B'})
+        self.env['stock.quant']._update_available_quantity(self.product, shelf, 5)
+        inventory = self._inventory()
+        session = self._session(inventory)
+        stock_row = next(r for r in session._rows() if r['location_id'] == self.warehouse.lot_stock_id.id)
+        shelf_row = next(r for r in session._rows() if r['location_id'] == shelf.id)
+        self._event(session, raw=self.product.barcode, row_key=stock_row['key'], group=stock_row['group'])
+        # 选中的已盘行没有库存移动, 扫库位只定位, 不能进入换位分支.
+        result = self._event(session, 'inventory_event_0002', raw=shelf.barcode,
+                             row_key=stock_row['key'], group=stock_row['group'])
+        self.assertEqual(result['event']['group'], shelf_row['group'])
+        self.assertEqual(session.scan_context.get('location_id'), shelf.id)
+        self.assertFalse(inventory.line_ids.filtered(lambda l: l.location_id == shelf).counted)
+
     def test_snapshot_refresh_invalidates_old_counting_context(self):
         inventory = self._inventory()
         session = self._session(inventory)

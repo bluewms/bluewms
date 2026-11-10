@@ -195,6 +195,72 @@ class TestBarcodeScanning(BaseCommon):
         self.assertEqual(move.move_line_ids.quantity, 1)
         self.assertEqual(picking.move_line_ids.filtered(lambda l: l.product_id == self.product).location_dest_id, destination)
 
+    def test_child_destination_does_not_lock_following_scans(self):
+        destination = self._destination_child()
+        picking = self._picking()
+        other = self.env['product.product'].create({
+            'name': 'Unlocked scan product', 'is_storable': True, 'barcode': 'UNLOCKED-SCAN-PRODUCT'})
+        self.env['stock.move'].create({
+            'picking_id': picking.id, 'product_id': other.id, 'product_uom_qty': 10,
+            'uom_id': other.uom_id.id, 'location_id': picking.location_id.id,
+            'location_dest_id': picking.location_dest_id.id})._action_confirm()
+        session = self._session(picking)
+        page = session._rows()[0]['group']
+        self._scan(session, payload={'raw': self.product.barcode, 'group': page})
+        row = next(r for r in session._rows() if r['product_id'] == self.product.id)
+        moved = self._scan(session, event='barcode_event_child001', payload={
+            'raw': destination.barcode, 'row_key': row['key'], 'group': page})
+        # 原页还有未完成的商品, 留在原页; 换位的那一行去了新页.
+        self.assertEqual(moved['event']['group'], page)
+        self.assertNotEqual(moved['event']['moved_group'], page)
+        self.assertNotIn('destination_id', session.scan_context or {})
+        self._scan(session, event='barcode_event_other001', payload={'raw': other.barcode, 'group': page})
+        other_line = picking.move_line_ids.filtered(lambda l: l.product_id == other)
+        self.assertEqual(other_line.quantity, 1)
+        self.assertEqual(other_line.location_dest_id, self.warehouse.lot_stock_id)
+
+    def test_location_scan_without_explicit_row_never_relocates(self):
+        destination = self._destination_child()
+        session = self._session()
+        self._scan(session)
+        with self.assertRaisesRegex(UserError, '请先扫描并选择唯一'):
+            self._scan(session, event='barcode_event_child001', payload={
+                'raw': destination.barcode, 'group': session._rows()[0]['group']})
+        self.assertEqual(session.picking_id.move_line_ids.location_dest_id, self.warehouse.lot_stock_id)
+
+    def test_location_on_several_pages_opens_first_unfinished_page(self):
+        first, second = self._picking(), self._picking()
+        batch = self.env['stock.picking.batch'].create({'picking_type_id': self.warehouse.in_type_id.id,
+            'picking_ids': [Command.set((first | second).ids)]})
+        self.warehouse.lot_stock_id.barcode = 'SCAN-BATCH-STOCK'
+        view = self.service.open_session('batch', batch.id, self.client)
+        session = self.env['blue.barcode.session'].browse(view['id'])
+        pages = list(dict.fromkeys(r['group'] for r in view['rows']))
+        self.assertEqual(len(pages), 2)
+        result = self._scan(session, payload={'raw': 'SCAN-BATCH-STOCK'})
+        self.assertEqual(result['event']['group'], pages[0])
+        result = self._scan(session, event='barcode_event_000002', payload={'raw': 'SCAN-BATCH-STOCK', 'group': pages[1]})
+        self.assertEqual(result['event']['group'], pages[1])
+        row = next(r for r in session._rows() if r['group'] == pages[0])
+        self._scan(session, event='barcode_event_000003', payload={'row_key': row['key'], 'total': 10, 'group': pages[0]})
+        result = self._scan(session, event='barcode_event_000004', payload={'raw': 'SCAN-BATCH-STOCK'})
+        self.assertEqual(result['event']['group'], pages[1])
+        self._scan(session, event='barcode_event_000005', payload={'raw': self.product.barcode, 'group': pages[1]})
+        picking = self.env['stock.picking'].browse(next(r['picking_id'] for r in session._rows() if r['group'] == pages[1]))
+        self.assertEqual(picking.move_line_ids.quantity, 1)
+
+    def test_source_then_destination_keeps_both_confirmed_locations(self):
+        picking = self._picking()
+        picking.location_id.barcode = 'SCAN-ROUTE-SOURCE'
+        self.warehouse.lot_stock_id.barcode = 'SCAN-ROUTE-STOCK'
+        session = self._session(picking)
+        self._scan(session, payload={'raw': 'SCAN-ROUTE-SOURCE'})
+        self._scan(session, event='barcode_event_000002', payload={'raw': 'SCAN-ROUTE-STOCK'})
+        self.assertEqual(session.scan_context.get('location_id'), picking.location_id.id)
+        self.assertEqual(session.scan_context.get('destination_id'), self.warehouse.lot_stock_id.id)
+        self._scan(session, event='barcode_event_000003')
+        self.assertEqual(picking.move_line_ids.quantity, 1)
+
     def test_second_terminal_requires_explicit_takeover(self):
         session = self._session()
         with self.assertRaises(UserError):
