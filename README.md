@@ -2,7 +2,11 @@
 
 [简体中文](README.md) | [English](README.en.md)
 
-**基于 Odoo 20 社区版的模块化仓库管理系统，连接人工仓、PDA 作业、ERP 和自动化设备。**
+**基于 Odoo 20 社区版的模块化仓储管理系统，面向 AGV 与自动化物流集成商。** BlueWMS 把仓库单据、PDA 条码作业、ERP 和设备任务连接起来，适用于人工仓、AGV 和四向车等场景。
+
+[产品官网](https://www.bluewms.com) · [联系预约演示](mailto:blue.lang@outlook.com) · [部署与集成文档](docs/README.md)
+
+可用自然语言描述上架、设备任务和 ERP 映射等规则。AI 生成草稿，经人工验证发布后在本地执行。
 
 基础业务模块及五类 AI 扩展入口已实现。按实际场景选择模块部署，客户 ERP、设备协议和实机 PDA 另做适配与验收；正式产品版本以 GitHub Release 为准。
 
