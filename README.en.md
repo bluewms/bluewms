@@ -2,7 +2,11 @@
 
 [简体中文](README.md) | [English](README.en.md)
 
-**A modular warehouse management system on Odoo 20 Community Edition, connecting manual operations, PDA workflows, ERP systems and automation.**
+**BlueWMS is a modular warehouse management system built on Odoo 20 Community Edition for AGV and warehouse automation integrators.** It connects warehouse documents, handheld barcode workflows, ERP systems and equipment tasks for manual and automated operations, including AGVs and four-way shuttles.
+
+[Product website](https://www.bluewms.com) · [Request a demo](mailto:blue.lang@outlook.com) · [Deployment and integration docs](docs/README.md)
+
+Describe rules for putaway, equipment tasks and ERP mapping in plain language. AI drafts the rules for review and validation, then approved rules run locally.
 
 The core modules and five AI extension contracts are implemented. Select modules for each deployment and validate customer ERP protocols, equipment and physical scanners separately. Production versions are identified by GitHub Releases.
 
